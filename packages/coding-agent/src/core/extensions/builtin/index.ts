@@ -7,6 +7,7 @@ import diffExtension from "./diff.js";
 import filesExtension from "./files.js";
 import gptApplyPatchExtension from "./gpt-apply-patch/index.js";
 import helixOntologyExtension from "./helix-ontology/index.js";
+import helixSeqExtension from "./helix-seq/index.js";
 import openaiWebSearchExtension from "./openai-web-search/index.js";
 import permissionSystemExtension from "./permission-system/index.js";
 import promptPresetExtension from "./prompt-preset/index.js";
@@ -45,4 +46,5 @@ export const builtinExtensions: BuiltinExtensionFactory[] = [
 	{ id: "tool-pair-guard", factory: toolPairGuardExtension },
 	{ id: "compaction", factory: compactionExtension },
 	{ id: "helix-ontology", factory: helixOntologyExtension },
+	{ id: "helix-seq", factory: helixSeqExtension },
 ];
