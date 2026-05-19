@@ -71,7 +71,7 @@ Each item is a separate package under `packages/coding-agent/src/core/extensions
 Not yet published. Local development:
 
 ```bash
-git clone https://github.com/helix-bio/helix.git
+git clone https://github.com/PeterPonyu/helix.git
 cd helix
 npm install
 npm run build

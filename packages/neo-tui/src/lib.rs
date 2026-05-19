@@ -1,6 +1,6 @@
 //! `helix-neo-tui` - native Rust + ratatui TUI for helix.
 //!
-//! See [`README`](https://github.com/helix-bio/helix/blob/main/packages/neo-tui/README.md)
+//! See [`README`](https://github.com/PeterPonyu/helix/blob/main/packages/neo-tui/README.md)
 //! and `plans/neo-tui.md` for the architecture and module layout.
 //!
 //! The crate exposes a thin library surface so integration tests and the

@@ -38,7 +38,7 @@ Environment variables, external dependencies, and platform notes for this missio
 ## pi-mono quirks
 
 - **`.pi/` directory:** the repo uses `.pi/` (not `.pi-agent/` or `.helix/`) as the project config dir. Existing files there: `permissions-approved.jsonl`, `git/`, `npm/`, `prompts/`, `settings.json`.
-- **Remotes:** `origin = helix-bio/helix`, `upstream = code-yeongyu/senpi` (sync source; senpi itself rebases on `badlogic/pi-mono`). Workers should only push to `origin` and must NEVER push to `upstream`.
+- **Remotes:** `origin = PeterPonyu/helix`, `upstream = code-yeongyu/senpi` (sync source; senpi itself rebases on `badlogic/pi-mono`). Workers should only push to `origin` and must NEVER push to `upstream`.
 - **Lockstep versioning:** All packages share the same version. This mission does not bump versions — that's a release-time concern.
 - **`tsgo` is strict:** `any`, `@ts-ignore`, `@ts-expect-error` are forbidden. Narrow types explicitly via type guards instead.
 - **Build side effect:** `npm run build` regenerates `packages/ai/src/models.generated.ts` via `packages/ai/scripts/generate-models.ts`, so coding-agent-only validation can still dirty that unrelated tracked file. Restore it before committing if your feature did not intentionally change AI model metadata.

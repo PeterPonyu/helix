@@ -5,7 +5,7 @@ See [AGENTS.md](../../../AGENTS.md) at the monorepo root for fork-specific guide
 ## Setup
 
 ```bash
-git clone https://github.com/helix-bio/helix
+git clone https://github.com/PeterPonyu/helix
 cd helix
 npm install
 npm run build
