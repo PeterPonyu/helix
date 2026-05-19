@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"FILES=\\\"packages/coding-agent/src/migrations.ts packages/coding-agent/src/main.ts packages/coding-agent/src/modes/neo-mode.ts packages/coding-agent/src/core/extensions/builtin/system-messa...",
-  "error": "Exit code 123\n--- audit remaining ---",
-  "timestamp": "2026-05-19T09:17:35.645Z",
-  "retry_count": 1
+  "tool_input_preview": "{\"command\":\"\\\\\\n  git diff --name-only > /tmp/sed-modified.txt && \\\\\\n  wc -l /tmp/sed-modified.txt && \\\\\\n  xargs -a /tmp/sed-modified.txt sed -i 's|@helix-bio/helix|@helix-bio/helix|g' && \\\\\\n  ech...",
+  "error": "Exit code 123\n127 /tmp/sed-modified.txt\nsed: can't read .omc/state/agent-replay-3744c9c3-92a3-432f-b1a6-2190ac2966c7.jsonl: No such file or directory\nsed: can't read .omc/state/subagent-tracking.json: No such file or directory",
+  "timestamp": "2026-05-19T13:41:40.576Z",
+  "retry_count": 2
 }

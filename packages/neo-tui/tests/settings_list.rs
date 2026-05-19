@@ -1,12 +1,12 @@
 use crossterm::event::{
     Event as CrosstermEvent, KeyCode, KeyEvent, KeyEventKind, KeyEventState, KeyModifiers,
 };
-use ratatui::{Terminal, backend::TestBackend, layout::Rect};
 use helix_neo_tui::{
     components::settings_list::{SettingValue, SettingsItem, SettingsList},
     compositor::{Component, EventResult, RenderContext},
     load_bundled_dark_theme,
 };
+use ratatui::{Terminal, backend::TestBackend, layout::Rect};
 
 const fn key_event(code: KeyCode) -> CrosstermEvent {
     CrosstermEvent::Key(KeyEvent {
