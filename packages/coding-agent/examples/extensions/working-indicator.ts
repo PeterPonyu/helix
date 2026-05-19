@@ -2,10 +2,10 @@
  * Working Indicator Extension
  *
  * Demonstrates `ctx.ui.setWorkingIndicator()` for customizing the inline
- * working indicator shown while senpi is streaming a response.
+ * working indicator shown while helix is streaming a response.
  *
  * Usage:
- *   senpi --extension examples/extensions/working-indicator.ts
+ *   helix --extension examples/extensions/working-indicator.ts
  *
  * Commands:
  *   /working-indicator           Show current mode

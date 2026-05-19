@@ -116,7 +116,7 @@ If you frequently switch branches and don't want the prompt, set `branchSummary.
 
 ## Settings & Tuning
 
-Configure compaction in `~/.senpi/agent/settings.json` (global) or `.senpi/settings.json` (project):
+Configure compaction in `~/.helix/agent/settings.json` (global) or `.helix/settings.json` (project):
 
 ```json
 {

@@ -2,14 +2,14 @@
  * Custom Header Extension
  *
  * Demonstrates ctx.ui.setHeader() for replacing the built-in header
- * (logo + keybinding hints) with a custom component showing the senpi mascot.
+ * (logo + keybinding hints) with a custom component showing the helix mascot.
  */
 
 import type { ExtensionAPI, Theme } from "@helix-bio/helix";
 import { VERSION } from "@helix-bio/helix";
 
 // --- PI MASCOT ---
-// Based on pi_mascot.ts - the senpi agent character
+// Based on pi_mascot.ts - the helix agent character
 function getPiMascot(theme: Theme): string[] {
 	// --- COLORS ---
 	// 3b1b Blue: R=80, G=180, B=230

@@ -1,4 +1,4 @@
-//! Typed RPC events emitted by `senpi --mode rpc` on stdout.
+//! Typed RPC events emitted by `helix --mode rpc` on stdout.
 //!
 //! Mirrors the event taxonomy in
 //! `packages/coding-agent/docs/rpc.md` ("Events" section).

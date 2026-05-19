@@ -23,10 +23,10 @@ use helix_neo_tui::{
 #[command(
     name = "helix-neo-tui",
     version,
-    about = "Native Rust + ratatui TUI for senpi (launched via `senpi --neo`)."
+    about = "Native Rust + ratatui TUI for helix (launched via `helix --neo`)."
 )]
 struct Cli {
-    /// Path to senpi backend binary for `--mode rpc`. When set, the
+    /// Path to helix backend binary for `--mode rpc`. When set, the
     /// TUI spawns the backend on startup; otherwise the run is offline
     /// (demo mode or no agent activity).
     #[arg(long, env = "HELIX_NEO_BACKEND_BIN")]
@@ -98,7 +98,7 @@ fn real_main() -> Result<()> {
     );
 
     // Demo mode keeps the fully-populated scene used for screenshots
-    // and tests. Real `senpi --neo` boots into an empty session with an
+    // and tests. Real `helix --neo` boots into an empty session with an
     // idle footer so the user does not stare at a fake streaming run
     // until a real RPC frame arrives.
     let (initial_chat, header_state, footer_state) = if cli.demo {
@@ -162,7 +162,7 @@ fn real_main() -> Result<()> {
         initial_chat,
         header: header_state,
         footer: footer_state,
-        input_placeholder: "Ask senpi anything, or paste / drop / type · / for commands".into(),
+        input_placeholder: "Ask helix anything, or paste / drop / type · / for commands".into(),
         demo_mode: cli.demo,
         // demo_seconds is a demo-mode option; outside demo mode we ignore
         // it so a stray `--demo-seconds 5` does not auto-exit a real
@@ -173,7 +173,7 @@ fn real_main() -> Result<()> {
     // `maybe_spawn_backend()` in app::run reads HELIX_NEO_BACKEND_BIN
     // and HELIX_NEO_BACKEND_ARGS from the environment. Forward the
     // parsed CLI flags into the env so a direct binary invocation like
-    // `helix-neo-tui --backend-bin senpi --backend-args '["--mode","rpc"]'`
+    // `helix-neo-tui --backend-bin helix --backend-args '["--mode","rpc"]'`
     // works without the caller needing to set the env vars manually.
     // SAFETY-NOTE: `std::env::set_var` is unsafe on multi-thread Linux
     // when other threads call `getenv` concurrently, but we mutate the

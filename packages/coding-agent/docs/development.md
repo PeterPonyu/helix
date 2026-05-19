@@ -6,7 +6,7 @@ See [AGENTS.md](../../../AGENTS.md) at the monorepo root for fork-specific guide
 
 ```bash
 git clone https://github.com/code-yeongyu/senpi
-cd senpi
+cd helix
 npm install
 npm run build
 ```
@@ -14,20 +14,20 @@ npm run build
 Run from source:
 
 ```bash
-/path/to/senpi/pi-test.sh
+/path/to/helix/pi-test.sh
 ```
 
-The script can be run from any directory. Senpi keeps the caller's current working directory.
+The script can be run from any directory. Helix keeps the caller's current working directory.
 
 ## Forking / Rebranding
 
-This repo is itself a rebrand of upstream `pi-mono` to `senpi`. The runtime identity (CLI name, config dir, env var prefix) is configured via `package.json`:
+This repo is itself a rebrand of upstream `pi-mono` to `helix`. The runtime identity (CLI name, config dir, env var prefix) is configured via `package.json`:
 
 ```json
 {
   "piConfig": {
-    "name": "senpi",
-    "configDir": ".senpi"
+    "name": "helix",
+    "configDir": ".helix"
   }
 }
 ```
@@ -48,7 +48,7 @@ Never use `__dirname` directly for package assets.
 
 ## Debug Command
 
-`/debug` (hidden) writes to `~/.senpi/agent/senpi-debug.log`:
+`/debug` (hidden) writes to `~/.helix/agent/helix-debug.log`:
 - Rendered TUI lines with ANSI codes
 - Last messages sent to the LLM
 

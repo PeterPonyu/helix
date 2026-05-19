@@ -21,7 +21,7 @@ describe("upstream package name alias for extension loader", () => {
 	it("resolves runtime imports from @helix-bio/helix", async () => {
 		// given a third-party extension that imports a runtime helper
 		// from the upstream package name (the case for any pi-extension
-		// authored against pi-mono and run under senpi)
+		// authored against pi-mono and run under helix)
 		const extCode = `
 			import { defineTool } from "@helix-bio/helix";
 			import { Type } from "typebox";
@@ -29,7 +29,7 @@ describe("upstream package name alias for extension loader", () => {
 			const upstreamTool = defineTool({
 				name: "upstream_aliased_tool",
 				label: "Upstream Aliased Tool",
-				description: "Verifies @helix-bio/helix resolves under senpi",
+				description: "Verifies @helix-bio/helix resolves under helix",
 				parameters: Type.Object({}),
 				execute: async () => ({ content: [{ type: "text", text: "ok" }] }),
 			});
@@ -45,7 +45,7 @@ describe("upstream package name alias for extension loader", () => {
 
 		// then it must load without "Cannot find module" errors and
 		// register the tool, proving the alias maps the upstream name
-		// to the senpi runtime
+		// to the helix runtime
 		expect(result.errors).toHaveLength(0);
 		expect(result.extensions).toHaveLength(1);
 		expect(result.extensions[0]?.tools.has("upstream_aliased_tool")).toBe(true);
@@ -53,8 +53,8 @@ describe("upstream package name alias for extension loader", () => {
 
 	it("resolves runtime imports from the upstream @mariozechner package names", async () => {
 		// given extensions installed from upstream pi packages still import
-		// @mariozechner peer package names. Under senpi these must resolve to the
-		// already-loaded senpi runtime instead of an extension-local duplicate.
+		// @mariozechner peer package names. Under helix these must resolve to the
+		// already-loaded helix runtime instead of an extension-local duplicate.
 		const extCode = `
 			import { StringEnum } from "@mariozechner/pi-ai";
 			import { Text } from "@mariozechner/pi-tui";
@@ -87,7 +87,7 @@ describe("upstream package name alias for extension loader", () => {
 	});
 
 	it("resolves runtime imports from the upstream @earendil-works coding agent package", async () => {
-		// given a project extension migrated from .pi to .senpi still imports
+		// given a project extension migrated from .pi to .helix still imports
 		// the upstream coding-agent package name used by pi-mono
 		const extCode = `
 			import { DynamicBorder, type ExtensionAPI } from "@earendil-works/pi-coding-agent";

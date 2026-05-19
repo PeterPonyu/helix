@@ -31,7 +31,7 @@
     {
       "area": "services",
       "observation": "Workers are still discovering the repo init/setup command from transcripts instead of from the shared service manifest.",
-      "evidence": "The transcript skeleton for worker session `8d36681e-7f5c-477d-9a9a-0567d15db005` includes an `Execute` of `/Users/yeongyu/local-workspaces/senpi-mono/.factory/init.sh`, but `/Users/yeongyu/local-workspaces/senpi-mono/.factory/services.yaml` defines install/build/check/test commands only and no init/setup entry."
+      "evidence": "The transcript skeleton for worker session `8d36681e-7f5c-477d-9a9a-0567d15db005` includes an `Execute` of `/Users/yeongyu/local-workspaces/helix-mono/.factory/init.sh`, but `/Users/yeongyu/local-workspaces/helix-mono/.factory/services.yaml` defines install/build/check/test commands only and no init/setup entry."
     }
   ],
   "addressesFailureFrom": null,

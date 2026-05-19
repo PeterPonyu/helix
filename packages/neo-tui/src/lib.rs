@@ -1,4 +1,4 @@
-//! `helix-neo-tui` - native Rust + ratatui TUI for senpi.
+//! `helix-neo-tui` - native Rust + ratatui TUI for helix.
 //!
 //! See [`README`](https://github.com/code-yeongyu/senpi/blob/main/packages/neo-tui/README.md)
 //! and `plans/neo-tui.md` for the architecture and module layout.
@@ -28,7 +28,7 @@ pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 /// Bundled default keymap JSON source (compile-time included).
 pub const DEFAULT_KEYMAP_JSON: &str = include_str!("../assets/keymaps/default.json");
 
-/// Bundled default dark theme JSON source in senpi's native schema.
+/// Bundled default dark theme JSON source in helix's native schema.
 pub const DEFAULT_DARK_THEME_JSON: &str = include_str!("../assets/themes/helix-neo-dark.json");
 
 /// Parse + resolve the bundled dark theme JSON into a [`theme::ResolvedTheme`].

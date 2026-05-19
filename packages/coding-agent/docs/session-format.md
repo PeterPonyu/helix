@@ -5,16 +5,16 @@ Sessions are stored as JSONL (JSON Lines) files. Each line is a JSON object with
 ## File Location
 
 ```
-~/.senpi/agent/sessions/--<path>--/<timestamp>_<uuid>.jsonl
+~/.helix/agent/sessions/--<path>--/<timestamp>_<uuid>.jsonl
 ```
 
 Where `<path>` is the working directory with `/` replaced by `-`.
 
 ## Deleting Sessions
 
-Sessions can be removed by deleting their `.jsonl` files under `~/.senpi/agent/sessions/`.
+Sessions can be removed by deleting their `.jsonl` files under `~/.helix/agent/sessions/`.
 
-Pi also supports deleting sessions interactively from `/resume` (select a session and press `Ctrl+D`, then confirm). When available, senpi uses the `trash` CLI to avoid permanent deletion.
+Pi also supports deleting sessions interactively from `/resume` (select a session and press `Ctrl+D`, then confirm). When available, helix uses the `trash` CLI to avoid permanent deletion.
 
 ## Session Version
 

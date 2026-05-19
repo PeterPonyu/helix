@@ -168,7 +168,7 @@ fn chat_empty_state_shows_hint() {
     let text = buffer_text(&buffer);
 
     assert!(text.contains("type a prompt below to begin..."));
-    assert!(!text.contains("> senpi"));
+    assert!(!text.contains("> helix"));
     assert!(!text.contains("> you"));
 }
 

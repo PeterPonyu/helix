@@ -1,8 +1,8 @@
-> senpi can help you use the SDK. Ask it to build an integration for your use case.
+> helix can help you use the SDK. Ask it to build an integration for your use case.
 
 # SDK
 
-The SDK provides programmatic access to pi's agent capabilities. Use it to embed senpi in other applications, build custom interfaces, or integrate with automated workflows.
+The SDK provides programmatic access to pi's agent capabilities. Use it to embed helix in other applications, build custom interfaces, or integrate with automated workflows.
 
 **Example use cases:**
 - Build a custom UI (web, desktop, mobile)
@@ -337,23 +337,23 @@ const { session } = await createAgentSession({
   cwd: process.cwd(), // default
   
   // Global config directory
-  agentDir: "~/.senpi/agent", // default (expands ~)
+  agentDir: "~/.helix/agent", // default (expands ~)
 });
 ```
 
 `cwd` is used by `DefaultResourceLoader` for:
-- Project extensions (`.senpi/extensions/`)
+- Project extensions (`.helix/extensions/`)
 - Project skills:
-  - `.senpi/skills/`
+  - `.helix/skills/`
   - `.agents/skills/` in `cwd` and ancestor directories (up to git repo root, or filesystem root when not in a repo)
-- Project prompts (`.senpi/prompts/`)
+- Project prompts (`.helix/prompts/`)
 - Context files (`AGENTS.md` walking up from cwd)
 - Session directory naming
 
 `agentDir` is used by `DefaultResourceLoader` for:
 - Global extensions (`extensions/`)
 - Global skills:
-  - `skills/` under `agentDir` (for example `~/.senpi/agent/skills/`)
+  - `skills/` under `agentDir` (for example `~/.helix/agent/skills/`)
   - `~/.agents/skills/`
 - Global prompts (`prompts/`)
 - Global context file (`AGENTS.md`)
@@ -417,7 +417,7 @@ API key resolution priority (handled by AuthStorage):
 ```typescript
 import { AuthStorage, ModelRegistry } from "@helix-bio/helix";
 
-// Default: uses ~/.senpi/agent/auth.json and ~/.senpi/agent/models.json
+// Default: uses ~/.helix/agent/auth.json and ~/.helix/agent/models.json
 const authStorage = AuthStorage.create();
 const modelRegistry = ModelRegistry.create(authStorage);
 
@@ -549,7 +549,7 @@ If you pass `tools`, include each custom or extension tool name you want enabled
 
 ### Extensions
 
-Extensions are loaded by the `ResourceLoader`. `DefaultResourceLoader` discovers extensions from `~/.senpi/agent/extensions/`, `.senpi/extensions/`, and settings.json extension sources.
+Extensions are loaded by the `ResourceLoader`. `DefaultResourceLoader` discovers extensions from `~/.helix/agent/extensions/`, `.helix/extensions/`, and settings.json extension sources.
 
 ```typescript
 import { createAgentSession, DefaultResourceLoader } from "@helix-bio/helix";
@@ -807,8 +807,8 @@ const { session } = await createAgentSession({
 **Project-specific settings:**
 
 Settings load from two locations and merge:
-1. Global: `~/.senpi/agent/settings.json`
-2. Project: `<cwd>/.senpi/settings.json`
+1. Global: `~/.helix/agent/settings.json`
+2. Project: `<cwd>/.helix/settings.json`
 
 Project overrides global. Nested objects merge keys. Setters modify global settings by default.
 

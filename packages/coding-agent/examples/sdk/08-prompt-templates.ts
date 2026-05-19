@@ -36,7 +36,7 @@ const loader = new DefaultResourceLoader({
 });
 await loader.reload();
 
-// Discover templates from cwd/.senpi/prompts/ and ~/.senpi/agent/prompts/
+// Discover templates from cwd/.helix/prompts/ and ~/.helix/agent/prompts/
 const discovered = loader.getPrompts().prompts;
 console.log("Discovered prompt templates:");
 for (const template of discovered) {

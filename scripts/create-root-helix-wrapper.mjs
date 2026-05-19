@@ -36,9 +36,9 @@ function run(command, args, options = {}) {
 	}
 }
 
-const cliPath = join(root, "packages/coding-agent/dist/senpi");
+const cliPath = join(root, "packages/coding-agent/dist/helix");
 if (!existsSync(cliPath)) {
-	console.error("senpi build output is missing. Run npm run build from the repo root.");
+	console.error("helix build output is missing. Run npm run build from the repo root.");
 	process.exit(1);
 }
 
@@ -52,10 +52,10 @@ export function createRootSenpiWrapper({
 	writeGlobalShim = shouldWriteGlobalShim(root),
 } = {}) {
 	const distDir = join(root, "dist");
-	const wrapperPath = join(distDir, "senpi");
+	const wrapperPath = join(distDir, "helix");
 
 	mkdirSync(distDir, { recursive: true });
-	rmSync(join(distDir, ".senpi-build-head"), { force: true });
+	rmSync(join(distDir, ".helix-build-head"), { force: true });
 	writeFileSync(wrapperPath, linkedWrapperScript(), "utf8");
 	chmodSync(wrapperPath, 0o755);
 
@@ -65,7 +65,7 @@ export function createRootSenpiWrapper({
 
 	const resolvedGlobalPrefix = globalPrefix ?? execFileSync("npm", ["prefix", "-g"], { encoding: "utf8" }).trim();
 	const globalBinDir = join(resolvedGlobalPrefix, "bin");
-	const globalShimPath = join(globalBinDir, "senpi");
+	const globalShimPath = join(globalBinDir, "helix");
 
 	mkdirSync(globalBinDir, { recursive: true });
 	if (existsSync(globalShimPath)) {

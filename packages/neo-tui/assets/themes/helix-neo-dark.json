@@ -1,5 +1,5 @@
 {
-  "$schema": "https://senpi.dev/neo-tui-theme.json",
+  "$schema": "https://helix.dev/neo-tui-theme.json",
   "name": "helix-neo-dark",
   "mood": "Tactile Monolith - warm studio control room",
   "type": "dark",

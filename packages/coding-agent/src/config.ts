@@ -462,10 +462,10 @@ export function getShareViewerUrl(gistId: string): string {
 }
 
 // =============================================================================
-// User Config Paths (~/.senpi/agent/*)
+// User Config Paths (~/.helix/agent/*)
 // =============================================================================
 
-/** Get the agent config directory (e.g., ~/.senpi/agent/) */
+/** Get the agent config directory (e.g., ~/.helix/agent/) */
 export function getAgentDir(): string {
 	const envDir = process.env[ENV_AGENT_DIR];
 	if (envDir) {

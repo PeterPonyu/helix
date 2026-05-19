@@ -1,4 +1,4 @@
-//! RPC client: subprocess `senpi --mode rpc` + JSONL line codec.
+//! RPC client: subprocess `helix --mode rpc` + JSONL line codec.
 //!
 //! - [`envelope`] - wire-level `type: response` / `type: event` discriminator
 //! - [`command`]  - typed commands sent on the child's stdin

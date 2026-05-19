@@ -1,7 +1,7 @@
 /**
  * Overlay QA Tests - comprehensive overlay positioning and edge case tests
  *
- * Usage: senpi --extension ./examples/extensions/overlay-qa-tests.ts
+ * Usage: helix --extension ./examples/extensions/overlay-qa-tests.ts
  *
  * Commands:
  *   /overlay-animation  - Real-time animation demo (~30 FPS, proves DOOM-like rendering works)

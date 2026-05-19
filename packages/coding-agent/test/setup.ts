@@ -1,6 +1,6 @@
 /**
  * Vitest setup: quarantine HELIX_CODING_AGENT_DIR so the test suite never
- * writes session JSONLs into the user's real `~/.senpi/agent/sessions/`.
+ * writes session JSONLs into the user's real `~/.helix/agent/sessions/`.
  *
  * Many tests call `SessionManager.create(tempDir)` without an explicit
  * sessionDir. That falls back to `getDefaultSessionDir(cwd)` → `getAgentDir()`,
@@ -17,7 +17,7 @@ import { join } from "node:path";
 if (!process.env.HELIX_CODING_AGENT_DIR) {
 	const quarantineDir = join(
 		tmpdir(),
-		`senpi-vitest-${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+		`helix-vitest-${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2)}`,
 		"agent",
 	);
 	mkdirSync(quarantineDir, { recursive: true });

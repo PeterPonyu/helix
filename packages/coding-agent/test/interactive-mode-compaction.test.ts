@@ -154,7 +154,7 @@ describe("InteractiveMode compaction events", () => {
 			tokensBefore: 1234,
 			timestamp: Date.now(),
 			details: {
-				schema: "senpi.compaction.openai-remote.v1",
+				schema: "helix.compaction.openai-remote.v1",
 				mode: "openai-remote",
 				provider: "openai",
 				api: "openai-responses",

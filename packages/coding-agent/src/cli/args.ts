@@ -44,7 +44,7 @@ export interface Args {
 	offline?: boolean;
 	verbose?: boolean;
 	/**
-	 * Launch the experimental native Rust + ratatui TUI (`senpi-neo-tui`)
+	 * Launch the experimental native Rust + ratatui TUI (`helix-neo-tui`)
 	 * instead of the default interactive TUI. Only honored when the app
 	 * mode resolves to `interactive`.
 	 */
@@ -256,7 +256,7 @@ ${chalk.bold("Options:")}
   --list-models [search]         List available models (with optional fuzzy search)
   --verbose                      Force verbose startup (overrides quietStartup setting)
   --offline                      Disable startup network operations (same as PI_OFFLINE=1)
-  --neo                          Launch experimental Rust + ratatui TUI (senpi-neo-tui) instead of the default TUI
+  --neo                          Launch experimental Rust + ratatui TUI (helix-neo-tui) instead of the default TUI
   --help, -h                     Show this help
   --version, -v                  Show version number
 

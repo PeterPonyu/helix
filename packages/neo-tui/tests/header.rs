@@ -69,7 +69,7 @@ fn color_at(buffer: &ratatui::buffer::Buffer, x: u16, y: u16) -> Option<Color> {
 fn header_connected_renders_green_dot() {
     let (mut terminal, theme) = setup();
     let state = HeaderState {
-        cwd: "/home/senpi".into(),
+        cwd: "/home/helix".into(),
         session: "abc123".into(),
         branch: Some("main".into()),
         branch_dirty: false,
@@ -94,7 +94,7 @@ fn header_connected_renders_green_dot() {
 fn header_disconnected_renders_red_dot() {
     let (mut terminal, theme) = setup();
     let state = HeaderState {
-        cwd: "/home/senpi".into(),
+        cwd: "/home/helix".into(),
         session: "abc123".into(),
         branch: Some("main".into()),
         branch_dirty: false,
@@ -119,7 +119,7 @@ fn header_disconnected_renders_red_dot() {
 fn header_displays_model_when_set() {
     let (mut terminal, theme) = setup();
     let state = HeaderState {
-        cwd: "/home/senpi".into(),
+        cwd: "/home/helix".into(),
         session: "abc123".into(),
         branch: Some("main".into()),
         branch_dirty: false,
@@ -141,7 +141,7 @@ fn header_displays_model_when_set() {
 fn header_hides_model_when_empty() {
     let (mut terminal, theme) = setup();
     let state = HeaderState {
-        cwd: "/home/senpi".into(),
+        cwd: "/home/helix".into(),
         session: "abc123".into(),
         branch: Some("main".into()),
         branch_dirty: false,
@@ -163,7 +163,7 @@ fn header_hides_model_when_empty() {
 fn header_thinking_level_pill() {
     let (mut terminal, theme) = setup();
     let state = HeaderState {
-        cwd: "/home/senpi".into(),
+        cwd: "/home/helix".into(),
         session: "abc123".into(),
         branch: Some("main".into()),
         branch_dirty: false,
@@ -191,7 +191,7 @@ fn header_thinking_level_pill() {
 fn header_branch_dirty_marker() {
     let (mut terminal, theme) = setup();
     let state = HeaderState {
-        cwd: "/home/senpi".into(),
+        cwd: "/home/helix".into(),
         session: "abc123".into(),
         branch: Some("main".into()),
         branch_dirty: true,
@@ -219,7 +219,7 @@ fn header_minimal_width_drops_branch() {
     let mut terminal = Terminal::new(backend).unwrap();
     let theme = load_bundled_dark_theme().unwrap();
     let state = HeaderState {
-        cwd: "/home/senpi".into(),
+        cwd: "/home/helix".into(),
         session: "abc123".into(),
         branch: Some("main".into()),
         branch_dirty: true,
@@ -243,7 +243,7 @@ fn header_minimal_width_drops_model() {
     let mut terminal = Terminal::new(backend).unwrap();
     let theme = load_bundled_dark_theme().unwrap();
     let state = HeaderState {
-        cwd: "/home/senpi".into(),
+        cwd: "/home/helix".into(),
         session: "abc123".into(),
         branch: Some("main".into()),
         branch_dirty: true,
@@ -264,7 +264,7 @@ fn header_minimal_width_drops_model() {
         "expected thinking pill dropped at width 30"
     );
     assert!(
-        find_text(buffer, "senpi").is_some(),
+        find_text(buffer, "helix").is_some(),
         "expected wordmark to remain at width 30"
     );
     assert!(

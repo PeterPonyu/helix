@@ -13,7 +13,7 @@
     {
       "area": "services",
       "observation": "The worker used the repo init entrypoint `.factory/init.sh`, but that setup command is not represented in `.factory/services.yaml`, so future workers have to discover it ad hoc from transcripts or habit instead of from the shared command manifest.",
-      "evidence": "Transcript skeleton for worker session 71378999-63e8-43e9-a6d0-ca96d8c1fd18 shows `Execute` of `/Users/yeongyu/local-workspaces/senpi-mono/.factory/init.sh`; `/Users/yeongyu/local-workspaces/senpi-mono/.factory/services.yaml` lists install/build/check/test commands only and no init/setup entry."
+      "evidence": "Transcript skeleton for worker session 71378999-63e8-43e9-a6d0-ca96d8c1fd18 shows `Execute` of `/Users/yeongyu/local-workspaces/helix-mono/.factory/init.sh`; `/Users/yeongyu/local-workspaces/helix-mono/.factory/services.yaml` lists install/build/check/test commands only and no init/setup entry."
     }
   ],
   "addressesFailureFrom": null,

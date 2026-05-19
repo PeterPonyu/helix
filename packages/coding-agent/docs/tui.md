@@ -1,4 +1,4 @@
-> senpi can create TUI components. Ask it to build one for your use case.
+> helix can create TUI components. Ask it to build one for your use case.
 
 # TUI Components
 
@@ -737,7 +737,7 @@ ctx.ui.setStatus("my-ext", undefined);
 
 ### Pattern 4b: Working Indicator Customization
 
-Customize the inline working indicator shown while senpi is streaming a response.
+Customize the inline working indicator shown while helix is streaming a response.
 
 ```typescript
 // Static indicator

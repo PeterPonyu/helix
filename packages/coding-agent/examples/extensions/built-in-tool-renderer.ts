@@ -22,7 +22,7 @@
  *   toggled the tool output open (via ctrl+e or clicking)
  *
  * Usage:
- *   senpi -e ./built-in-tool-renderer.ts
+ *   helix -e ./built-in-tool-renderer.ts
  */
 
 import { Text } from "@earendil-works/pi-tui";

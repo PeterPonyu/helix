@@ -4,9 +4,9 @@
  * and propagates the status code.
  *
  * The binary is shipped alongside the npm package under
- * `dist/neo-tui-bin/senpi-neo-tui-<platform>-<arch>`. In dev (when running
+ * `dist/neo-tui-bin/helix-neo-tui-<platform>-<arch>`. In dev (when running
  * from source), set `HELIX_NEO_TUI_DEV=1` to use
- * `../neo-tui/target/release/senpi-neo-tui` or `target/debug/senpi-neo-tui`.
+ * `../neo-tui/target/release/helix-neo-tui` or `target/debug/helix-neo-tui`.
  */
 
 import { type ChildProcess, spawn } from "node:child_process";
@@ -44,7 +44,7 @@ function platformInfo(): PlatformInfo {
 
 function resolveBinaryPath(): { path: string; source: string } | undefined {
 	const { platform, arch, exe } = platformInfo();
-	const fileName = `senpi-neo-tui-${platform}-${arch}${exe}`;
+	const fileName = `helix-neo-tui-${platform}-${arch}${exe}`;
 
 	// 1. Explicit override wins over everything else - that is what makes
 	//    it an override.
@@ -59,14 +59,14 @@ function resolveBinaryPath(): { path: string; source: string } | undefined {
 		return { path: distPath, source: "dist" };
 	}
 
-	// 3. Dev: target/{release,debug}/senpi-neo-tui in the workspace tree.
+	// 3. Dev: target/{release,debug}/helix-neo-tui in the workspace tree.
 	if (process.env.HELIX_NEO_TUI_DEV === "1") {
 		const repoRoot = resolve(SCRIPT_DIR, "..", "..", "..", "..");
-		const releasePath = resolve(repoRoot, "target", "release", `senpi-neo-tui${exe}`);
+		const releasePath = resolve(repoRoot, "target", "release", `helix-neo-tui${exe}`);
 		if (existsSync(releasePath)) {
 			return { path: releasePath, source: "target/release" };
 		}
-		const debugPath = resolve(repoRoot, "target", "debug", `senpi-neo-tui${exe}`);
+		const debugPath = resolve(repoRoot, "target", "debug", `helix-neo-tui${exe}`);
 		if (existsSync(debugPath)) {
 			return { path: debugPath, source: "target/debug" };
 		}
@@ -76,7 +76,7 @@ function resolveBinaryPath(): { path: string; source: string } | undefined {
 }
 
 /**
- * Split the original argv between the senpi backend and the neo TUI
+ * Split the original argv between the helix backend and the neo TUI
  * binary using the `--` sentinel. Anything BEFORE the sentinel (with
  * `--neo` filtered out) goes to the backend; anything AFTER goes to the
  * Rust TUI verbatim. Exported for unit tests; do not call directly from
@@ -94,19 +94,19 @@ export interface RunNeoModeOptions {
 	parsed: Args;
 	originalArgv: readonly string[];
 	/**
-	 * Binary the Rust TUI spawns to talk to the senpi backend. In practice
+	 * Binary the Rust TUI spawns to talk to the helix backend. In practice
 	 * this is `process.execPath` (Node) and `senpiScript` carries the path
-	 * to the senpi CLI script. Spawning Node directly avoids the
-	 * `senpi` shell-shim layer and works the same on every platform.
+	 * to the helix CLI script. Spawning Node directly avoids the
+	 * `helix` shell-shim layer and works the same on every platform.
 	 */
 	senpiBin: string;
-	/** Absolute path to the senpi CLI JS entry, prepended to backend args. */
+	/** Absolute path to the helix CLI JS entry, prepended to backend args. */
 	senpiScript: string;
 }
 
 /**
  * Launch the Rust TUI binary with stdio inherited so it owns the TTY.
- * The Rust binary is expected to spawn `senpi --mode rpc` as its own child
+ * The Rust binary is expected to spawn `helix --mode rpc` as its own child
  * for the agent backend (T6 wires that up; until then the binary renders
  * the demo state).
  */
@@ -118,8 +118,8 @@ export async function runNeoMode(options: RunNeoModeOptions): Promise<number> {
 			chalk.red(
 				[
 					"Error: --neo TUI binary not found.",
-					`Expected: dist/neo-tui-bin/senpi-neo-tui-${platform}-${arch}${exe}`,
-					"For dev, build the crate (cargo build --release --package senpi-neo-tui)",
+					`Expected: dist/neo-tui-bin/helix-neo-tui-${platform}-${arch}${exe}`,
+					"For dev, build the crate (cargo build --release --package helix-neo-tui)",
 					"and re-run with HELIX_NEO_TUI_DEV=1, or set HELIX_NEO_TUI_BIN.",
 				].join("\n"),
 			),
@@ -132,18 +132,18 @@ export async function runNeoMode(options: RunNeoModeOptions): Promise<number> {
 	}
 
 	// Flag forwarding contract:
-	//   senpi --neo [senpi-flags...] -- [neo-tui-flags...]
+	//   helix --neo [helix-flags...] -- [neo-tui-flags...]
 	// Everything BEFORE the `--` sentinel (minus `--neo`) is treated as
-	// senpi-backend args and routed to `senpi --mode rpc` via env. Anything
-	// AFTER the sentinel is passed verbatim to the `senpi-neo-tui` binary,
+	// helix-backend args and routed to `helix --mode rpc` via env. Anything
+	// AFTER the sentinel is passed verbatim to the `helix-neo-tui` binary,
 	// which has its own clap parser for `--theme`, `--list-themes`,
 	// `--demo`, `--demo-seconds`, `--backend-bin`, `--backend-args`.
-	// This lets users keep typing the senpi CLI flags they already know
+	// This lets users keep typing the helix CLI flags they already know
 	// while still being able to drive the neo TUI's own flags without a
 	// naming collision (`--theme` means different things on each side).
 	const { backend, neo: neoArgs } = splitNeoArgs(options.originalArgv);
 
-	// senpi runs as `node <senpiScript> <args>` so prepend the script to
+	// helix runs as `node <senpiScript> <args>` so prepend the script to
 	// the arg vector; `--mode rpc` switches the child into the JSONL RPC
 	// server that the Rust TUI talks to.
 	const backendArgs = [options.senpiScript, ...backend, "--mode", "rpc"];

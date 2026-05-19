@@ -84,7 +84,7 @@ function getGroupLabel(metadata: PathMetadata): string {
 				? `User (${formatBaseDir(metadata.baseDir)})`
 				: `Project (${formatBaseDir(metadata.baseDir)})`;
 		}
-		return metadata.scope === "user" ? "User (~/.senpi/agent/)" : "Project (.senpi/)";
+		return metadata.scope === "user" ? "User (~/.helix/agent/)" : "Project (.helix/)";
 	}
 	return metadata.scope === "user" ? "User settings" : "Project settings";
 }

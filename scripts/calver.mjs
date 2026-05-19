@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CalVer (Calendar Versioning) computation for the senpi monorepo.
+ * CalVer (Calendar Versioning) computation for the helix monorepo.
  *
  * Version format: `YYYY.M.D` for the first release of the day, then
  * `YYYY.M.D-N` (N >= 2) for each subsequent same-day re-release.
@@ -188,7 +188,7 @@ function printHelp() {
 	const text = [
 		"Usage: node scripts/calver.mjs [--print | --json | --help]",
 		"",
-		"Computes the next CalVer version for the senpi monorepo.",
+		"Computes the next CalVer version for the helix monorepo.",
 		"",
 		"Options:",
 		"  --print   Print next version to stdout (default).",

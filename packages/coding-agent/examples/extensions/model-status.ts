@@ -4,7 +4,7 @@
  * Demonstrates the `model_select` hook which fires when the model changes
  * via /model command, Ctrl+P cycling, or session restore.
  *
- * Usage: senpi -e ./model-status.ts
+ * Usage: helix -e ./model-status.ts
  */
 
 import type { ExtensionAPI } from "@helix-bio/helix";

@@ -6,8 +6,8 @@
 
 import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "@helix-bio/helix";
 
-// Default: AuthStorage uses ~/.senpi/agent/auth.json
-// ModelRegistry loads built-in + custom models from ~/.senpi/agent/models.json
+// Default: AuthStorage uses ~/.helix/agent/auth.json
+// ModelRegistry loads built-in + custom models from ~/.helix/agent/models.json
 const authStorage = AuthStorage.create();
 const modelRegistry = ModelRegistry.create(authStorage);
 

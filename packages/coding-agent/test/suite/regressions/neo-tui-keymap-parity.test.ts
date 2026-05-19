@@ -1,6 +1,6 @@
 /**
- * Regression test: senpi --neo (Rust + ratatui) MUST ship the same
- * default keybindings as the legacy senpi interactive TUI. Users have
+ * Regression test: helix --neo (Rust + ratatui) MUST ship the same
+ * default keybindings as the legacy helix interactive TUI. Users have
  * to be able to flip the `--neo` flag without losing a single chord of
  * muscle memory.
  *
@@ -43,7 +43,7 @@ function normalize(keys: KeyId | KeyId[] | undefined): string[] {
 	return Array.isArray(keys) ? [...keys] : [keys];
 }
 
-describe("senpi --neo keymap parity with the legacy registry", () => {
+describe("helix --neo keymap parity with the legacy registry", () => {
 	test("every legacy binding ID is present in the bundled neo keymap with identical default keys", () => {
 		const neo = loadNeoKeymap();
 		const drift: string[] = [];

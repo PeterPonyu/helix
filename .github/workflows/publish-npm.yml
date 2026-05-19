@@ -36,7 +36,7 @@ jobs:
 
       - name: Configure git identity
         run: |
-          git config user.name "senpi-release-bot"
+          git config user.name "helix-release-bot"
           git config user.email "actions@github.com"
 
       - name: Setup Node.js
@@ -52,7 +52,7 @@ jobs:
 
       - name: Setup Rust
         # Required so `npm run build` can run `cargo build --release` for the
-        # native `senpi-neo-tui` binary that powers `senpi --neo`.
+        # native `helix-neo-tui` binary that powers `helix --neo`.
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install dependencies

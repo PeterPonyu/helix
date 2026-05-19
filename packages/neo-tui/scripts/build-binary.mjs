@@ -66,7 +66,7 @@ async function main() {
 		console.log(`[neo-tui] HELIX_NEO_TUI_SKIP_BUILD=1, skipping cargo build`);
 		if (!existsSync(sourcePath)) {
 			console.warn(`[neo-tui] expected pre-built binary at ${sourcePath} but it is missing`);
-			console.warn(`[neo-tui] downstream consumers will fall back to 'senpi --neo binary not found' until provided`);
+			console.warn(`[neo-tui] downstream consumers will fall back to 'helix --neo binary not found' until provided`);
 			return;
 		}
 	} else {
@@ -89,7 +89,7 @@ async function main() {
 	// On macOS `cp` attaches `com.apple.provenance` to the destination.
 	// Combined with the adhoc-signed Rust binary, the Gatekeeper kills
 	// the process at exec with SIGKILL (exit 137) and no stderr - which
-	// is exactly the failure mode where `senpi --neo` shows a blank
+	// is exactly the failure mode where `helix --neo` shows a blank
 	// screen and immediately quits. Clear the xattrs and re-sign so the
 	// binary stays runnable regardless of where it was copied from.
 	if (process.platform === "darwin") {

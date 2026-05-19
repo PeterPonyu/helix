@@ -6,8 +6,8 @@
  * and can be activated via CLI flag, /preset command, or Ctrl+Shift+U to cycle.
  *
  * Config files (merged, project takes precedence):
- * - ~/.senpi/agent/presets.json (global)
- * - <cwd>/.senpi/presets.json (project-local)
+ * - ~/.helix/agent/presets.json (global)
+ * - <cwd>/.helix/presets.json (project-local)
  *
  * Example presets.json:
  * ```json
@@ -30,7 +30,7 @@
  * ```
  *
  * Usage:
- * - `senpi --preset plan` - start with plan preset
+ * - `helix --preset plan` - start with plan preset
  * - `/preset` - show selector to switch presets mid-session
  * - `/preset implement` - switch to implement preset directly
  * - `Ctrl+Shift+U` - cycle through presets
@@ -69,7 +69,7 @@ interface PresetsConfig {
  */
 function loadPresets(cwd: string): PresetsConfig {
 	const globalPath = join(getAgentDir(), "presets.json");
-	const projectPath = join(cwd, ".senpi", "presets.json");
+	const projectPath = join(cwd, ".helix", "presets.json");
 
 	let globalPresets: PresetsConfig = {};
 	let projectPresets: PresetsConfig = {};
@@ -201,7 +201,7 @@ export default function presetExtension(pi: ExtensionAPI) {
 
 		if (presetNames.length === 0) {
 			ctx.ui.notify(
-				"No presets defined. Add presets to ~/.senpi/agent/presets.json or .senpi/presets.json",
+				"No presets defined. Add presets to ~/.helix/agent/presets.json or .helix/presets.json",
 				"warning",
 			);
 			return;
@@ -312,7 +312,7 @@ export default function presetExtension(pi: ExtensionAPI) {
 		const presetNames = getPresetOrder();
 		if (presetNames.length === 0) {
 			ctx.ui.notify(
-				"No presets defined. Add presets to ~/.senpi/agent/presets.json or .senpi/presets.json",
+				"No presets defined. Add presets to ~/.helix/agent/presets.json or .helix/presets.json",
 				"warning",
 			);
 			return;

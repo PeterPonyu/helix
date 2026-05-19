@@ -21,7 +21,7 @@ fn bundled_keymap_json_is_valid_json() {
         value.get("bindings").is_some(),
         "keymap must have a bindings field"
     );
-    // The legacy pi-tui/senpi keybinding registry has no leader concept,
+    // The legacy pi-tui/helix keybinding registry has no leader concept,
     // so the bundled keymap intentionally omits one for 1:1 parity.
 }
 

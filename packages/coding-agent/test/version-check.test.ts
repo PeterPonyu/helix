@@ -41,7 +41,7 @@ describe("version checks", () => {
 		await expect(checkForNewPiVersion("1.2.2")).resolves.toBe("1.2.3");
 	});
 
-	it("uses the senpi npm package metadata with a senpi user agent", async () => {
+	it("uses the helix npm package metadata with a helix user agent", async () => {
 		const fetchMock = vi.fn(async () => Response.json({ version: "1.2.4" }));
 		vi.stubGlobal("fetch", fetchMock);
 
@@ -50,7 +50,7 @@ describe("version checks", () => {
 			"https://registry.npmjs.org/%40code-yeongyu%2Fsenpi/latest",
 			expect.objectContaining({
 				headers: expect.objectContaining({
-					"User-Agent": expect.stringMatching(/^senpi\/1\.2\.3 /),
+					"User-Agent": expect.stringMatching(/^helix\/1\.2\.3 /),
 					accept: "application/json",
 				}),
 			}),

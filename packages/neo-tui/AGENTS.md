@@ -1,6 +1,6 @@
 # packages/neo-tui
 
-Native Rust + ratatui TUI for senpi. Launched via `senpi --neo`. Standalone binary, not a NAPI addon. Talks to senpi over the existing `--mode rpc` JSONL protocol.
+Native Rust + ratatui TUI for helix. Launched via `helix --neo`. Standalone binary, not a NAPI addon. Talks to helix over the existing `--mode rpc` JSONL protocol.
 
 ## STRUCTURE
 
@@ -95,4 +95,4 @@ cargo fmt --package helix-neo-tui -- --check
 - `packages/coding-agent/dist/neo-tui-bin/helix-neo-tui-<platform>-<arch>` is the installed binary.
 - `packages/coding-agent/dist/neo-tui-themes/*.json` are bundled themes.
 - `packages/coding-agent/dist/neo-tui-keymap/default.json` is the default keymap.
-- The Rust binary spawns `senpi --mode rpc` as a child to drive the agent.
+- The Rust binary spawns `helix --mode rpc` as a child to drive the agent.
