@@ -9,7 +9,7 @@ Example extensions for pi-coding-agent.
 pi --extension examples/extensions/permission-gate.ts
 
 # Or copy to extensions directory for auto-discovery
-cp permission-gate.ts ~/.senpi/agent/extensions/
+cp permission-gate.ts ~/.helix/agent/extensions/
 ```
 
 ## Examples
@@ -95,7 +95,7 @@ cp permission-gate.ts ~/.senpi/agent/extensions/
 
 | Extension | Description |
 |-----------|-------------|
-| `mac-system-theme.ts` | Syncs senpi theme with macOS dark/light mode |
+| `mac-system-theme.ts` | Syncs helix theme with macOS dark/light mode |
 
 ### Resources
 

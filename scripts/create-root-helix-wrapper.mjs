@@ -46,7 +46,7 @@ run(process.execPath, [cliPath, ...process.argv.slice(2)], { cwd: process.cwd(),
 `;
 }
 
-export function createRootSenpiWrapper({
+export function createRootHelixWrapper({
 	root = defaultRoot,
 	globalPrefix,
 	writeGlobalShim = shouldWriteGlobalShim(root),
@@ -84,5 +84,5 @@ exec "${wrapperPath}" "$@"
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-	createRootSenpiWrapper();
+	createRootHelixWrapper();
 }

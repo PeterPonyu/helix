@@ -479,8 +479,8 @@ export async function main(args: string[], options?: MainOptions) {
 		const code = await runNeoMode({
 			parsed,
 			originalArgv: args,
-			senpiBin: process.execPath,
-			senpiScript: process.argv[1] ?? "",
+			helixBin: process.execPath,
+			helixScript: process.argv[1] ?? "",
 		});
 		process.exit(code);
 	}

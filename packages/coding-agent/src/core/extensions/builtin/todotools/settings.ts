@@ -44,9 +44,9 @@ function unique(paths: string[]): string[] {
 function getGlobalSettingsPaths(): string[] {
 	const paths: string[] = [];
 	const piAgentDir = process.env.PI_CODING_AGENT_DIR;
-	const senpiAgentDir = process.env.HELIX_CODING_AGENT_DIR;
+	const helixAgentDir = process.env.HELIX_CODING_AGENT_DIR;
 	if (piAgentDir) paths.push(join(piAgentDir, "settings.json"));
-	if (senpiAgentDir) paths.push(join(senpiAgentDir, "settings.json"));
+	if (helixAgentDir) paths.push(join(helixAgentDir, "settings.json"));
 	paths.push(join(homedir(), ".pi", "agent", "settings.json"));
 	paths.push(join(homedir(), ".helix", "agent", "settings.json"));
 	return unique(paths);

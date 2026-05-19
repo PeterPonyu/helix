@@ -6,12 +6,12 @@ export const HELIX_SYSTEM_PREFIX = "[system:helix]";
 export const HELIX_CONVERSATION_EVENT = "helix:conversation";
 
 export type BuiltinSystemMessageRoute = "todotools.continuation";
-export type SenpiConversationAction = "injected" | "failed";
+export type HelixConversationAction = "injected" | "failed";
 
-export interface SenpiConversationEvent {
+export interface HelixConversationEvent {
 	version: 1;
 	source: "builtin";
-	action: SenpiConversationAction;
+	action: HelixConversationAction;
 	route: BuiltinSystemMessageRoute;
 	sessionId?: string;
 	timestamp: number;
@@ -74,12 +74,12 @@ function extractText(content: string | (TextContent | ImageContent)[]): string {
 		.join("\n");
 }
 
-function emitSenpiConversationEvent(pi: ExtensionAPI, event: SenpiConversationEvent): void {
+function emitHelixConversationEvent(pi: ExtensionAPI, event: HelixConversationEvent): void {
 	pi.events.emit(HELIX_CONVERSATION_EVENT, event);
 }
 
 function createBaseEvent(args: {
-	action: SenpiConversationAction;
+	action: HelixConversationAction;
 	route: BuiltinSystemMessageRoute;
 	sessionId?: string;
 	kind: "custom_message" | "user_message";
@@ -88,7 +88,7 @@ function createBaseEvent(args: {
 	triggerTurn?: boolean;
 	text: string;
 	errorMessage?: string;
-}): SenpiConversationEvent {
+}): HelixConversationEvent {
 	return {
 		version: 1,
 		source: "builtin",
@@ -128,7 +128,7 @@ export function sendBuiltinUserMessage(
 ): void {
 	const prefixedContent = prefixContent(content);
 
-	emitSenpiConversationEvent(
+	emitHelixConversationEvent(
 		pi,
 		createBaseEvent({
 			action: "injected",
@@ -157,7 +157,7 @@ export function sendBuiltinCustomMessage<TDetails>(
 	const prefixedContent = prefixContent(message.content);
 	const deliverAs = options?.deliverAs === "nextTurn" ? undefined : options?.deliverAs;
 
-	emitSenpiConversationEvent(
+	emitHelixConversationEvent(
 		pi,
 		createBaseEvent({
 			action: "injected",
@@ -202,7 +202,7 @@ export function emitBuiltinSystemMessageFailure(
 ): void {
 	const prefixedContent = prefixContent(args.content);
 
-	emitSenpiConversationEvent(
+	emitHelixConversationEvent(
 		pi,
 		createBaseEvent({
 			action: "failed",

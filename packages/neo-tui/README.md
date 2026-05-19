@@ -1,14 +1,14 @@
 # `helix-neo-tui`
 
-Native Rust + [ratatui](https://ratatui.rs) TUI for [senpi](https://github.com/helix-bio/helix).
+Native Rust + [ratatui](https://ratatui.rs) TUI for [helix](https://github.com/helix-bio/helix).
 
 Launched via:
 
 ```bash
-senpi --neo
+helix --neo
 ```
 
-The Node-side senpi CLI spawns the Rust binary, which owns the terminal directly and talks to the senpi runtime over the existing `senpi --mode rpc` JSONL protocol.
+The Node-side helix CLI spawns the Rust binary, which owns the terminal directly and talks to the helix runtime over the existing `helix --mode rpc` JSONL protocol.
 
 ## Why a separate binary
 
@@ -33,17 +33,17 @@ cargo run --release --package helix-neo-tui --bin helix-neo-tui -- \
 
 ## CLI flags
 
-These belong to the `helix-neo-tui` binary. When you launch through `senpi --neo`, forward them after a `--` sentinel so the senpi CLI does not eat them (e.g. `senpi --neo` shares the spelling `--theme` with the Node CLI, which means something different there).
+These belong to the `helix-neo-tui` binary. When you launch through `helix --neo`, forward them after a `--` sentinel so the helix CLI does not eat them (e.g. `helix --neo` shares the spelling `--theme` with the Node CLI, which means something different there).
 
 ```bash
-senpi --neo -- --theme opencode/dracula
-senpi --neo -- --list-themes
-senpi --neo -- --demo --demo-seconds 5
+helix --neo -- --theme opencode/dracula
+helix --neo -- --list-themes
+helix --neo -- --demo --demo-seconds 5
 ```
 
 | Flag | Env | Description |
 |------|-----|-------------|
-| `--backend-bin <PATH>` | `HELIX_NEO_BACKEND_BIN` | Path to the senpi backend binary. Spawned with `--mode rpc` on startup; if unset, the TUI runs offline (demo mode or empty session). |
+| `--backend-bin <PATH>` | `HELIX_NEO_BACKEND_BIN` | Path to the helix backend binary. Spawned with `--mode rpc` on startup; if unset, the TUI runs offline (demo mode or empty session). |
 | `--backend-args <JSON>` | `HELIX_NEO_BACKEND_ARGS` | JSON array of extra args forwarded to the backend, e.g. `'["--mode","rpc"]'`. |
 | `--demo` | `HELIX_NEO_DEMO` | Render the canned demo scene used for screenshots. |
 | `--demo-seconds <N>` | — | Exit after `N` seconds in demo mode. `0` = until Ctrl-C. |
@@ -85,9 +85,9 @@ Process tree at runtime:
 
 ```
 shell
-└── node senpi --neo                  # transient parent
+└── node helix --neo                  # transient parent
     └── helix-neo-tui                 # Rust binary (owns TTY)
-        └── node senpi --mode rpc     # backend
+        └── node helix --mode rpc     # backend
 ```
 
 Module layout matches the `Layout` section below; per-module roles and the testing matrix live in [`AGENTS.md`](./AGENTS.md).
@@ -95,7 +95,7 @@ Module layout matches the `Layout` section below; per-module roles and the testi
 ## Layout (modules)
 
 - `app/`        - main loop, state, action channel, RPC bridge
-- `rpc/`        - subprocess RPC client speaking senpi `--mode rpc` (JSONL), with `Inbound::{Error, Disconnected, ParseError}` surfacing
+- `rpc/`        - subprocess RPC client speaking helix `--mode rpc` (JSONL), with `Inbound::{Error, Disconnected, ParseError}` surfacing
 - `theme/`      - JSON theme loader, semantic tokens, `ColorSupport` detection
 - `keymap/`     - configurable bindings + leader-key sequences
 - `layout/`     - pure layout computation
