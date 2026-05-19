@@ -7,6 +7,7 @@ import diffExtension from "./diff.js";
 import filesExtension from "./files.js";
 import gptApplyPatchExtension from "./gpt-apply-patch/index.js";
 import helixBedGffExtension from "./helix-bed-gff/index.js";
+import helixCoordsExtension from "./helix-coords/index.js";
 import helixOntologyExtension from "./helix-ontology/index.js";
 import helixSeqExtension from "./helix-seq/index.js";
 import openaiWebSearchExtension from "./openai-web-search/index.js";
@@ -49,4 +50,5 @@ export const builtinExtensions: BuiltinExtensionFactory[] = [
 	{ id: "helix-ontology", factory: helixOntologyExtension },
 	{ id: "helix-seq", factory: helixSeqExtension },
 	{ id: "helix-bed-gff", factory: helixBedGffExtension },
+	{ id: "helix-coords", factory: helixCoordsExtension },
 ];
