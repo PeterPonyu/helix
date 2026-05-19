@@ -81,9 +81,11 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 		).toEqual([
 			"apply_patch",
 			"bash",
+			"bed_info",
 			"dynamic_tool",
 			"edit",
 			"find",
+			"gff_info",
 			"grep",
 			"ls",
 			"ontology_normalize",
@@ -102,6 +104,8 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			"seq_fasta_info",
 			"seq_fastq_info",
 			"seq_vcf_summary",
+			"bed_info",
+			"gff_info",
 			"dynamic_tool",
 		]);
 		expect(session.systemPrompt).toContain("- dynamic_tool: Run dynamic test behavior");
@@ -143,6 +147,8 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			"seq_fasta_info",
 			"seq_fastq_info",
 			"seq_vcf_summary",
+			"bed_info",
+			"gff_info",
 		]);
 		expect(session.systemPrompt).toContain("- todowrite:");
 		expect(session.systemPrompt).not.toContain("- read:");
