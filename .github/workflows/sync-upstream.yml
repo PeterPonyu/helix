@@ -27,8 +27,8 @@ jobs:
 
       - name: Configure git
         run: |
-          git remote add upstream https://github.com/badlogic/pi-mono.git 2>/dev/null || \
-            git remote set-url upstream https://github.com/badlogic/pi-mono.git
+          git remote add upstream https://github.com/code-yeongyu/senpi.git 2>/dev/null || \
+            git remote set-url upstream https://github.com/code-yeongyu/senpi.git
           git config user.name "helix-sync-bot"
           git config user.email "actions@github.com"
 
@@ -41,9 +41,6 @@ jobs:
         uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2.0.1
         with:
           bun-version: 1.2.20
-
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
 
       - name: Run upstream sync
         env:
