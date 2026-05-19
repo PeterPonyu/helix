@@ -1,14 +1,14 @@
 {
-	"name": "@code-yeongyu/senpi",
+	"name": "@helix-bio/helix",
 	"version": "2026.5.19",
 	"description": "Coding agent CLI with read, bash, edit, write tools and session management",
 	"type": "module",
 	"piConfig": {
-		"name": "senpi",
-		"configDir": ".senpi"
+		"name": "helix",
+		"configDir": ".helix"
 	},
 	"bin": {
-		"senpi": "dist/cli.js"
+		"helix": "dist/cli.js"
 	},
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
