@@ -1,6 +1,6 @@
 # helix-neo-tui screenshots
 
-Live captures of `senpi --neo` (Rust + ratatui frontend) inside tmux. The TUI
+Live captures of `helix --neo` (Rust + ratatui frontend) inside tmux. The TUI
 auto-adapts: header / chat / input / footer at every size and a braille spinner
 animates in the footer at ~12 fps. Overlays (help, slash, palette) render on top
 via `Clear` + a centred bordered `Block` and feed selections back through the
@@ -14,7 +14,7 @@ same keymap dispatch path as direct keychords.
 | `02-mid-120x40.png` | 120 × 40 | sidebar threshold; tool card and chat full width |
 | `03-mid-140x40.png` | 140 × 40 | typical laptop pane (direct binary) |
 | `04-wide-160x50.png` | 160 × 50 | ultrawide / fullscreen; same content, more breathing room |
-| `05-helix-neo-e2e-140x40.png` | 140 × 40 | end-to-end capture of `senpi --neo --demo` proving the Node → Rust dispatch path works |
+| `05-helix-neo-e2e-140x40.png` | 140 × 40 | end-to-end capture of `helix --neo --demo` proving the Node → Rust dispatch path works |
 
 ## Overlay states (live RPC via faux backend)
 

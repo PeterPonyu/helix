@@ -172,7 +172,7 @@ function migrateKeybindingsConfigFile(): void {
 	}
 }
 
-function migrateLegacySenpiDirs(cwd: string): void {
+function migrateLegacyHelixDirs(cwd: string): void {
 	if (CONFIG_DIR_NAME === ".pi") return;
 
 	const homeDir = os.homedir();
@@ -337,7 +337,7 @@ export function runMigrations(cwd: string): {
 	deprecationWarnings: string[];
 } {
 	const migratedAuthProviders = migrateAuthToAuthJson();
-	migrateLegacySenpiDirs(cwd);
+	migrateLegacyHelixDirs(cwd);
 	migrateSessionsFromAgentRoot();
 	migrateToolsToBin();
 	migrateKeybindingsConfigFile();

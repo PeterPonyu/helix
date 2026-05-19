@@ -4,7 +4,7 @@ import { lstatSync, mkdtempSync, mkdirSync, readFileSync, symlinkSync, writeFile
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, it } from "node:test";
-import { createRootSenpiWrapper, shouldWriteGlobalShim } from "./create-root-helix-wrapper.mjs";
+import { createRootHelixWrapper, shouldWriteGlobalShim } from "./create-root-helix-wrapper.mjs";
 
 describe("create-root-helix-wrapper", () => {
 	it("writes a launch-only wrapper when the root is a gitless snapshot", () => {
@@ -13,7 +13,7 @@ describe("create-root-helix-wrapper", () => {
 		const globalPrefix = mkdtempSync(join(tmpdir(), "helix-wrapper-global-"));
 
 		// When
-		const result = createRootSenpiWrapper({ root, globalPrefix });
+		const result = createRootHelixWrapper({ root, globalPrefix });
 		const wrapper = readFileSync(result.wrapperPath, "utf8");
 
 		// Then
@@ -64,7 +64,7 @@ describe("create-root-helix-wrapper", () => {
 		symlinkSync(linkedTarget, join(globalBin, "helix"));
 
 		// When
-		const result = createRootSenpiWrapper({ root, globalPrefix, writeGlobalShim: true });
+		const result = createRootHelixWrapper({ root, globalPrefix, writeGlobalShim: true });
 
 		// Then
 		assert.equal(readFileSync(linkedTarget, "utf8"), "original");

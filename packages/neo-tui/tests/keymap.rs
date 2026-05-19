@@ -122,7 +122,7 @@ fn parses_default_keymap() {
 /// order. Any drift fails this test with a clear pointer at the
 /// offending binding.
 #[test]
-fn bundled_default_keymap_matches_legacy_senpi_registry_one_to_one() {
+fn bundled_default_keymap_matches_legacy_helix_registry_one_to_one() {
     let spec = keymap::parse(DEFAULT_JSON).expect("default keymap must parse");
     let mut missing: Vec<&str> = Vec::new();
     let mut drift: Vec<String> = Vec::new();

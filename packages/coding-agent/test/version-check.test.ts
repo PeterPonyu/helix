@@ -47,7 +47,7 @@ describe("version checks", () => {
 
 		await expect(getLatestPiVersion("1.2.3")).resolves.toBe("1.2.4");
 		expect(fetchMock).toHaveBeenCalledWith(
-			"https://registry.npmjs.org/%40code-yeongyu%2Fsenpi/latest",
+			"https://registry.npmjs.org/%40code-yeongyu%2Fhelix/latest",
 			expect.objectContaining({
 				headers: expect.objectContaining({
 					"User-Agent": expect.stringMatching(/^helix\/1\.2\.3 /),

@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"git ls-files | grep -v -E '^(README\\\\.md|CONTRIBUTING\\\\.md)$' | grep -v 'changes\\\\.md$' | xargs grep -l 'code-yeongyu/senpi' 2>/dev/null | xargs sed -i 's|code-yeongyu/senpi-mono|helix-bio...",
-  "error": "Exit code 123\n--- remaining code-yeongyu/senpi outside README/CONTRIBUTING and changes.md ---",
-  "timestamp": "2026-05-19T09:13:51.988Z",
+  "tool_input_preview": "{\"command\":\"FILES=\\\"packages/coding-agent/src/migrations.ts packages/coding-agent/src/main.ts packages/coding-agent/src/modes/neo-mode.ts packages/coding-agent/src/core/extensions/builtin/system-messa...",
+  "error": "Exit code 123\n--- audit remaining ---",
+  "timestamp": "2026-05-19T09:17:35.645Z",
   "retry_count": 1
 }

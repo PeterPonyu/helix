@@ -95,13 +95,13 @@ export interface RunNeoModeOptions {
 	originalArgv: readonly string[];
 	/**
 	 * Binary the Rust TUI spawns to talk to the helix backend. In practice
-	 * this is `process.execPath` (Node) and `senpiScript` carries the path
+	 * this is `process.execPath` (Node) and `helixScript` carries the path
 	 * to the helix CLI script. Spawning Node directly avoids the
 	 * `helix` shell-shim layer and works the same on every platform.
 	 */
-	senpiBin: string;
+	helixBin: string;
 	/** Absolute path to the helix CLI JS entry, prepended to backend args. */
-	senpiScript: string;
+	helixScript: string;
 }
 
 /**
@@ -143,14 +143,14 @@ export async function runNeoMode(options: RunNeoModeOptions): Promise<number> {
 	// naming collision (`--theme` means different things on each side).
 	const { backend, neo: neoArgs } = splitNeoArgs(options.originalArgv);
 
-	// helix runs as `node <senpiScript> <args>` so prepend the script to
+	// helix runs as `node <helixScript> <args>` so prepend the script to
 	// the arg vector; `--mode rpc` switches the child into the JSONL RPC
 	// server that the Rust TUI talks to.
-	const backendArgs = [options.senpiScript, ...backend, "--mode", "rpc"];
+	const backendArgs = [options.helixScript, ...backend, "--mode", "rpc"];
 
 	const env = {
 		...process.env,
-		HELIX_NEO_BACKEND_BIN: options.senpiBin,
+		HELIX_NEO_BACKEND_BIN: options.helixBin,
 		HELIX_NEO_BACKEND_ARGS: JSON.stringify(backendArgs),
 	};
 

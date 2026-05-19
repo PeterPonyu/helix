@@ -12,7 +12,7 @@
  * default.json`. The Rust crate ships the same file via `include_str!`
  * and has a matching exhaustive test
  * (`packages/neo-tui/tests/keymap.rs::
- * bundled_default_keymap_matches_legacy_senpi_registry_one_to_one`).
+ * bundled_default_keymap_matches_legacy_helix_registry_one_to_one`).
  *
  * Two-sided enforcement means drift on EITHER side fails CI loudly.
  */
