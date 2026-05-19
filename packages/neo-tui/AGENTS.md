@@ -32,7 +32,7 @@ packages/neo-tui/
 │   ├── anim/                 # spinners, scanners, pulses
 │   ├── term/                 # capability detection + OSC 52 clipboard
 │   └── bin/
-│       └── senpi-neo-faux.rs # faux RPC backend for offline QA
+│       └── helix-neo-faux.rs # faux RPC backend for offline QA
 └── tests/
     ├── theme.rs
     ├── keymap.rs
@@ -65,16 +65,16 @@ packages/neo-tui/
 
 ```bash
 # Fast unit + snapshot tests
-cargo nextest run --package senpi-neo-tui
+cargo nextest run --package helix-neo-tui
 
 # Update snapshots after intentional changes:
-INSTA_UPDATE=always cargo nextest run --package senpi-neo-tui
+INSTA_UPDATE=always cargo nextest run --package helix-neo-tui
 
 # Lint gate
-cargo clippy --package senpi-neo-tui --all-targets -- -D warnings
+cargo clippy --package helix-neo-tui --all-targets -- -D warnings
 
 # Format gate
-cargo fmt --package senpi-neo-tui -- --check
+cargo fmt --package helix-neo-tui -- --check
 ```
 
 ## ANTI-PATTERNS
@@ -91,8 +91,8 @@ cargo fmt --package senpi-neo-tui -- --check
 
 - `packages/coding-agent/src/cli/args.ts` parses `--neo`.
 - `packages/coding-agent/src/main.ts` dispatches to `runNeoMode`.
-- `packages/coding-agent/src/modes/neo-mode.ts` spawns `senpi-neo-tui`.
-- `packages/coding-agent/dist/neo-tui-bin/senpi-neo-tui-<platform>-<arch>` is the installed binary.
+- `packages/coding-agent/src/modes/neo-mode.ts` spawns `helix-neo-tui`.
+- `packages/coding-agent/dist/neo-tui-bin/helix-neo-tui-<platform>-<arch>` is the installed binary.
 - `packages/coding-agent/dist/neo-tui-themes/*.json` are bundled themes.
 - `packages/coding-agent/dist/neo-tui-keymap/default.json` is the default keymap.
 - The Rust binary spawns `senpi --mode rpc` as a child to drive the agent.

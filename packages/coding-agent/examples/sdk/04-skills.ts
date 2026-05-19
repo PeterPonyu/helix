@@ -12,7 +12,7 @@ import {
 	getAgentDir,
 	SessionManager,
 	type Skill,
-} from "@code-yeongyu/senpi";
+} from "@helix-bio/helix";
 
 // Or define custom skills inline
 const customSkill: Skill = {

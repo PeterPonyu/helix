@@ -19,9 +19,9 @@ import {
 	resetOnSessionCompact,
 } from "./degradation-monitor.js";
 import {
+	HELIX_COMPACTION_EVENT,
 	rewriteOpenAiPayloadWithRemoteCompaction,
 	runOpenAiRemoteCompaction,
-	HELIX_COMPACTION_EVENT,
 } from "./openai-remote.js";
 import * as cap from "./per-turn-cap.js";
 import * as policy from "./policy.js";

@@ -4,7 +4,7 @@
  * Configure API key resolution via AuthStorage and ModelRegistry.
  */
 
-import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "@code-yeongyu/senpi";
+import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "@helix-bio/helix";
 
 // Default: AuthStorage uses ~/.senpi/agent/auth.json
 // ModelRegistry loads built-in + custom models from ~/.senpi/agent/models.json

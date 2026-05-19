@@ -13,14 +13,14 @@ use std::sync::Mutex;
 use crossterm::event::{
     KeyCode, KeyEvent, KeyEventKind, KeyEventState, KeyModifiers, MouseEvent, MouseEventKind,
 };
-use senpi_neo_tui::app::{App, AppAction};
-use senpi_neo_tui::components::autocomplete::AutocompleteResult;
-use senpi_neo_tui::components::chat::{Role, ToolStatus};
-use senpi_neo_tui::components::footer::Status;
-use senpi_neo_tui::overlay::Overlay;
-use senpi_neo_tui::rpc::client::Inbound;
-use senpi_neo_tui::rpc::command::Command;
-use senpi_neo_tui::rpc::event::Event as RpcEvent;
+use helix_neo_tui::app::{App, AppAction};
+use helix_neo_tui::components::autocomplete::AutocompleteResult;
+use helix_neo_tui::components::chat::{Role, ToolStatus};
+use helix_neo_tui::components::footer::Status;
+use helix_neo_tui::overlay::Overlay;
+use helix_neo_tui::rpc::client::Inbound;
+use helix_neo_tui::rpc::command::Command;
+use helix_neo_tui::rpc::event::Event as RpcEvent;
 
 const fn ev(code: KeyCode, mods: KeyModifiers) -> KeyEvent {
     KeyEvent {
@@ -42,7 +42,7 @@ fn with_tmux_env(run: impl FnOnce()) {
     let previous = std::env::var_os("TMUX");
     // SAFETY: this test serializes process-env mutation through ENV_LOCK and
     // restores TMUX before releasing the lock.
-    unsafe { std::env::set_var("TMUX", "/tmp/senpi-neo-test-tmux") };
+    unsafe { std::env::set_var("TMUX", "/tmp/helix-neo-test-tmux") };
     run();
     match previous {
         Some(value) => {

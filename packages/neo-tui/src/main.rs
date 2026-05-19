@@ -1,4 +1,4 @@
-//! `senpi-neo-tui` binary entry.
+//! `helix-neo-tui` binary entry.
 
 use std::{
     io::{self, Write},
@@ -9,7 +9,7 @@ use std::{
 use clap::Parser;
 use color_eyre::eyre::{Context, Result};
 
-use senpi_neo_tui::{
+use helix_neo_tui::{
     app::{self, AppConfig},
     components::{
         chat,
@@ -21,7 +21,7 @@ use senpi_neo_tui::{
 
 #[derive(Debug, Parser)]
 #[command(
-    name = "senpi-neo-tui",
+    name = "helix-neo-tui",
     version,
     about = "Native Rust + ratatui TUI for senpi (launched via `senpi --neo`)."
 )]
@@ -57,7 +57,7 @@ struct Cli {
 fn main() -> ExitCode {
     color_eyre::install().ok();
     if let Err(err) = real_main() {
-        eprintln!("senpi-neo-tui: {err:?}");
+        eprintln!("helix-neo-tui: {err:?}");
         return ExitCode::FAILURE;
     }
     ExitCode::SUCCESS
@@ -173,7 +173,7 @@ fn real_main() -> Result<()> {
     // `maybe_spawn_backend()` in app::run reads HELIX_NEO_BACKEND_BIN
     // and HELIX_NEO_BACKEND_ARGS from the environment. Forward the
     // parsed CLI flags into the env so a direct binary invocation like
-    // `senpi-neo-tui --backend-bin senpi --backend-args '["--mode","rpc"]'`
+    // `helix-neo-tui --backend-bin senpi --backend-args '["--mode","rpc"]'`
     // works without the caller needing to set the env vars manually.
     // SAFETY-NOTE: `std::env::set_var` is unsafe on multi-thread Linux
     // when other threads call `getenv` concurrently, but we mutate the

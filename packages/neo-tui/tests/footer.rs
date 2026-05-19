@@ -4,7 +4,7 @@
 //! must be visually distinct (glyph, bg color, metrics visibility).
 
 use ratatui::{Terminal, backend::TestBackend, buffer::Buffer, layout::Rect};
-use senpi_neo_tui::{
+use helix_neo_tui::{
     components::footer::{self, FooterState},
     load_bundled_dark_theme,
     theme::Token,

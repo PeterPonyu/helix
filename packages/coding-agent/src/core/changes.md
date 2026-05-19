@@ -193,7 +193,7 @@
 - Updated `src/core/agent-session.ts` and `src/core/sdk.ts` to import these helpers locally instead of from `@earendil-works/pi-ai`.
 
 ### Why
-- The published `@code-yeongyu/senpi` package currently installs the registry `@earendil-works/pi-ai@0.74.0`, whose public exports do not include the fork-only `supportsXhigh` / `supportsMax` helpers.
+- The published `@helix-bio/helix` package currently installs the registry `@earendil-works/pi-ai@0.74.0`, whose public exports do not include the fork-only `supportsXhigh` / `supportsMax` helpers.
 - Importing those names directly from `pi-ai` makes packaged senpi fail during module loading before any CLI command runs.
 
 ### Why extension system couldn't handle this

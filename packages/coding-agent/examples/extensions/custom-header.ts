@@ -5,8 +5,8 @@
  * (logo + keybinding hints) with a custom component showing the senpi mascot.
  */
 
-import type { ExtensionAPI, Theme } from "@code-yeongyu/senpi";
-import { VERSION } from "@code-yeongyu/senpi";
+import type { ExtensionAPI, Theme } from "@helix-bio/helix";
+import { VERSION } from "@helix-bio/helix";
 
 // --- PI MASCOT ---
 // Based on pi_mascot.ts - the senpi agent character

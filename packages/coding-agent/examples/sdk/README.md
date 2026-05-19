@@ -40,7 +40,7 @@ import {
   ModelRegistry,
   SessionManager,
   SettingsManager,
-} from "@code-yeongyu/senpi";
+} from "@helix-bio/helix";
 
 // Auth and models setup
 const authStorage = AuthStorage.create();

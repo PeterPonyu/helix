@@ -1,4 +1,4 @@
-//! Pure layout computation for the senpi-neo TUI.
+//! Pure layout computation for the helix-neo TUI.
 //!
 //! The layout is a pure function of the terminal area + a small set of
 //! state flags. Both `App::draw` and the snapshot tests call `compute`.

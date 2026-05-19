@@ -1,8 +1,8 @@
 use crossterm::event::{
     Event as CrosstermEvent, KeyCode, KeyEvent, KeyEventKind, KeyEventState, KeyModifiers,
 };
-use senpi_neo_tui::overlay::{MODELS, ModelPickerOverlay, OverlayResult, ThemePickerOverlay};
-use senpi_neo_tui::theme::registry::list_theme_ids;
+use helix_neo_tui::overlay::{MODELS, ModelPickerOverlay, OverlayResult, ThemePickerOverlay};
+use helix_neo_tui::theme::registry::list_theme_ids;
 
 const fn key_event(code: KeyCode) -> CrosstermEvent {
     CrosstermEvent::Key(KeyEvent {
@@ -46,20 +46,20 @@ fn model_picker_esc_returns_cancelled() {
 
 #[test]
 fn theme_picker_opens_with_all_themes() {
-    let overlay = ThemePickerOverlay::new("senpi-neo-dark");
+    let overlay = ThemePickerOverlay::new("helix-neo-dark");
     assert_eq!(overlay.visible_items(), list_theme_ids());
 }
 
 #[test]
 fn theme_picker_filter_narrows() {
-    let mut overlay = ThemePickerOverlay::new("senpi-neo-dark");
+    let mut overlay = ThemePickerOverlay::new("helix-neo-dark");
     overlay.set_filter("dracula");
     assert_eq!(overlay.visible_items(), ["dracula"]);
 }
 
 #[test]
 fn theme_picker_enter_returns_action_set_theme() {
-    let mut overlay = ThemePickerOverlay::new("senpi-neo-dark");
+    let mut overlay = ThemePickerOverlay::new("helix-neo-dark");
     overlay.set_filter("dracula");
     assert_eq!(
         overlay.handle_event(&key_event(KeyCode::Enter)),

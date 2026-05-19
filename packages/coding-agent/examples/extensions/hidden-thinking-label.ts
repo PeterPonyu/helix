@@ -18,7 +18,7 @@
  *   /thinking-label          Reset to the default label
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@code-yeongyu/senpi";
+import type { ExtensionAPI, ExtensionContext } from "@helix-bio/helix";
 
 const DEFAULT_LABEL = "Pondering...";
 

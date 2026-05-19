@@ -1,4 +1,4 @@
-//! Header banner: senpi-neo wordmark + session + cwd. Three rows.
+//! Header banner: helix-neo wordmark + session + cwd. Three rows.
 
 use ratatui::{
     Frame,

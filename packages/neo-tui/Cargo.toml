@@ -1,5 +1,5 @@
 [package]
-name = "senpi-neo-tui"
+name = "helix-neo-tui"
 version = "0.1.0"
 description = "Native Rust + ratatui TUI for senpi, launched via `senpi --neo`."
 edition.workspace = true
@@ -9,15 +9,15 @@ repository.workspace = true
 authors.workspace = true
 
 [[bin]]
-name = "senpi-neo-tui"
+name = "helix-neo-tui"
 path = "src/main.rs"
 
 [[bin]]
-name = "senpi-neo-faux"
-path = "src/bin/senpi-neo-faux.rs"
+name = "helix-neo-faux"
+path = "src/bin/helix-neo-faux.rs"
 
 [lib]
-name = "senpi_neo_tui"
+name = "helix_neo_tui"
 path = "src/lib.rs"
 
 [lints]

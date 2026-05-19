@@ -5,7 +5,7 @@
  * Demonstrates how extensions can use ctx.shutdown() to exit senpi cleanly.
  */
 
-import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import type { ExtensionAPI } from "@helix-bio/helix";
 import { Type } from "typebox";
 
 export default function (pi: ExtensionAPI) {

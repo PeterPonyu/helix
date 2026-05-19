@@ -1,4 +1,4 @@
-//! `senpi-neo-faux`: offline JSONL backend used by the TUI's QA harness
+//! `helix-neo-faux`: offline JSONL backend used by the TUI's QA harness
 //! and integration tests.
 //!
 //! Reads commands on stdin one JSONL line at a time. For each command,
@@ -54,14 +54,14 @@ fn main() -> ExitCode {
     let runtime = match tokio::runtime::Builder::new_current_thread().enable_all().build() {
         Ok(rt) => rt,
         Err(err) => {
-            eprintln!("senpi-neo-faux: failed to build tokio runtime: {err}");
+            eprintln!("helix-neo-faux: failed to build tokio runtime: {err}");
             return ExitCode::FAILURE;
         }
     };
     match runtime.block_on(run(scenario)) {
         Ok(()) => ExitCode::SUCCESS,
         Err(err) => {
-            eprintln!("senpi-neo-faux: {err:?}");
+            eprintln!("helix-neo-faux: {err:?}");
             ExitCode::FAILURE
         }
     }

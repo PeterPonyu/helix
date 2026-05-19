@@ -9,9 +9,9 @@
  * 2. Use /tools to open the tool selector
  */
 
-import type { ExtensionAPI, ExtensionContext, ToolInfo } from "@code-yeongyu/senpi";
-import { getSettingsListTheme } from "@code-yeongyu/senpi";
 import { Container, type SettingItem, SettingsList } from "@earendil-works/pi-tui";
+import type { ExtensionAPI, ExtensionContext, ToolInfo } from "@helix-bio/helix";
+import { getSettingsListTheme } from "@helix-bio/helix";
 
 // State persisted to session
 interface ToolsState {

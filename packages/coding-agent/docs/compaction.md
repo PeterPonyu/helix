@@ -9,7 +9,7 @@ LLMs have limited context windows. When conversations grow too long, senpi uses 
 - [`packages/coding-agent/src/core/session-manager.ts`](https://github.com/earendil-works/pi-mono/blob/main/packages/coding-agent/src/core/session-manager.ts) - Entry types (`CompactionEntry`, `BranchSummaryEntry`)
 - [`packages/coding-agent/src/core/extensions/types.ts`](https://github.com/earendil-works/pi-mono/blob/main/packages/coding-agent/src/core/extensions/types.ts) - Extension event types
 
-For TypeScript definitions in your project, inspect `node_modules/@code-yeongyu/senpi/dist/`.
+For TypeScript definitions in your project, inspect `node_modules/@helix-bio/helix/dist/`.
 
 ## Overview
 
@@ -309,7 +309,7 @@ pi.on("session_before_compact", async (event, ctx) => {
 To generate a summary with your own model, convert messages to text using `serializeConversation`:
 
 ```typescript
-import { convertToLlm, serializeConversation } from "@code-yeongyu/senpi";
+import { convertToLlm, serializeConversation } from "@helix-bio/helix";
 
 pi.on("session_before_compact", async (event, ctx) => {
   const { preparation } = event;

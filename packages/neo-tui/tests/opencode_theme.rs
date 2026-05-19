@@ -1,7 +1,7 @@
 //! Contract tests for bundled opencode-format themes.
 
 use ratatui::style::Color;
-use senpi_neo_tui::theme::{self, ThemeMode, Token, opencode_palette::blend};
+use helix_neo_tui::theme::{self, ThemeMode, Token, opencode_palette::blend};
 use std::process::Command;
 
 const OPENCODE_THEMES: [(&str, &str); 15] = [
@@ -95,7 +95,7 @@ fn blends_rgb_channels_linearly() {
 fn registry_lists_bundled_and_native_theme_ids() {
     let ids = theme::list_theme_ids();
     assert_eq!(ids.len(), 16);
-    assert!(ids.contains(&"senpi-neo-dark"));
+    assert!(ids.contains(&"helix-neo-dark"));
     for (id, _) in OPENCODE_THEMES {
         assert!(ids.contains(&id), "registry must include {id}");
     }
@@ -107,7 +107,7 @@ fn registry_loads_id_and_native_file_path_equivalent_theme() {
     let by_id = theme::load_by_id("tokyonight", ThemeMode::Dark).expect("id loads");
     assert_eq!(by_id.token(Token::Background), Color::Rgb(0x1a, 0x1b, 0x26));
 
-    let path_theme = theme::load(senpi_neo_tui::DEFAULT_DARK_THEME_JSON).expect("native path-style load");
+    let path_theme = theme::load(helix_neo_tui::DEFAULT_DARK_THEME_JSON).expect("native path-style load");
     assert_eq!(path_theme.token(Token::Background), Color::Rgb(0x1A, 0x1B, 0x26));
 }
 
@@ -152,7 +152,7 @@ fn invalid_opencode_hex_is_rejected() {
 
 #[test]
 fn list_themes_cli_prints_registry_ids() {
-    let output = Command::new(env!("CARGO_BIN_EXE_senpi-neo-tui"))
+    let output = Command::new(env!("CARGO_BIN_EXE_helix-neo-tui"))
         .arg("--list-themes")
         .output()
         .expect("list-themes command runs");
@@ -162,5 +162,5 @@ fn list_themes_cli_prints_registry_ids() {
     assert_eq!(ids.len(), 16);
     assert!(ids.contains(&"tokyonight"));
     assert!(ids.contains(&"catppuccin"));
-    assert!(ids.contains(&"senpi-neo-dark"));
+    assert!(ids.contains(&"helix-neo-dark"));
 }

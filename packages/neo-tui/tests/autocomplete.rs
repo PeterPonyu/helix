@@ -1,7 +1,7 @@
 use std::fs;
 use std::path::Path;
 
-use senpi_neo_tui::components::autocomplete::{Autocomplete, AutocompleteResult};
+use helix_neo_tui::components::autocomplete::{Autocomplete, AutocompleteResult};
 
 fn crate_root() -> &'static Path {
     Path::new(env!("CARGO_MANIFEST_DIR"))

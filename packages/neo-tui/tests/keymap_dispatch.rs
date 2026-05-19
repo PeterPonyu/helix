@@ -14,9 +14,9 @@
 //! looks legacy.
 
 use crossterm::event::{KeyCode, KeyEvent, KeyEventKind, KeyEventState, KeyModifiers};
-use senpi_neo_tui::keymap::{self, FocusMode, KeyChord, ResolvedKeymap};
+use helix_neo_tui::keymap::{self, FocusMode, KeyChord, ResolvedKeymap};
 
-const DEFAULT_JSON: &str = senpi_neo_tui::DEFAULT_KEYMAP_JSON;
+const DEFAULT_JSON: &str = helix_neo_tui::DEFAULT_KEYMAP_JSON;
 
 fn build_resolved() -> ResolvedKeymap {
     let spec = keymap::parse(DEFAULT_JSON).expect("default keymap must parse");

@@ -16,7 +16,7 @@
  *   /working-indicator reset     Restore pi's default spinner
  */
 
-import type { ExtensionAPI, ExtensionContext, WorkingIndicatorOptions } from "@code-yeongyu/senpi";
+import type { ExtensionAPI, ExtensionContext, WorkingIndicatorOptions } from "@helix-bio/helix";
 
 type WorkingIndicatorMode = "dot" | "none" | "pulse" | "spinner" | "default";
 

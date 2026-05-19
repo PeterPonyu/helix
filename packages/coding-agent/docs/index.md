@@ -7,7 +7,7 @@ Senpi is a minimal terminal coding harness. It is designed to stay small at the 
 Install with npm:
 
 ```bash
-npm install -g @code-yeongyu/senpi
+npm install -g @helix-bio/helix
 ```
 
 To uninstall pi itself, use npm for curl and npm installs:

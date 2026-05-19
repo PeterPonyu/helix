@@ -7,7 +7,7 @@ This page gets you from install to a useful first senpi session.
 Senpi is distributed as an npm package:
 
 ```bash
-npm install -g @code-yeongyu/senpi
+npm install -g @helix-bio/helix
 ```
 
 ### Uninstall
@@ -16,16 +16,16 @@ Use the package manager that installed senpi:
 
 ```bash
 # npm install -g
-npm uninstall -g @code-yeongyu/senpi
+npm uninstall -g @helix-bio/helix
 
 # pnpm
-pnpm remove -g @code-yeongyu/senpi
+pnpm remove -g @helix-bio/helix
 
 # Yarn
-yarn global remove @code-yeongyu/senpi
+yarn global remove @helix-bio/helix
 
 # Bun
-bun uninstall -g @code-yeongyu/senpi
+bun uninstall -g @helix-bio/helix
 ```
 
 Uninstalling senpi leaves settings, credentials, sessions, and installed senpi packages in `~/.senpi/agent/`.

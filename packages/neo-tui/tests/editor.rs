@@ -1,7 +1,7 @@
 //! Behavioral tests for the native input editor state.
 
-use senpi_neo_tui::components::input::InputState;
-use senpi_neo_tui::text::visible_width;
+use helix_neo_tui::components::input::InputState;
+use helix_neo_tui::text::visible_width;
 
 #[test]
 fn editor_word_wrap_korean_at_right_edge() {

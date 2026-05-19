@@ -1,6 +1,6 @@
 //! Integration tests for the subprocess RPC client.
 //!
-//! Drives the real client against the `senpi-neo-faux` binary across
+//! Drives the real client against the `helix-neo-faux` binary across
 //! every scenario. Asserts that commands serialize to JSONL and reach
 //! the child, that responses + events parse into typed `Inbound`
 //! frames, and that the event ordering matches the protocol spec.
@@ -8,13 +8,13 @@
 use std::path::PathBuf;
 use std::time::Duration;
 
-use senpi_neo_tui::rpc::{Inbound, RpcClient, command::Command, event::Event};
+use helix_neo_tui::rpc::{Inbound, RpcClient, command::Command, event::Event};
 use tokio::time::timeout;
 
 const T: Duration = Duration::from_secs(5);
 
 fn faux_bin() -> PathBuf {
-    env!("CARGO_BIN_EXE_senpi-neo-faux").into()
+    env!("CARGO_BIN_EXE_helix-neo-faux").into()
 }
 
 async fn recv(rx: &mut tokio::sync::mpsc::Receiver<Inbound>) -> Inbound {

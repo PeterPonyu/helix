@@ -3,7 +3,7 @@
 //! T4A locks spinner, scanner, and pulse behaviour.  All tests are
 //! pure functions of `now_ms` — no UI integration here.
 
-use senpi_neo_tui::anim::{Pulse, Scanner, Spinner};
+use helix_neo_tui::anim::{Pulse, Scanner, Spinner};
 
 // ------------------------------------------------------------------
 // Spinner

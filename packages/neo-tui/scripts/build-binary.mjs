@@ -2,9 +2,9 @@
 /*
  * build-binary.mjs
  *
- * Build the native `senpi-neo-tui` binary in release mode and stage it
+ * Build the native `helix-neo-tui` binary in release mode and stage it
  * under `packages/coding-agent/dist/neo-tui-bin/` using the
- * `senpi-neo-tui-<platform>-<arch>[.exe]` name that the Node-side
+ * `helix-neo-tui-<platform>-<arch>[.exe]` name that the Node-side
  * dispatcher (`packages/coding-agent/src/modes/neo-mode.ts`) resolves
  * at runtime.
  *
@@ -58,9 +58,9 @@ function run(cmd, args, opts = {}) {
 
 async function main() {
 	const { platform, arch, exe } = platformInfo();
-	const targetName = `senpi-neo-tui-${platform}-${arch}${exe}`;
+	const targetName = `helix-neo-tui-${platform}-${arch}${exe}`;
 	const outPath = resolve(OUT_DIR, targetName);
-	const sourcePath = resolve(REPO_ROOT, "target", "release", `senpi-neo-tui${exe}`);
+	const sourcePath = resolve(REPO_ROOT, "target", "release", `helix-neo-tui${exe}`);
 
 	if (shouldSkip()) {
 		console.log(`[neo-tui] HELIX_NEO_TUI_SKIP_BUILD=1, skipping cargo build`);
@@ -70,8 +70,8 @@ async function main() {
 			return;
 		}
 	} else {
-		console.log(`[neo-tui] cargo build --release --package senpi-neo-tui --bin senpi-neo-tui`);
-		await run("cargo", ["build", "--release", "--package", "senpi-neo-tui", "--bin", "senpi-neo-tui"]);
+		console.log(`[neo-tui] cargo build --release --package helix-neo-tui --bin helix-neo-tui`);
+		await run("cargo", ["build", "--release", "--package", "helix-neo-tui", "--bin", "helix-neo-tui"]);
 	}
 
 	if (!existsSync(sourcePath)) {

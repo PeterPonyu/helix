@@ -63,7 +63,7 @@ npm run check       # Biome + tsgo + browser-smoke + web-ui check (pre-commit eq
 Run a specific test:
 
 ```bash
-npm test --workspace @code-yeongyu/senpi -- test/specific.test.ts
+npm test --workspace @helix-bio/helix -- test/specific.test.ts
 ```
 
 ## Project Structure
@@ -73,7 +73,7 @@ packages/
   ai/           # @earendil-works/pi-ai — LLM provider abstraction
   agent/        # @earendil-works/pi-agent-core — Agent loop and message types
   tui/          # @earendil-works/pi-tui — Terminal UI components
-  coding-agent/ # @code-yeongyu/senpi — CLI and interactive mode (this package)
+  coding-agent/ # @helix-bio/helix — CLI and interactive mode (this package)
   web-ui/       # @earendil-works/pi-web-ui — Lit chat components
 ```
 

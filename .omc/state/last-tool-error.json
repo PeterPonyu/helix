@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"git ls-files | xargs grep -l 'SENPI_' 2>/dev/null | xargs sed -i 's/\\\\bSENPI_/HELIX_/g' && git diff --stat | tail -10; echo ---; echo \\\"remaining SENPI_ refs:\\\"; git ls-files | xargs grep ...",
+  "error": "Exit code 123\n .../suite/todotools-continuation-chain-cap.test.ts |  4 ++--\n .../todotools-continuation-runtime-unit.test.ts    | 14 +++++------\n packages/neo-tui/README.md                         | 12 +++++-----\n packages/neo-tui/docs/screenshots/README.md        |  2 +-\n packages/neo-tui/scripts/build-binary.mjs          |  6 ++---\n packages/neo-tui/src/app/mod.rs                    | 12 +++++-----\n packages/neo-tui/src/main.rs                       | 16 ++++++-------\n scripts/create-root-senp...",
+  "timestamp": "2026-05-19T08:49:33.452Z",
+  "retry_count": 1
+}
