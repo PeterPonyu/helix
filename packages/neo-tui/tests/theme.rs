@@ -4,8 +4,8 @@
 //! resolver; this file gains additional happy-path assertions as the
 //! resolver covers more tokens.
 
-use ratatui::style::Color;
 use helix_neo_tui::theme::{self, Token};
+use ratatui::style::Color;
 
 const DARK_JSON: &str = helix_neo_tui::DEFAULT_DARK_THEME_JSON;
 
