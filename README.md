@@ -1,60 +1,79 @@
 # helix
 
-A multi-agent harness for bioinformatics and computational biology, forked from [code-yeongyu/senpi](https://github.com/code-yeongyu/senpi) (which itself is a fork of [badlogic/pi-mono](https://github.com/badlogic/pi-mono)).
+An AI agent harness for **bioinformatics** — sequence analysis, NGS pipeline orchestration, genomic database retrieval, and ontology-aware metadata search, driven from a single CLI.
 
-> **Status:** scaffolding. The functional rebrand from `senpi` is in place; bioinformatics-specific extensions are tracked in `ROADMAP.md`.
+helix is **not** a computational-biology harness. Modeling, simulation, structural prediction, and systems-biology work are out of scope and tracked in a separate sibling project.
 
-## Lineage
+> **Status:** scaffolding. The functional rebrand from upstream is complete; bioinformatics-specific extensions are being implemented as separate packages.
 
-- **upstream**: [`code-yeongyu/senpi`](https://github.com/code-yeongyu/senpi) — opinionated coding-agent runtime with intent gate, dynamic prompt, sub-agents, opencode-style permission system, speculative compaction, GPT `apply_patch`, todo continuation
-- **upstream-of-upstream**: [`badlogic/pi-mono`](https://github.com/badlogic/pi-mono) (now [`earendil-works/pi-mono`](https://github.com/earendil-works/pi-mono)) — the underlying coding-agent CLI
+## What helix does
 
-helix inherits everything from senpi and pi-mono and adds a curated set of builtin extensions for biomedical work. Core source modifications are minimised and tracked in `changes.md` files alongside every modified subdirectory so upstream rebases stay clean.
+helix wraps your LLM provider of choice (Anthropic / OpenAI / OpenRouter / Together / Cloudflare AI Gateway / local Ollama / 30+ others) with a coding-agent loop that has:
 
-## What changed in the rebrand
+- **Sub-agents** for parallel work (`task` / `background_output` / `background_cancel`)
+- **Permission system** with JSONL persistence (necessary for controlled-access genomics data)
+- **Speculative + restoration compaction with degradation monitoring** — large bioinformatics tool outputs (VCFs, sample manifests, h5ad summaries) won't blow your context
+- **Dynamic system prompt** with intent gate, tool categorization, and policy enforcement
+- **Per-model prompt presets** (gpt-5.x, claude-opus-4-{5,6,7}, kimi-k2-6)
+- **Extension-first architecture** — bioinformatics tools ship as builtin or user packages, not core forks
 
-- Package: `@code-yeongyu/senpi` → `@helix-bio/helix`
-- Binary: `senpi` → `helix`
-- Config dir: `~/.senpi/` → `~/.helix/`
-- Env vars: `SENPI_*` → `HELIX_*` (PI_* vars from pi-mono are unchanged)
-- Outbound identity (OpenAI Codex `originator`, User-Agent, OpenRouter `X-Title`): `senpi` → `helix`
+## Bioinformatics extension surface
 
-## What's planned (bioinformatics surface)
+Each item is a separate package under `packages/coding-agent/src/core/extensions/builtin/` (in-tree) or installable via `helix install`. Core stays minimal.
 
-Each item below is a separate extension package; helix core stays minimal.
+**Data acquisition & databases**
+- `helix-geo` — NCBI GEO / SRA lookup, GSE metadata retrieval, sample-level enrichment
+- `helix-ncbi` — NCBI E-utilities client (PubMed, Gene, Taxonomy, ClinVar)
+- `helix-ensembl` — Ensembl REST API client (variants, regulatory features, comparative genomics)
+- `helix-uniprot` — UniProt API client (protein metadata, cross-references)
 
-- `helix-ontology` — CL / UBERON / MONDO normalization with synonyms
-- `helix-retrieve` — Qdrant hybrid+filter+rerank (bge-m3 + ms-marco-MiniLM)
-- `helix-geo` — GSE / SRA lookup, GEO-DataHub integration
-- `helix-h5ad` — scanpy / anndata inspection tools
-- `helix-router` — task-based model routing (haiku/sonnet/opus + local Ollama for sensitive data)
-- `helix-bench` — wrappers around scMetaIntel-Hub benchmark scripts
-- `helix-team` — port of oh-my-openagent Team Mode (tmux multi-pane visualization)
-- `helix-boulder` — port of oh-my-openagent Boulder work tracker
-- `helix-session-diff` — port of opencode's git-backed session review
+**Sequence & alignment**
+- `helix-seq` — FASTA / FASTQ / BAM / CRAM / VCF parsing and manipulation
+- `helix-blast` — BLAST wrappers (local blastn/blastp + NCBI remote)
+- `helix-coords` — genome coordinate operations, liftover, UCSC track handling
+
+**NGS pipeline integration**
+- `helix-nextflow` — Nextflow workflow execution and tracking
+- `helix-snakemake` — Snakemake workflow execution and tracking
+- `helix-pipelines` — pipeline status, log inspection, resource estimation
+
+**Single-cell & expression data (text/metadata layer)**
+- `helix-h5ad` — scanpy / anndata inspection (metadata + summary stats, no matrix loading)
+- `helix-loom` — loom file metadata inspection
+
+**Retrieval & ontology**
+- `helix-ontology` — CL / UBERON / MONDO / GO / MeSH normalization with synonym handling
+- `helix-retrieve` — Qdrant hybrid (dense + sparse) + filter + rerank stack
+
+**Agent infrastructure**
+- `helix-router` — task-based model routing across providers
+- `helix-ollama-local` — local-only Ollama for sensitive / controlled-access data
+- `helix-team` — multi-agent tmux visualization
+- `helix-boulder` — long-running task work-tracking
+- `helix-session-diff` — git-backed session review
 
 ## Install
 
-Not yet published. Local dev:
+Not yet published. Local development:
 
 ```bash
-git clone <repo-url> helix
+git clone https://github.com/helix-bio/helix.git
 cd helix
 npm install
 npm run build
 node packages/coding-agent/dist/cli.js
 ```
 
-## Upstream sync
+## Configuration
 
-```bash
-git remote add upstream https://github.com/code-yeongyu/senpi.git
-git fetch upstream
-git rebase upstream/main
-```
+- Config dir: `~/.helix/agent/`
+- Env vars: `HELIX_CODING_AGENT_DIR`, `HELIX_CODING_AGENT_SESSION_DIR`, plus standard `PI_*` vars inherited from the underlying runtime (e.g. `PI_API_KEY`, `PI_OFFLINE`)
+- Provider auth: `helix login <provider>`
 
-Conflicts should be confined to the files this fork rebrands (centralized via `piConfig` in `packages/coding-agent/package.json`); core source changes are minimised.
+## Built on
+
+helix is built on top of [`code-yeongyu/senpi`](https://github.com/code-yeongyu/senpi), an opinionated coding-agent runtime by [@code-yeongyu](https://github.com/code-yeongyu), which itself is built on [`badlogic/pi-mono`](https://github.com/badlogic/pi-mono) (now [`earendil-works/pi-mono`](https://github.com/earendil-works/pi-mono)) by [@badlogic](https://github.com/badlogic). helix periodically rebases on senpi to inherit upstream improvements while keeping bioinformatics-specific work in extension packages so the rebase surface stays minimal.
 
 ## License
 
-MIT — same as senpi and pi-mono.
+MIT.
