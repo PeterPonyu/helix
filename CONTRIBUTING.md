@@ -1,6 +1,6 @@
 # Contributing to helix
 
-helix is an opinionated fork of [badlogic/pi-mono](https://github.com/badlogic/pi-mono). This guide covers the fork-specific contribution rules. For the upstream contribution culture, see pi-mono's [CONTRIBUTING.md](https://github.com/badlogic/pi-mono/blob/main/CONTRIBUTING.md).
+helix is a fork of [code-yeongyu/senpi](https://github.com/code-yeongyu/senpi), which itself forks [badlogic/pi-mono](https://github.com/badlogic/pi-mono). This guide covers helix's fork-specific contribution rules. For the broader contribution culture, see senpi's CONTRIBUTING and pi-mono's [CONTRIBUTING.md](https://github.com/badlogic/pi-mono/blob/main/CONTRIBUTING.md).
 
 ## The One Rule
 
@@ -12,7 +12,7 @@ If you use an agent, run it from the helix repo root directory so it picks up `A
 
 ## Fork Strategy (READ BEFORE EDITING `src/`)
 
-helix periodically rebases on `upstream/main` (i.e. `badlogic/pi-mono`). To keep rebases clean:
+helix periodically rebases on `upstream/main` (i.e. `code-yeongyu/senpi`, which in turn rebases on `badlogic/pi-mono`). To keep rebases clean:
 
 1. **Extension-first** — every new feature lands as a builtin extension under `packages/coding-agent/src/core/extensions/builtin/`, or as a user extension under `packages/coding-agent/examples/extensions/`. Touch `core/` only when no extension hook can do the job.
 2. **`changes.md` contract** — any modification to an upstream-tracked file MUST add a section to the nearest `changes.md` documenting *what changed, why, why an extension couldn't handle it, and expected merge-conflict zones*. See the existing files for templates.
