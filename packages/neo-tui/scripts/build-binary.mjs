@@ -11,7 +11,7 @@
  * Bundled themes + keymap are already inlined into the binary via
  * `include_str!`, so this script only deals with the executable.
  *
- * Skip cargo entirely by setting `SENPI_NEO_TUI_SKIP_BUILD=1` (useful
+ * Skip cargo entirely by setting `HELIX_NEO_TUI_SKIP_BUILD=1` (useful
  * in CI matrices that pre-build the binary or in package-only test
  * runs that do not have rustup).
  */
@@ -38,7 +38,7 @@ function platformInfo() {
 }
 
 function shouldSkip() {
-	const skip = process.env.SENPI_NEO_TUI_SKIP_BUILD;
+	const skip = process.env.HELIX_NEO_TUI_SKIP_BUILD;
 	return skip === "1" || skip === "true";
 }
 
@@ -63,7 +63,7 @@ async function main() {
 	const sourcePath = resolve(REPO_ROOT, "target", "release", `senpi-neo-tui${exe}`);
 
 	if (shouldSkip()) {
-		console.log(`[neo-tui] SENPI_NEO_TUI_SKIP_BUILD=1, skipping cargo build`);
+		console.log(`[neo-tui] HELIX_NEO_TUI_SKIP_BUILD=1, skipping cargo build`);
 		if (!existsSync(sourcePath)) {
 			console.warn(`[neo-tui] expected pre-built binary at ${sourcePath} but it is missing`);
 			console.warn(`[neo-tui] downstream consumers will fall back to 'senpi --neo binary not found' until provided`);

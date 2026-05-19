@@ -2,8 +2,8 @@ import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
 import type { CustomMessage } from "../../messages.js";
 import type { ExtensionAPI } from "../types.js";
 
-export const SENPI_SYSTEM_PREFIX = "[system:senpi]";
-export const SENPI_CONVERSATION_EVENT = "senpi:conversation";
+export const HELIX_SYSTEM_PREFIX = "[system:senpi]";
+export const HELIX_CONVERSATION_EVENT = "senpi:conversation";
 
 export type BuiltinSystemMessageRoute = "todotools.continuation";
 export type SenpiConversationAction = "injected" | "failed";
@@ -16,7 +16,7 @@ export interface SenpiConversationEvent {
 	sessionId?: string;
 	timestamp: number;
 	conversation: {
-		prefix: typeof SENPI_SYSTEM_PREFIX;
+		prefix: typeof HELIX_SYSTEM_PREFIX;
 		kind: "custom_message" | "user_message";
 		customType?: string;
 		deliverAs?: "steer" | "followUp";
@@ -38,7 +38,7 @@ type BuiltinCustomMessageOptions = {
 };
 
 function prefixText(text: string): string {
-	return text.startsWith(SENPI_SYSTEM_PREFIX) ? text : `${SENPI_SYSTEM_PREFIX}\n${text}`;
+	return text.startsWith(HELIX_SYSTEM_PREFIX) ? text : `${HELIX_SYSTEM_PREFIX}\n${text}`;
 }
 
 function prefixContent(content: string | (TextContent | ImageContent)[]): string | (TextContent | ImageContent)[] {
@@ -48,7 +48,7 @@ function prefixContent(content: string | (TextContent | ImageContent)[]): string
 
 	const firstTextIndex = content.findIndex((part) => part.type === "text");
 	if (firstTextIndex === -1) {
-		return [{ type: "text", text: SENPI_SYSTEM_PREFIX }, ...content];
+		return [{ type: "text", text: HELIX_SYSTEM_PREFIX }, ...content];
 	}
 
 	return content.map((part, index) => {
@@ -75,7 +75,7 @@ function extractText(content: string | (TextContent | ImageContent)[]): string {
 }
 
 function emitSenpiConversationEvent(pi: ExtensionAPI, event: SenpiConversationEvent): void {
-	pi.events.emit(SENPI_CONVERSATION_EVENT, event);
+	pi.events.emit(HELIX_CONVERSATION_EVENT, event);
 }
 
 function createBaseEvent(args: {
@@ -97,7 +97,7 @@ function createBaseEvent(args: {
 		sessionId: args.sessionId,
 		timestamp: Date.now(),
 		conversation: {
-			prefix: SENPI_SYSTEM_PREFIX,
+			prefix: HELIX_SYSTEM_PREFIX,
 			kind: args.kind,
 			customType: args.customType,
 			deliverAs: args.deliverAs,

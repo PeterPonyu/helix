@@ -875,20 +875,20 @@ fn write_terminal_bytes(bytes: &[u8]) -> std::io::Result<()> {
     stdout.flush()
 }
 
-/// Spawn the RPC backend if `SENPI_NEO_BACKEND_BIN` is set in the
-/// environment. `SENPI_NEO_BACKEND_ARGS` carries the extra args as a
+/// Spawn the RPC backend if `HELIX_NEO_BACKEND_BIN` is set in the
+/// environment. `HELIX_NEO_BACKEND_ARGS` carries the extra args as a
 /// JSON-encoded string array so arguments with embedded whitespace
 /// (e.g. `--system-prompt "..."`) survive intact. Returns `None`
 /// when env is unset or the spawn fails; the TUI then falls back to
 /// render-only so demos, screenshots, and unit tests run with no
 /// backend present.
 fn maybe_spawn_backend() -> Option<RpcClient> {
-    let bin = std::env::var_os("SENPI_NEO_BACKEND_BIN")?;
-    let args = parse_backend_args(&std::env::var("SENPI_NEO_BACKEND_ARGS").unwrap_or_default());
+    let bin = std::env::var_os("HELIX_NEO_BACKEND_BIN")?;
+    let args = parse_backend_args(&std::env::var("HELIX_NEO_BACKEND_ARGS").unwrap_or_default());
     RpcClient::spawn(&bin, &args).ok()
 }
 
-/// Decode the `SENPI_NEO_BACKEND_ARGS` env value into a runnable arg
+/// Decode the `HELIX_NEO_BACKEND_ARGS` env value into a runnable arg
 /// vector. The Node-side dispatcher writes a JSON-encoded array; older
 /// callers may still pass a whitespace-separated string. Honors both
 /// to keep the contract forgiving while we transition.
@@ -910,7 +910,7 @@ async fn drive(terminal: &mut Terminal<CrosstermBackend<Stdout>>, config: AppCon
 
     // Demo mode keeps the loop pure-render so screenshots and tests
     // do not require a backend on the host. Production paths set
-    // SENPI_NEO_BACKEND_BIN to either senpi --mode rpc or the QA
+    // HELIX_NEO_BACKEND_BIN to either senpi --mode rpc or the QA
     // harness's senpi-neo-faux binary.
     let mut backend: Option<RpcClient> = if demo_mode { None } else { maybe_spawn_backend() };
     let mut inbound: Option<mpsc::Receiver<Inbound>> = backend.as_mut().and_then(RpcClient::take_inbound);

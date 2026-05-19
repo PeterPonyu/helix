@@ -12,16 +12,16 @@ describe("default global extension shims", () => {
 	beforeEach(() => {
 		tempDir = join(tmpdir(), `senpi-default-extension-shims-${Date.now()}-${Math.random().toString(36).slice(2)}`);
 		agentDir = join(tempDir, "agent");
-		previousAgentDir = process.env.SENPI_CODING_AGENT_DIR;
-		process.env.SENPI_CODING_AGENT_DIR = agentDir;
+		previousAgentDir = process.env.HELIX_CODING_AGENT_DIR;
+		process.env.HELIX_CODING_AGENT_DIR = agentDir;
 		mkdirSync(join(agentDir, "extensions"), { recursive: true });
 	});
 
 	afterEach(() => {
 		if (previousAgentDir === undefined) {
-			delete process.env.SENPI_CODING_AGENT_DIR;
+			delete process.env.HELIX_CODING_AGENT_DIR;
 		} else {
-			process.env.SENPI_CODING_AGENT_DIR = previousAgentDir;
+			process.env.HELIX_CODING_AGENT_DIR = previousAgentDir;
 		}
 		if (existsSync(tempDir)) {
 			rmSync(tempDir, { recursive: true, force: true });

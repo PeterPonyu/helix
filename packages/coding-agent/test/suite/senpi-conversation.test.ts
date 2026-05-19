@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 import {
 	emitBuiltinSystemMessageFailure,
-	SENPI_CONVERSATION_EVENT,
-	SENPI_SYSTEM_PREFIX,
+	HELIX_CONVERSATION_EVENT,
+	HELIX_SYSTEM_PREFIX,
 	sendBuiltinCustomMessage,
 	sendBuiltinUserMessage,
 } from "../../src/core/extensions/builtin/system-messages.js";
-import { SENPI_SYSTEM_PREFIX as TODO_SYSTEM_PREFIX } from "../../src/core/extensions/builtin/todotools/system-messages.js";
+import { HELIX_SYSTEM_PREFIX as TODO_SYSTEM_PREFIX } from "../../src/core/extensions/builtin/todotools/system-messages.js";
 
 function createMockPi() {
 	return {
@@ -20,7 +20,7 @@ function createMockPi() {
 
 describe("senpi conversation helpers", () => {
 	it("uses the senpi marker for injected system prefixes", () => {
-		expect(SENPI_SYSTEM_PREFIX).toBe("[system:senpi]");
+		expect(HELIX_SYSTEM_PREFIX).toBe("[system:senpi]");
 		expect(TODO_SYSTEM_PREFIX).toBe("[system:senpi]");
 	});
 
@@ -31,9 +31,9 @@ describe("senpi conversation helpers", () => {
 			sessionId: "session-1",
 		});
 
-		expect(pi.sendUserMessage).toHaveBeenCalledWith(`${SENPI_SYSTEM_PREFIX}\nContinue the task`);
+		expect(pi.sendUserMessage).toHaveBeenCalledWith(`${HELIX_SYSTEM_PREFIX}\nContinue the task`);
 		expect(pi.events.emit).toHaveBeenCalledWith(
-			SENPI_CONVERSATION_EVENT,
+			HELIX_CONVERSATION_EVENT,
 			expect.objectContaining({
 				version: 1,
 				source: "builtin",
@@ -42,9 +42,9 @@ describe("senpi conversation helpers", () => {
 				sessionId: "session-1",
 				conversation: expect.objectContaining({
 					kind: "user_message",
-					prefix: SENPI_SYSTEM_PREFIX,
+					prefix: HELIX_SYSTEM_PREFIX,
 				}),
-				text: `${SENPI_SYSTEM_PREFIX}\nContinue the task`,
+				text: `${HELIX_SYSTEM_PREFIX}\nContinue the task`,
 			}),
 		);
 	});
@@ -69,14 +69,14 @@ describe("senpi conversation helpers", () => {
 				content: [
 					expect.objectContaining({
 						type: "text",
-						text: `${SENPI_SYSTEM_PREFIX}\n<system-reminder>\nDone\n</system-reminder>`,
+						text: `${HELIX_SYSTEM_PREFIX}\n<system-reminder>\nDone\n</system-reminder>`,
 					}),
 				],
 			}),
 			{ triggerTurn: true, deliverAs: "followUp" },
 		);
 		expect(pi.events.emit).toHaveBeenCalledWith(
-			SENPI_CONVERSATION_EVENT,
+			HELIX_CONVERSATION_EVENT,
 			expect.objectContaining({
 				version: 1,
 				source: "builtin",
@@ -86,7 +86,7 @@ describe("senpi conversation helpers", () => {
 				conversation: expect.objectContaining({
 					kind: "custom_message",
 					customType: "senpi.test",
-					prefix: SENPI_SYSTEM_PREFIX,
+					prefix: HELIX_SYSTEM_PREFIX,
 					triggerTurn: true,
 					deliverAs: "followUp",
 				}),
@@ -106,7 +106,7 @@ describe("senpi conversation helpers", () => {
 		});
 
 		expect(pi.events.emit).toHaveBeenCalledWith(
-			SENPI_CONVERSATION_EVENT,
+			HELIX_CONVERSATION_EVENT,
 			expect.objectContaining({
 				version: 1,
 				source: "builtin",
@@ -115,9 +115,9 @@ describe("senpi conversation helpers", () => {
 				sessionId: "session-3",
 				conversation: expect.objectContaining({
 					kind: "user_message",
-					prefix: SENPI_SYSTEM_PREFIX,
+					prefix: HELIX_SYSTEM_PREFIX,
 				}),
-				text: `${SENPI_SYSTEM_PREFIX}\nContinue after failure`,
+				text: `${HELIX_SYSTEM_PREFIX}\nContinue after failure`,
 				errorMessage: "dispatch failed",
 			}),
 		);

@@ -18,7 +18,7 @@ same keymap dispatch path as direct keychords.
 
 ## Overlay states (live RPC via faux backend)
 
-Captured by spawning the binary with `SENPI_NEO_BACKEND_BIN` pointed at
+Captured by spawning the binary with `HELIX_NEO_BACKEND_BIN` pointed at
 `senpi-neo-faux --scenario streaming`, so the chat shows real RPC frames and
 the overlay layer renders on top of a populated scene.
 

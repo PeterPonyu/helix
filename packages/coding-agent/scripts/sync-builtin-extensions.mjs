@@ -7,7 +7,7 @@ const scriptDir = dirname(fileURLToPath(import.meta.url));
 const packageDir = resolve(scriptDir, "..");
 const workspaceRoot = resolve(packageDir, "..", "..");
 const defaultSourceRoot = resolve(workspaceRoot, "..", "pi-extensions");
-const sourceRoot = resolve(process.env.SENPI_BUILTIN_EXTENSIONS_SOURCE ?? defaultSourceRoot);
+const sourceRoot = resolve(process.env.HELIX_BUILTIN_EXTENSIONS_SOURCE ?? defaultSourceRoot);
 const builtinRoot = join(packageDir, "src", "core", "extensions", "builtin");
 
 const FILES = [
@@ -27,7 +27,7 @@ const FILES = [
 	// monolithic sync would overwrite senpi's barrel index.ts and lose the refactor. Port
 	// behavior changes manually until the upstream package is restructured to match.
 	//
-	// pi-todotools has also diverged: senpi customizes SENPI_SYSTEM_PREFIX to "[system:senpi]"
+	// pi-todotools has also diverged: senpi customizes HELIX_SYSTEM_PREFIX to "[system:senpi]"
 	// (pi-todotools uses "[system:senpi]") and `reportContinuationError` is wired into the
 	// unified `senpi:conversation` event surface. Regular file-copy sync overwrites those
 	// customizations and breaks `test/suite/senpi-conversation.test.ts`,
