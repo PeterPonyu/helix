@@ -91,7 +91,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/code-yeongyu/senpi.git",
+		"url": "git+https://github.com/helix-bio/helix.git",
 		"directory": "packages/coding-agent"
 	},
 	"engines": {
