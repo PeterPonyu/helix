@@ -43,8 +43,33 @@ export const CATALOG: Record<string, RealFixtureSpec> = {
 		bytes: 1_060_702,
 		sha256: "5eca163c91918ada9774080ee2274208155f4d1b2d00700ee950cdd7b269508c",
 		description:
-			"C. elegans genomic FASTA fragment from samtools/htslib test data. Stable raw.githubusercontent.com URL " +
-			"on a tagged dev branch. Used by helix-seq fasta layer-2-real test.",
+			"C. elegans genomic FASTA from samtools/htslib test data. Exercises helix-seq fasta on real ~1MB input.",
+	},
+	biopython_example_fastq: {
+		url: "https://raw.githubusercontent.com/biopython/biopython/master/Tests/Quality/example.fastq",
+		bytes: 234,
+		sha256: "10bc5b39327a363b0019193c9823bc424a6d5706197688fdbdd45023a1481a0c",
+		description:
+			"Tiny FASTQ from biopython Tests/Quality. Exercises helix-seq fastq on real Sanger-style quality strings.",
+	},
+	bcftools_query_vcf: {
+		url: "https://raw.githubusercontent.com/samtools/bcftools/develop/test/query.vcf",
+		bytes: 2_312,
+		sha256: "916e1855d5f2c668483b5f1c168d615eca6aa28aa391db187898d5e604806d14",
+		description: "Small VCF from samtools/bcftools test data with real header, contigs, and multi-sample data rows.",
+	},
+	bedtools_intersect_a_bed: {
+		url: "https://raw.githubusercontent.com/arq5x/bedtools2/master/test/intersect/a.bed",
+		bytes: 38,
+		sha256: "b278dbbded4fb91b4b8d4ee7f3c56880864c3fbaf0ace20e8bca566e9c4b3757",
+		description: "Tiny BED from bedtools2 intersect tests. Verifies bed_info on minimal real-world input.",
+	},
+	gffutils_intro_docs_example_gff: {
+		url: "https://raw.githubusercontent.com/daler/gffutils/master/gffutils/test/data/intro_docs_example.gff",
+		bytes: 3_016,
+		sha256: "c62bcabc27e2885470af39f274174eda2695a94e9fc9da9c0817a69ff12108ea",
+		description:
+			"Small GFF example from gffutils test data. Verifies gff_info dialect detection on real-world content.",
 	},
 };
 
@@ -71,6 +96,22 @@ function urlExtensions(url: string): string {
 
 function sha256Of(bytes: Buffer): string {
 	return createHash("sha256").update(bytes).digest("hex");
+}
+
+async function fetchWithRetry(url: string, attempts = 4): Promise<Buffer> {
+	let lastErr: unknown;
+	for (let i = 0; i < attempts; i++) {
+		try {
+			const res = await fetch(url);
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+			return Buffer.from(await res.arrayBuffer());
+		} catch (err) {
+			lastErr = err;
+			if (i === attempts - 1) break;
+			await new Promise((resolve) => setTimeout(resolve, 500 * 2 ** i)); // 500ms, 1s, 2s
+		}
+	}
+	throw new Error(`Fixture download failed after ${attempts} attempts: ${url} -> ${String(lastErr)}`);
 }
 
 /**
@@ -101,9 +142,7 @@ export async function getRealFixture(name: keyof typeof CATALOG): Promise<string
 		return cachePath;
 	}
 
-	const res = await fetch(spec.url);
-	if (!res.ok) throw new Error(`Fixture download failed: ${spec.url} -> HTTP ${res.status}`);
-	const bytes = Buffer.from(await res.arrayBuffer());
+	const bytes = await fetchWithRetry(spec.url);
 
 	const observed = sha256Of(bytes);
 	if (spec.sha256 && observed !== spec.sha256) {
