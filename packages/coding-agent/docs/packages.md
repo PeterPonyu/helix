@@ -20,11 +20,11 @@ Pi packages bundle extensions, skills, prompt templates, and themes so you can s
 > **Security:** Pi packages run with full system access. Extensions execute arbitrary code, and skills can instruct the model to perform any action including running executables. Review source code before installing third-party packages.
 
 ```bash
-senpi install npm:@foo/bar@1.0.0
-senpi install git:github.com/user/repo@v1
-senpi install https://github.com/user/repo  # raw URLs work too
-senpi install /absolute/path/to/package
-senpi install ./relative/path/to/package
+helix install npm:@foo/bar@1.0.0
+helix install git:github.com/user/repo@v1
+helix install https://github.com/user/repo  # raw URLs work too
+helix install /absolute/path/to/package
+helix install ./relative/path/to/package
 
 pi remove npm:@foo/bar
 pi list                     # show installed packages from settings
@@ -36,9 +36,9 @@ pi update npm:@foo/bar      # update one package
 pi update --extension npm:@foo/bar
 ```
 
-These commands manage senpi packages, not the senpi CLI installation. To uninstall senpi itself, see [Quickstart](quickstart.md#uninstall).
+These commands manage helix packages, not the helix CLI installation. To uninstall helix itself, see [Quickstart](quickstart.md#uninstall).
 
-By default, `install` and `remove` write to global settings (`~/.senpi/agent/settings.json`). Use `-l` to write to project settings (`.senpi/settings.json`) instead. Project settings can be shared with your team, and senpi installs any missing packages automatically on startup.
+By default, `install` and `remove` write to global settings (`~/.helix/agent/settings.json`). Use `-l` to write to project settings (`.helix/settings.json`) instead. Project settings can be shared with your team, and helix installs any missing packages automatically on startup.
 
 To try a package without installing it, use `--extension` or `-e`. This installs to a temporary directory for the current run only:
 
@@ -49,7 +49,7 @@ pi -e git:github.com/user/repo
 
 ## Package Sources
 
-Senpi accepts three source types in settings and `senpi install`.
+Helix accepts three source types in settings and `helix install`.
 
 ### npm
 
@@ -60,7 +60,7 @@ npm:pkg
 
 - Versioned specs are pinned and skipped by package updates (`pi update`, `pi update --extensions`).
 - Global installs use `npm install -g`.
-- Project installs go under `.senpi/npm/`.
+- Project installs go under `.helix/npm/`.
 - Set `npmCommand` in `settings.json` to pin npm package lookup and install operations to a specific wrapper command such as `mise` or `asdf`.
 
 Example:
@@ -85,20 +85,20 @@ ssh://git@github.com/user/repo@v1
 - HTTPS and SSH URLs are both supported.
 - SSH URLs use your configured SSH keys automatically (respects `~/.ssh/config`).
 - For non-interactive runs (for example CI), you can set `GIT_TERMINAL_PROMPT=0` to disable credential prompts and set `GIT_SSH_COMMAND` (for example `ssh -o BatchMode=yes -o ConnectTimeout=5`) to fail fast.
-- Refs pin the package and skip package updates (`senpi update`, `senpi update --extensions`).
-- Cloned to `~/.senpi/agent/git/<host>/<path>` (global) or `.senpi/git/<host>/<path>` (project).
+- Refs pin the package and skip package updates (`helix update`, `helix update --extensions`).
+- Cloned to `~/.helix/agent/git/<host>/<path>` (global) or `.helix/git/<host>/<path>` (project).
 - Runs `npm install` after clone or pull if `package.json` exists.
 
 **SSH examples:**
 ```bash
 # git@host:path shorthand (requires git: prefix)
-senpi install git:git@github.com:user/repo
+helix install git:git@github.com:user/repo
 
 # ssh:// protocol format
-senpi install ssh://git@github.com/user/repo
+helix install ssh://git@github.com/user/repo
 
 # With version ref
-senpi install git:git@github.com:user/repo@v1.0.0
+helix install git:git@github.com:user/repo@v1.0.0
 ```
 
 ### Local Paths
@@ -214,7 +214,7 @@ Filter what a package loads using the object form in settings:
 
 ## Enable and Disable Resources
 
-Use `senpi config` to enable or disable extensions, skills, prompt templates, and themes from installed packages and local directories. Works for both global (`~/.senpi/agent`) and project (`.senpi/`) scopes.
+Use `helix config` to enable or disable extensions, skills, prompt templates, and themes from installed packages and local directories. Works for both global (`~/.helix/agent`) and project (`.helix/`) scopes.
 
 ## Scope and Deduplication
 

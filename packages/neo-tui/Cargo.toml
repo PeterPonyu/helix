@@ -1,7 +1,7 @@
 [package]
 name = "helix-neo-tui"
 version = "0.1.0"
-description = "Native Rust + ratatui TUI for senpi, launched via `senpi --neo`."
+description = "Native Rust + ratatui TUI for helix, launched via `helix --neo`."
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true

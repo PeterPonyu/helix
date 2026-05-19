@@ -116,7 +116,7 @@ fn parses_default_keymap() {
     );
 }
 
-/// Exhaustive parity test: EVERY binding from the legacy senpi
+/// Exhaustive parity test: EVERY binding from the legacy helix
 /// (pi-tui + coding-agent) registry must be present in the bundled
 /// default keymap with the EXACT same default keys in the EXACT same
 /// order. Any drift fails this test with a clear pointer at the
@@ -141,7 +141,7 @@ fn bundled_default_keymap_matches_legacy_senpi_registry_one_to_one() {
 
     assert!(
         missing.is_empty() && drift.is_empty(),
-        "neo-tui default keymap drifted from the legacy senpi registry.\n\
+        "neo-tui default keymap drifted from the legacy helix registry.\n\
          missing bindings: {missing:?}\n\
          drifted bindings:\n{}",
         drift.join("\n"),

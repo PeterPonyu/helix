@@ -465,7 +465,7 @@ export async function main(args: string[], options?: MainOptions) {
 		takeOverStdout();
 	}
 
-	// `--version` always wins so `senpi --neo --version` still prints the
+	// `--version` always wins so `helix --neo --version` still prints the
 	// version and exits without launching the Rust binary.
 	if (parsed.version) {
 		console.log(VERSION);

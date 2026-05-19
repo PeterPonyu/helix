@@ -1,6 +1,6 @@
 /**
  * Regression: `--neo` flag must round-trip through `parseArgs` cleanly and
- * coexist with the rest of the senpi CLI surface.
+ * coexist with the rest of the helix CLI surface.
  *
  * The flag dispatch into the Rust binary lives in a later wave; this test
  * only locks the arg-parser contract so future renames or accidental

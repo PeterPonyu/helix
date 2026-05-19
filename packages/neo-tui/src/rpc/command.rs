@@ -1,4 +1,4 @@
-//! Typed RPC commands sent from the TUI to `senpi --mode rpc`.
+//! Typed RPC commands sent from the TUI to `helix --mode rpc`.
 //!
 //! Mirrors the protocol in [`packages/coding-agent/docs/rpc.md`]. The TUI
 //! only models the subset of commands it actively issues. Adding a new

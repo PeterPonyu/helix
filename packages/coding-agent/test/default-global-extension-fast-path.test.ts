@@ -26,7 +26,7 @@ describe("default global extension fast path", () => {
 	beforeEach(() => {
 		tempDir = join(
 			tmpdir(),
-			`senpi-default-extension-fast-path-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+			`helix-default-extension-fast-path-${Date.now()}-${Math.random().toString(36).slice(2)}`,
 		);
 		agentDir = join(tempDir, "agent");
 		cwd = join(tempDir, "project");

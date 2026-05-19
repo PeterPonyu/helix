@@ -1,8 +1,8 @@
 import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
 import type { ExtensionAPI } from "../../types.js";
 
-export const HELIX_SYSTEM_PREFIX = "[system:senpi]";
-export const HELIX_CONVERSATION_EVENT = "senpi:conversation";
+export const HELIX_SYSTEM_PREFIX = "[system:helix]";
+export const HELIX_CONVERSATION_EVENT = "helix:conversation";
 
 export type TodoSystemMessageRoute = "todotools.continuation";
 export type TodoConversationAction = "injected" | "failed";

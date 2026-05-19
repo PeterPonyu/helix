@@ -467,7 +467,7 @@ pub const SLASH_COMMANDS: &[SlashCommand] = &[
     SlashCommand {
         display: "/quit",
         action_id: "app.exit",
-        description: "quit senpi --neo",
+        description: "quit helix --neo",
     },
     SlashCommand {
         display: "/tree",

@@ -5,8 +5,8 @@
  * When --ssh is provided, read/write/edit/bash run on the remote.
  *
  * Usage:
- *   senpi -e ./ssh.ts --ssh user@host
- *   senpi -e ./ssh.ts --ssh user@host:/remote/path
+ *   helix -e ./ssh.ts --ssh user@host
+ *   helix -e ./ssh.ts --ssh user@host:/remote/path
  *
  * Requirements:
  *   - SSH key-based auth (no password prompts)

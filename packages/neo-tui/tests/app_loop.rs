@@ -3,7 +3,7 @@
 //! state mutation, or RPC command.
 //!
 //! Locks the runtime parity contract between the new Rust TUI and the
-//! legacy TypeScript senpi TUI: every legacy chord produces the
+//! legacy TypeScript helix TUI: every legacy chord produces the
 //! semantically equivalent app behavior, not just the same JSON
 //! binding entry. The user explicitly required this kind of TDD
 //! coverage on keybinding equivalence.
@@ -492,7 +492,7 @@ fn apply_inbound_message_end_drops_empty_assistant_bubble() {
     let after_end = app.chat_snapshot().messages.len();
     assert_eq!(
         after_end, after_start,
-        "MessageEnd with no text_delta in between must leave the chat untouched (no phantom empty senpi bubble)"
+        "MessageEnd with no text_delta in between must leave the chat untouched (no phantom empty helix bubble)"
     );
     assert_eq!(app.footer.status, Status::Idle);
 }

@@ -860,7 +860,7 @@ describe("ExtensionRunner", () => {
 
 		it("uses bounded custom hook status labels", async () => {
 			const runtime = createExtensionRuntime();
-			const extensionPath = path.join(tempDir, ".senpi", "extensions", "check-output.ts");
+			const extensionPath = path.join(tempDir, ".helix", "extensions", "check-output.ts");
 			const extension = await loadExtensionFromFactory(
 				(pi) => {
 					pi.on("tool_result", async () => undefined);

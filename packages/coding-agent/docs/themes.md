@@ -19,8 +19,8 @@ Themes are JSON files that define colors for the TUI.
 Pi loads themes from:
 
 - Built-in: `dark`, `light`
-- Global: `~/.senpi/agent/themes/*.json`
-- Project: `.senpi/themes/*.json`
+- Global: `~/.helix/agent/themes/*.json`
+- Project: `.helix/themes/*.json`
 - Packages: `themes/` directories or `pi.themes` entries in `package.json`
 - Settings: `themes` array with files or directories
 - CLI: `--theme <path>` (repeatable)
@@ -44,8 +44,8 @@ On first run, pi detects your terminal background and defaults to `dark` or `lig
 1. Create a theme file:
 
 ```bash
-mkdir -p ~/.senpi/agent/themes
-vim ~/.senpi/agent/themes/my-theme.json
+mkdir -p ~/.helix/agent/themes
+vim ~/.helix/agent/themes/my-theme.json
 ```
 
 2. Define the theme with all required colors (see [Color Tokens](#color-tokens)):

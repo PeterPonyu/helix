@@ -1,12 +1,12 @@
 /**
- * Regression test: `senpi --neo` MUST forward neo-TUI flags from the
- * caller to the Rust `senpi-neo-tui` binary via the `--` sentinel.
+ * Regression test: `helix --neo` MUST forward neo-TUI flags from the
+ * caller to the Rust `helix-neo-tui` binary via the `--` sentinel.
  *
- * Without the sentinel split, the senpi argparser eats `--theme`,
+ * Without the sentinel split, the helix argparser eats `--theme`,
  * `--demo`, etc. and either errors out (they mean something completely
- * different on the senpi side, e.g. `--theme <path>` loads a theme file)
+ * different on the helix side, e.g. `--theme <path>` loads a theme file)
  * or silently swallows them, so the neo TUI never sees its own flags
- * and `senpi --neo --theme dracula` becomes a lie in the docs.
+ * and `helix --neo --theme dracula` becomes a lie in the docs.
  *
  * Source of truth: {@link splitNeoArgs} in
  * `packages/coding-agent/src/modes/neo-mode.ts`.
@@ -16,7 +16,7 @@ import { describe, expect, test } from "vitest";
 import { splitNeoArgs } from "../../../src/modes/neo-mode.js";
 
 describe("neo-mode arg forwarding via `--` sentinel", () => {
-	test("with no sentinel, every non-`--neo` arg goes to the senpi backend", () => {
+	test("with no sentinel, every non-`--neo` arg goes to the helix backend", () => {
 		const { backend, neo } = splitNeoArgs(["--neo", "--provider", "anthropic", "--model", "sonnet"]);
 		expect(neo).toEqual([]);
 		expect(backend).toEqual(["--provider", "anthropic", "--model", "sonnet"]);

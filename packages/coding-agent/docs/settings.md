@@ -4,8 +4,8 @@ Pi uses JSON settings files with project settings overriding global settings.
 
 | Location | Scope |
 |----------|-------|
-| `~/.senpi/agent/settings.json` | Global (all projects) |
-| `.senpi/settings.json` | Project (current directory) |
+| `~/.helix/agent/settings.json` | Global (all projects) |
+| `.helix/settings.json` | Project (current directory) |
 
 Edit directly or use `/settings` for common options.
 
@@ -32,7 +32,7 @@ Use `promptPreset` when a provider's model ID does not auto-detect to the preset
 }
 ```
 
-Project settings in `.senpi/settings.json` override global settings in `~/.senpi/agent/settings.json`.
+Project settings in `.helix/settings.json` override global settings in `~/.helix/agent/settings.json`.
 When this value is anything other than `"auto"`, it overrides any model-level `promptPreset` configured in `models.json`.
 
 #### thinkingBudgets
@@ -157,7 +157,7 @@ When a provider requests a retry delay longer than `retry.provider.maxRetryDelay
 }
 ```
 
-When unset, senpi leaves provider payloads unchanged. This setting currently applies only to the built-in OpenAI Responses provider path.
+When unset, helix leaves provider payloads unchanged. This setting currently applies only to the built-in OpenAI Responses provider path.
 
 ### Terminal & Images
 
@@ -223,7 +223,7 @@ When multiple sources specify a session directory, precedence is `--session-dir`
 
 These settings define where to load extensions, skills, prompts, and themes from.
 
-Paths in `~/.senpi/agent/settings.json` resolve relative to `~/.senpi/agent`. Paths in `.senpi/settings.json` resolve relative to `.senpi`. Absolute paths and `~` are supported.
+Paths in `~/.helix/agent/settings.json` resolve relative to `~/.helix/agent`. Paths in `.helix/settings.json` resolve relative to `.helix`. Absolute paths and `~` are supported.
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
@@ -292,16 +292,16 @@ See [packages.md](packages.md) for package management details.
 
 ## Project Overrides
 
-Project settings (`.senpi/settings.json`) override global settings. Nested objects are merged:
+Project settings (`.helix/settings.json`) override global settings. Nested objects are merged:
 
 ```json
-// ~/.senpi/agent/settings.json (global)
+// ~/.helix/agent/settings.json (global)
 {
   "theme": "dark",
   "compaction": { "enabled": true, "reserveTokens": 16384 }
 }
 
-// .senpi/settings.json (project)
+// .helix/settings.json (project)
 {
   "compaction": { "reserveTokens": 8192 }
 }

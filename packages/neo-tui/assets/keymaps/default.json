@@ -1,8 +1,8 @@
 {
-  "$schema": "https://senpi.dev/neo-tui-keymap.json",
+  "$schema": "https://helix.dev/neo-tui-keymap.json",
   "version": 1,
 
-  "// note": "Mirrors the legacy senpi (@earendil-works/pi-tui + @helix-bio/helix) keybinding registry 1:1 so users can switch between the legacy TUI and senpi --neo without retraining muscle memory. New neo-only bindings live under the 'neo.*' namespace to avoid colliding with the legacy contract.",
+  "// note": "Mirrors the legacy helix (@earendil-works/pi-tui + @helix-bio/helix) keybinding registry 1:1 so users can switch between the legacy TUI and helix --neo without retraining muscle memory. New neo-only bindings live under the 'neo.*' namespace to avoid colliding with the legacy contract.",
 
   "bindings": {
     "tui.editor.cursorUp": ["up"],

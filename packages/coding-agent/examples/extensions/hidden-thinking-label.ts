@@ -5,7 +5,7 @@
  * when thinking blocks are hidden.
  *
  * Usage:
- *   senpi --extension examples/extensions/hidden-thinking-label.ts
+ *   helix --extension examples/extensions/hidden-thinking-label.ts
  *
  * Test:
  *   1. Load this extension

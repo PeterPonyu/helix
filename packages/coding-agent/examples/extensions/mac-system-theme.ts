@@ -1,8 +1,8 @@
 /**
- * Syncs senpi theme with macOS system appearance (dark/light mode).
+ * Syncs helix theme with macOS system appearance (dark/light mode).
  *
  * Usage:
- *   senpi -e examples/extensions/mac-system-theme.ts
+ *   helix -e examples/extensions/mac-system-theme.ts
  */
 
 import { exec } from "node:child_process";

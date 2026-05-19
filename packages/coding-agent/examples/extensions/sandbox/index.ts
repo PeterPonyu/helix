@@ -10,10 +10,10 @@
  * via `tool_call` input mutation without replacing the tool.
  *
  * Config files (merged, project takes precedence):
- * - ~/.senpi/agent/extensions/sandbox.json (global)
- * - <cwd>/.senpi/sandbox.json (project-local)
+ * - ~/.helix/agent/extensions/sandbox.json (global)
+ * - <cwd>/.helix/sandbox.json (project-local)
  *
- * Example .senpi/sandbox.json:
+ * Example .helix/sandbox.json:
  * ```json
  * {
  *   "enabled": true,
@@ -30,13 +30,13 @@
  * ```
  *
  * Usage:
- * - `senpi -e ./sandbox` - sandbox enabled with default/config settings
- * - `senpi -e ./sandbox --no-sandbox` - disable sandboxing
+ * - `helix -e ./sandbox` - sandbox enabled with default/config settings
+ * - `helix -e ./sandbox --no-sandbox` - disable sandboxing
  * - `/sandbox` - show current sandbox configuration
  *
  * Setup:
- * 1. Copy sandbox/ directory to ~/.senpi/agent/extensions/
- * 2. Run `npm install` in ~/.senpi/agent/extensions/sandbox/
+ * 1. Copy sandbox/ directory to ~/.helix/agent/extensions/
+ * 2. Run `npm install` in ~/.helix/agent/extensions/sandbox/
  *
  * Linux also requires: bubblewrap, socat, ripgrep
  */

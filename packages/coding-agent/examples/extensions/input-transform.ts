@@ -1,8 +1,8 @@
 /**
  * Input Transform Example - demonstrates the `input` event for intercepting user input.
  *
- * Start senpi with this extension:
- *   senpi -e ./examples/extensions/input-transform.ts
+ * Start helix with this extension:
+ *   helix -e ./examples/extensions/input-transform.ts
  *
  * Then type these inside pi:
  *   ?quick What is TypeScript?  → "Respond briefly: What is TypeScript?"

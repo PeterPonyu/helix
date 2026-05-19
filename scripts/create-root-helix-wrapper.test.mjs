@@ -4,13 +4,13 @@ import { lstatSync, mkdtempSync, mkdirSync, readFileSync, symlinkSync, writeFile
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, it } from "node:test";
-import { createRootSenpiWrapper, shouldWriteGlobalShim } from "./create-root-senpi-wrapper.mjs";
+import { createRootSenpiWrapper, shouldWriteGlobalShim } from "./create-root-helix-wrapper.mjs";
 
-describe("create-root-senpi-wrapper", () => {
+describe("create-root-helix-wrapper", () => {
 	it("writes a launch-only wrapper when the root is a gitless snapshot", () => {
 		// Given
-		const root = mkdtempSync(join(tmpdir(), "senpi-wrapper-snapshot-"));
-		const globalPrefix = mkdtempSync(join(tmpdir(), "senpi-wrapper-global-"));
+		const root = mkdtempSync(join(tmpdir(), "helix-wrapper-snapshot-"));
+		const globalPrefix = mkdtempSync(join(tmpdir(), "helix-wrapper-global-"));
 
 		// When
 		const result = createRootSenpiWrapper({ root, globalPrefix });
@@ -19,16 +19,16 @@ describe("create-root-senpi-wrapper", () => {
 		// Then
 		assert.equal(shouldWriteGlobalShim(root, {}), false);
 		assert.equal(result.globalShimWritten, false);
-		assert.equal(wrapper.includes("packages/coding-agent/dist/senpi"), true);
+		assert.equal(wrapper.includes("packages/coding-agent/dist/helix"), true);
 		assert.equal(wrapper.includes("scripts/build-all.mjs"), false);
 		assert.equal(wrapper.includes("packages/ai/src"), false);
-		assert.equal(wrapper.includes(".senpi-build-head"), false);
+		assert.equal(wrapper.includes(".helix-build-head"), false);
 		assert.equal(wrapper.includes("linkedBuildIsStale"), false);
 	});
 
 	it("does NOT write a global shim by default in a git checkout (opt-in only)", () => {
 		// Given
-		const root = mkdtempSync(join(tmpdir(), "senpi-wrapper-git-default-"));
+		const root = mkdtempSync(join(tmpdir(), "helix-wrapper-git-default-"));
 		mkdirSync(join(root, ".git"));
 
 		// When
@@ -42,7 +42,7 @@ describe("create-root-senpi-wrapper", () => {
 
 	it("writes a global shim only when HELIX_WRITE_GLOBAL_SHIM=1 in a non-CI git checkout", () => {
 		// Given
-		const root = mkdtempSync(join(tmpdir(), "senpi-wrapper-git-optin-"));
+		const root = mkdtempSync(join(tmpdir(), "helix-wrapper-git-optin-"));
 		mkdirSync(join(root, ".git"));
 
 		// When
@@ -54,14 +54,14 @@ describe("create-root-senpi-wrapper", () => {
 
 	it("replaces an existing global symlink instead of following it", () => {
 		// Given
-		const root = mkdtempSync(join(tmpdir(), "senpi-wrapper-root-"));
-		const globalPrefix = mkdtempSync(join(tmpdir(), "senpi-wrapper-global-"));
+		const root = mkdtempSync(join(tmpdir(), "helix-wrapper-root-"));
+		const globalPrefix = mkdtempSync(join(tmpdir(), "helix-wrapper-global-"));
 		const globalBin = join(globalPrefix, "bin");
 		const linkedTarget = join(root, "linked-cli.js");
 		mkdirSync(join(root, ".git"));
 		mkdirSync(globalBin);
 		writeFileSync(linkedTarget, "original", "utf8");
-		symlinkSync(linkedTarget, join(globalBin, "senpi"));
+		symlinkSync(linkedTarget, join(globalBin, "helix"));
 
 		// When
 		const result = createRootSenpiWrapper({ root, globalPrefix, writeGlobalShim: true });

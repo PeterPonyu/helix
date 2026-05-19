@@ -21,16 +21,16 @@ const FILES = [
 			),
 	},
 	{ source: "pi-bash-timeout/src/timeout.ts", target: "bash-timeout/timeout.ts" },
-	// pi-apply-patch has diverged: senpi maintains a refactored multi-file version under
+	// pi-apply-patch has diverged: helix maintains a refactored multi-file version under
 	// gpt-apply-patch/ (apply.ts, constants.ts, errors.ts, extension.ts, parser.ts, tool.ts, ...)
 	// while pi-apply-patch upstream is still a single src/index.ts monolith. Re-enabling the old
-	// monolithic sync would overwrite senpi's barrel index.ts and lose the refactor. Port
+	// monolithic sync would overwrite helix's barrel index.ts and lose the refactor. Port
 	// behavior changes manually until the upstream package is restructured to match.
 	//
-	// pi-todotools has also diverged: senpi customizes HELIX_SYSTEM_PREFIX to "[system:senpi]"
-	// (pi-todotools uses "[system:senpi]") and `reportContinuationError` is wired into the
-	// unified `senpi:conversation` event surface. Regular file-copy sync overwrites those
-	// customizations and breaks `test/suite/senpi-conversation.test.ts`,
+	// pi-todotools has also diverged: helix customizes HELIX_SYSTEM_PREFIX to "[system:helix]"
+	// (pi-todotools uses "[system:helix]") and `reportContinuationError` is wired into the
+	// unified `helix:conversation` event surface. Regular file-copy sync overwrites those
+	// customizations and breaks `test/suite/helix-conversation.test.ts`,
 	// `test/suite/todotools-continuation-runtime-unit.test.ts`, and
 	// `test/suite/todotools-continuation-chain-cap.test.ts`. Port improvements manually.
 ];

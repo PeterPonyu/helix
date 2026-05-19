@@ -10,7 +10,7 @@
  * which can be cheaper/faster than the main conversation model.
  *
  * Usage:
- *   senpi --extension examples/extensions/custom-compaction.ts
+ *   helix --extension examples/extensions/custom-compaction.ts
  */
 
 import { complete } from "@earendil-works/pi-ai";

@@ -17,7 +17,7 @@
  * is used automatically (syntax highlighting, line numbers, truncation warnings).
  *
  * Usage:
- *   senpi -e ./tool-override.ts
+ *   helix -e ./tool-override.ts
  */
 
 import type { TextContent } from "@earendil-works/pi-ai";

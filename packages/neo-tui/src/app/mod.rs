@@ -120,7 +120,7 @@ pub struct App {
     pub overlay: Option<Overlay>,
     /// `true` when the binary was launched with `--demo`. Drives the
     /// sidebar visibility and other demo-only render switches so real
-    /// `senpi --neo` runs do not look like a fake streaming session.
+    /// `helix --neo` runs do not look like a fake streaming session.
     pub demo_mode: bool,
 }
 
@@ -146,7 +146,7 @@ impl App {
                 connected: false,
             },
             chat: ChatState::default(),
-            input: InputState::new("Ask senpi anything…", "INPUT"),
+            input: InputState::new("Ask helix anything…", "INPUT"),
             autocomplete: Autocomplete::new(),
             autocomplete_popup: None,
             autocomplete_index: 0,
@@ -466,7 +466,7 @@ impl App {
                 if self.input.buffer.is_empty() {
                     AppAction::Quit
                 } else {
-                    // Legacy senpi: Ctrl+D on a non-empty buffer falls
+                    // Legacy helix: Ctrl+D on a non-empty buffer falls
                     // through to delete-char-forward, which is a no-op
                     // at end-of-line.
                     AppAction::Consumed("tui.editor.deleteCharForward".into())
@@ -478,7 +478,7 @@ impl App {
                 AppAction::Consumed(id.to_owned())
             }
             "tui.input.copy" => {
-                // Legacy senpi: Ctrl+C with a non-empty buffer clears
+                // Legacy helix: Ctrl+C with a non-empty buffer clears
                 // the input (a quick "discard this prompt" gesture).
                 // With an empty buffer it interrupts the current turn
                 // instead. Without that branch the chord matched in
@@ -642,7 +642,7 @@ impl App {
             RpcEvent::MessageEnd { .. } => {
                 // Drop the assistant bubble entirely when the backend
                 // produced only thinking deltas (or nothing) for this
-                // message - otherwise an empty `senpi` block sits in
+                // message - otherwise an empty `helix` block sits in
                 // the chat in front of the real response.
                 if let Some(last) = self.chat.messages.last()
                     && matches!(last.role, Role::Assistant)
@@ -659,7 +659,7 @@ impl App {
                 // emits one `message_start` per content block (e.g.
                 // thinking, response), and only some carry visible
                 // text. Pushing on every start produced a phantom empty
-                // `senpi` row before the real reply. We now create the
+                // `helix` row before the real reply. We now create the
                 // bubble lazily on the first text_delta in
                 // `MessageUpdate`.
                 self.footer.status = Status::Streaming;
@@ -756,7 +756,7 @@ pub struct AppConfig {
 impl App {
     /// Build an [`App`] from an [`AppConfig`]. Uses the bundled keymap;
     /// future iterations will load a user-override keymap from
-    /// `~/.senpi/agent/neo-keymap.json` if present.
+    /// `~/.helix/agent/neo-keymap.json` if present.
     pub fn from_config(config: AppConfig) -> Result<Self> {
         let spec = keymap::parse(DEFAULT_KEYMAP_JSON)?;
         let resolved = ResolvedKeymap::compile(&spec)?;
@@ -910,7 +910,7 @@ async fn drive(terminal: &mut Terminal<CrosstermBackend<Stdout>>, config: AppCon
 
     // Demo mode keeps the loop pure-render so screenshots and tests
     // do not require a backend on the host. Production paths set
-    // HELIX_NEO_BACKEND_BIN to either senpi --mode rpc or the QA
+    // HELIX_NEO_BACKEND_BIN to either helix --mode rpc or the QA
     // harness's helix-neo-faux binary.
     let mut backend: Option<RpcClient> = if demo_mode { None } else { maybe_spawn_backend() };
     let mut inbound: Option<mpsc::Receiver<Inbound>> = backend.as_mut().and_then(RpcClient::take_inbound);
@@ -1017,7 +1017,7 @@ fn draw_app(frame: &mut Frame<'_>, app: &App) {
     let input_wrap_width = usize::from(area.width.saturating_sub(6).max(1));
     let line_count = app.input.display_lines(input_wrap_width).len();
     // The sidebar shows demo metadata (todo list, file picker, etc.) and
-    // is only wired in demo mode for now. In real `senpi --neo` runs we
+    // is only wired in demo mode for now. In real `helix --neo` runs we
     // keep the layout single-column so the chat reclaims the right edge
     // instead of leaving a blank gutter.
     let sidebar_visible = app.demo_mode && area.width >= layout::SIDEBAR_MIN_TERMINAL_WIDTH;

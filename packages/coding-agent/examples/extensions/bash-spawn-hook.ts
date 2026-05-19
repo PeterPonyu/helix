@@ -4,7 +4,7 @@
  * Adjusts command, cwd, and env before execution.
  *
  * Usage:
- *   senpi -e ./bash-spawn-hook.ts
+ *   helix -e ./bash-spawn-hook.ts
  */
 
 import type { ExtensionAPI } from "@helix-bio/helix";

@@ -60,7 +60,7 @@ export default function (pi: ExtensionAPI) {
 }
 ```
 
-The extension factory can also be `async`. For dynamic model discovery, fetch and register models in the factory instead of `session_start`. senpi waits for the factory before startup continues, so the provider is available during interactive startup and to `senpi --list-models`.
+The extension factory can also be `async`. For dynamic model discovery, fetch and register models in the factory instead of `session_start`. helix waits for the factory before startup continues, so the provider is available during interactive startup and to `helix --list-models`.
 
 ## Override Existing Provider
 
@@ -209,7 +209,7 @@ models: [{
   id: "custom-model",
   // ...
   reasoning: true,
-  thinkingLevelMap: {              // map senpi levels to provider values; null hides unsupported levels
+  thinkingLevelMap: {              // map helix levels to provider values; null hides unsupported levels
     minimal: null,
     low: null,
     medium: null,
@@ -331,7 +331,7 @@ interface OAuthLoginCallbacks {
 
 ### OAuthCredentials
 
-Credentials are persisted in `~/.senpi/agent/auth.json`:
+Credentials are persisted in `~/.helix/agent/auth.json`:
 
 ```typescript
 interface OAuthCredentials {
@@ -657,7 +657,7 @@ interface ProviderModelConfig {
   /** Whether the model supports extended thinking. */
   reasoning: boolean;
 
-  /** Maps senpi thinking levels to provider/model-specific values; null marks a level unsupported. */
+  /** Maps helix thinking levels to provider/model-specific values; null marks a level unsupported. */
   thinkingLevelMap?: Partial<Record<"off" | "minimal" | "low" | "medium" | "high" | "xhigh", string | null>>;
 
   /** Supported input types. */

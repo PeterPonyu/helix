@@ -48,12 +48,12 @@ function getGlobalSettingsPaths(): string[] {
 	if (piAgentDir) paths.push(join(piAgentDir, "settings.json"));
 	if (senpiAgentDir) paths.push(join(senpiAgentDir, "settings.json"));
 	paths.push(join(homedir(), ".pi", "agent", "settings.json"));
-	paths.push(join(homedir(), ".senpi", "agent", "settings.json"));
+	paths.push(join(homedir(), ".helix", "agent", "settings.json"));
 	return unique(paths);
 }
 
 function getProjectSettingsPaths(cwd: string): string[] {
-	return [join(cwd, ".pi", "settings.json"), join(cwd, ".senpi", "settings.json")];
+	return [join(cwd, ".pi", "settings.json"), join(cwd, ".helix", "settings.json")];
 }
 
 function readMergedSettings(paths: string[]): Record<string, unknown> {

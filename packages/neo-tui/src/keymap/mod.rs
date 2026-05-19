@@ -1,7 +1,7 @@
 //! Keymap.
 //!
 //! Parses JSON binding strings into `KeyChord`s, matches incoming
-//! `crossterm::KeyEvent`s, and resolves them to legacy senpi action IDs
+//! `crossterm::KeyEvent`s, and resolves them to legacy helix action IDs
 //! (`app.model.select`, `tui.editor.cursorLeft`, `neo.palette.open`,
 //! ...).
 //!
@@ -21,7 +21,7 @@ use thiserror::Error;
 ///
 /// The same chord can resolve to a different action depending on
 /// whether the editor, a select list, or a dialog is focused (legacy
-/// senpi keeps the same convention via per-mode binding namespaces).
+/// helix keeps the same convention via per-mode binding namespaces).
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum FocusMode {
     /// Top-level chat view. App-level chords (`app.*`) win.
@@ -63,7 +63,7 @@ pub fn parse(input: &str) -> Result<KeymapSpec, KeymapError> {
 }
 
 /// A single key chord (one keystroke). Multi-stroke chord sequences are
-/// out of scope here; legacy senpi never used them either.
+/// out of scope here; legacy helix never used them either.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct KeyChord {
     pub code: KeyCode,
@@ -71,7 +71,7 @@ pub struct KeyChord {
 }
 
 impl KeyChord {
-    /// Parse a single key chord string in the legacy senpi vocabulary
+    /// Parse a single key chord string in the legacy helix vocabulary
     /// (`"ctrl+c"`, `"shift+tab"`, `"alt+enter"`, `"pageup"`, `"home"`,
     /// `"ctrl+]"`, `"ctrl+-"`, etc.).
     ///
@@ -248,7 +248,7 @@ impl ResolvedKeymap {
     }
 
     /// Resolve a `KeyEvent` against the current focus mode. Returns the
-    /// best-matching binding ID, mirroring the legacy senpi precedence
+    /// best-matching binding ID, mirroring the legacy helix precedence
     /// (`tui.editor.*` and `tui.input.*` win in `Input` mode, `tui.select.*`
     /// wins in `Dialog`, `app.*` wins in `Normal`). `neo.*` bindings are
     /// considered last so they can never shadow the legacy contract.

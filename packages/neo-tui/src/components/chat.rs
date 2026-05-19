@@ -264,7 +264,7 @@ fn render_assistant_message(
     let mut lines = vec![bar_line(
         theme,
         Token::AssistantMessageBar,
-        vec![header_span(theme, " > senpi")],
+        vec![header_span(theme, " > helix")],
     )];
 
     if let Some(id) = id
@@ -429,7 +429,7 @@ fn empty_state_line(theme: &ResolvedTheme) -> Line<'static> {
 #[must_use]
 pub fn sample() -> ChatState {
     let mut state = ChatState::new();
-    state.push_system("senpi --neo · ratatui frontend · backend: senpi --mode rpc".into());
+    state.push_system("helix --neo · ratatui frontend · backend: helix --mode rpc".into());
     state.push_user("List all rust files in this crate and tell me what each top-level module does.".into());
     let assistant = state.push_assistant("I'll run a quick ls + grep to map the crate.".into());
     state.messages.push(Message {

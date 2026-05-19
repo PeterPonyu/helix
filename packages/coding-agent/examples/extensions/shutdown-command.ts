@@ -2,7 +2,7 @@
  * Shutdown Command Extension
  *
  * Adds a /quit command that allows extensions to trigger clean shutdown.
- * Demonstrates how extensions can use ctx.shutdown() to exit senpi cleanly.
+ * Demonstrates how extensions can use ctx.shutdown() to exit helix cleanly.
  */
 
 import type { ExtensionAPI } from "@helix-bio/helix";
@@ -11,7 +11,7 @@ import { Type } from "typebox";
 export default function (pi: ExtensionAPI) {
 	// Register a /quit command that cleanly exits pi
 	pi.registerCommand("quit", {
-		description: "Exit senpi cleanly",
+		description: "Exit helix cleanly",
 		handler: async (_args, ctx) => {
 			ctx.shutdown();
 		},

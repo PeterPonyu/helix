@@ -1,6 +1,6 @@
 //! Subprocess JSONL RPC client.
 //!
-//! Spawns the senpi backend (or any drop-in JSONL-speaking child like
+//! Spawns the helix backend (or any drop-in JSONL-speaking child like
 //! `helix-neo-faux` in tests), pipes its stdio, and exchanges JSONL
 //! frames asynchronously via two tokio tasks plus a pair of mpsc
 //! channels.

@@ -1,4 +1,4 @@
-//! Wire-level envelope for senpi `--mode rpc` traffic.
+//! Wire-level envelope for helix `--mode rpc` traffic.
 //!
 //! See `packages/coding-agent/docs/rpc.md` for the canonical protocol.
 //!

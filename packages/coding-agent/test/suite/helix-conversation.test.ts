@@ -18,10 +18,10 @@ function createMockPi() {
 	};
 }
 
-describe("senpi conversation helpers", () => {
-	it("uses the senpi marker for injected system prefixes", () => {
-		expect(HELIX_SYSTEM_PREFIX).toBe("[system:senpi]");
-		expect(TODO_SYSTEM_PREFIX).toBe("[system:senpi]");
+describe("helix conversation helpers", () => {
+	it("uses the helix marker for injected system prefixes", () => {
+		expect(HELIX_SYSTEM_PREFIX).toBe("[system:helix]");
+		expect(TODO_SYSTEM_PREFIX).toBe("[system:helix]");
 	});
 
 	it("emits a unified injected event and prefixes builtin user messages", () => {
@@ -56,7 +56,7 @@ describe("senpi conversation helpers", () => {
 			pi as never,
 			"todotools.continuation",
 			{
-				customType: "senpi.test",
+				customType: "helix.test",
 				display: true,
 				content: [{ type: "text", text: "<system-reminder>\nDone\n</system-reminder>" }],
 			},
@@ -65,7 +65,7 @@ describe("senpi conversation helpers", () => {
 
 		expect(pi.sendMessage).toHaveBeenCalledWith(
 			expect.objectContaining({
-				customType: "senpi.test",
+				customType: "helix.test",
 				content: [
 					expect.objectContaining({
 						type: "text",
@@ -85,7 +85,7 @@ describe("senpi conversation helpers", () => {
 				sessionId: "session-2",
 				conversation: expect.objectContaining({
 					kind: "custom_message",
-					customType: "senpi.test",
+					customType: "helix.test",
 					prefix: HELIX_SYSTEM_PREFIX,
 					triggerTurn: true,
 					deliverAs: "followUp",
@@ -94,7 +94,7 @@ describe("senpi conversation helpers", () => {
 		);
 	});
 
-	it("emits a unified failed event for senpi conversation injection failures", () => {
+	it("emits a unified failed event for helix conversation injection failures", () => {
 		const pi = createMockPi();
 
 		emitBuiltinSystemMessageFailure(pi as never, {

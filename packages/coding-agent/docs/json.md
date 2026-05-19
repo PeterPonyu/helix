@@ -1,7 +1,7 @@
 # JSON Event Stream Mode
 
 ```bash
-senpi --mode json "Your prompt"
+helix --mode json "Your prompt"
 ```
 
 Outputs all session events as JSON lines to stdout. Useful for integrating pi into other tools or custom UIs.
@@ -78,5 +78,5 @@ Followed by events as they occur:
 ## Example
 
 ```bash
-senpi --mode json "List files" 2>/dev/null | jq -c 'select(.type == "message_end")'
+helix --mode json "List files" 2>/dev/null | jq -c 'select(.type == "message_end")'
 ```

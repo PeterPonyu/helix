@@ -50,7 +50,7 @@ pub fn render(frame: &mut Frame<'_>, area: Rect, theme: &ResolvedTheme, state: &
         Line::from(""),
         Line::from(vec![
             Span::styled("● ", Style::default().fg(dot_color)),
-            Span::styled("senpi", Style::default().fg(primary).add_modifier(Modifier::BOLD)),
+            Span::styled("helix", Style::default().fg(primary).add_modifier(Modifier::BOLD)),
             Span::styled(
                 " neo",
                 Style::default().fg(secondary).add_modifier(Modifier::BOLD),
