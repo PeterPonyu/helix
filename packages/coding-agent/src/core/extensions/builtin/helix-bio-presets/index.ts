@@ -11,7 +11,7 @@
  */
 
 import type { ExtensionAPI } from "../../types.js";
-import { resolveBioPreset } from "./presets.js";
+import { BIO_PRESETS, resolveBioPreset } from "./presets.js";
 
 export { BIO_PRESETS, type BioPreset, listBioPresets, resolveBioPreset } from "./presets.js";
 
@@ -34,7 +34,7 @@ export default function helixBioPresetsExtension(pi: ExtensionAPI): void {
 			if (!warnedAbout) warnedAbout = new Set();
 			if (!warnedAbout.has(name)) {
 				warnedAbout.add(name);
-				const known = Object.keys((await import("./presets.js")).BIO_PRESETS).join(", ");
+				const known = Object.keys(BIO_PRESETS).join(", ");
 				console.warn(
 					`[helix-bio-presets] unknown HELIX_BIO_PRESET="${name}" (known: ${known}). Continuing without preset.`,
 				);
