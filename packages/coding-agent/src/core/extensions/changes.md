@@ -87,7 +87,7 @@
 
 ### What changed
 
-- `builtin/system-messages.ts`: Renamed the exported conversation constants, event type names, and helper function names to the `SENPI_*` / `Senpi*` spelling, and changed the emitted conversation event name to `senpi:conversation`.
+- `builtin/system-messages.ts`: Renamed the exported conversation constants, event type names, and helper function names to the `HELIX_*` / `Senpi*` spelling, and changed the emitted conversation event name to `senpi:conversation`.
 - `builtin/todotools/system-messages.ts`: Applied the same event-name and constant-name cleanup to the vendored todotools helper.
 - `builtin/todotools/state.ts`: Changed the todo state custom entry type to `senpi.todo-state`.
 - `test/suite/senpi-conversation.test.ts`: Renamed the regression test file and assertions to match the senpi runtime naming.

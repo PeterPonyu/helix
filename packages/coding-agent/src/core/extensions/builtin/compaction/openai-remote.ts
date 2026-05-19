@@ -15,7 +15,7 @@ import type { SessionEntry } from "../../../session-manager.js";
 import type { ServiceTier, SessionBeforeCompactEvent } from "../../types.js";
 
 export const OPENAI_REMOTE_COMPACTION_SCHEMA = "senpi.compaction.openai-remote.v1";
-export const SENPI_COMPACTION_EVENT = "senpi:compaction";
+export const HELIX_COMPACTION_EVENT = "senpi:compaction";
 
 type OpenAiInputText = { type: "input_text"; text: string };
 type OpenAiInputImage = { type: "input_image"; detail: "auto"; image_url: string };

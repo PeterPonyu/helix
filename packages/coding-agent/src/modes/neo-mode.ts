@@ -5,7 +5,7 @@
  *
  * The binary is shipped alongside the npm package under
  * `dist/neo-tui-bin/senpi-neo-tui-<platform>-<arch>`. In dev (when running
- * from source), set `SENPI_NEO_TUI_DEV=1` to use
+ * from source), set `HELIX_NEO_TUI_DEV=1` to use
  * `../neo-tui/target/release/senpi-neo-tui` or `target/debug/senpi-neo-tui`.
  */
 
@@ -48,9 +48,9 @@ function resolveBinaryPath(): { path: string; source: string } | undefined {
 
 	// 1. Explicit override wins over everything else - that is what makes
 	//    it an override.
-	const override = process.env.SENPI_NEO_TUI_BIN;
+	const override = process.env.HELIX_NEO_TUI_BIN;
 	if (override && existsSync(override)) {
-		return { path: override, source: "SENPI_NEO_TUI_BIN" };
+		return { path: override, source: "HELIX_NEO_TUI_BIN" };
 	}
 
 	// 2. Production: alongside the dist/cli.js script.
@@ -60,7 +60,7 @@ function resolveBinaryPath(): { path: string; source: string } | undefined {
 	}
 
 	// 3. Dev: target/{release,debug}/senpi-neo-tui in the workspace tree.
-	if (process.env.SENPI_NEO_TUI_DEV === "1") {
+	if (process.env.HELIX_NEO_TUI_DEV === "1") {
 		const repoRoot = resolve(SCRIPT_DIR, "..", "..", "..", "..");
 		const releasePath = resolve(repoRoot, "target", "release", `senpi-neo-tui${exe}`);
 		if (existsSync(releasePath)) {
@@ -120,7 +120,7 @@ export async function runNeoMode(options: RunNeoModeOptions): Promise<number> {
 					"Error: --neo TUI binary not found.",
 					`Expected: dist/neo-tui-bin/senpi-neo-tui-${platform}-${arch}${exe}`,
 					"For dev, build the crate (cargo build --release --package senpi-neo-tui)",
-					"and re-run with SENPI_NEO_TUI_DEV=1, or set SENPI_NEO_TUI_BIN.",
+					"and re-run with HELIX_NEO_TUI_DEV=1, or set HELIX_NEO_TUI_BIN.",
 				].join("\n"),
 			),
 		);
@@ -150,8 +150,8 @@ export async function runNeoMode(options: RunNeoModeOptions): Promise<number> {
 
 	const env = {
 		...process.env,
-		SENPI_NEO_BACKEND_BIN: options.senpiBin,
-		SENPI_NEO_BACKEND_ARGS: JSON.stringify(backendArgs),
+		HELIX_NEO_BACKEND_BIN: options.senpiBin,
+		HELIX_NEO_BACKEND_ARGS: JSON.stringify(backendArgs),
 	};
 
 	const child: ChildProcess = spawn(located.path, neoArgs, {

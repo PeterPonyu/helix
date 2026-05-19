@@ -10,7 +10,7 @@ const defaultRoot = dirname(__dirname);
 export function shouldWriteGlobalShim(root = defaultRoot, environment = process.env) {
 	if (environment.CI) return false;
 	if (!existsSync(join(root, ".git"))) return false;
-	return environment.SENPI_WRITE_GLOBAL_SHIM === "1";
+	return environment.HELIX_WRITE_GLOBAL_SHIM === "1";
 }
 
 function linkedWrapperScript() {

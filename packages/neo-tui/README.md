@@ -24,7 +24,7 @@ cargo run --release --package senpi-neo-tui --bin senpi-neo-tui -- \
     --demo --demo-seconds 5
 
 # Through the Node CLI (resolves the binary out of target/release):
-SENPI_NEO_TUI_DEV=1 node packages/coding-agent/dist/cli.js --neo
+HELIX_NEO_TUI_DEV=1 node packages/coding-agent/dist/cli.js --neo
 
 # Offline QA with the faux backend:
 cargo run --release --package senpi-neo-tui --bin senpi-neo-tui -- \
@@ -43,16 +43,16 @@ senpi --neo -- --demo --demo-seconds 5
 
 | Flag | Env | Description |
 |------|-----|-------------|
-| `--backend-bin <PATH>` | `SENPI_NEO_BACKEND_BIN` | Path to the senpi backend binary. Spawned with `--mode rpc` on startup; if unset, the TUI runs offline (demo mode or empty session). |
-| `--backend-args <JSON>` | `SENPI_NEO_BACKEND_ARGS` | JSON array of extra args forwarded to the backend, e.g. `'["--mode","rpc"]'`. |
-| `--demo` | `SENPI_NEO_DEMO` | Render the canned demo scene used for screenshots. |
+| `--backend-bin <PATH>` | `HELIX_NEO_BACKEND_BIN` | Path to the senpi backend binary. Spawned with `--mode rpc` on startup; if unset, the TUI runs offline (demo mode or empty session). |
+| `--backend-args <JSON>` | `HELIX_NEO_BACKEND_ARGS` | JSON array of extra args forwarded to the backend, e.g. `'["--mode","rpc"]'`. |
+| `--demo` | `HELIX_NEO_DEMO` | Render the canned demo scene used for screenshots. |
 | `--demo-seconds <N>` | — | Exit after `N` seconds in demo mode. `0` = until Ctrl-C. |
-| `--theme <ID\|PATH>` | `SENPI_NEO_THEME` | Override the theme by bundled id (`senpi-neo-dark`, `opencode/dracula`, …) or by JSON file path. |
+| `--theme <ID\|PATH>` | `HELIX_NEO_THEME` | Override the theme by bundled id (`senpi-neo-dark`, `opencode/dracula`, …) or by JSON file path. |
 | `--list-themes` | — | Print bundled theme ids and exit. |
 
 ## Bundled themes
 
-`senpi-neo-dark` (default) plus 15 opencode-flavoured themes under `opencode/`: `ayu`, `catppuccin`, `catppuccin-frappe`, `catppuccin-macchiato`, `dracula`, `everforest`, `github`, `gruvbox`, `kanagawa`, `monokai`, `nord`, `opencode`, `rosepine`, `tokyonight`, `vesper`. Pass any of them to `--theme` or set `SENPI_NEO_THEME`. Custom themes follow the JSON schema in [`docs/theme-spec.md`](./docs/theme-spec.md).
+`senpi-neo-dark` (default) plus 15 opencode-flavoured themes under `opencode/`: `ayu`, `catppuccin`, `catppuccin-frappe`, `catppuccin-macchiato`, `dracula`, `everforest`, `github`, `gruvbox`, `kanagawa`, `monokai`, `nord`, `opencode`, `rosepine`, `tokyonight`, `vesper`. Pass any of them to `--theme` or set `HELIX_NEO_THEME`. Custom themes follow the JSON schema in [`docs/theme-spec.md`](./docs/theme-spec.md).
 
 ## Default keybindings
 

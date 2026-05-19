@@ -29,16 +29,16 @@ struct Cli {
     /// Path to senpi backend binary for `--mode rpc`. When set, the
     /// TUI spawns the backend on startup; otherwise the run is offline
     /// (demo mode or no agent activity).
-    #[arg(long, env = "SENPI_NEO_BACKEND_BIN")]
+    #[arg(long, env = "HELIX_NEO_BACKEND_BIN")]
     backend_bin: Option<PathBuf>,
 
     /// JSON array of args to forward to the backend, e.g.
     /// `["--mode","rpc"]`. Ignored when `--backend-bin` is unset.
-    #[arg(long, env = "SENPI_NEO_BACKEND_ARGS", default_value = "[]")]
+    #[arg(long, env = "HELIX_NEO_BACKEND_ARGS", default_value = "[]")]
     backend_args: String,
 
     /// Render the canned demo state and exit after `--demo-seconds`.
-    #[arg(long, env = "SENPI_NEO_DEMO", default_value_t = false)]
+    #[arg(long, env = "HELIX_NEO_DEMO", default_value_t = false)]
     demo: bool,
 
     /// Demo deadline in seconds (only with --demo). 0 = render until ctrl-c.
@@ -46,7 +46,7 @@ struct Cli {
     demo_seconds: u64,
 
     /// Override the theme by bundled id or JSON file path.
-    #[arg(long, env = "SENPI_NEO_THEME")]
+    #[arg(long, env = "HELIX_NEO_THEME")]
     theme: Option<String>,
 
     /// Print bundled theme ids and exit.
@@ -170,8 +170,8 @@ fn real_main() -> Result<()> {
         demo_seconds: (cli.demo && cli.demo_seconds > 0).then_some(cli.demo_seconds),
     };
 
-    // `maybe_spawn_backend()` in app::run reads SENPI_NEO_BACKEND_BIN
-    // and SENPI_NEO_BACKEND_ARGS from the environment. Forward the
+    // `maybe_spawn_backend()` in app::run reads HELIX_NEO_BACKEND_BIN
+    // and HELIX_NEO_BACKEND_ARGS from the environment. Forward the
     // parsed CLI flags into the env so a direct binary invocation like
     // `senpi-neo-tui --backend-bin senpi --backend-args '["--mode","rpc"]'`
     // works without the caller needing to set the env vars manually.
@@ -181,11 +181,11 @@ fn real_main() -> Result<()> {
     // before any concurrent reader.
     if let Some(bin) = cli.backend_bin.as_ref() {
         // SAFETY: single-threaded context at this point in main().
-        unsafe { std::env::set_var("SENPI_NEO_BACKEND_BIN", bin) };
+        unsafe { std::env::set_var("HELIX_NEO_BACKEND_BIN", bin) };
     }
     if cli.backend_args != "[]" {
         // SAFETY: single-threaded context at this point in main().
-        unsafe { std::env::set_var("SENPI_NEO_BACKEND_ARGS", &cli.backend_args) };
+        unsafe { std::env::set_var("HELIX_NEO_BACKEND_ARGS", &cli.backend_args) };
     }
 
     let runtime = tokio::runtime::Builder::new_current_thread()

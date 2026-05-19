@@ -17,7 +17,7 @@ describe("senpi branding", () => {
 		expect(branding).toEqual({
 			appName: "senpi",
 			configDirName: ".senpi",
-			envAgentDir: "SENPI_CODING_AGENT_DIR",
+			envAgentDir: "HELIX_CODING_AGENT_DIR",
 		});
 	});
 

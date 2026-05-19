@@ -33,20 +33,20 @@ describe("create-root-senpi-wrapper", () => {
 
 		// When
 		const defaultDecision = shouldWriteGlobalShim(root, {});
-		const ciDecision = shouldWriteGlobalShim(root, { CI: "true", SENPI_WRITE_GLOBAL_SHIM: "1" });
+		const ciDecision = shouldWriteGlobalShim(root, { CI: "true", HELIX_WRITE_GLOBAL_SHIM: "1" });
 
 		// Then
 		assert.equal(defaultDecision, false);
 		assert.equal(ciDecision, false);
 	});
 
-	it("writes a global shim only when SENPI_WRITE_GLOBAL_SHIM=1 in a non-CI git checkout", () => {
+	it("writes a global shim only when HELIX_WRITE_GLOBAL_SHIM=1 in a non-CI git checkout", () => {
 		// Given
 		const root = mkdtempSync(join(tmpdir(), "senpi-wrapper-git-optin-"));
 		mkdirSync(join(root, ".git"));
 
 		// When
-		const optInDecision = shouldWriteGlobalShim(root, { SENPI_WRITE_GLOBAL_SHIM: "1" });
+		const optInDecision = shouldWriteGlobalShim(root, { HELIX_WRITE_GLOBAL_SHIM: "1" });
 
 		// Then
 		assert.equal(optInDecision, true);
