@@ -2,8 +2,8 @@ import { describe, expect, test, vi } from "vitest";
 import { printHelp } from "../src/cli/args.js";
 import { APP_NAME, CONFIG_DIR_NAME, ENV_AGENT_DIR } from "../src/config.js";
 
-describe("senpi branding", () => {
-	test("uses senpi as the runtime app identity", () => {
+describe("helix branding", () => {
+	test("uses helix as the runtime app identity", () => {
 		// given
 
 		// when
@@ -15,13 +15,13 @@ describe("senpi branding", () => {
 
 		// then
 		expect(branding).toEqual({
-			appName: "senpi",
-			configDirName: ".senpi",
+			appName: "helix",
+			configDirName: ".helix",
 			envAgentDir: "HELIX_CODING_AGENT_DIR",
 		});
 	});
 
-	test("prints senpi in the top-level help output", () => {
+	test("prints helix in the top-level help output", () => {
 		// given
 		const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
 
@@ -31,10 +31,10 @@ describe("senpi branding", () => {
 			const output = logSpy.mock.calls.map(([message]) => String(message)).join("\n");
 
 			// then
-			expect(output).toContain("senpi - AI coding assistant");
-			expect(output).toContain("senpi [options] [@files...] [messages...]");
-			expect(output).toContain("senpi install <source> [-l]");
-			expect(output).toContain("~/.senpi/agent");
+			expect(output).toContain("helix - AI coding assistant");
+			expect(output).toContain("helix [options] [@files...] [messages...]");
+			expect(output).toContain("helix install <source> [-l]");
+			expect(output).toContain("~/.helix/agent");
 		} finally {
 			logSpy.mockRestore();
 		}
