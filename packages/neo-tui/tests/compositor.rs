@@ -3,14 +3,14 @@ use std::sync::{Arc, Mutex};
 use crossterm::event::{
     Event as CrosstermEvent, KeyCode, KeyEvent, KeyEventKind, KeyEventState, KeyModifiers,
 };
+use helix_neo_tui::{
+    compositor::{Component, Compositor, EventResult, RenderContext},
+    load_bundled_dark_theme,
+};
 use ratatui::{
     Frame, Terminal,
     backend::TestBackend,
     layout::{Position, Rect},
-};
-use helix_neo_tui::{
-    compositor::{Component, Compositor, EventResult, RenderContext},
-    load_bundled_dark_theme,
 };
 
 struct MockComponent {

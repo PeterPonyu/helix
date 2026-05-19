@@ -3,12 +3,12 @@
 //! Locks the connection dot, model display, thinking pill, branch dirty
 //! marker, and responsive width dropping.
 
-use ratatui::{Terminal, backend::TestBackend, layout::Rect, style::Color};
 use helix_neo_tui::{
     components::header::{self, HeaderState},
     load_bundled_dark_theme,
     theme::Token,
 };
+use ratatui::{Terminal, backend::TestBackend, layout::Rect, style::Color};
 
 fn setup() -> (Terminal<TestBackend>, helix_neo_tui::theme::ResolvedTheme) {
     let backend = TestBackend::new(120, 3);

@@ -1,7 +1,7 @@
 //! Contract tests for bundled opencode-format themes.
 
-use ratatui::style::Color;
 use helix_neo_tui::theme::{self, ThemeMode, Token, opencode_palette::blend};
+use ratatui::style::Color;
 use std::process::Command;
 
 const OPENCODE_THEMES: [(&str, &str); 15] = [

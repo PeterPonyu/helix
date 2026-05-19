@@ -3,12 +3,12 @@
 //! Locks state-specific visual hierarchy: idle vs busy/streaming/tool/error
 //! must be visually distinct (glyph, bg color, metrics visibility).
 
-use ratatui::{Terminal, backend::TestBackend, buffer::Buffer, layout::Rect};
 use helix_neo_tui::{
     components::footer::{self, FooterState},
     load_bundled_dark_theme,
     theme::Token,
 };
+use ratatui::{Terminal, backend::TestBackend, buffer::Buffer, layout::Rect};
 
 const BRAILLE_SPINNER_GLYPHS: &[char] = &[
     '\u{2802}', '\u{2804}', '\u{2806}', '\u{2826}', '\u{2827}', '\u{2837}', '\u{283F}', '\u{281F}',

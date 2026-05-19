@@ -1,9 +1,9 @@
-use ratatui::{Terminal, backend::TestBackend, buffer::Buffer, layout::Rect, style::Color};
 use helix_neo_tui::{
     components::chat::{self, ChatState, ToolCardData, ToolStatus},
     load_bundled_dark_theme,
     theme::{ResolvedTheme, Token},
 };
+use ratatui::{Terminal, backend::TestBackend, buffer::Buffer, layout::Rect, style::Color};
 
 fn theme() -> ResolvedTheme {
     load_bundled_dark_theme().expect("bundled dark theme must resolve")
