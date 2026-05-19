@@ -15,6 +15,22 @@ helix wraps your LLM provider of choice (Anthropic / OpenAI / OpenRouter / Toget
 - **Per-model prompt presets** (gpt-5.x, claude-opus-4-{5,6,7}, kimi-k2-6)
 - **Extension-first architecture** — bioinformatics tools ship as builtin or user packages, not core forks
 
+## What makes helix bio-native (not just "tools + agent")
+
+helix's bioinformatics character is encoded at three layers, not only as plugins:
+
+1. **Capability layer** — builtin extensions that add bio-domain tools (`helix-seq`, `helix-bed-gff`, `helix-coords`, `helix-ontology`).
+2. **Policy layer** — the `helix-bio-persona` builtin appends a bioinformatics workflow addendum to the system prompt on every session start. The agent learns six defaults that distinguish it from a generic coding assistant:
+   - **Inspect before claim** — quote counts / IDs / lengths only after calling the matching `*_info` tool
+   - **Normalize before join** — `coord_chrom_normalize` before joining `chr1`+`1` or UCSC+Ensembl data
+   - **Convention explicit** — state 0-based half-open vs 1-based inclusive in answers
+   - **Ontology grounded** — call `ontology_normalize`; never invent OBO IDs
+   - **Sample-bounded** — re-call inspector tools with larger `sampleSize` rather than extrapolating from truncated scans
+   - **Format identity** — trust the path's bytes, not the user's prose claim about format
+3. **Test layer** — a 4-tier taxonomy (L1 unit, L2 synthetic, L2-real, L3 harness) with real public bioinformatics fixtures from samtools / bcftools / bedtools / biopython / gffutils test data. See [`.helix-notes/test-layers.md`](./.helix-notes/test-layers.md).
+
+The policy layer is what stops helix from being "senpi + a tool dump." Plugin-only forks add capability without changing defaults; helix's persona makes the bioinformatics workflow the default, with the generic coding-agent toolset still available additively.
+
 ## Bioinformatics extension surface
 
 Each item is a separate package under `packages/coding-agent/src/core/extensions/builtin/` (in-tree) or installable via `helix install`. Core stays minimal.
