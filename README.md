@@ -2,8 +2,6 @@
 
 An AI agent harness for **bioinformatics** — sequence analysis, NGS pipeline orchestration, genomic database retrieval, and ontology-aware metadata search, driven from a single CLI.
 
-helix is **not** a computational-biology harness. Modeling, simulation, structural prediction, and systems-biology work are out of scope and tracked in a separate sibling project.
-
 > **Status:** scaffolding. The functional rebrand from upstream is complete; bioinformatics-specific extensions are being implemented as separate packages.
 
 ## What helix does
