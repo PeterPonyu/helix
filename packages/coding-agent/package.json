@@ -91,7 +91,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/helix-bio/helix.git",
+		"url": "git+https://github.com/PeterPonyu/helix.git",
 		"directory": "packages/coding-agent"
 	},
 	"engines": {
