@@ -1,6 +1,6 @@
 # `helix-neo-tui`
 
-Native Rust + [ratatui](https://ratatui.rs) TUI for [senpi](https://github.com/code-yeongyu/senpi).
+Native Rust + [ratatui](https://ratatui.rs) TUI for [senpi](https://github.com/helix-bio/helix).
 
 Launched via:
 

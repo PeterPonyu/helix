@@ -6,7 +6,7 @@ members = ["packages/neo-tui"]
 edition = "2024"
 rust-version = "1.85"
 license = "MIT"
-repository = "https://github.com/REPLACE-ME/helix"
+repository = "https://github.com/helix-bio/helix"
 authors = ["helix maintainers"]
 
 [workspace.lints.rust]
