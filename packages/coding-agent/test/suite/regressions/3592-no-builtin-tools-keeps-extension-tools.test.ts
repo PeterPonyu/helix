@@ -88,11 +88,22 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			"ls",
 			"ontology_normalize",
 			"read",
+			"seq_fasta_info",
+			"seq_fastq_info",
+			"seq_vcf_summary",
 			"todoread",
 			"todowrite",
 			"write",
 		]);
-		expect(session.getActiveToolNames()).toEqual(["todowrite", "todoread", "ontology_normalize", "dynamic_tool"]);
+		expect(session.getActiveToolNames()).toEqual([
+			"todowrite",
+			"todoread",
+			"ontology_normalize",
+			"seq_fasta_info",
+			"seq_fastq_info",
+			"seq_vcf_summary",
+			"dynamic_tool",
+		]);
 		expect(session.systemPrompt).toContain("- dynamic_tool: Run dynamic test behavior");
 		expect(session.systemPrompt).not.toContain("- read:");
 		expect(session.systemPrompt).not.toContain("- bash:");
@@ -124,7 +135,15 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			noTools: "builtin",
 		});
 
-		expect(session.getActiveToolNames()).toEqual(["apply_patch", "todowrite", "todoread", "ontology_normalize"]);
+		expect(session.getActiveToolNames()).toEqual([
+			"apply_patch",
+			"todowrite",
+			"todoread",
+			"ontology_normalize",
+			"seq_fasta_info",
+			"seq_fastq_info",
+			"seq_vcf_summary",
+		]);
 		expect(session.systemPrompt).toContain("- todowrite:");
 		expect(session.systemPrompt).not.toContain("- read:");
 		session.dispose();
