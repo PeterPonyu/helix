@@ -1,4 +1,4 @@
-//! `senpi-neo-tui` - native Rust + ratatui TUI for senpi.
+//! `helix-neo-tui` - native Rust + ratatui TUI for senpi.
 //!
 //! See [`README`](https://github.com/code-yeongyu/senpi/blob/main/packages/neo-tui/README.md)
 //! and `plans/neo-tui.md` for the architecture and module layout.
@@ -7,7 +7,7 @@
 //! offline faux backend can drive individual subsystems without
 //! constructing the full app.
 
-#![doc(html_root_url = "https://docs.rs/senpi-neo-tui")]
+#![doc(html_root_url = "https://docs.rs/helix-neo-tui")]
 
 pub mod anim;
 pub mod app;
@@ -29,7 +29,7 @@ pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const DEFAULT_KEYMAP_JSON: &str = include_str!("../assets/keymaps/default.json");
 
 /// Bundled default dark theme JSON source in senpi's native schema.
-pub const DEFAULT_DARK_THEME_JSON: &str = include_str!("../assets/themes/senpi-neo-dark.json");
+pub const DEFAULT_DARK_THEME_JSON: &str = include_str!("../assets/themes/helix-neo-dark.json");
 
 /// Parse + resolve the bundled dark theme JSON into a [`theme::ResolvedTheme`].
 ///

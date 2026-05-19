@@ -2,7 +2,7 @@
 
 use super::{ResolvedTheme, ThemeError, ThemeMode, derive, load, parse_opencode};
 
-pub const DEFAULT_THEME_ID: &str = "senpi-neo-dark";
+pub const DEFAULT_THEME_ID: &str = "helix-neo-dark";
 
 const OPENCODE_THEMES: [(&str, &str); 15] = [
     (
@@ -64,7 +64,7 @@ pub fn list_theme_ids() -> Vec<&'static str> {
 
 pub fn load_by_id(id: &str, mode: ThemeMode) -> Result<ResolvedTheme, ThemeError> {
     if id == DEFAULT_THEME_ID {
-        return load(include_str!("../../assets/themes/senpi-neo-dark.json"));
+        return load(include_str!("../../assets/themes/helix-neo-dark.json"));
     }
 
     let Some((_, source)) = OPENCODE_THEMES.iter().find(|(theme_id, _)| *theme_id == id) else {

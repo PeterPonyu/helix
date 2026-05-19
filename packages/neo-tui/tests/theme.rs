@@ -5,9 +5,9 @@
 //! resolver covers more tokens.
 
 use ratatui::style::Color;
-use senpi_neo_tui::theme::{self, Token};
+use helix_neo_tui::theme::{self, Token};
 
-const DARK_JSON: &str = senpi_neo_tui::DEFAULT_DARK_THEME_JSON;
+const DARK_JSON: &str = helix_neo_tui::DEFAULT_DARK_THEME_JSON;
 
 #[test]
 fn parses_bundled_dark_theme() {
@@ -42,7 +42,7 @@ fn parses_bundled_dark_theme() {
 
 #[test]
 fn bundled_dark_theme_resolves_every_token_in_token_all() {
-    // Regression: the bundled `senpi-neo-dark` theme MUST define every
+    // Regression: the bundled `helix-neo-dark` theme MUST define every
     // semantic token the renderer consumes. `Token::ALL` is the source of
     // truth; if a future Token variant is added without updating the
     // bundled JSON, this test fails loudly instead of silently rendering
@@ -58,7 +58,7 @@ fn bundled_dark_theme_resolves_every_token_in_token_all() {
 
     assert!(
         missing.is_empty(),
-        "bundled senpi-neo-dark theme is missing concrete colors for tokens: {missing:?}"
+        "bundled helix-neo-dark theme is missing concrete colors for tokens: {missing:?}"
     );
 }
 

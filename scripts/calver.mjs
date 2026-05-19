@@ -33,7 +33,7 @@
 import { execFileSync } from "node:child_process";
 
 const DEFAULT_PACKAGES = [
-	"@code-yeongyu/senpi",
+	"@helix-bio/helix",
 	"@earendil-works/pi-ai",
 	"@earendil-works/pi-agent-core",
 	"@earendil-works/pi-tui",
@@ -55,7 +55,7 @@ function computeToday(now = new Date()) {
 /**
  * Fetch published versions for a single npm package, tolerating any failure.
  *
- * @param {string} pkg npm package name (e.g. `"@code-yeongyu/senpi"`).
+ * @param {string} pkg npm package name (e.g. `"@helix-bio/helix"`).
  * @returns {string[]} Array of versions, or `[]` on any failure.
  */
 function fetchRegistryVersions(pkg) {

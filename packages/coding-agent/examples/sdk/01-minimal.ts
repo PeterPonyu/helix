@@ -5,7 +5,7 @@
  * from cwd and ~/.senpi/agent. Model chosen from settings or first available.
  */
 
-import { createAgentSession } from "@code-yeongyu/senpi";
+import { createAgentSession } from "@helix-bio/helix";
 
 const { session } = await createAgentSession();
 

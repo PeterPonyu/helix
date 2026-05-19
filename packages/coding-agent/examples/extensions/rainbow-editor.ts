@@ -4,7 +4,7 @@
  * Usage: senpi --extension ./examples/extensions/rainbow-editor.ts
  */
 
-import { CustomEditor, type ExtensionAPI } from "@code-yeongyu/senpi";
+import { CustomEditor, type ExtensionAPI } from "@helix-bio/helix";
 
 // Base colors (coral → yellow → green → teal → blue → purple → pink)
 const COLORS: [number, number, number][] = [

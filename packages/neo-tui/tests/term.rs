@@ -1,7 +1,7 @@
 use std::process::Command;
 
 use crossterm::event::KeyboardEnhancementFlags;
-use senpi_neo_tui::term::{InTmux, TerminalCaps, osc52_set_clipboard};
+use helix_neo_tui::term::{InTmux, TerminalCaps, osc52_set_clipboard};
 
 #[test]
 fn term_emits_modify_other_keys_when_tmux_env_set() {

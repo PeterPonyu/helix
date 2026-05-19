@@ -3,7 +3,7 @@
 //! `parse` must round-trip the bundled keymap and preserve every binding
 //! verbatim. Beyond that, this file enforces the strongest contract
 //! the neo-tui has: 100% keybinding parity with the legacy
-//! `@earendil-works/pi-tui` + `@code-yeongyu/senpi` interactive TUI.
+//! `@earendil-works/pi-tui` + `@helix-bio/helix` interactive TUI.
 //!
 //! TDD discipline: every binding from the legacy registries is encoded
 //! here as a hard-coded expectation. If anyone bumps a default key (in
@@ -15,9 +15,9 @@
 //!
 //! Strict `Action`-enum validation arrives with T8.
 
-use senpi_neo_tui::keymap;
+use helix_neo_tui::keymap;
 
-const DEFAULT_JSON: &str = senpi_neo_tui::DEFAULT_KEYMAP_JSON;
+const DEFAULT_JSON: &str = helix_neo_tui::DEFAULT_KEYMAP_JSON;
 
 /// Source of truth for the test: every binding from
 /// `packages/tui/src/keybindings.ts::TUI_KEYBINDINGS` and

@@ -309,7 +309,7 @@ pub fn resolve(spec: &ThemeSpec) -> Result<ResolvedTheme, ThemeError> {
             // tracing subscriber is installed (T16) this becomes a
             // structured event instead.
             eprintln!(
-                "senpi-neo-tui: warning: ignoring unknown theme token `{key}` (theme `{}`)",
+                "helix-neo-tui: warning: ignoring unknown theme token `{key}` (theme `{}`)",
                 spec.name
             );
             continue;

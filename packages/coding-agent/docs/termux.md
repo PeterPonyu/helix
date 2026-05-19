@@ -17,7 +17,7 @@ pkg update && pkg upgrade
 pkg install nodejs termux-api git
 
 # Install pi
-npm install -g @code-yeongyu/senpi
+npm install -g @helix-bio/helix
 
 # Create config directory
 mkdir -p ~/.senpi/agent

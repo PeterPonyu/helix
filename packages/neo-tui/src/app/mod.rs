@@ -911,7 +911,7 @@ async fn drive(terminal: &mut Terminal<CrosstermBackend<Stdout>>, config: AppCon
     // Demo mode keeps the loop pure-render so screenshots and tests
     // do not require a backend on the host. Production paths set
     // HELIX_NEO_BACKEND_BIN to either senpi --mode rpc or the QA
-    // harness's senpi-neo-faux binary.
+    // harness's helix-neo-faux binary.
     let mut backend: Option<RpcClient> = if demo_mode { None } else { maybe_spawn_backend() };
     let mut inbound: Option<mpsc::Receiver<Inbound>> = backend.as_mut().and_then(RpcClient::take_inbound);
     let cmd_tx: Option<mpsc::Sender<Command>> = backend.as_ref().map(RpcClient::command_sender);

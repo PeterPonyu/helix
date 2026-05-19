@@ -4,8 +4,8 @@
  * Shows how to select a specific model and thinking level.
  */
 
-import { AuthStorage, createAgentSession, ModelRegistry } from "@code-yeongyu/senpi";
 import { getModel } from "@earendil-works/pi-ai";
+import { AuthStorage, createAgentSession, ModelRegistry } from "@helix-bio/helix";
 
 // Set up auth storage and model registry
 const authStorage = AuthStorage.create();

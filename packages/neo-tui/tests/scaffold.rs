@@ -3,7 +3,7 @@
 //! These tests start as RED (they call `parse` stubs that error out) and
 //! flip to GREEN as T6/T7/T8 land.
 
-use senpi_neo_tui::{
+use helix_neo_tui::{
     DEFAULT_DARK_THEME_JSON, DEFAULT_KEYMAP_JSON, VERSION,
     rpc::envelope::{Envelope, parse_line},
 };
@@ -31,7 +31,7 @@ fn bundled_dark_theme_json_is_valid_json() {
         serde_json::from_str(DEFAULT_DARK_THEME_JSON).expect("bundled dark theme must parse as JSON");
     assert_eq!(
         value.get("name").and_then(serde_json::Value::as_str),
-        Some("senpi-neo-dark"),
+        Some("helix-neo-dark"),
     );
     assert!(value.get("tokens").is_some(), "theme must declare tokens");
 }

@@ -40,10 +40,10 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import type { ExtensionAPI, ExtensionContext } from "@code-yeongyu/senpi";
-import { DynamicBorder, getAgentDir } from "@code-yeongyu/senpi";
 import type { Api, Model } from "@earendil-works/pi-ai";
 import { Container, Key, type SelectItem, SelectList, Text } from "@earendil-works/pi-tui";
+import type { ExtensionAPI, ExtensionContext } from "@helix-bio/helix";
+import { DynamicBorder, getAgentDir } from "@helix-bio/helix";
 
 // Preset configuration
 interface Preset {

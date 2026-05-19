@@ -4,13 +4,13 @@
 //! marker, and responsive width dropping.
 
 use ratatui::{Terminal, backend::TestBackend, layout::Rect, style::Color};
-use senpi_neo_tui::{
+use helix_neo_tui::{
     components::header::{self, HeaderState},
     load_bundled_dark_theme,
     theme::Token,
 };
 
-fn setup() -> (Terminal<TestBackend>, senpi_neo_tui::theme::ResolvedTheme) {
+fn setup() -> (Terminal<TestBackend>, helix_neo_tui::theme::ResolvedTheme) {
     let backend = TestBackend::new(120, 3);
     let terminal = Terminal::new(backend).unwrap();
     let theme = load_bundled_dark_theme().unwrap();

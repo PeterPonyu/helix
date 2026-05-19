@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # capture-screenshots.sh
 #
-# Drives the senpi-neo-tui binary through canonical interactive states inside
+# Drives the helix-neo-tui binary through canonical interactive states inside
 # tmux and renders each captured pane to a PNG. Used to regenerate the marketing
 # screenshots under docs/screenshots/ whenever the demo scene or overlays change.
 #
 # Pipeline per state:
 #   1. fresh tmux session at exact WxH
-#   2. spawn senpi-neo-tui (demo mode or with senpi-neo-faux as RPC backend)
+#   2. spawn helix-neo-tui (demo mode or with helix-neo-faux as RPC backend)
 #   3. send keystrokes to reach the target state
 #   4. tmux capture-pane -p -e  -> ANSI text with 24-bit colour
 #   5. aha --no-header          -> standalone HTML
@@ -19,23 +19,23 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-TUI_BIN="${REPO_ROOT}/target/release/senpi-neo-tui"
-FAUX_BIN="${REPO_ROOT}/target/release/senpi-neo-faux"
+TUI_BIN="${REPO_ROOT}/target/release/helix-neo-tui"
+FAUX_BIN="${REPO_ROOT}/target/release/helix-neo-faux"
 OUT_DIR="${REPO_ROOT}/packages/neo-tui/docs/screenshots"
-WORK_DIR="$(mktemp -d -t senpi-neo-shots.XXXXXX)"
+WORK_DIR="$(mktemp -d -t helix-neo-shots.XXXXXX)"
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 if [[ ! -x "$TUI_BIN" ]]; then
-  echo "missing $TUI_BIN - run cargo build --release --package senpi-neo-tui --bins" >&2
+  echo "missing $TUI_BIN - run cargo build --release --package helix-neo-tui --bins" >&2
   exit 1
 fi
 if [[ ! -x "$FAUX_BIN" ]]; then
-  echo "missing $FAUX_BIN - run cargo build --release --package senpi-neo-tui --bins" >&2
+  echo "missing $FAUX_BIN - run cargo build --release --package helix-neo-tui --bins" >&2
   exit 1
 fi
 
 cleanup() {
-  for s in $(tmux ls 2>/dev/null | awk -F: '/^senpi-neo-shot/ {print $1}'); do
+  for s in $(tmux ls 2>/dev/null | awk -F: '/^helix-neo-shot/ {print $1}'); do
     tmux kill-session -t "$s" 2>/dev/null || true
   done
   rm -rf "$WORK_DIR"
@@ -123,7 +123,7 @@ shot_baseline() {
   local w="$2"
   local h="$3"
   local out="$4"
-  local name="senpi-neo-shot-${label}"
+  local name="helix-neo-shot-${label}"
   new_session "$name" "$w" "$h"
   send_keys "$name" "$TUI_BIN --demo --demo-seconds 600" Enter
   sleep 1.4
@@ -132,7 +132,7 @@ shot_baseline() {
 }
 
 shot_help() {
-  local name="senpi-neo-shot-help"
+  local name="helix-neo-shot-help"
   local w=140
   local h=40
   new_session "$name" "$w" "$h"
@@ -146,7 +146,7 @@ shot_help() {
 }
 
 shot_slash() {
-  local name="senpi-neo-shot-slash"
+  local name="helix-neo-shot-slash"
   local w=140
   local h=40
   new_session "$name" "$w" "$h"
@@ -160,7 +160,7 @@ shot_slash() {
 }
 
 shot_palette() {
-  local name="senpi-neo-shot-palette"
+  local name="helix-neo-shot-palette"
   local w=140
   local h=40
   new_session "$name" "$w" "$h"
@@ -174,7 +174,7 @@ shot_palette() {
 }
 
 shot_palette_filter() {
-  local name="senpi-neo-shot-palette-filter"
+  local name="helix-neo-shot-palette-filter"
   local w=140
   local h=40
   new_session "$name" "$w" "$h"
@@ -189,7 +189,7 @@ shot_palette_filter() {
 }
 
 shot_slash_filter() {
-  local name="senpi-neo-shot-slash-filter"
+  local name="helix-neo-shot-slash-filter"
   local w=140
   local h=40
   new_session "$name" "$w" "$h"
@@ -209,7 +209,7 @@ main() {
   shot_baseline mid120  120  40 02-mid-120x40.png
   shot_baseline mid140  140  40 03-mid-140x40.png
   shot_baseline wide    160  50 04-wide-160x50.png
-  shot_baseline e2e     140  40 05-senpi-neo-e2e-140x40.png
+  shot_baseline e2e     140  40 05-helix-neo-e2e-140x40.png
   shot_help
   shot_slash
   shot_palette

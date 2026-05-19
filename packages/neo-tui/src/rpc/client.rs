@@ -1,7 +1,7 @@
 //! Subprocess JSONL RPC client.
 //!
 //! Spawns the senpi backend (or any drop-in JSONL-speaking child like
-//! `senpi-neo-faux` in tests), pipes its stdio, and exchanges JSONL
+//! `helix-neo-faux` in tests), pipes its stdio, and exchanges JSONL
 //! frames asynchronously via two tokio tasks plus a pair of mpsc
 //! channels.
 //!

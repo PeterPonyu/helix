@@ -19,7 +19,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import type { ExtensionAPI } from "@helix-bio/helix";
 
 /**
  * Recursively find all .md files in a directory

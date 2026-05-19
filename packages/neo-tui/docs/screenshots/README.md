@@ -1,4 +1,4 @@
-# senpi-neo-tui screenshots
+# helix-neo-tui screenshots
 
 Live captures of `senpi --neo` (Rust + ratatui frontend) inside tmux. The TUI
 auto-adapts: header / chat / input / footer at every size and a braille spinner
@@ -14,12 +14,12 @@ same keymap dispatch path as direct keychords.
 | `02-mid-120x40.png` | 120 × 40 | sidebar threshold; tool card and chat full width |
 | `03-mid-140x40.png` | 140 × 40 | typical laptop pane (direct binary) |
 | `04-wide-160x50.png` | 160 × 50 | ultrawide / fullscreen; same content, more breathing room |
-| `05-senpi-neo-e2e-140x40.png` | 140 × 40 | end-to-end capture of `senpi --neo --demo` proving the Node → Rust dispatch path works |
+| `05-helix-neo-e2e-140x40.png` | 140 × 40 | end-to-end capture of `senpi --neo --demo` proving the Node → Rust dispatch path works |
 
 ## Overlay states (live RPC via faux backend)
 
 Captured by spawning the binary with `HELIX_NEO_BACKEND_BIN` pointed at
-`senpi-neo-faux --scenario streaming`, so the chat shows real RPC frames and
+`helix-neo-faux --scenario streaming`, so the chat shows real RPC frames and
 the overlay layer renders on top of a populated scene.
 
 | File | Viewport | Notes |
@@ -35,7 +35,7 @@ the overlay layer renders on top of a populated scene.
 `scripts/capture-screenshots.sh` drives the canonical capture flow:
 
 1. fresh tmux session at exact `WxH` (`-x 140 -y 40`)
-2. spawn `senpi-neo-tui` with `senpi-neo-faux` as the RPC backend
+2. spawn `helix-neo-tui` with `helix-neo-faux` as the RPC backend
 3. send the keystrokes needed to reach the target state
 4. `tmux capture-pane -p -e -J` to dump the alt-screen with ANSI
 5. `aha --no-header --black` to convert ANSI to standalone HTML

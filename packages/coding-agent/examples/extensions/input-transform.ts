@@ -9,7 +9,7 @@
  *   ping                        → "pong" (instant, no LLM)
  *   time                        → current time (instant, no LLM)
  */
-import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import type { ExtensionAPI } from "@helix-bio/helix";
 
 export default function (pi: ExtensionAPI) {
 	pi.on("input", async (event, ctx) => {

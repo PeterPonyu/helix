@@ -2,10 +2,10 @@ use std::process::Command;
 
 use ratatui::style::Modifier;
 use ratatui::text::{Line, Span};
-use senpi_neo_tui::components::markdown::render;
-use senpi_neo_tui::load_bundled_dark_theme;
-use senpi_neo_tui::text::visible_width;
-use senpi_neo_tui::theme::{ResolvedTheme, Token};
+use helix_neo_tui::components::markdown::render;
+use helix_neo_tui::load_bundled_dark_theme;
+use helix_neo_tui::text::visible_width;
+use helix_neo_tui::theme::{ResolvedTheme, Token};
 
 fn theme() -> ResolvedTheme {
     load_bundled_dark_theme().unwrap()

@@ -5,7 +5,7 @@
  * Useful to ensure work is committed before switching context.
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@code-yeongyu/senpi";
+import type { ExtensionAPI, ExtensionContext } from "@helix-bio/helix";
 
 async function checkDirtyRepo(
 	pi: ExtensionAPI,

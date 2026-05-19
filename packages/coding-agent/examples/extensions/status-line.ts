@@ -5,7 +5,7 @@
  * Shows turn progress with themed colors.
  */
 
-import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import type { ExtensionAPI } from "@helix-bio/helix";
 
 export default function (pi: ExtensionAPI) {
 	let turnCount = 0;

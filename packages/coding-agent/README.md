@@ -9,7 +9,7 @@
 </p>
 <p align="center">
   <a href="https://discord.com/invite/3cU7Bz4UPx"><img alt="Discord" src="https://img.shields.io/badge/discord-community-5865F2?style=flat-square&logo=discord&logoColor=white" /></a>
-  <a href="https://www.npmjs.com/package/@code-yeongyu/senpi"><img alt="npm" src="https://img.shields.io/npm/v/@code-yeongyu/senpi?style=flat-square" /></a>
+  <a href="https://www.npmjs.com/package/@helix-bio/helix"><img alt="npm" src="https://img.shields.io/npm/v/@helix-bio/helix?style=flat-square" /></a>
   <a href="https://github.com/code-yeongyu/senpi/actions/workflows/ci.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/code-yeongyu/senpi/ci.yml?style=flat-square&branch=main" /></a>
 </p>
 <p align="center">
@@ -67,10 +67,10 @@ I regularly publish my own `pi-mono` work sessions here:
 ## Quick Start
 
 ```bash
-npm install -g @code-yeongyu/senpi
+npm install -g @helix-bio/helix
 ```
 
-`@code-yeongyu/senpi` is the npm package name. The installed executable is still `senpi`.
+`@helix-bio/helix` is the npm package name. The installed executable is still `senpi`.
 
 Authenticate with an API key:
 
@@ -431,7 +431,7 @@ See [docs/packages.md](docs/packages.md).
 ### SDK
 
 ```typescript
-import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "@code-yeongyu/senpi";
+import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "@helix-bio/helix";
 
 const authStorage = AuthStorage.create();
 const modelRegistry = ModelRegistry.create(authStorage);

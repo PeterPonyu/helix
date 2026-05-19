@@ -2,7 +2,7 @@ use crossterm::event::{
     Event as CrosstermEvent, KeyCode, KeyEvent, KeyEventKind, KeyEventState, KeyModifiers,
 };
 use ratatui::{Terminal, backend::TestBackend, layout::Rect};
-use senpi_neo_tui::{
+use helix_neo_tui::{
     components::settings_list::{SettingValue, SettingsItem, SettingsList},
     compositor::{Component, EventResult, RenderContext},
     load_bundled_dark_theme,

@@ -11,7 +11,7 @@ import {
 	getAgentDir,
 	type PromptTemplate,
 	SessionManager,
-} from "@code-yeongyu/senpi";
+} from "@helix-bio/helix";
 
 // Define custom templates
 const deployTemplate: PromptTemplate = {

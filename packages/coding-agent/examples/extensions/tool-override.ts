@@ -20,8 +20,8 @@
  *   senpi -e ./tool-override.ts
  */
 
-import { type ExtensionAPI, getAgentDir, withFileMutationQueue } from "@code-yeongyu/senpi";
 import type { TextContent } from "@earendil-works/pi-ai";
+import { type ExtensionAPI, getAgentDir, withFileMutationQueue } from "@helix-bio/helix";
 import { constants, readFileSync } from "fs";
 import { access, appendFile, readFile } from "fs/promises";
 import { join, resolve } from "path";

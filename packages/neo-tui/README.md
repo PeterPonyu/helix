@@ -1,4 +1,4 @@
-# `senpi-neo-tui`
+# `helix-neo-tui`
 
 Native Rust + [ratatui](https://ratatui.rs) TUI for [senpi](https://github.com/code-yeongyu/senpi).
 
@@ -16,24 +16,24 @@ A TUI needs exclusive ownership of the terminal: raw mode, alternate screen, Kit
 
 ## Run
 
-The crate ships two bins (`senpi-neo-tui`, the TUI itself; `senpi-neo-faux`, the offline RPC backend used by the QA harness), so `cargo run` needs `--bin` to disambiguate.
+The crate ships two bins (`helix-neo-tui`, the TUI itself; `helix-neo-faux`, the offline RPC backend used by the QA harness), so `cargo run` needs `--bin` to disambiguate.
 
 ```bash
 # Dev: render the bundled demo scene
-cargo run --release --package senpi-neo-tui --bin senpi-neo-tui -- \
+cargo run --release --package helix-neo-tui --bin helix-neo-tui -- \
     --demo --demo-seconds 5
 
 # Through the Node CLI (resolves the binary out of target/release):
 HELIX_NEO_TUI_DEV=1 node packages/coding-agent/dist/cli.js --neo
 
 # Offline QA with the faux backend:
-cargo run --release --package senpi-neo-tui --bin senpi-neo-tui -- \
-    --backend-bin ./target/release/senpi-neo-faux
+cargo run --release --package helix-neo-tui --bin helix-neo-tui -- \
+    --backend-bin ./target/release/helix-neo-faux
 ```
 
 ## CLI flags
 
-These belong to the `senpi-neo-tui` binary. When you launch through `senpi --neo`, forward them after a `--` sentinel so the senpi CLI does not eat them (e.g. `senpi --neo` shares the spelling `--theme` with the Node CLI, which means something different there).
+These belong to the `helix-neo-tui` binary. When you launch through `senpi --neo`, forward them after a `--` sentinel so the senpi CLI does not eat them (e.g. `senpi --neo` shares the spelling `--theme` with the Node CLI, which means something different there).
 
 ```bash
 senpi --neo -- --theme opencode/dracula
@@ -47,12 +47,12 @@ senpi --neo -- --demo --demo-seconds 5
 | `--backend-args <JSON>` | `HELIX_NEO_BACKEND_ARGS` | JSON array of extra args forwarded to the backend, e.g. `'["--mode","rpc"]'`. |
 | `--demo` | `HELIX_NEO_DEMO` | Render the canned demo scene used for screenshots. |
 | `--demo-seconds <N>` | — | Exit after `N` seconds in demo mode. `0` = until Ctrl-C. |
-| `--theme <ID\|PATH>` | `HELIX_NEO_THEME` | Override the theme by bundled id (`senpi-neo-dark`, `opencode/dracula`, …) or by JSON file path. |
+| `--theme <ID\|PATH>` | `HELIX_NEO_THEME` | Override the theme by bundled id (`helix-neo-dark`, `opencode/dracula`, …) or by JSON file path. |
 | `--list-themes` | — | Print bundled theme ids and exit. |
 
 ## Bundled themes
 
-`senpi-neo-dark` (default) plus 15 opencode-flavoured themes under `opencode/`: `ayu`, `catppuccin`, `catppuccin-frappe`, `catppuccin-macchiato`, `dracula`, `everforest`, `github`, `gruvbox`, `kanagawa`, `monokai`, `nord`, `opencode`, `rosepine`, `tokyonight`, `vesper`. Pass any of them to `--theme` or set `HELIX_NEO_THEME`. Custom themes follow the JSON schema in [`docs/theme-spec.md`](./docs/theme-spec.md).
+`helix-neo-dark` (default) plus 15 opencode-flavoured themes under `opencode/`: `ayu`, `catppuccin`, `catppuccin-frappe`, `catppuccin-macchiato`, `dracula`, `everforest`, `github`, `gruvbox`, `kanagawa`, `monokai`, `nord`, `opencode`, `rosepine`, `tokyonight`, `vesper`. Pass any of them to `--theme` or set `HELIX_NEO_THEME`. Custom themes follow the JSON schema in [`docs/theme-spec.md`](./docs/theme-spec.md).
 
 ## Default keybindings
 
@@ -86,7 +86,7 @@ Process tree at runtime:
 ```
 shell
 └── node senpi --neo                  # transient parent
-    └── senpi-neo-tui                 # Rust binary (owns TTY)
+    └── helix-neo-tui                 # Rust binary (owns TTY)
         └── node senpi --mode rpc     # backend
 ```
 
@@ -109,12 +109,12 @@ Module layout matches the `Layout` section below; per-module roles and the testi
 ## Tests
 
 ```bash
-cargo nextest run --package senpi-neo-tui
-cargo clippy --package senpi-neo-tui --all-targets -- -D warnings
-cargo fmt --package senpi-neo-tui -- --check
+cargo nextest run --package helix-neo-tui
+cargo clippy --package helix-neo-tui --all-targets -- -D warnings
+cargo fmt --package helix-neo-tui -- --check
 ```
 
-Snapshot updates: `INSTA_UPDATE=always cargo nextest run --package senpi-neo-tui`.
+Snapshot updates: `INSTA_UPDATE=always cargo nextest run --package helix-neo-tui`.
 
 ## License
 

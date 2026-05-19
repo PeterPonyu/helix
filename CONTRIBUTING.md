@@ -103,7 +103,7 @@ PRs that bloat the core or skip `changes.md` will be asked to convert to an exte
 
 - TAB indent (Biome `indentWidth: 3`). 120-column line width.
 - Match the style of the surrounding file. The codebase is largely consistent — Biome plus the existing patterns are the source of truth.
-- Use the path aliases defined in root `tsconfig.json` (`@earendil-works/pi-*`, `@code-yeongyu/senpi*`).
+- Use the path aliases defined in root `tsconfig.json` (`@earendil-works/pi-*`, `@helix-bio/helix*`).
 
 ## Trademark and Brand References
 

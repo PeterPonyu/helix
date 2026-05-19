@@ -12,18 +12,18 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-TUI_BIN="${REPO_ROOT}/target/release/senpi-neo-tui"
+TUI_BIN="${REPO_ROOT}/target/release/helix-neo-tui"
 OUT_DIR="${REPO_ROOT}/packages/neo-tui/docs/screenshots/themes"
-WORK_DIR="$(mktemp -d -t senpi-neo-themes.XXXXXX)"
+WORK_DIR="$(mktemp -d -t helix-neo-themes.XXXXXX)"
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 if [[ ! -x "$TUI_BIN" ]]; then
-  echo "missing $TUI_BIN - run cargo build --release --package senpi-neo-tui --bins" >&2
+  echo "missing $TUI_BIN - run cargo build --release --package helix-neo-tui --bins" >&2
   exit 1
 fi
 
 cleanup() {
-  for s in $(tmux ls 2>/dev/null | awk -F: '/^senpi-neo-theme/ {print $1}'); do
+  for s in $(tmux ls 2>/dev/null | awk -F: '/^helix-neo-theme/ {print $1}'); do
     tmux kill-session -t "$s" 2>/dev/null || true
   done
   rm -rf "$WORK_DIR"
@@ -94,7 +94,7 @@ shot_theme() {
   local theme_id="$1"
   local w=140
   local h=40
-  local name="senpi-neo-theme-${theme_id}"
+  local name="helix-neo-theme-${theme_id}"
   tmux kill-session -t "$name" 2>/dev/null || true
   TERM=xterm-256color tmux new-session -d -s "$name" -x "$w" -y "$h"
   tmux set-option -t "$name" -g default-terminal "tmux-256color" >/dev/null

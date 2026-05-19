@@ -13,7 +13,7 @@
  *   export default function (pi: ExtensionAPI) { ... }
  */
 
-import { createAgentSession, DefaultResourceLoader, getAgentDir, SessionManager } from "@code-yeongyu/senpi";
+import { createAgentSession, DefaultResourceLoader, getAgentDir, SessionManager } from "@helix-bio/helix";
 
 // Extensions are discovered automatically from standard locations.
 // You can also add paths via settings.json or DefaultResourceLoader options.
@@ -52,7 +52,7 @@ try {
 
 // Example extension file (./my-logging-extension.ts):
 /*
-import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import type { ExtensionAPI } from "@helix-bio/helix";
 
 export default function (pi: ExtensionAPI) {
 	pi.on("agent_start", async () => {

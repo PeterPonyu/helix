@@ -8,7 +8,7 @@ use ratatui::{
     backend::TestBackend,
     layout::{Position, Rect},
 };
-use senpi_neo_tui::{
+use helix_neo_tui::{
     compositor::{Component, Compositor, EventResult, RenderContext},
     load_bundled_dark_theme,
 };
