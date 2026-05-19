@@ -82,6 +82,9 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			"apply_patch",
 			"bash",
 			"bed_info",
+			"coord_chrom_normalize",
+			"coord_convert",
+			"coord_overlap",
 			"dynamic_tool",
 			"edit",
 			"find",
@@ -106,6 +109,9 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			"seq_vcf_summary",
 			"bed_info",
 			"gff_info",
+			"coord_chrom_normalize",
+			"coord_convert",
+			"coord_overlap",
 			"dynamic_tool",
 		]);
 		expect(session.systemPrompt).toContain("- dynamic_tool: Run dynamic test behavior");
@@ -149,6 +155,9 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			"seq_vcf_summary",
 			"bed_info",
 			"gff_info",
+			"coord_chrom_normalize",
+			"coord_convert",
+			"coord_overlap",
 		]);
 		expect(session.systemPrompt).toContain("- todowrite:");
 		expect(session.systemPrompt).not.toContain("- read:");
