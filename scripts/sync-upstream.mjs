@@ -298,6 +298,17 @@ function applyAutoResolution(paths, options = {}) {
 }
 
 function regenerateLockfiles(state, options = {}) {
+	if (state.leftForHumans.length > 0) {
+		// Unresolved conflicts remain — running `npm install` here will choke
+		// on conflict markers inside any leftover package.json
+		// (npm error code EJSONPARSE). Defer lockfile regeneration until the
+		// human resolves the conflict PR.
+		log(
+			`deferring lockfile regeneration: ${state.leftForHumans.length} files left for human resolution`,
+		)
+		return
+	}
+
 	if (state.packageLockTouched) {
 		log("regenerating package-lock.json with npm install")
 		rmSync("node_modules", { recursive: true, force: true })
