@@ -785,6 +785,28 @@ async function loadModelsDevData(): Promise<Model<any>[]> {
 			}
 		}
 
+		// Fireworks router endpoints not enumerated by models.dev — registered
+		// statically so they survive `prebuild` regeneration. Each router shares
+		// the Fireworks Anthropic-compatible API + cache compat profile.
+		models.push({
+			id: "accounts/fireworks/routers/kimi-k2p5-turbo",
+			name: "Kimi K2.5 Turbo",
+			api: "anthropic-messages",
+			provider: "fireworks",
+			baseUrl: "https://api.fireworks.ai/inference",
+			reasoning: true,
+			input: ["text", "image"],
+			cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+			contextWindow: 256000,
+			maxTokens: 256000,
+			compat: {
+				sendSessionAffinityHeaders: true,
+				supportsEagerToolInputStreaming: false,
+				supportsCacheControlOnTools: false,
+				supportsLongCacheRetention: false,
+			},
+		});
+
 		// Process Together AI models
 		const togetherProvider = data.together ?? data.togetherai ?? data["together-ai"];
 		if (togetherProvider?.models) {
