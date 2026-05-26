@@ -46,4 +46,14 @@ jobs:
       - name: Run upstream sync
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/sync-upstream.mjs
+        # Exit codes from scripts/sync-upstream.mjs: 0=CLEAN, 1=CONFLICTS, 2=FATAL.
+        # CONFLICTS is the expected outcome for divergent forks (a sync-conflict
+        # PR has been created for human review) -- not a workflow failure.
+        # Only treat exit code >= 2 as a real failure.
+        run: |
+          set +e
+          node scripts/sync-upstream.mjs
+          rc=$?
+          if [ "$rc" -ge 2 ]; then
+            exit "$rc"
+          fi
