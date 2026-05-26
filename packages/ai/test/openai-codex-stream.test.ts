@@ -463,7 +463,16 @@ describe("openai-codex streaming", () => {
 			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
 		};
 
-		await streamSimpleOpenAICodexResponses(model, context, { apiKey: token, reasoning: "xhigh" }).result();
+		// transport: "sse" so the test exercises only the mocked SSE path.
+		// Without it, the production default "auto" tries a real WebSocket
+		// handshake to chatgpt.com (fetchMock doesn't cover WebSocket), which
+		// has variable latency and intermittently exceeds the 30s vitest
+		// timeout under CI load.
+		await streamSimpleOpenAICodexResponses(model, context, {
+			apiKey: token,
+			reasoning: "xhigh",
+			transport: "sse",
+		}).result();
 
 		expect(requestedReasoning).toEqual({ effort: "xhigh", summary: "auto" });
 	});
@@ -560,6 +569,9 @@ describe("openai-codex streaming", () => {
 		const streamResult = streamOpenAICodexResponses(model, context, {
 			apiKey: token,
 			reasoningEffort: "minimal",
+			// transport: "sse" pins the test to the mocked SSE path. See note
+			// on the "preserves gpt-5.5 xhigh reasoning effort" test above.
+			transport: "sse",
 		});
 		await streamResult.result();
 	});
