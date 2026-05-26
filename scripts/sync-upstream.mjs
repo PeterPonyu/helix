@@ -247,6 +247,35 @@ function unresolvedPaths(options = {}) {
 	return output.length === 0 ? [] : output.split("\n").filter(Boolean)
 }
 
+// GitHub refuses to let the default GITHUB_TOKEN push commits that touch
+// .github/workflows/*. The restriction is server-side and cannot be granted
+// via the workflow `permissions:` block. To keep the scheduled sync push-able,
+// we always keep helix's own version of every workflow file and let helix CI
+// evolve independently of upstream's. Returns the paths that were reset.
+function resetWorkflowFiles(options = {}) {
+	const WORKFLOW_DIR = ".github/workflows"
+	const diff = gitTrimmed(["diff", "--name-only", "HEAD", "--", WORKFLOW_DIR], options)
+	const changed = diff.length === 0 ? [] : diff.split("\n").filter(Boolean)
+	if (changed.length === 0) {
+		return []
+	}
+
+	log(`resetting ${changed.length} workflow file(s) to fork state (GITHUB_TOKEN cannot push workflow changes)`)
+	for (const path of changed) {
+		const headHas = gitTry(["cat-file", "-e", `HEAD:${path}`], options).ok
+		if (headHas) {
+			log(`  - ${path}: checkout HEAD`)
+			git(["checkout", "HEAD", "--", path], options)
+			git(["add", "--", path], options)
+		} else {
+			log(`  - ${path}: removing upstream-added workflow`)
+			gitTry(["rm", "-f", "--cached", "--", path], options)
+			rmSync(path, { force: true })
+		}
+	}
+	return changed
+}
+
 function applyAutoResolution(paths, options = {}) {
 	const state = {
 		packageLockTouched: false,
@@ -405,6 +434,10 @@ function dryRunMerge(options, upstreamHead, shortSha, branchName) {
 		git(["worktree", "add", "--detach", "--quiet", worktreePath, MAIN_BRANCH], options)
 		const dryOptions = { ...options, cwd: worktreePath }
 		const merge = gitTry(["merge", UPSTREAM_BRANCH, "--no-ff", "--no-commit"], dryOptions)
+		const dryRunWorkflowResets = resetWorkflowFiles(dryOptions)
+		for (const path of dryRunWorkflowResets) {
+			log(`dry-run workflow reset: ${path}`)
+		}
 		if (merge.ok) {
 			log(`dry-run result: clean merge estimated (${upstreamHead.slice(0, 12)} / ${shortSha})`)
 			return CLEAN
@@ -630,6 +663,8 @@ function main() {
 	git(["checkout", "-B", branchName, MAIN_BRANCH], options)
 	log(`merging ${UPSTREAM_BRANCH}`)
 	gitTry(["merge", UPSTREAM_BRANCH, "--no-ff", "--no-commit"], options)
+
+	resetWorkflowFiles(options)
 
 	const initialConflicts = unresolvedPaths(options)
 	log(`initial conflicts: ${initialConflicts.length}`)
