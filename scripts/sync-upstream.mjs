@@ -557,15 +557,25 @@ function suggestedResolution(file) {
 
 function closeSupersededPullRequests(shortSha, options = {}) {
 	log("finding existing open sync-conflict PRs")
-	const output = run("gh", ["pr", "list", "--label", CONFLICT_LABEL, "--state", "open", "--json", "number,headRefName,title"], options)
-	let pullRequests
+	// REST issues endpoint instead of `gh pr list --label X`: under the
+	// workflow's GITHUB_TOKEN, the gh-CLI list returns an empty array even
+	// when a labeled PR exists (verified by manual REST query returning the
+	// PR fine). Issues endpoint returns both issues and PRs; filter to PRs
+	// via the `pull_request` field.
+	const repoSlug = getOriginRepoSlug(options)
+	const output = run("gh", [
+		"api",
+		`repos/${repoSlug}/issues?labels=${CONFLICT_LABEL}&state=open&per_page=100`,
+	], options)
+	let items
 	try {
-		pullRequests = JSON.parse(output)
+		items = JSON.parse(output)
 	} catch (error) {
-		throw new SyncError(`failed to parse gh pr list output: ${error.message}`)
+		throw new SyncError(`failed to parse issues output: ${error.message}`)
 	}
 
-	if (!Array.isArray(pullRequests) || pullRequests.length === 0) {
+	const pullRequests = Array.isArray(items) ? items.filter((item) => item && item.pull_request) : []
+	if (pullRequests.length === 0) {
 		log("no existing sync-conflict PRs to supersede")
 		return
 	}
