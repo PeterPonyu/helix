@@ -1,7 +1,7 @@
-import type { AssistantMessageDiagnostic } from "./utils/diagnostics.js";
-import type { AssistantMessageEventStream } from "./utils/event-stream.js";
+import type { AssistantMessageDiagnostic } from "./utils/diagnostics.ts";
+import type { AssistantMessageEventStream } from "./utils/event-stream.ts";
 
-export type { AssistantMessageEventStream } from "./utils/event-stream.js";
+export type { AssistantMessageEventStream } from "./utils/event-stream.ts";
 
 export type KnownApi =
 	| "openai-completions"
@@ -492,6 +492,16 @@ export interface AnthropicMessagesCompat {
 	 * Default: true.
 	 */
 	supportsDisabledThinking?: boolean;
+	/**
+	 * Whether to force adaptive thinking (`thinking.type: "adaptive"` plus
+	 * `output_config.effort`) regardless of the model id. Built-in models that
+	 * require adaptive thinking set this in generated metadata. Custom
+	 * Anthropic-compatible providers can set this to `true` for any model whose
+	 * upstream requires the adaptive format. Set to `false` to opt out on
+	 * overridden built-in models and disable model id/name inference.
+	 * Default: infer from adaptive Claude model ids/names when possible.
+	 */
+	forceAdaptiveThinking?: boolean;
 }
 
 /**

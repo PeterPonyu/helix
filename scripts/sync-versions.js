@@ -46,6 +46,11 @@ if (versions.size > 1) {
 
 console.log('\n✅ All packages at same version (lockstep)');
 
+// Source manifests must stay on local lockstep workspace versions so local
+// builds and tests resolve the current workspace packages. The release script
+// rewrites publish-only dependency pins immediately before `npm publish` and
+// restores these source versions afterward.
+
 // Update all inter-package dependencies
 let totalUpdates = 0;
 for (const [dir, pkg] of Object.entries(packages)) {

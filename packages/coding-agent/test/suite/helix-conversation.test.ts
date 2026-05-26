@@ -5,8 +5,13 @@ import {
 	HELIX_SYSTEM_PREFIX,
 	sendBuiltinCustomMessage,
 	sendBuiltinUserMessage,
+<<<<<<< HEAD:packages/coding-agent/test/suite/helix-conversation.test.ts
 } from "../../src/core/extensions/builtin/system-messages.js";
 import { HELIX_SYSTEM_PREFIX as TODO_SYSTEM_PREFIX } from "../../src/core/extensions/builtin/todotools/system-messages.js";
+=======
+} from "../../src/core/extensions/builtin/system-messages.ts";
+import { SENPI_SYSTEM_PREFIX as TODO_SYSTEM_PREFIX } from "../../src/core/extensions/builtin/todotools/system-messages.ts";
+>>>>>>> upstream/main:packages/coding-agent/test/suite/senpi-conversation.test.ts
 
 function createMockPi() {
 	return {

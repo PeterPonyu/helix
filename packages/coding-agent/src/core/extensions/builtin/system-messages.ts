@@ -1,6 +1,6 @@
 import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
-import type { CustomMessage } from "../../messages.js";
-import type { ExtensionAPI } from "../types.js";
+import type { CustomMessage } from "../../messages.ts";
+import type { ExtensionAPI } from "../types.ts";
 
 export const HELIX_SYSTEM_PREFIX = "[system:helix]";
 export const HELIX_CONVERSATION_EVENT = "helix:conversation";
