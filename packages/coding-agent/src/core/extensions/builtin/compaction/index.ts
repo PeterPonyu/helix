@@ -1,32 +1,41 @@
 import { randomUUID } from "node:crypto";
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
-import { type CompactionResult, DEFAULT_COMPACTION_SETTINGS } from "../../../compaction/index.js";
-import { convertToLlm } from "../../../messages.js";
-import type { CompactionEntry } from "../../../session-manager.js";
-import type { ContextUsage, ExtensionAPI, ExtensionContext, SessionBeforeCompactEvent } from "../../types.js";
-import * as checkpointState from "./checkpoint-state.js";
-import * as breaker from "./circuit-breaker.js";
+import { type CompactionResult, DEFAULT_COMPACTION_SETTINGS } from "../../../compaction/index.ts";
+import { convertToLlm } from "../../../messages.ts";
+import type { CompactionEntry } from "../../../session-manager.ts";
+import type { ContextUsage, ExtensionAPI, ExtensionContext, SessionBeforeCompactEvent } from "../../types.ts";
+import * as checkpointState from "./checkpoint-state.ts";
+import * as breaker from "./circuit-breaker.ts";
 import {
 	BUILTIN_CONTEXT_REDUCTION_OPTIONS,
 	reduceContextMessages,
 	shouldApplyContextReduction,
-} from "./context-reduction.js";
+} from "./context-reduction.ts";
 import {
 	createDegradationMonitorState,
 	handleMessageEnd,
 	handleTurnEnd,
 	RECOVERY_INSTRUCTIONS,
 	resetOnSessionCompact,
-} from "./degradation-monitor.js";
+} from "./degradation-monitor.ts";
 import {
 	HELIX_COMPACTION_EVENT,
 	rewriteOpenAiPayloadWithRemoteCompaction,
 	runOpenAiRemoteCompaction,
+<<<<<<< HEAD
 } from "./openai-remote.js";
 import * as cap from "./per-turn-cap.js";
 import * as policy from "./policy.js";
 import { repairOrphanedToolResults } from "./repair-tool-pairs.js";
 import * as restoration from "./restoration-tracker.js";
+=======
+	SENPI_COMPACTION_EVENT,
+} from "./openai-remote.ts";
+import * as cap from "./per-turn-cap.ts";
+import * as policy from "./policy.ts";
+import { repairOrphanedToolResults } from "./repair-tool-pairs.ts";
+import * as restoration from "./restoration-tracker.ts";
+>>>>>>> upstream/main
 import {
 	applyGeneratedCompaction,
 	createSpeculativeCompactionSnapshot,
@@ -35,10 +44,10 @@ import {
 	runExtensionCompaction,
 	type SpeculativeCompactionResult,
 	type SpeculativeCompactionSnapshot,
-} from "./speculative.js";
-import { type CompactionExtensionState, createInitialState, resetTurnCounter } from "./state.js";
-import * as todoBridge from "./todo-bridge.js";
-import * as truncation from "./tool-truncation.js";
+} from "./speculative.ts";
+import { type CompactionExtensionState, createInitialState, resetTurnCounter } from "./state.ts";
+import * as todoBridge from "./todo-bridge.ts";
+import * as truncation from "./tool-truncation.ts";
 
 const DEFAULT_CONTEXT_WINDOW = 200_000;
 const EMERGENCY_COMPACTION_INSTRUCTIONS =
@@ -78,6 +87,10 @@ function isMonitorableMessageEvent(event: { message: AgentMessage }): event is {
 	message: AgentMessage & { content: Array<{ type: string; text?: string }> };
 } {
 	return "content" in event.message && Array.isArray(event.message.content);
+}
+
+function isAbortedAssistantMessage(event: { message: AgentMessage }): boolean {
+	return event.message.role === "assistant" && "stopReason" in event.message && event.message.stopReason === "aborted";
 }
 
 function updateLastYield(state: CompactionExtensionState, entry: CompactionEntry): CompactionExtensionState {
@@ -316,6 +329,10 @@ export default function compactionExtension(pi: ExtensionAPI): void {
 		};
 	});
 
+	pi.on("model_select", () => {
+		invalidateSpeculativeCompaction();
+	});
+
 	pi.on("session_compact", async (event, ctx) => {
 		invalidateSpeculativeCompaction();
 		if (event.accepted) {
@@ -419,6 +436,9 @@ export default function compactionExtension(pi: ExtensionAPI): void {
 	});
 
 	pi.on("message_end", async (event, ctx) => {
+		if (isAbortedAssistantMessage(event)) {
+			invalidateSpeculativeCompaction();
+		}
 		if (isMonitorableMessageEvent(event)) {
 			await handleMessageEnd(degradationState, event, {
 				applyCompaction: async (options) => {

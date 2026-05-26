@@ -6,8 +6,8 @@ import type {
 	MessageParam,
 	RawMessageStreamEvent,
 } from "@anthropic-ai/sdk/resources/messages.js";
-import { getEnvApiKey } from "../env-api-keys.js";
-import { calculateCost } from "../models.js";
+import { getEnvApiKey } from "../env-api-keys.ts";
+import { calculateCost } from "../models.ts";
 import type {
 	AnthropicMessagesCompat,
 	Api,
@@ -27,16 +27,16 @@ import type {
 	Tool,
 	ToolCall,
 	ToolResultMessage,
-} from "../types.js";
-import { AssistantMessageEventStream } from "../utils/event-stream.js";
-import { headersToRecord } from "../utils/headers.js";
-import { parseJsonWithRepair, parseStreamingJson } from "../utils/json-parse.js";
-import { sanitizeSurrogates } from "../utils/sanitize-unicode.js";
+} from "../types.ts";
+import { AssistantMessageEventStream } from "../utils/event-stream.ts";
+import { headersToRecord } from "../utils/headers.ts";
+import { parseJsonWithRepair, parseStreamingJson } from "../utils/json-parse.ts";
+import { sanitizeSurrogates } from "../utils/sanitize-unicode.ts";
 
-import { resolveCloudflareBaseUrl } from "./cloudflare.js";
-import { buildCopilotDynamicHeaders, hasCopilotVisionInput } from "./github-copilot-headers.js";
-import { ANTHROPIC_RESERVED_BODY_KEYS, adjustMaxTokensForThinking, buildBaseOptions } from "./simple-options.js";
-import { transformMessages } from "./transform-messages.js";
+import { resolveCloudflareBaseUrl } from "./cloudflare.ts";
+import { buildCopilotDynamicHeaders, hasCopilotVisionInput } from "./github-copilot-headers.ts";
+import { ANTHROPIC_RESERVED_BODY_KEYS, adjustMaxTokensForThinking, buildBaseOptions } from "./simple-options.ts";
+import { transformMessages } from "./transform-messages.ts";
 
 /**
  * Resolve cache retention preference.
@@ -166,8 +166,11 @@ const FINE_GRAINED_TOOL_STREAMING_BETA = "fine-grained-tool-streaming-2025-05-14
 const INTERLEAVED_THINKING_BETA = "interleaved-thinking-2025-05-14";
 const COMPUTER_USE_BETA_PREFIX = "computer-use-";
 const NATIVE_COMPUTER_TOOL_TYPE = "computer_20250124";
+const ADAPTIVE_THINKING_MODEL_MARKERS = ["opus-4-6", "opus-4-7", "sonnet-4-6"] as const;
 
-function getAnthropicCompat(model: Model<"anthropic-messages">): Required<AnthropicMessagesCompat> {
+function getAnthropicCompat(
+	model: Model<"anthropic-messages">,
+): Required<Omit<AnthropicMessagesCompat, "forceAdaptiveThinking">> {
 	// Auto-detect session affinity and cache control support from provider
 	const isFireworks = model.provider === "fireworks";
 	const isCloudflareAiGatewayAnthropic =
@@ -186,27 +189,34 @@ function getAnthropicCompat(model: Model<"anthropic-messages">): Required<Anthro
 export interface AnthropicOptions extends StreamOptions {
 	/**
 	 * Enable extended thinking.
-	 * For Opus 4.6, Sonnet 4.6 and Opus 4.7: uses adaptive thinking (model decides when/how much to think).
+	 * For adaptive thinking models: the model decides when/how much to think.
 	 * For older models: uses budget-based thinking with thinkingBudgetTokens.
+	 * Default: undefined (thinking is omitted unless `streamSimpleAnthropic()` maps
+	 * a simple reasoning level to this option, or callers set it explicitly).
 	 */
 	thinkingEnabled?: boolean;
 	/**
 	 * Token budget for extended thinking (older models only).
-	 * Ignored for adaptive-thinking models (Opus 4.6+, Sonnet 4.6+).
+	 * Ignored for adaptive thinking models.
+	 * Default: 1024 when `thinkingEnabled` is true and no budget is provided.
 	 */
 	thinkingBudgetTokens?: number;
 	/**
-	 * Effort level for adaptive thinking (Opus 4.6, Sonnet 4.6 and Opus 4.7).
-	 * Model-specific tiers:
-	 * - Opus 4.7: "low" | "medium" | "high" | "xhigh" | "max" (native Anthropic tiers)
-	 * - Opus 4.6: "low" | "medium" | "high" | "max" ("xhigh" maps to "max")
-	 * - Sonnet 4.6: "low" | "medium" | "high" ("xhigh"/"max" clamp to "high")
+	 * Effort level for adaptive thinking models.
+	 * Controls how much thinking Claude allocates:
+	 * - "max": Always thinks with no constraints (Opus 4.6 only)
+	 * - "xhigh": Highest reasoning level (Opus 4.7)
+	 * - "high": Always thinks, deep reasoning
+	 * - "medium": Moderate thinking, may skip for simple queries
+	 * - "low": Minimal thinking, skips for simple tasks
 	 * Ignored for older models.
+	 * Default: omitted unless `streamSimpleAnthropic()` maps a simple reasoning
+	 * level to this option.
 	 */
 	effort?: AnthropicEffort;
 	/**
 	 * Controls how thinking content is returned in API responses.
-	 * - "summarized": Thinking blocks contain summarized thinking text (default here).
+	 * - "summarized": Thinking blocks contain summarized thinking text.
 	 * - "omitted": Thinking blocks return an empty thinking field; the encrypted
 	 *   signature still travels back for multi-turn continuity. Use for faster
 	 *   time-to-first-text-token when your UI does not surface thinking.
@@ -214,9 +224,21 @@ export interface AnthropicOptions extends StreamOptions {
 	 * Note: Anthropic's API default for Claude Opus 4.7 and Claude Mythos Preview
 	 * is "omitted". We default to "summarized" here to keep behavior consistent
 	 * with older Claude 4 models. Set this explicitly to "omitted" to opt in.
+	 * Default: "summarized" when thinking is enabled.
 	 */
 	thinkingDisplay?: AnthropicThinkingDisplay;
+	/**
+	 * Whether to request the interleaved thinking beta header for non-adaptive
+	 * thinking models. Adaptive thinking models have interleaved thinking built in,
+	 * so the header is skipped for them regardless of this setting.
+	 * Default: true.
+	 */
 	interleavedThinking?: boolean;
+	/**
+	 * Anthropic tool choice behavior. String values map to Anthropic's built-in
+	 * choices; `{ type: "tool", name }` forces a specific tool.
+	 * Default: omitted (Anthropic default behavior, currently equivalent to auto).
+	 */
 	toolChoice?: "auto" | "any" | "none" | { type: "tool"; name: string };
 	/**
 	 * Pre-built Anthropic client instance. When provided, skips internal client
@@ -288,19 +310,22 @@ function extractPayloadRequestMetadata(params: MessageCreateParamsStreaming): {
 	return headers ? { params: stripped, headers } : { params: stripped };
 }
 
-function removeComputerUseBetaHeader(headers: Record<string, string> | undefined): {
+function removeAnthropicBetaHeaders(
+	headers: Record<string, string | null> | undefined,
+	shouldRemoveBeta: (beta: string) => boolean,
+): {
 	changed: boolean;
-	headers?: Record<string, string>;
+	headers?: Record<string, string | null>;
 } {
 	if (!headers) {
 		return { changed: false };
 	}
 
-	const nextHeaders: Record<string, string> = {};
+	const nextHeaders: Record<string, string | null> = {};
 	let changed = false;
 
 	for (const [key, value] of Object.entries(headers)) {
-		if (key.toLowerCase() !== "anthropic-beta") {
+		if (key.toLowerCase() !== "anthropic-beta" || value === null) {
 			nextHeaders[key] = value;
 			continue;
 		}
@@ -309,7 +334,7 @@ function removeComputerUseBetaHeader(headers: Record<string, string> | undefined
 			.split(",")
 			.map((beta) => beta.trim())
 			.filter((beta) => beta.length > 0);
-		const supportedBetas = betas.filter((beta) => !beta.startsWith(COMPUTER_USE_BETA_PREFIX));
+		const supportedBetas = betas.filter((beta) => !shouldRemoveBeta(beta));
 		changed = changed || supportedBetas.length !== betas.length;
 
 		if (supportedBetas.length > 0) {
@@ -327,18 +352,37 @@ function removeComputerUseBetaHeader(headers: Record<string, string> | undefined
 	};
 }
 
+function removeComputerUseBetaHeader(headers: Record<string, string> | undefined): {
+	changed: boolean;
+	headers?: Record<string, string | null>;
+} {
+	return removeAnthropicBetaHeaders(headers, (beta) => beta.startsWith(COMPUTER_USE_BETA_PREFIX));
+}
+
+function sanitizeAdaptiveThinkingHeaders(
+	model: Model<"anthropic-messages">,
+	headers: Record<string, string | null>,
+): Record<string, string | null> {
+	if (!supportsAdaptiveThinking(model)) {
+		return headers;
+	}
+
+	const headerSanitization = removeAnthropicBetaHeaders(headers, (beta) => beta === INTERLEAVED_THINKING_BETA);
+	return headerSanitization.changed ? (headerSanitization.headers ?? {}) : headers;
+}
+
 function rejectsNativeComputerTool(model: Model<"anthropic-messages">, toolType: string): boolean {
 	if (model.provider === "cloudflare-ai-gateway" && model.baseUrl.includes("anthropic")) {
 		return toolType.startsWith("computer_");
 	}
-	return (isOpus46(model.id) || isOpus47(model.id)) && toolType === NATIVE_COMPUTER_TOOL_TYPE;
+	return (isOpus46(model) || isOpus47(model)) && toolType === NATIVE_COMPUTER_TOOL_TYPE;
 }
 
 function rejectsComputerUseBeta(model: Model<"anthropic-messages">): boolean {
 	return (
 		(model.provider === "cloudflare-ai-gateway" && model.baseUrl.includes("anthropic")) ||
-		isOpus46(model.id) ||
-		isOpus47(model.id)
+		isOpus46(model) ||
+		isOpus47(model)
 	);
 }
 
@@ -400,6 +444,48 @@ function sanitizeUnsupportedNativeTools(
 			(typeof toolChoiceName === "string" && removedToolNames.has(toolChoiceName)) || sanitized.tools === undefined;
 		if (shouldRemoveToolChoice) {
 			delete sanitized.tool_choice;
+		}
+	}
+
+	return changed ? (sanitized as MessageCreateParamsStreaming) : params;
+}
+
+function sanitizeAdaptiveThinkingPayload(
+	model: Model<"anthropic-messages">,
+	params: MessageCreateParamsStreaming,
+	options?: AnthropicOptions,
+): MessageCreateParamsStreaming {
+	if (!supportsAdaptiveThinking(model)) {
+		return params;
+	}
+
+	const payload = params as AnthropicPayloadWithRequestMetadata;
+	const headers = stringRecord(payload.headers);
+	const headerSanitization = removeAnthropicBetaHeaders(headers, (beta) => beta === INTERLEAVED_THINKING_BETA);
+	const sanitized: AnthropicPayloadWithRequestMetadata = { ...payload };
+	let changed = false;
+
+	const thinking = isRecord(payload.thinking) ? payload.thinking : undefined;
+	if (thinking?.type === "enabled") {
+		const display =
+			thinking.display === "omitted" || thinking.display === "summarized"
+				? thinking.display
+				: (options?.thinkingDisplay ?? "summarized");
+		sanitized.thinking = { type: "adaptive", display } as MessageCreateParamsStreaming["thinking"];
+		if (options?.effort !== undefined && !isRecord(payload.output_config)) {
+			sanitized.output_config = { effort: options.effort } as NonNullable<
+				MessageCreateParamsStreaming["output_config"]
+			>;
+		}
+		changed = true;
+	}
+
+	if (headerSanitization.changed) {
+		changed = true;
+		if (headerSanitization.headers) {
+			sanitized.headers = headerSanitization.headers;
+		} else {
+			delete sanitized.headers;
 		}
 	}
 
@@ -657,6 +743,7 @@ export const streamAnthropic: StreamFunction<"anthropic-messages", AnthropicOpti
 			if (nextParams !== undefined) {
 				params = nextParams as MessageCreateParamsStreaming;
 			}
+			params = sanitizeAdaptiveThinkingPayload(model, params, options);
 			params = sanitizeUnsupportedNativeTools(model, params);
 			const payloadRequestMetadata = extractPayloadRequestMetadata(params);
 			params = payloadRequestMetadata.params;
@@ -871,18 +958,37 @@ export const streamAnthropic: StreamFunction<"anthropic-messages", AnthropicOpti
 };
 
 /**
- * Check if a model supports adaptive thinking (Opus 4.6, Sonnet 4.6, Opus 4.7 and later).
+ * Opus-specific feature checks use provider model ids because those behaviors
+ * are model-tier details, not custom-provider compatibility toggles.
  */
-function supportsAdaptiveThinking(modelId: string): boolean {
-	return isOpus46(modelId) || isOpus47(modelId) || modelId.includes("sonnet-4-6") || modelId.includes("sonnet-4.6");
+function getModelMatchCandidates(model: Pick<Model<"anthropic-messages">, "id" | "name">): string[] {
+	return [model.id, model.name].flatMap((value) => {
+		const lower = value.toLowerCase();
+		return [lower, lower.replace(/[\s_.:]+/g, "-")];
+	});
 }
 
-function isOpus46(modelId: string): boolean {
-	return modelId.includes("opus-4-6") || modelId.includes("opus-4.6");
+function matchesModelMarker(
+	model: Pick<Model<"anthropic-messages">, "id" | "name">,
+	markers: readonly string[],
+): boolean {
+	const candidates = getModelMatchCandidates(model);
+	return candidates.some((candidate) => markers.some((marker) => candidate.includes(marker)));
 }
 
-function isOpus47(modelId: string): boolean {
-	return modelId.includes("opus-4-7") || modelId.includes("opus-4.7");
+function isOpus46(model: Pick<Model<"anthropic-messages">, "id" | "name">): boolean {
+	return matchesModelMarker(model, ["opus-4-6"]);
+}
+
+function isOpus47(model: Pick<Model<"anthropic-messages">, "id" | "name">): boolean {
+	return matchesModelMarker(model, ["opus-4-7"]);
+}
+
+function supportsAdaptiveThinking(model: Model<"anthropic-messages">): boolean {
+	if (model.compat?.forceAdaptiveThinking !== undefined) {
+		return model.compat.forceAdaptiveThinking;
+	}
+	return matchesModelMarker(model, ADAPTIVE_THINKING_MODEL_MARKERS);
 }
 
 /**
@@ -909,11 +1015,11 @@ function mapThinkingLevelToEffort(
 		case "high":
 			return "high";
 		case "xhigh":
-			if (isOpus47(model.id)) return "xhigh";
-			if (isOpus46(model.id)) return "max";
+			if (isOpus47(model)) return "xhigh";
+			if (isOpus46(model)) return "max";
 			return "high";
 		case "max":
-			if (isOpus47(model.id) || isOpus46(model.id)) return "max";
+			if (isOpus47(model) || isOpus46(model)) return "max";
 			return "high";
 		default:
 			return "high";
@@ -935,9 +1041,9 @@ export const streamSimpleAnthropic: StreamFunction<"anthropic-messages", SimpleS
 		return streamAnthropic(model, context, { ...base, thinkingEnabled: false } satisfies AnthropicOptions);
 	}
 
-	// For Opus 4.6 and Sonnet 4.6: use adaptive thinking with effort level
-	// For older models: use budget-based thinking
-	if (supportsAdaptiveThinking(model.id)) {
+	// For models with adaptive thinking: use an effort level.
+	// For older models: use budget-based thinking.
+	if (supportsAdaptiveThinking(model)) {
 		const effort = mapThinkingLevelToEffort(model, options.reasoning);
 		return streamAnthropic(model, context, {
 			...base,
@@ -946,8 +1052,10 @@ export const streamSimpleAnthropic: StreamFunction<"anthropic-messages", SimpleS
 		} satisfies AnthropicOptions);
 	}
 
+	// Undefined means the caller did not request an output cap; let the helper use the model cap.
+	// Do not coerce to 0 here, or the thinking budget would become the entire max_tokens value.
 	const adjusted = adjustMaxTokensForThinking(
-		base.maxTokens || 0,
+		base.maxTokens,
 		model.maxTokens,
 		options.reasoning,
 		options.thinkingBudgets,
@@ -974,9 +1082,8 @@ function createClient(
 	dynamicHeaders?: Record<string, string>,
 	sessionId?: string,
 ): { client: Anthropic; isOAuthToken: boolean } {
-	// Adaptive thinking models (Opus 4.6, Sonnet 4.6) have interleaved thinking built-in.
-	// The beta header is deprecated on Opus 4.6 and redundant on Sonnet 4.6, so skip it.
-	const needsInterleavedBeta = interleavedThinking && !supportsAdaptiveThinking(model.id);
+	// Adaptive thinking models have interleaved thinking built in, so skip the beta header.
+	const needsInterleavedBeta = interleavedThinking && !supportsAdaptiveThinking(model);
 	const betaFeatures: string[] = [];
 	if (useFineGrainedToolStreamingBeta) {
 		betaFeatures.push(FINE_GRAINED_TOOL_STREAMING_BETA);
@@ -991,17 +1098,20 @@ function createClient(
 			authToken: null,
 			baseURL: resolveCloudflareBaseUrl(model),
 			dangerouslyAllowBrowser: true,
-			defaultHeaders: mergeHeaders(
-				{
-					accept: "application/json",
-					"anthropic-dangerous-direct-browser-access": "true",
-					"cf-aig-authorization": `Bearer ${apiKey}`,
-					"x-api-key": null,
-					Authorization: null,
-					...(betaFeatures.length > 0 ? { "anthropic-beta": betaFeatures.join(",") } : {}),
-				},
-				model.headers,
-				optionsHeaders,
+			defaultHeaders: sanitizeAdaptiveThinkingHeaders(
+				model,
+				mergeHeaders(
+					{
+						accept: "application/json",
+						"anthropic-dangerous-direct-browser-access": "true",
+						"cf-aig-authorization": `Bearer ${apiKey}`,
+						"x-api-key": null,
+						Authorization: null,
+						...(betaFeatures.length > 0 ? { "anthropic-beta": betaFeatures.join(",") } : {}),
+					},
+					model.headers,
+					optionsHeaders,
+				),
 			),
 		});
 
@@ -1015,15 +1125,18 @@ function createClient(
 			authToken: apiKey,
 			baseURL: model.baseUrl,
 			dangerouslyAllowBrowser: true,
-			defaultHeaders: mergeHeaders(
-				{
-					accept: "application/json",
-					"anthropic-dangerous-direct-browser-access": "true",
-					...(betaFeatures.length > 0 ? { "anthropic-beta": betaFeatures.join(",") } : {}),
-				},
-				model.headers,
-				dynamicHeaders,
-				optionsHeaders,
+			defaultHeaders: sanitizeAdaptiveThinkingHeaders(
+				model,
+				mergeHeaders(
+					{
+						accept: "application/json",
+						"anthropic-dangerous-direct-browser-access": "true",
+						...(betaFeatures.length > 0 ? { "anthropic-beta": betaFeatures.join(",") } : {}),
+					},
+					model.headers,
+					dynamicHeaders,
+					optionsHeaders,
+				),
 			),
 		});
 
@@ -1037,16 +1150,19 @@ function createClient(
 			authToken: apiKey,
 			baseURL: model.baseUrl,
 			dangerouslyAllowBrowser: true,
-			defaultHeaders: mergeHeaders(
-				{
-					accept: "application/json",
-					"anthropic-dangerous-direct-browser-access": "true",
-					"anthropic-beta": ["claude-code-20250219", "oauth-2025-04-20", ...betaFeatures].join(","),
-					"user-agent": `claude-cli/${claudeCodeVersion}`,
-					"x-app": "cli",
-				},
-				model.headers,
-				optionsHeaders,
+			defaultHeaders: sanitizeAdaptiveThinkingHeaders(
+				model,
+				mergeHeaders(
+					{
+						accept: "application/json",
+						"anthropic-dangerous-direct-browser-access": "true",
+						"anthropic-beta": ["claude-code-20250219", "oauth-2025-04-20", ...betaFeatures].join(","),
+						"user-agent": `claude-cli/${claudeCodeVersion}`,
+						"x-app": "cli",
+					},
+					model.headers,
+					optionsHeaders,
+				),
 			),
 		});
 
@@ -1061,15 +1177,18 @@ function createClient(
 		authToken: null,
 		baseURL: model.baseUrl,
 		dangerouslyAllowBrowser: true,
-		defaultHeaders: mergeHeaders(
-			{
-				accept: "application/json",
-				"anthropic-dangerous-direct-browser-access": "true",
-				...(betaFeatures.length > 0 ? { "anthropic-beta": betaFeatures.join(",") } : {}),
-			},
-			sessionAffinityHeaders,
-			model.headers,
-			optionsHeaders,
+		defaultHeaders: sanitizeAdaptiveThinkingHeaders(
+			model,
+			mergeHeaders(
+				{
+					accept: "application/json",
+					"anthropic-dangerous-direct-browser-access": "true",
+					...(betaFeatures.length > 0 ? { "anthropic-beta": betaFeatures.join(",") } : {}),
+				},
+				sessionAffinityHeaders,
+				model.headers,
+				optionsHeaders,
+			),
 		),
 	});
 
@@ -1086,14 +1205,8 @@ function buildParams(
 	const { cacheControl } = getCacheControl(model, options?.cacheRetention);
 	const params: MessageCreateParamsStreaming = {
 		model: model.id,
-		messages: convertMessages(
-			context.messages,
-			model,
-			isOAuthToken,
-			cacheControl,
-			options?.thinkingEnabled !== false,
-		),
-		max_tokens: options?.maxTokens || (model.maxTokens / 3) | 0,
+		messages: convertMessages(context.messages, model, isOAuthToken, cacheControl, options?.thinkingEnabled === true),
+		max_tokens: options?.maxTokens ?? model.maxTokens,
 		stream: true,
 	};
 
@@ -1126,7 +1239,12 @@ function buildParams(
 
 	// Temperature is incompatible with extended thinking (adaptive or budget-based).
 	if (options?.temperature !== undefined && !options?.thinkingEnabled) {
-		params.temperature = options.temperature;
+		Object.defineProperty(params, "temperature", {
+			value: options.temperature,
+			writable: true,
+			enumerable: true,
+			configurable: true,
+		});
 	}
 
 	if (context.tools && context.tools.length > 0) {
@@ -1138,14 +1256,13 @@ function buildParams(
 		);
 	}
 
-	// Configure thinking mode: adaptive (Opus 4.6+ and Sonnet 4.6),
-	// budget-based (older models), or explicitly disabled.
+	// Configure thinking mode: adaptive, budget-based, or explicitly disabled.
 	if (model.reasoning) {
 		if (options?.thinkingEnabled) {
 			// Default to "summarized" so Opus 4.7 and Mythos Preview behave like
 			// older Claude 4 models (whose API default is also "summarized").
 			const display: AnthropicThinkingDisplay = options.thinkingDisplay ?? "summarized";
-			if (supportsAdaptiveThinking(model.id)) {
+			if (supportsAdaptiveThinking(model)) {
 				// Adaptive thinking: Claude decides when and how much to think.
 				params.thinking = { type: "adaptive", display } as MessageCreateParamsStreaming["thinking"];
 				if (options.effort) {

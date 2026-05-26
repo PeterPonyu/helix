@@ -2,15 +2,164 @@
 
 ## [Unreleased]
 
+### Removed
+
+- Removed the `--neo` CLI flag and native neo TUI binary build wiring.
+
+## [2026.5.26] - 2026-05-26
+
+### Breaking Changes
+
 ### Added
 
-- Added a `--` sentinel to `helix --neo` arg forwarding so users can pass `--theme`, `--list-themes`, `--demo`, `--demo-seconds`, `--backend-bin`, and `--backend-args` to the Rust `helix-neo-tui` binary without colliding with helix's own `--theme` flag, e.g. `helix --neo -- --theme opencode/dracula`.
+### Changed
+
+### Fixed
+
+### Removed
+
+## [2026.5.24] - 2026-05-24
+
+### Breaking Changes
+
+### Added
+
+### Changed
+
+### Fixed
+
+- Fixed `RpcClient` to reject pending requests and consume stdin pipe errors when the child process exits unexpectedly ([#4764](https://github.com/earendil-works/pi/issues/4764)).
+- Fixed managed npm extension updates to avoid package managers installing or resolving pi host packages as peer dependencies ([#4907](https://github.com/earendil-works/pi/issues/4907)).
+- Fixed RPC mode raw stdout writes to retry transient backpressure errors and flush queued protocol output during shutdown ([#4897](https://github.com/earendil-works/pi/issues/4897)).
+
+### Removed
+
+## [2026.5.23-2] - 2026-05-23
+
+### Breaking Changes
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## [2026.5.23] - 2026-05-23
+
+### Breaking Changes
+
+### Added
+
+### Changed
+
+### Fixed
+
+- Fixed stale compaction jobs surviving aborts or model switches and surfacing alongside the next assistant response.
+
+### Removed
+
+## [0.75.5] - 2026-05-23
+
+### New Features
+
+- **Cleaner read tool output** - Collapsed `read` tool cards now show only the read line by default, while `Ctrl+O` still expands the full file content.
+- **Faster file tools on Windows** - Built-in file tools now use async filesystem operations during streaming, and image resizes run off the main TUI thread in a worker.
+- **More reliable package updates** - `pi update` and git package installs now reconcile pinned git refs and keep package settings intact. See [Packages](docs/packages.md).
+- **Custom Anthropic-compatible adaptive thinking** - Custom provider model configs can opt into adaptive-thinking Claude behavior with `compat.forceAdaptiveThinking`. See [Custom providers](docs/custom-provider.md) and [Models](docs/models.md).
+
+### Added
+
+- Added `compat.forceAdaptiveThinking` support to custom Anthropic-compatible model configuration docs and validation ([#4797](https://github.com/earendil-works/pi-mono/pull/4797) by [@mbazso](https://github.com/mbazso)).
+- Added a standard unified patch to edit tool result details for SDK consumers ([#4821](https://github.com/earendil-works/pi/issues/4821)).
+
+### Changed
+
+- Changed collapsed read tool cards to show only the read line until expanded ([#4916](https://github.com/earendil-works/pi/issues/4916)).
+- Replaced the inherited optional `koffi` dependency for Windows VT input with a tiny vendored native helper, reducing install size while preserving Shift+Tab handling ([#4480](https://github.com/earendil-works/pi/issues/4480)).
+- Changed the root development install documentation to use `npm install --ignore-scripts` ([#4868](https://github.com/earendil-works/pi/issues/4868)).
+
+### Fixed
+
+- Fixed `pi update` to reconcile git-pinned packages to their configured ref ([#4869](https://github.com/earendil-works/pi/issues/4869)).
+- Fixed package/resource path handling for Windows and glob/pattern resolution ([#4873](https://github.com/earendil-works/pi-mono/pull/4873) by [@mitsuhiko](https://github.com/mitsuhiko)).
+- Fixed config pattern matching to resolve patterns from the correct base directory ([#4898](https://github.com/earendil-works/pi-mono/pull/4898) by [@haoqixu](https://github.com/haoqixu)).
+- Fixed theme pickers to list themes by their content name instead of file stem ([#4830](https://github.com/earendil-works/pi-mono/pull/4830) by [@Perlence](https://github.com/Perlence)).
+- Fixed OpenCode Zen/Go requests to send per-session OpenCode routing headers ([#4847](https://github.com/earendil-works/pi/issues/4847)).
+- Fixed Amazon Bedrock provider loading under strict package managers by inheriting the declared `@smithy/node-http-handler` dependency from `@earendil-works/pi-ai` ([#4842](https://github.com/earendil-works/pi/issues/4842)).
+- Fixed inherited Amazon Bedrock Claude requests to send the model output token cap by default, avoiding Bedrock's 4096-token default truncation ([#4848](https://github.com/earendil-works/pi/issues/4848)).
+- Fixed exported session HTML to escape quote characters in attribute values ([#4832](https://github.com/earendil-works/pi/issues/4832)).
+- Fixed GitHub Copilot device-code login to keep opening the verification URL in browser-capable environments while ignoring browser launch failures for headless use ([#4788](https://github.com/earendil-works/pi-mono/pull/4788) by [@vegarsti](https://github.com/vegarsti)).
+- Fixed git package installs to reconcile existing checkouts to the requested ref and update package settings without losing filters ([#4870](https://github.com/earendil-works/pi/issues/4870)).
+- Published a 0.74.2 rescue release that tells Node 20 users to upgrade Node before updating to newer Pi versions ([#4876](https://github.com/earendil-works/pi/issues/4876)).
+- Fixed final bash tool cards to avoid rendering duplicate full-output truncation paths ([#4819](https://github.com/earendil-works/pi/issues/4819)).
+- Fixed bash tool truncation line counts to ignore the trailing newline as an extra output line ([#4818](https://github.com/earendil-works/pi/issues/4818)).
+- Fixed footer home-directory abbreviation to avoid shortening sibling paths that only share the same prefix ([#4878](https://github.com/earendil-works/pi/issues/4878)).
+- Fixed macOS Bun release binaries to resolve the native clipboard sidecar so Ctrl+V image paste can load `@mariozechner/clipboard` ([#4307](https://github.com/earendil-works/pi/issues/4307)).
+- Fixed coding-agent tools to avoid synchronous filesystem operations during streaming and moved image resizing off the main TUI thread ([#4756](https://github.com/earendil-works/pi-mono/pull/4756) by [@mitsuhiko](https://github.com/mitsuhiko)).
+
+## [2026.5.21-2] - 2026-05-21
+
+### Breaking Changes
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## [2026.5.21] - 2026-05-21
+
+### Breaking Changes
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## [2026.5.20-4] - 2026-05-20
+
+### Breaking Changes
+
+### Added
+
+### Changed
+
+### Fixed
+
+- Fixed release changelog bookkeeping to recreate next-cycle `[Unreleased]` sections even when the previous release did not capture one, preserving TUI working / Escape / history notes for future release cycles.
+
+### Removed
+
+## [2026.5.20] - 2026-05-20
+
+### Added
+
+- Added a `--` sentinel to `senpi --neo` arg forwarding so users can pass `--theme`, `--list-themes`, `--demo`, `--demo-seconds`, `--backend-bin`, and `--backend-args` to the Rust `senpi-neo-tui` binary without colliding with senpi's own `--theme` flag, e.g. `senpi --neo -- --theme opencode/dracula`.
+- Added real legacy-feature wiring to `senpi --neo` (Round 12 real port). `Ctrl+T` (`app.thinking.toggle`) now actually hides / shows thinking blocks in chat via new `chat::ChatViewOpts::thinking_visible`. `Ctrl+O` (`app.tools.expand`) now collapses / expands tool card bodies via `ChatViewOpts::tools_expanded`. `Alt+S` (`neo.sidebar.toggle`) now toggles the sidebar pane visibility (gated by terminal width). `Alt+A` (`neo.toggle_animations`) now freezes the spinner and input focus pulse. `Alt+C` (`neo.compact`) now fires `Command::Compact` to the backend. The model picker (`Ctrl+L`) now fires `Command::SetModel` end-to-end via a curated provider-prefix lookup (claude → anthropic, gpt → openai, kimi → kimi-for-coding, glm → opencode-zen, deepseek → deepseek, gemini → google). `Ctrl+G` (`app.editor.external`) now actually suspends the TUI, launches `$VISUAL` / `$EDITOR` (falling back to `vi`) against the input buffer, and reads the edited result back. `Alt+Up` (`app.message.dequeue`) now pops the most recently queued steering / follow-up message from the local queue (tracked via `RpcEvent::QueueUpdate`) back into the input buffer.
+- Added more `senpi --neo` real legacy-feature wiring (Round 13 real port). `Ctrl+Z` (`app.suspend`) now actually suspends the TUI via `SIGTSTP` so the user lands back at the shell prompt and can `fg` to re-enter; non-Unix platforms surface a chat error explaining suspend is not supported. `app.session.new` now fires the real `Command::NewSession` instead of stubbing as unimplemented. Session / tree / models overlay-scoped actions (27 total ids) now route through dedicated predicates and `note_*_overlay_scoped_action` helpers that name the parent overlay so the user understands the chord is scoped instead of getting a generic "not yet wired" string. The `ADVERTISED_BUT_UNIMPLEMENTED_ACTIONS` list shrunk from 30 entries to 1 (`app.clipboard.pasteImage`).
 
 ### Fixed
 
 - Fixed OpenAI remote compaction to time out nonresponsive native compact routes and fall back to local compaction.
-- Fixed `helix --neo` keymap parity so `tui.editor.newLine` no longer ships as a redundant shadow of the legacy `tui.input.newLine` and `tui.input.historyPrev`/`historyNext` are moved into the `neo.*` namespace where neo-only bindings belong.
+- Fixed `senpi --neo` keymap parity so `tui.editor.newLine` no longer ships as a redundant shadow of the legacy `tui.input.newLine` and `tui.input.historyPrev`/`historyNext` are moved into the `neo.*` namespace where neo-only bindings belong.
+- Fixed `senpi --neo` Bug 3 regression where four failure paths went silently to the user: `Inbound::Response { success: false }` was dropped, `Inbound::ParseError` only logged to `tracing::warn!`, the bundled `opencode/dracula`-style theme ids resolved as file paths and failed with `read_to_string`, and `Alt+T` (`neo.theme.picker`) was bound but never opened the theme picker overlay. Every failure now surfaces in chat + footer, the registry strips the `opencode/` prefix, and the keymap action wires through to the overlay.
+- Fixed another batch of `senpi --neo` Bug 3 silent paths flagged by Oracle round 6: `app.editor.external` (Ctrl+G) had no run-loop side effect, `app.suspend` (Ctrl+Z) was advertised but missing from the unimplemented-action list, `message_end.message.errorMessage` from failed assistant turns was dropped, `compaction_end` aborted/error variants and `auto_retry_end { success: false }` were swallowed by the catch-all, terminal `EventStream::Some(Err(_))` was silently consumed, and stderr-reader I/O failures only surfaced when the child later exited. Each path now pushes a chat error/system note and flips the footer where appropriate.
+- Fixed `senpi --neo` last-mile Bug 3 leak flagged by Oracle round 7: `tui.select.{up,down,pageUp,pageDown,confirm,cancel}` are advertised in the bundled keymap and surfaced by the command palette, but only have a useful effect while a list overlay (slash menu, palette, model / theme picker, help) is open. Selecting one from the palette outside an overlay used to silently consume; now pushes a chat-system note explaining the overlay scoping via a new `note_overlay_only_action` helper distinct from the "not yet wired" message.
+- Fixed `senpi --neo` Bug 3 leak Oracle round 7 flagged: `tui.select.{up,down,pageUp,pageDown,confirm,cancel}` are bound in the keymap and exposed by the command palette but only do useful work when an overlay is open (`synthesise_select_event` routes them to the active overlay's raw handler). Selecting one from the palette with no overlay open used to silently fall into the catch-all consume. The dispatcher now pushes a chat-system note explaining the overlay scoping instead of swallowing the chord.
+- Fixed two more `senpi --neo` Bug 3 leaks Oracle round 8 flagged: `neo.slash.open` was only handled in the raw key path (gated on Input focus + empty buffer to keep mid-prompt `/` inserting literally), so dispatching it through the command palette fell into the catch-all silent consume; the dispatcher now opens the slash overlay unconditionally via a new helper when the action is fired explicitly. `tui.input.tab` was only consumed by `try_autocomplete_action` when an autocomplete popup was visible; outside that context it now pushes a chat-system note explaining the autocomplete scoping via a new `note_autocomplete_only_action` helper. Also removed the dead `app.message.followUp` entry from the advertised-unimplemented list because the explicit `execute_action` arm already wires it to `AppAction::FollowUp`.
+- Fixed the last `senpi --neo` Bug 3 leak Oracle round 9 flagged: `app.exit` (`/quit` from the slash menu or palette) with a non-empty input buffer returned `AppAction::Consumed("tui.editor.deleteCharForward")` — a label string that did NOT actually delete a char and did NOT actually quit. The arm now always returns `AppAction::Quit` because the user explicitly chose to exit. Users wanting the legacy "Ctrl+D mid-text deletes a char" behavior can rebind Ctrl+D to `tui.editor.deleteCharForward` directly (that arm already has the legacy semantics).
+- Fixed `senpi --neo` last Bug 3 leak Oracle round 9 flagged: `app.exit` with a non-empty input buffer returned `AppAction::Consumed("tui.editor.deleteCharForward")` (a label string, NOT an actual delete-char-forward call), so selecting `/quit` from the slash menu / command palette while typing in the input buffer silently closed the menu with no quit, no delete, no chat feedback. The arm now always returns `AppAction::Quit`; users wanting the legacy Ctrl+D-deletes-char-forward semantics can rebind Ctrl+D to `tui.editor.deleteCharForward` directly.
+- Fixed three more `senpi --neo` Bug 3 silent paths Oracle round 10 flagged. (a) `app.thinking.toggle` (Ctrl+T) and `app.tools.expand` (Ctrl+O) flipped `self.thinking_visible` / `self.tools_expanded` but no render path read those fields, so the chord produced zero visible effect; the dispatcher now pushes a chat-system "not yet wired to chat rendering" note while preserving the field mutations for future renderer hookups. (b) Successful `cycle_model`, `set_model`, and `cycle_thinking_level` responses were silently dropped by `apply_inbound` (only the `success: false` branch was wired), so pressing Ctrl+P or Shift+Tab fired the RPC but the user saw no model / level change anywhere; the success branch now routes through new `apply_model_change_response` / `apply_thinking_change_response` helpers that update header + footer AND push a chat note (including a null-data "no other model configured" note when the backend cycles past the only available option). (c) `app.model.cycleBackward` (Shift+Ctrl+P) silently cycled FORWARD because both directions mapped to the same forward-only `Command::CycleModel` (the wire protocol is next-only today); backward cycling now routes through `note_unimplemented_action` instead of doing the wrong thing.
+- Fixed `senpi --neo` Bug 3 leak Oracle round 11 flagged: `extension_ui_request` JSONL frames (used by extensions for user-facing notifications via `method: "notify"` with `notifyType: "info"/"warning"/"error"` and modal dialogs via `select`, `confirm`, `input`, `editor`) had no `Event` variant in neo-tui's RPC types, so the `#[serde(other)]` catch landed them in `Event::Other` and `apply_event` silently dropped them. An extension could emit `notifyType: "error"` with a body like "Command blocked by policy" and the user saw absolutely nothing. Added a typed `RpcEvent::ExtensionUiRequest` variant and a new `apply_extension_ui_request` handler that surfaces `notify` errors as Role::Error + footer error state, surfaces warning / info notifications as Role::System, surfaces dialog methods as "not yet wired" Role::System notes naming the method + title, and intentionally stays silent for per-extension UI updates (`setStatus`, `setWidget`, `setTitle`, `set_editor_text`).
 - Fixed stuck TUI working states by applying the provider timeout to stream-idle waits.
+
 ## [2026.5.19] - 2026-05-19
 
 ### Fixed

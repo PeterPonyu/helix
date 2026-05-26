@@ -15,43 +15,28 @@
  *   3. Write `version` into all 5 workspace package.json files directly (TAB indent,
  *      trailing newline). `npm version` is intentionally NOT used; the `-N` suffix on
  *      same-day re-releases looks like a prerelease tag to npm.
- *   4. Run `scripts/sync-versions.js` to propagate the new version to inter-package deps.
- *   5. For each `packages/*\/CHANGELOG.md`, replace `## [Unreleased]` with
+ *   4. Run `scripts/sync-versions.js` to propagate the new version to source
+ *      inter-package deps.
+ *   5. Regenerate `packages/coding-agent/npm-shrinkwrap.json` for the published CLI.
+ *   6. For each `packages/*\/CHANGELOG.md`, replace `## [Unreleased]` with
  *      `## [<version>] - <YYYY-MM-DD>`, remembering its subsection structure
- *      (`### Added`, `### Fixed`, ...) for re-insertion in step 7.
- *   6. `git add -A`, `git commit -m "release: v<version>"` (husky pre-commit runs),
- *      `git tag v<version>`, then `npm run publish` (publishes to npm with `--tag latest`).
- *   7. Re-insert a fresh `## [Unreleased]` block with the same subsection placeholders,
- *      commit, then push `main` and the new tag.
+ *      (`### Added`, `### Fixed`, ...) for re-insertion in step 8.
+ *   7. `git add -A`, `git commit -m "release: v<version>"` (husky pre-commit runs),
+ *      `git tag v<version>`.
+ *   8. Run `npm run publish`. The public `@code-yeongyu/senpi` package
+ *      keeps lockstep workspace dependency ranges and bundles the private
+ *      forked `@earendil-works/pi-*` workspaces into the npm tarball.
+ *   9. Re-insert a fresh `## [Unreleased]` block with the same subsection placeholders
+ *      or the standard placeholders if none were captured, commit, then push `main`
+ *      and the new tag.
  */
 
 import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
 import { computeNextVersion } from "./calver.mjs";
+import { reAddUnreleasedSections, stampChangelogs } from "./release-changelog.mjs";
+import { applyWorkspaceVersions, runSyncVersions } from "./release-packages.mjs";
 
 const VERSION_RE = /^\d{4}\.\d{1,2}\.\d{1,2}(-\d+)?$/;
-
-const WORKSPACE_PACKAGES = [
-	"packages/ai/package.json",
-	"packages/agent/package.json",
-	"packages/coding-agent/package.json",
-	"packages/tui/package.json",
-	"packages/web-ui/package.json",
-];
-
-const CHANGELOGS = [
-	"packages/ai/CHANGELOG.md",
-	"packages/agent/CHANGELOG.md",
-	"packages/coding-agent/CHANGELOG.md",
-	"packages/tui/CHANGELOG.md",
-	"packages/web-ui/CHANGELOG.md",
-];
-
-const PUBLIC_PACKAGE_DEPENDENCY_PINS = [
-	"@earendil-works/pi-agent-core",
-	"@earendil-works/pi-ai",
-	"@earendil-works/pi-tui",
-];
 
 function printUsage() {
 	const text = [
@@ -176,159 +161,7 @@ function todayISO() {
 	return new Date().toISOString().slice(0, 10);
 }
 
-function writeWorkspaceVersion(file, version, dryRun) {
-	const raw = readFileSync(file, "utf-8");
-	const pkg = JSON.parse(raw);
-	const previous = pkg.version;
-	if (previous === version) {
-		log(`  ${file}: already ${version}`);
-		return;
-	}
-	if (dryRun) {
-		dryRunLog(`write ${file} (version: ${previous} -> ${version})`);
-		return;
-	}
-	// JSON.stringify preserves key insertion order for string keys. Reassigning
-	// `version` updates the value in place without moving the key.
-	pkg.version = version;
-	writeFileSync(file, `${JSON.stringify(pkg, null, "\t")}\n`);
-	log(`  ${file}: ${previous} -> ${version}`);
-}
-
-function applyWorkspaceVersions(version, dryRun) {
-	log(`applying version ${version} to ${WORKSPACE_PACKAGES.length} workspace package.json files`);
-	for (const file of WORKSPACE_PACKAGES) {
-		writeWorkspaceVersion(file, version, dryRun);
-	}
-}
-
-function extractUnreleasedSubsections(content) {
-	const lines = content.split("\n");
-	const start = lines.findIndex((line) => line.trim() === "## [Unreleased]");
-	if (start === -1) {
-		return null;
-	}
-	const subsections = [];
-	for (let i = start + 1; i < lines.length; i++) {
-		const line = lines[i];
-		if (line.startsWith("## [")) {
-			break;
-		}
-		if (line.startsWith("### ")) {
-			subsections.push(line);
-		}
-	}
-	return subsections;
-}
-
-function buildUnreleasedBlock(subsections) {
-	let block = "## [Unreleased]\n\n";
-	for (const sub of subsections) {
-		block += `${sub}\n\n`;
-	}
-	return block;
-}
-
-const capturedSubsections = new Map();
-
-function stampChangelogs(version, date, dryRun) {
-	log(`stamping ${CHANGELOGS.length} CHANGELOG.md files: [Unreleased] -> [${version}] - ${date}`);
-	for (const file of CHANGELOGS) {
-		const content = readFileSync(file, "utf-8");
-		const subsections = extractUnreleasedSubsections(content);
-		if (subsections === null) {
-			log(`  skip ${file}: no [Unreleased] section`);
-			continue;
-		}
-		capturedSubsections.set(file, subsections);
-		const updated = content.replace(/^## \[Unreleased\]$/m, `## [${version}] - ${date}`);
-		const count = subsections.length;
-		const noun = count === 1 ? "subsection header" : "subsection headers";
-		if (dryRun) {
-			dryRunLog(`write ${file} ([Unreleased] -> [${version}] - ${date}; ${count} ${noun} captured)`);
-			continue;
-		}
-		writeFileSync(file, updated);
-		log(`  stamped ${file} (${count} ${noun} captured)`);
-	}
-}
-
-function reAddUnreleasedSections(version, date, dryRun) {
-	log(`re-inserting [Unreleased] block in ${CHANGELOGS.length} CHANGELOG.md files`);
-	for (const file of CHANGELOGS) {
-		const subsections = capturedSubsections.get(file);
-		if (subsections === undefined) {
-			log(`  skip ${file}: no [Unreleased] section was captured`);
-			continue;
-		}
-		const block = buildUnreleasedBlock(subsections);
-		const count = subsections.length;
-		const noun = count === 1 ? "placeholder" : "placeholders";
-		if (dryRun) {
-			dryRunLog(
-				`insert [Unreleased] block before [${version}] - ${date} in ${file} (${count} ${noun})`,
-			);
-			continue;
-		}
-		const content = readFileSync(file, "utf-8");
-		const target = `## [${version}] - ${date}`;
-		const updated = content.replace(target, () => `${block}${target}`);
-		writeFileSync(file, updated);
-		log(`  re-added [Unreleased] to ${file}`);
-	}
-}
-
-function runSyncVersions(dryRun) {
-	if (dryRun) {
-		dryRunLog("node scripts/sync-versions.js");
-		return;
-	}
-	log("running scripts/sync-versions.js");
-	runCommand("node", ["scripts/sync-versions.js"]);
-}
-
-function getPublishedVersion(packageName) {
-	return captureCommand("npm", ["view", packageName, "version"]).trim();
-}
-
-function pinPublicPackageDependencies(dryRun) {
-	const file = "packages/coding-agent/package.json";
-	const raw = readFileSync(file, "utf-8");
-	const pkg = JSON.parse(raw);
-	const updates = [];
-
-	for (const depName of PUBLIC_PACKAGE_DEPENDENCY_PINS) {
-		const publishedVersion = getPublishedVersion(depName);
-		const newRange = `^${publishedVersion}`;
-		const currentRange = pkg.dependencies?.[depName];
-		if (currentRange !== newRange) {
-			updates.push({ depName, currentRange, newRange });
-			if (!dryRun) {
-				pkg.dependencies[depName] = newRange;
-			}
-		}
-	}
-
-	if (updates.length === 0) {
-		log("public package dependencies already point at published npm versions");
-		return;
-	}
-
-	log("pinning public package dependencies to published npm versions");
-	for (const update of updates) {
-		const previous = update.currentRange ?? "<missing>";
-		const message = `  ${update.depName}: ${previous} -> ${update.newRange}`;
-		if (dryRun) {
-			dryRunLog(message);
-		} else {
-			log(message);
-		}
-	}
-
-	if (!dryRun) {
-		writeFileSync(file, `${JSON.stringify(pkg, null, "\t")}\n`);
-	}
-}
+const capturedChangelogSubsections = new Map();
 
 function gitAddAll(dryRun) {
 	if (dryRun) {
@@ -376,6 +209,15 @@ function runPublish(dryRun) {
 	runCommand("npm", ["run", "publish"]);
 }
 
+function runShrinkwrap(dryRun) {
+	if (dryRun) {
+		dryRunLog("node scripts/generate-coding-agent-shrinkwrap.mjs");
+		return;
+	}
+	log("node scripts/generate-coding-agent-shrinkwrap.mjs");
+	runCommand("node", ["scripts/generate-coding-agent-shrinkwrap.mjs"]);
+}
+
 function main() {
 	const args = parseArgs(process.argv.slice(2));
 	if (args.help) {
@@ -393,10 +235,10 @@ function main() {
 		dryRunLog("preview mode; no files, commits, tags, or npm state will be modified");
 	}
 
-	applyWorkspaceVersions(version, args.dryRun);
-	runSyncVersions(args.dryRun);
-	pinPublicPackageDependencies(args.dryRun);
-	stampChangelogs(version, date, args.dryRun);
+	applyWorkspaceVersions(version, args.dryRun, log, dryRunLog);
+	runSyncVersions(args.dryRun, runCommand, log, dryRunLog);
+	runShrinkwrap(args.dryRun);
+	stampChangelogs(version, date, args.dryRun, capturedChangelogSubsections, log, dryRunLog);
 
 	gitAddAll(args.dryRun);
 	gitCommit(`release: v${version}`, args.dryRun);
@@ -404,7 +246,7 @@ function main() {
 
 	runPublish(args.dryRun);
 
-	reAddUnreleasedSections(version, date, args.dryRun);
+	reAddUnreleasedSections(version, date, args.dryRun, capturedChangelogSubsections, log, dryRunLog);
 	gitAddAll(args.dryRun);
 	gitCommit("Add [Unreleased] section for next cycle", args.dryRun);
 
