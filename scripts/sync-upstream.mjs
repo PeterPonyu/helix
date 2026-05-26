@@ -276,6 +276,24 @@ function resetWorkflowFiles(options = {}) {
 	return changed
 }
 
+// Returns the set of stage numbers (1=base, 2=ours, 3=theirs) present in the
+// index for a conflicted path. Lets the markdown rules distinguish content
+// conflicts from modify/delete conflicts (UD: stages {1,2}, DU: stages {1,3}).
+function conflictStages(path, options = {}) {
+	const output = gitTrimmed(["ls-files", "-u", "--", path], options)
+	if (output.length === 0) {
+		return new Set()
+	}
+	const stages = new Set()
+	for (const line of output.split("\n")) {
+		const match = line.match(/^\S+\s+\S+\s+(\d+)\s/)
+		if (match) {
+			stages.add(Number(match[1]))
+		}
+	}
+	return stages
+}
+
 function applyAutoResolution(paths, options = {}) {
 	const state = {
 		packageLockTouched: false,
@@ -304,17 +322,33 @@ function applyAutoResolution(paths, options = {}) {
 		}
 
 		if (base === "changes.md") {
-			log(`auto-resolving ${path}: git checkout --ours changes.md`)
-			git(["checkout", "--ours", "--", path], options)
-			git(["add", "--", path], options)
+			// "Take ours": if ours deleted the file (DU, no stage 2), accept
+			// the deletion; else keep our working tree version.
+			const stages = conflictStages(path, options)
+			if (!stages.has(2)) {
+				log(`auto-resolving ${path}: ours deleted; git rm`)
+				git(["rm", "-f", "--", path], options)
+			} else {
+				log(`auto-resolving ${path}: git checkout --ours changes.md`)
+				git(["checkout", "--ours", "--", path], options)
+				git(["add", "--", path], options)
+			}
 			state.resolved.push(path)
 			continue
 		}
 
 		if (path.endsWith(".md")) {
-			log(`auto-resolving ${path}: git checkout --theirs markdown`)
-			git(["checkout", "--theirs", "--", path], options)
-			git(["add", "--", path], options)
+			// "Take theirs": if theirs deleted the file (UD, no stage 3), accept
+			// the deletion via git rm; else restore theirs' content.
+			const stages = conflictStages(path, options)
+			if (!stages.has(3)) {
+				log(`auto-resolving ${path}: theirs deleted; git rm`)
+				git(["rm", "-f", "--", path], options)
+			} else {
+				log(`auto-resolving ${path}: git checkout --theirs markdown`)
+				git(["checkout", "--theirs", "--", path], options)
+				git(["add", "--", path], options)
+			}
 			state.resolved.push(path)
 			continue
 		}
