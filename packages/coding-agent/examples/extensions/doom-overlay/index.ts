@@ -9,10 +9,17 @@
  * This demonstrates that overlays can handle real-time game rendering at 35 FPS.
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
 import { DoomOverlayComponent } from "./doom-component.js";
 import { DoomEngine } from "./doom-engine.js";
 import { ensureWadFile } from "./wad-finder.js";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { DoomOverlayComponent } from "./doom-component.ts";
+import { DoomEngine } from "./doom-engine.ts";
+import { ensureWadFile } from "./wad-finder.ts";
+>>>>>>> upstream/main
 
 // Persistent engine instance - survives between invocations
 let activeEngine: DoomEngine | null = null;

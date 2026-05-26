@@ -2,8 +2,8 @@ import type { AgentTool, ThinkingLevel } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxToolCall, type Model } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
-import type { ExtensionAPI } from "../../src/index.js";
-import { createHarness, getAssistantTexts, type Harness } from "./harness.js";
+import type { ExtensionAPI } from "../../src/index.ts";
+import { createHarness, getAssistantTexts, type Harness } from "./harness.ts";
 
 describe("AgentSession model and extension characterization", () => {
 	const harnesses: Harness[] = [];
@@ -42,6 +42,31 @@ describe("AgentSession model and extension characterization", () => {
 				.filter((entry) => entry.type === "model_change")
 				.map((entry) => `${entry.provider}/${entry.modelId}`),
 		).toEqual([`${nextModel.provider}/${nextModel.id}`]);
+	});
+
+	it("emits model_select when a same-id model changes context window", async () => {
+		// given
+		const modelEvents: string[] = [];
+		const harness = await createHarness({
+			models: [{ id: "faux-1", name: "One", contextWindow: 32_000 }],
+			extensionFactories: [
+				(pi) => {
+					pi.on("model_select", async (event) => {
+						modelEvents.push(`${event.previousModel?.contextWindow ?? 0}->${event.model.contextWindow}`);
+					});
+				},
+			],
+		});
+		harnesses.push(harness);
+		const initialRevision = harness.session.getMessageRevision();
+		const expandedModel = { ...harness.getModel(), contextWindow: 800_000 };
+
+		// when
+		await harness.session.setModel(expandedModel);
+
+		// then
+		expect(modelEvents).toEqual(["32000->800000"]);
+		expect(harness.session.getMessageRevision()).toBeGreaterThan(initialRevision);
 	});
 
 	it("uses a newly selected model for queued steering after the active turn finishes", async () => {

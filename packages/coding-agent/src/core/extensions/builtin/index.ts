@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { ExtensionFactory } from "../types.js";
 import anthropicBashExtension from "./anthropic-bash/index.js";
 import anthropicWebSearchExtension from "./anthropic-web-search/index.js";
@@ -21,6 +22,28 @@ import serviceTierExtension from "./service-tier.js";
 import todowriteExtension from "./todotools/index.js";
 import toolPairGuardExtension from "./tool-pair-guard/index.js";
 import tpsExtension from "./tps.js";
+=======
+import type { ExtensionFactory } from "../types.ts";
+import anthropicBashExtension from "./anthropic-bash/index.ts";
+import anthropicWebSearchExtension from "./anthropic-web-search/index.ts";
+import bashTimeoutExtension from "./bash-timeout/index.ts";
+import compactionExtension from "./compaction/index.ts";
+import diffExtension from "./diff.ts";
+import filesExtension from "./files.ts";
+import gptApplyPatchExtension from "./gpt-apply-patch/index.ts";
+import historySearchExtension from "./history-search/index.ts";
+import kimiWebSearchExtension from "./kimi-web-search/index.ts";
+import openaiWebSearchExtension from "./openai-web-search/index.ts";
+import permissionSystemExtension from "./permission-system/index.ts";
+import promptPresetExtension from "./prompt-preset/index.ts";
+import promptUrlWidgetExtension from "./prompt-url-widget.ts";
+import redrawsExtension from "./redraws.ts";
+import serviceTierExtension from "./service-tier.ts";
+import sessionObserverExtension from "./session-observer/index.ts";
+import todowriteExtension from "./todotools/index.ts";
+import toolPairGuardExtension from "./tool-pair-guard/index.ts";
+import tpsExtension from "./tps.ts";
+>>>>>>> upstream/main
 
 export interface BuiltinExtensionFactory {
 	id: string;
@@ -49,10 +72,16 @@ export const builtinExtensions: BuiltinExtensionFactory[] = [
 	{ id: "bash-timeout", factory: bashTimeoutExtension },
 	{ id: "tool-pair-guard", factory: toolPairGuardExtension },
 	{ id: "compaction", factory: compactionExtension },
+<<<<<<< HEAD
 	{ id: "helix-ontology", factory: helixOntologyExtension },
 	{ id: "helix-seq", factory: helixSeqExtension },
 	{ id: "helix-bed-gff", factory: helixBedGffExtension },
 	{ id: "helix-coords", factory: helixCoordsExtension },
 	{ id: "helix-bio-persona", factory: helixBioPersonaExtension },
 	{ id: "helix-bio-presets", factory: helixBioPresetsExtension },
+=======
+	{ id: "history-search", factory: historySearchExtension },
+	{ id: "session-observer", factory: sessionObserverExtension },
+	{ id: "kimi-web-search", factory: kimiWebSearchExtension },
+>>>>>>> upstream/main
 ];

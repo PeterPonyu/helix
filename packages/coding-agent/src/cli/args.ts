@@ -4,8 +4,8 @@
 
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import chalk from "chalk";
-import { APP_NAME, CONFIG_DIR_NAME, ENV_AGENT_DIR, ENV_SESSION_DIR } from "../config.js";
-import type { ExtensionFlag } from "../core/extensions/types.js";
+import { APP_NAME, CONFIG_DIR_NAME, ENV_AGENT_DIR, ENV_SESSION_DIR } from "../config.ts";
+import type { ExtensionFlag } from "../core/extensions/types.ts";
 
 export type Mode = "text" | "json" | "rpc";
 
@@ -43,12 +43,15 @@ export interface Args {
 	listModels?: string | true;
 	offline?: boolean;
 	verbose?: boolean;
+<<<<<<< HEAD
 	/**
 	 * Launch the experimental native Rust + ratatui TUI (`helix-neo-tui`)
 	 * instead of the default interactive TUI. Only honored when the app
 	 * mode resolves to `interactive`.
 	 */
 	neo?: boolean;
+=======
+>>>>>>> upstream/main
 	messages: string[];
 	fileArgs: string[];
 	/** Unknown flags (potentially extension flags) - map of flag name to value */
@@ -169,7 +172,7 @@ export function parseArgs(args: string[]): Args {
 		} else if (arg === "--offline") {
 			result.offline = true;
 		} else if (arg === "--neo") {
-			result.neo = true;
+			result.diagnostics.push({ type: "error", message: "Unknown option: --neo" });
 		} else if (arg.startsWith("@")) {
 			result.fileArgs.push(arg.slice(1)); // Remove @ prefix
 		} else if (arg.startsWith("--")) {
@@ -256,7 +259,10 @@ ${chalk.bold("Options:")}
   --list-models [search]         List available models (with optional fuzzy search)
   --verbose                      Force verbose startup (overrides quietStartup setting)
   --offline                      Disable startup network operations (same as PI_OFFLINE=1)
+<<<<<<< HEAD
   --neo                          Launch experimental Rust + ratatui TUI (helix-neo-tui) instead of the default TUI
+=======
+>>>>>>> upstream/main
   --help, -h                     Show this help
   --version, -v                  Show version number
 

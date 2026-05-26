@@ -7,11 +7,11 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
 	createAgentSessionFromServices,
 	createAgentSessionServices,
-} from "../../../src/core/agent-session-services.js";
-import { DefaultResourceLoader } from "../../../src/core/resource-loader.js";
-import { createAgentSession } from "../../../src/core/sdk.js";
-import { SessionManager } from "../../../src/core/session-manager.js";
-import { SettingsManager } from "../../../src/core/settings-manager.js";
+} from "../../../src/core/agent-session-services.ts";
+import { DefaultResourceLoader } from "../../../src/core/resource-loader.ts";
+import { createAgentSession } from "../../../src/core/sdk.ts";
+import { SessionManager } from "../../../src/core/session-manager.ts";
+import { SettingsManager } from "../../../src/core/settings-manager.ts";
 
 describe("regression #3592: no-builtin-tools keeps extension tools enabled", () => {
 	let tempDir: string;
@@ -79,6 +79,8 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 				.map((tool) => tool.name)
 				.sort(),
 		).toEqual([
+			"FetchURL",
+			"SearchWeb",
 			"apply_patch",
 			"bash",
 			"bed_info",
@@ -100,6 +102,7 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			"todowrite",
 			"write",
 		]);
+<<<<<<< HEAD
 		expect(session.getActiveToolNames()).toEqual([
 			"todowrite",
 			"todoread",
@@ -114,6 +117,9 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			"coord_overlap",
 			"dynamic_tool",
 		]);
+=======
+		expect(session.getActiveToolNames()).toEqual(["todowrite", "todoread", "SearchWeb", "FetchURL", "dynamic_tool"]);
+>>>>>>> upstream/main
 		expect(session.systemPrompt).toContain("- dynamic_tool: Run dynamic test behavior");
 		expect(session.systemPrompt).not.toContain("- read:");
 		expect(session.systemPrompt).not.toContain("- bash:");
@@ -145,6 +151,7 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			noTools: "builtin",
 		});
 
+<<<<<<< HEAD
 		expect(session.getActiveToolNames()).toEqual([
 			"apply_patch",
 			"todowrite",
@@ -159,6 +166,9 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 			"coord_convert",
 			"coord_overlap",
 		]);
+=======
+		expect(session.getActiveToolNames()).toEqual(["apply_patch", "todowrite", "todoread", "SearchWeb", "FetchURL"]);
+>>>>>>> upstream/main
 		expect(session.systemPrompt).toContain("- todowrite:");
 		expect(session.systemPrompt).not.toContain("- read:");
 		session.dispose();
