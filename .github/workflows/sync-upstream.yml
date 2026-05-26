@@ -8,6 +8,7 @@ name: Sync Upstream
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 concurrency:
   group: sync-upstream
