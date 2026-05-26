@@ -595,7 +595,13 @@ function createConflictPullRequest(unresolved, shortSha, branchName, options = {
 
 	if (!options.noPush) {
 		log(`pushing conflict branch ${branchName}`)
-		git(["push", "-u", "origin", branchName], options)
+		// Force push so a stale remote branch from a previous attempt that
+		// failed *after* push (e.g. on PR creation) doesn't reject the next
+		// run with non-fast-forward. The workflow's concurrency group prevents
+		// parallel sync runs, and the branch name is unique per upstream SHA,
+		// so the only competing ref is our own previous attempt -- safe to
+		// overwrite.
+		git(["push", "-u", "--force", "origin", branchName], options)
 	} else {
 		log(`--no-push set; skipping push for ${branchName}`)
 	}
@@ -604,11 +610,16 @@ function createConflictPullRequest(unresolved, shortSha, branchName, options = {
 	writeFileSync(bodyPath, buildPrBody(unresolved, shortSha))
 	try {
 		log("creating sync-conflict PR")
+		// Two-step create + label-edit. `gh pr create --label` does a label
+		// lookup via the GraphQL labels endpoint that's been observed to fail
+		// with "could not add label: 'X' not found" even when the label exists
+		// (seen consistently in PeterPonyu/helix runs after the workflow-files
+		// push fix landed, with issues:write granted and the label confirmed in
+		// the repo). `gh pr edit --add-label` uses the REST issues-labels API
+		// (PATCH /repos/{owner}/{repo}/issues/{issue_number}/labels) and works.
 		const url = run("gh", [
 			"pr",
 			"create",
-			"--label",
-			CONFLICT_LABEL,
 			"--base",
 			MAIN_BRANCH,
 			"--head",
@@ -619,6 +630,10 @@ function createConflictPullRequest(unresolved, shortSha, branchName, options = {
 			bodyPath,
 		], options).trim()
 		console.log(url)
+
+		const prNumber = url.split("/").pop()
+		log(`applying ${CONFLICT_LABEL} label to PR #${prNumber}`)
+		run("gh", ["pr", "edit", prNumber, "--add-label", CONFLICT_LABEL], options)
 	} finally {
 		rmSync(bodyPath, { force: true })
 	}
