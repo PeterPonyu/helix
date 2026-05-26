@@ -639,7 +639,20 @@ function createConflictPullRequest(unresolved, shortSha, branchName, options = {
 		console.log(pr.html_url)
 
 		log(`applying ${CONFLICT_LABEL} label to PR #${prNumber}`)
-		run("gh", ["pr", "edit", String(prNumber), "--add-label", CONFLICT_LABEL], options)
+		// REST issues-labels endpoint instead of `gh pr edit --add-label`:
+		// despite the labeling actually being a REST operation under the hood,
+		// gh CLI does a name-resolution lookup that returns "'X' not found"
+		// even when the label exists (verified via direct REST query). Direct
+		// POST to /repos/{owner}/{repo}/issues/{n}/labels with {labels:[...]}
+		// bypasses the lookup and works.
+		run("gh", [
+			"api",
+			"-X",
+			"POST",
+			`repos/${repoSlug}/issues/${prNumber}/labels`,
+			"-f",
+			`labels[]=${CONFLICT_LABEL}`,
+		], options)
 	} finally {
 		rmSync(inputPath, { force: true })
 	}
