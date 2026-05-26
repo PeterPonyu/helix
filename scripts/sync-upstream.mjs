@@ -606,37 +606,55 @@ function createConflictPullRequest(unresolved, shortSha, branchName, options = {
 		log(`--no-push set; skipping push for ${branchName}`)
 	}
 
-	const bodyPath = join(tmpdir(), `sync-upstream-${shortSha}.md`)
-	writeFileSync(bodyPath, buildPrBody(unresolved, shortSha))
+	const repoSlug = getOriginRepoSlug(options)
+	const inputPath = join(tmpdir(), `sync-upstream-${shortSha}.json`)
+	writeFileSync(
+		inputPath,
+		JSON.stringify({
+			title: `sync: upstream ${shortSha} (conflicts)`,
+			head: branchName,
+			base: MAIN_BRANCH,
+			body: buildPrBody(unresolved, shortSha),
+		}),
+	)
 	try {
-		log("creating sync-conflict PR")
-		// Two-step create + label-edit. `gh pr create --label` does a label
-		// lookup via the GraphQL labels endpoint that's been observed to fail
-		// with "could not add label: 'X' not found" even when the label exists
-		// (seen consistently in PeterPonyu/helix runs after the workflow-files
-		// push fix landed, with issues:write granted and the label confirmed in
-		// the repo). `gh pr edit --add-label` uses the REST issues-labels API
-		// (PATCH /repos/{owner}/{repo}/issues/{issue_number}/labels) and works.
-		const url = run("gh", [
-			"pr",
-			"create",
-			"--base",
-			MAIN_BRANCH,
-			"--head",
-			branchName,
-			"--title",
-			`sync: upstream ${shortSha} (conflicts)`,
-			"--body-file",
-			bodyPath,
-		], options).trim()
-		console.log(url)
+		log("creating sync-conflict PR via REST")
+		// `gh pr create` uses GraphQL's createPullRequest mutation, which fails
+		// with "Resource not accessible by integration" under the default
+		// GITHUB_TOKEN even when (a) the workflow declares
+		// pull-requests: write and (b) the repo-level "Allow GitHub Actions
+		// to create and approve pull requests" toggle is on. Switching to
+		// the REST endpoint POST /repos/{owner}/{repo}/pulls -- which has a
+		// distinct permission gate -- works under those same conditions.
+		const responseJson = run("gh", [
+			"api",
+			"--input",
+			inputPath,
+			"-X",
+			"POST",
+			`repos/${repoSlug}/pulls`,
+		], options)
+		const pr = JSON.parse(responseJson)
+		const prNumber = pr.number
+		console.log(pr.html_url)
 
-		const prNumber = url.split("/").pop()
 		log(`applying ${CONFLICT_LABEL} label to PR #${prNumber}`)
-		run("gh", ["pr", "edit", prNumber, "--add-label", CONFLICT_LABEL], options)
+		run("gh", ["pr", "edit", String(prNumber), "--add-label", CONFLICT_LABEL], options)
 	} finally {
-		rmSync(bodyPath, { force: true })
+		rmSync(inputPath, { force: true })
 	}
+}
+
+// Parses owner/repo from the origin remote URL (https or ssh). Used because
+// `gh api` requires an explicit owner/repo path, unlike `gh pr create` which
+// auto-detects from the local repo.
+function getOriginRepoSlug(options = {}) {
+	const url = gitTrimmed(["remote", "get-url", "origin"], options)
+	const match = url.match(/github\.com[:/]([^/]+)\/([^/]+?)(?:\.git)?$/)
+	if (!match) {
+		throw new SyncError(`could not parse owner/repo from origin url: ${url}`)
+	}
+	return `${match[1]}/${match[2]}`
 }
 
 function printNoPrInstructions(unresolved, branchName) {
