@@ -43,6 +43,9 @@ jobs:
       - name: Check
         run: npm run check
 
+      - name: Verify package managers (npm/bun/pnpm)
+        run: npm run verify:pms
+
       - name: cargo fmt (helix-neo-tui)
         run: cargo fmt --package helix-neo-tui -- --check
 
