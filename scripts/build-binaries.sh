@@ -21,7 +21,21 @@
 
 set -euo pipefail
 
+# Resolve to the repository root before doing anything else. This script
+# lives at `scripts/build-binaries.sh`, so `..` is the repo root. If the
+# script is ever moved to a deeper subdirectory (e.g. `scripts/release/`)
+# this relative path must be updated; the assertion below catches that
+# mistake immediately instead of letting `npm ci` fail with a confusing
+# "ENOENT package.json" error inside the wrong directory.
 cd "$(dirname "$0")/.."
+
+if [[ ! -f package.json ]]; then
+    echo "build-binaries.sh: expected to run from the repo root, but no" >&2
+    echo "  package.json was found in $(pwd)." >&2
+    echo "  Check the 'cd' near the top of this script — if the script" >&2
+    echo "  was moved into a deeper directory, update the relative path." >&2
+    exit 1
+fi
 
 SKIP_DEPS=false
 PLATFORM=""
