@@ -38,6 +38,11 @@ packages/*/dist-firefox/
 # Environment
 .env
 
+
+# Local OMC runtime state
+.omc/state/
+.omc/sessions/
+
 # Editor files
 .vscode/
 .zed/
