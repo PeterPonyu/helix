@@ -114,16 +114,27 @@ export async function runNeoMode(options: RunNeoModeOptions): Promise<number> {
 	const located = resolveBinaryPath();
 	if (!located) {
 		const { platform, arch, exe } = platformInfo();
-		console.error(
-			chalk.red(
-				[
-					"Error: --neo TUI binary not found.",
-					`Expected: dist/neo-tui-bin/helix-neo-tui-${platform}-${arch}${exe}`,
-					"For dev, build the crate (cargo build --release --package helix-neo-tui)",
-					"and re-run with HELIX_NEO_TUI_DEV=1, or set HELIX_NEO_TUI_BIN.",
-				].join("\n"),
-			),
+		const isLinuxX64 = platform === "linux" && arch === "x64";
+		const lines = [
+			"Error: --neo TUI binary not found.",
+			`Expected: dist/neo-tui-bin/helix-neo-tui-${platform}-${arch}${exe}`,
+		];
+		if (!isLinuxX64) {
+			lines.push(
+				"",
+				"Note: published npm builds currently ship the --neo TUI binary",
+				"      only for linux-x64. Cross-platform packaging is tracked",
+				"      in https://github.com/PeterPonyu/helix/issues/21.",
+				"",
+				`      Detected platform: ${platform}-${arch}.`,
+			);
+		}
+		lines.push(
+			"",
+			"For dev, build the crate (cargo build --release --package helix-neo-tui)",
+			"and re-run with HELIX_NEO_TUI_DEV=1, or set HELIX_NEO_TUI_BIN.",
 		);
+		console.error(chalk.red(lines.join("\n")));
 		return 1;
 	}
 
