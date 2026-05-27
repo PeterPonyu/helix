@@ -43,6 +43,16 @@ jobs:
       - name: Check
         run: npm run check
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Verify package managers (npm/bun/pnpm)
         run: npm run verify:pms
 
