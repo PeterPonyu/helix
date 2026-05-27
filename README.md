@@ -33,38 +33,49 @@ The policy layer is what stops helix from being "senpi + a tool dump." Plugin-on
 
 ## Bioinformatics extension surface
 
-Each item is a separate package under `packages/coding-agent/src/core/extensions/builtin/` (in-tree) or installable via `helix install`. Core stays minimal.
+Each item is a separate package under `packages/coding-agent/src/core/extensions/builtin/` (in-tree) or installable via `helix install`. Core stays minimal. This section separates what is registered today from roadmap names so users do not try to enable extensions that are not shipped yet.
+
+### Available today
+
+These builtin bioinformatics extensions are registered in `builtinExtensions` and are available in this tree:
+
+- `helix-ontology` — CL / UBERON / MONDO / GO / MeSH normalization with synonym handling.
+- `helix-seq` — read-only FASTA / FASTQ / VCF inspection helpers. BAM/CRAM and write/manipulation support are intentionally out of scope for this extension.
+- `helix-bed-gff` — BED/GFF feature inspection and lightweight interval summaries.
+- `helix-coords` — chromosome-name normalization and coordinate-convention helpers.
+- `helix-bio-persona` — bioinformatics workflow policy defaults added to the agent prompt.
+- `helix-bio-presets` — packaged bioinformatics prompt/tool presets.
+
+### Planned / roadmap
+
+The following names describe intended extension directions, but they are not shipped builtin extensions in this repository yet:
 
 **Data acquisition & databases**
-- `helix-geo` — NCBI GEO / SRA lookup, GSE metadata retrieval, sample-level enrichment
-- `helix-ncbi` — NCBI E-utilities client (PubMed, Gene, Taxonomy, ClinVar)
-- `helix-ensembl` — Ensembl REST API client (variants, regulatory features, comparative genomics)
-- `helix-uniprot` — UniProt API client (protein metadata, cross-references)
+- `helix-geo` — NCBI GEO / SRA lookup, GSE metadata retrieval, sample-level enrichment.
+- `helix-ncbi` — NCBI E-utilities client (PubMed, Gene, Taxonomy, ClinVar).
+- `helix-ensembl` — Ensembl REST API client (variants, regulatory features, comparative genomics).
+- `helix-uniprot` — UniProt API client (protein metadata, cross-references).
 
 **Sequence & alignment**
-- `helix-seq` — FASTA / FASTQ / BAM / CRAM / VCF parsing and manipulation
-- `helix-blast` — BLAST wrappers (local blastn/blastp + NCBI remote)
-- `helix-coords` — genome coordinate operations, liftover, UCSC track handling
+- `helix-seq-bam` — future BAM / CRAM parsing and manipulation support.
+- `helix-blast` — BLAST wrappers (local blastn/blastp + NCBI remote).
 
 **NGS pipeline integration**
-- `helix-nextflow` — Nextflow workflow execution and tracking
-- `helix-snakemake` — Snakemake workflow execution and tracking
-- `helix-pipelines` — pipeline status, log inspection, resource estimation
+- `helix-nextflow` — Nextflow workflow execution and tracking.
+- `helix-snakemake` — Snakemake workflow execution and tracking.
+- `helix-pipelines` — pipeline status, log inspection, resource estimation.
 
 **Single-cell & expression data (text/metadata layer)**
-- `helix-h5ad` — scanpy / anndata inspection (metadata + summary stats, no matrix loading)
-- `helix-loom` — loom file metadata inspection
+- `helix-h5ad` — scanpy / anndata inspection (metadata + summary stats, no matrix loading).
+- `helix-loom` — loom file metadata inspection.
 
-**Retrieval & ontology**
-- `helix-ontology` — CL / UBERON / MONDO / GO / MeSH normalization with synonym handling
-- `helix-retrieve` — Qdrant hybrid (dense + sparse) + filter + rerank stack
-
-**Agent infrastructure**
-- `helix-router` — task-based model routing across providers
-- `helix-ollama-local` — local-only Ollama for sensitive / controlled-access data
-- `helix-team` — multi-agent tmux visualization
-- `helix-boulder` — long-running task work-tracking
-- `helix-session-diff` — git-backed session review
+**Retrieval & agent infrastructure**
+- `helix-retrieve` — Qdrant hybrid (dense + sparse) + filter + rerank stack.
+- `helix-router` — task-based model routing across providers.
+- `helix-ollama-local` — local-only Ollama for sensitive / controlled-access data.
+- `helix-team` — multi-agent tmux visualization.
+- `helix-boulder` — long-running task work-tracking.
+- `helix-session-diff` — git-backed session review.
 
 ## Install
 
