@@ -86,3 +86,28 @@ test/
 - `docs/extensions.md` is the 2262-line capability reference. Read it before claiming "no extension hook can do X".
 - `examples/extensions/` ships canonical extension reference implementations (sandbox, custom-provider-anthropic, custom-provider-gitlab-duo, with-deps).
 - The Bun binary build (`build:binary`) compiles `dist/bun/cli.js` into a single executable; `copy-binary-assets` copies fonts/themes/templates into `dist/`.
+
+## PLATFORM SUPPORT — `--neo` TUI
+
+The `--neo` mode dispatches to the native Rust `helix-neo-tui` binary
+resolved by `src/modes/neo-mode.ts` from `dist/neo-tui-bin/`.
+
+Published npm builds currently ship the `helix-neo-tui` binary **only for
+linux-x64**, because `.github/workflows/publish-npm.yml` runs on
+`ubuntu-latest` and `packages/neo-tui/scripts/build-binary.mjs` stages
+just the current host's `process.platform` / `process.arch`.
+
+Users on darwin (x64/arm64), linux-arm64, or windows (x64/arm64) running
+`helix --neo` will hit `Error: --neo TUI binary not found` with a
+platform-specific message pointing at issue #21. Until cross-platform
+packaging lands they can either:
+
+- run on linux-x64,
+- build the crate from source with `cargo build --release --package
+  helix-neo-tui` and point `HELIX_NEO_TUI_BIN` at the resulting binary
+  (or set `HELIX_NEO_TUI_DEV=1` in a workspace checkout),
+- or use the non-`--neo` interactive mode.
+
+Cross-platform packaging (per-platform optional packages **or** a
+multi-arch build matrix that fans out before `npm publish`) is tracked
+in https://github.com/PeterPonyu/helix/issues/21.
