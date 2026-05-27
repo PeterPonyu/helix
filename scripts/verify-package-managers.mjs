@@ -14,7 +14,7 @@
 //     dir on failure for inspection (prints path)
 
 import { spawn } from "node:child_process";
-import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -74,6 +74,57 @@ async function snapshotRepo(dest) {
 	if (status !== 0) throw new Error(`rsync failed (exit ${status})`);
 }
 
+
+const DEP_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
+
+function discoverWorkspacePackages(root) {
+	const packages = new Map();
+	function visit(dir) {
+		for (const entry of readdirSync(dir, { withFileTypes: true })) {
+			if (!entry.isDirectory()) continue;
+			if ([".git", "dist", "node_modules", ".worktrees"].includes(entry.name)) continue;
+			const child = join(dir, entry.name);
+			const packageJson = join(child, "package.json");
+			if (existsSync(packageJson)) {
+				const pkg = JSON.parse(readFileSync(packageJson, "utf8"));
+				if (pkg.name && pkg.version) packages.set(pkg.name, pkg.version);
+			}
+			visit(child);
+		}
+	}
+	visit(join(root, "packages"));
+	return packages;
+}
+
+function pinPnpmWorkspaceDeps(root) {
+	const workspacePackages = discoverWorkspacePackages(root);
+	function visit(dir) {
+		for (const entry of readdirSync(dir, { withFileTypes: true })) {
+			if (!entry.isDirectory()) continue;
+			if ([".git", "dist", "node_modules", ".worktrees"].includes(entry.name)) continue;
+			const child = join(dir, entry.name);
+			const packageJson = join(child, "package.json");
+			if (existsSync(packageJson)) {
+				const pkg = JSON.parse(readFileSync(packageJson, "utf8"));
+				let changed = false;
+				for (const field of DEP_FIELDS) {
+					const deps = pkg[field];
+					if (!deps) continue;
+					for (const [name, version] of workspacePackages) {
+						if (deps[name] === version || deps[name] === `^${version}` || deps[name] === `~${version}`) {
+							deps[name] = "workspace:*";
+							changed = true;
+						}
+					}
+				}
+				if (changed) writeFileSync(packageJson, `${JSON.stringify(pkg, null, "\t")}\n`);
+			}
+			visit(child);
+		}
+	}
+	visit(join(root, "packages"));
+}
+
 function runAsync(command, args, cwd = ROOT, env = process.env) {
 	return new Promise((resolve) => {
 		const child = spawn(command, args, {
@@ -105,6 +156,12 @@ async function verify(pm, parentTmp) {
 		const lock = join(tmp, "package-lock.json");
 		if (existsSync(lock)) rmSync(lock, { force: true });
 	}
+
+	// pnpm does not always prefer local workspaces for semver ranges when the
+	// same private package name exists on the public registry. Force internal
+	// workspace edges to the workspace protocol in the disposable snapshot only,
+	// leaving publish-facing package.json files compatible with npm and bun.
+	if (pm === "pnpm") pinPnpmWorkspaceDeps(tmp);
 
 	header(`[${pm}] install`);
 	const installArgs = pm === "pnpm" ? ["install", "--ignore-scripts"] : ["install"];
