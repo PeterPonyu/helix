@@ -63,6 +63,15 @@
 			],
 			"@helix-bio/helix/*": [
 				"./packages/coding-agent/src/*"
+			],
+			"@peterponyu/helix": [
+				"./packages/coding-agent/src/index.ts"
+			],
+			"@peterponyu/helix/hooks": [
+				"./packages/coding-agent/src/core/hooks/index.ts"
+			],
+			"@peterponyu/helix/*": [
+				"./packages/coding-agent/src/*"
 			]
 		}
 	},

@@ -1,5 +1,5 @@
 {
-	"name": "@helix-bio/helix",
+	"name": "@peterponyu/helix",
 	"version": "2026.5.19",
 	"description": "Coding agent CLI with read, bash, edit, write tools and session management",
 	"type": "module",

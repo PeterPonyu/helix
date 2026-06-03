@@ -59,6 +59,7 @@ const VIRTUAL_MODULES: Record<string, unknown> = {
 	"@earendil-works/pi-ai/oauth": _bundledPiAiOauth,
 	"@earendil-works/pi-coding-agent": _bundledPiCodingAgent,
 	"@helix-bio/helix": _bundledPiCodingAgent,
+	"@peterponyu/helix": _bundledPiCodingAgent,
 };
 
 const require = createRequire(import.meta.url);
@@ -96,6 +97,7 @@ function getAliases(): Record<string, string> {
 
 	_aliases = {
 		"@helix-bio/helix": piCodingAgentEntry,
+		"@peterponyu/helix": piCodingAgentEntry,
 		"@mariozechner/pi-coding-agent": piCodingAgentEntry,
 		"@mariozechner/pi-agent-core": piAgentCoreEntry,
 		"@mariozechner/pi-tui": piTuiEntry,
