@@ -23,10 +23,10 @@ helix periodically rebases on `upstream/main` (i.e. `code-yeongyu/senpi`, which 
 ```bash
 npm run check     # Biome + tsgo + browser-smoke + web-ui check (pre-commit equivalent)
 npm test          # Vitest across workspaces (skips live-API)
-./pi-test.sh      # Optional: live-API integration suite (env-gated; requires API keys)
+./helix-test.sh   # Optional: live-API integration suite (env-gated; requires API keys)
 ```
 
-`npm run check` and `npm test` must pass. `./pi-test.sh` is only required when your change touches a provider that the live tests exercise.
+`npm run check` and `npm test` must pass. `./helix-test.sh` is only required when your change touches a provider that the live tests exercise.
 
 Do not edit `CHANGELOG.md`. Changelog entries are added by maintainers.
 
@@ -118,5 +118,5 @@ Prefer product-neutral wording in user-facing copy unless a specific provider or
 
 ## Communication
 
-- Issue and PR discussion happens on GitHub: <https://github.com/code-yeongyu/senpi>.
+- Issue and PR discussion happens on GitHub: <https://github.com/PeterPonyu/helix>.
 - Upstream pi-mono discussions: <https://discord.com/invite/3cU7Bz4UPx>.

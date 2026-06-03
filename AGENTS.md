@@ -75,7 +75,7 @@ To test pi's TUI in a controlled terminal environment:
 tmux new-session -d -s pi-test -x 80 -y 24
 
 # Start pi from source
-tmux send-keys -t pi-test "cd /Users/badlogic/workspaces/pi-mono && ./pi-test.sh" Enter
+tmux send-keys -t pi-test "cd /path/to/helix && ./helix-test.sh" Enter
 
 # Wait for startup, then capture output
 sleep 3 && tmux capture-pane -t pi-test -p

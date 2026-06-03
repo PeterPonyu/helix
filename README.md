@@ -29,7 +29,7 @@ helix's bioinformatics character is encoded at three layers, not only as plugins
    - **Format identity** — trust the path's bytes, not the user's prose claim about format
 3. **Test layer** — a 4-tier taxonomy (L1 unit, L2 synthetic, L2-real, L3 harness) with real public bioinformatics fixtures from samtools / bcftools / bedtools / biopython / gffutils test data. See [`.helix-notes/test-layers.md`](./.helix-notes/test-layers.md).
 
-The policy layer is what stops helix from being "senpi + a tool dump." Plugin-only forks add capability without changing defaults; helix's persona makes the bioinformatics workflow the default, with the generic coding-agent toolset still available additively.
+The policy layer is what stops helix from being "a generic coding agent + a tool dump." Plugin-only forks add capability without changing defaults; helix's persona makes the bioinformatics workflow the default, with the generic coding-agent toolset still available additively.
 
 ## Bioinformatics extension surface
 
@@ -79,21 +79,41 @@ The following names describe intended extension directions, but they are not shi
 
 ## Install
 
-Not yet published. Local development:
+Not yet published. npm is the supported, canonical package manager for this
+repo — only `package-lock.json` is committed (there is no `pnpm-lock.yaml`).
+
+Local development:
 
 ```bash
 git clone https://github.com/PeterPonyu/helix.git
 cd helix
 npm install
 npm run build
-node packages/coding-agent/dist/cli.js
 ```
+
+### First run
+
+After building, provide a provider credential, then start the CLI:
+
+```bash
+# Option A: set a provider API key in the environment, then run
+export ANTHROPIC_API_KEY=...                # or OPENAI_API_KEY, OPENROUTER_API_KEY, etc.
+node packages/coding-agent/dist/cli.js
+
+# Option B: start the CLI, then run the /login slash command in the
+# interactive TUI to configure provider authentication
+node packages/coding-agent/dist/cli.js
+# then type: /login
+```
+
+Config lives in `~/.helix/agent/`. See [Configuration](#configuration) for the
+full list of environment variables and supported providers.
 
 ## Configuration
 
 - Config dir: `~/.helix/agent/`
 - Env vars: `HELIX_CODING_AGENT_DIR`, `HELIX_CODING_AGENT_SESSION_DIR`, plus standard `PI_*` vars inherited from the underlying runtime (e.g. `PI_API_KEY`, `PI_OFFLINE`)
-- Provider auth: `helix login <provider>`
+- Provider auth: per-provider API key env vars (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`), or the `/login` slash command in the interactive TUI
 
 ## Built on
 
