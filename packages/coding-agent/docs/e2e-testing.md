@@ -68,6 +68,12 @@ message (`message_end`), reads the SDK's own cumulative cost via
 trips an abort (`session.abort()`) and marks the result `abortedOverBudget`. A
 `maxTurns` cap (default 30) works the same way, marking `abortedMaxTurns`.
 
+**Known limitation:** the cap is sampled per finalized assistant message
+(`message_end`), so a single very expensive turn can overshoot `maxCostUSD`
+before the check fires — there is no mid-stream/token-level enforcement. In
+practice this is bounded by the cheap-tier matrix and each model's `maxTokens`,
+but size the cap with headroom and treat it as a guardrail, not a hard ceiling.
+
 ## Ghost-run detection
 
 A run is flagged `ghost: true` when the agent produced **zero tokens AND zero

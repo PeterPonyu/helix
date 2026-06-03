@@ -13,8 +13,8 @@
  */
 
 import { existsSync, readFileSync } from "node:fs";
-import { homedir } from "node:os";
 import { join } from "node:path";
+import { getAgentDir } from "../../src/config.js";
 
 /** A single provider × model scenario in the matrix. */
 export interface MatrixScenario {
@@ -72,8 +72,8 @@ export const MATRIX: MatrixScenario[] = [
 	},
 ];
 
-/** Path to the real agent auth store, mirroring test/utilities.ts. */
-const REAL_AUTH_PATH = join(homedir(), ".helix", "agent", "auth.json");
+/** Path to the real agent auth store, mirroring test/utilities.ts (honors HELIX_CODING_AGENT_DIR). */
+const REAL_AUTH_PATH = join(getAgentDir(), "auth.json");
 
 function authStoreHasProvider(provider: string): boolean {
 	if (!existsSync(REAL_AUTH_PATH)) return false;
