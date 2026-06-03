@@ -1,0 +1,1002 @@
+{
+  "version": 1,
+  "metadata": {
+    "provider": "faux",
+    "model": "faux-1",
+    "scenarioId": "faux",
+    "taskId": "fix-off-by-one",
+    "recordedAt": ""
+  },
+  "interactions": [
+    {
+      "request": {
+        "model": "faux-1",
+        "messagesDigest": "b0981fb8519ac305259efe158e5df801e9f22be134f20f8119b6b9fc06154d34"
+      },
+      "events": [
+        {
+          "type": "start",
+          "partial": {
+            "role": "assistant",
+            "content": [],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2424,
+              "output": 6,
+              "cacheRead": 0,
+              "cacheWrite": 2424,
+              "totalTokens": 4854,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_start",
+          "contentIndex": 0,
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:615q3fdbxze",
+                "name": "read",
+                "arguments": {
+                  "path": "sum.ts"
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2424,
+              "output": 6,
+              "cacheRead": 0,
+              "cacheWrite": 2424,
+              "totalTokens": 4854,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "{\"path\":\"sum.ts\"",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:615q3fdbxze",
+                "name": "read",
+                "arguments": {
+                  "path": "sum.ts"
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2424,
+              "output": 6,
+              "cacheRead": 0,
+              "cacheWrite": 2424,
+              "totalTokens": 4854,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "}",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:615q3fdbxze",
+                "name": "read",
+                "arguments": {
+                  "path": "sum.ts"
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2424,
+              "output": 6,
+              "cacheRead": 0,
+              "cacheWrite": 2424,
+              "totalTokens": 4854,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_end",
+          "contentIndex": 0,
+          "toolCall": {
+            "type": "toolCall",
+            "id": "tool:1780492009855:615q3fdbxze",
+            "name": "read",
+            "arguments": {
+              "path": "sum.ts"
+            }
+          },
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:615q3fdbxze",
+                "name": "read",
+                "arguments": {
+                  "path": "sum.ts"
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2424,
+              "output": 6,
+              "cacheRead": 0,
+              "cacheWrite": 2424,
+              "totalTokens": 4854,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "done",
+          "reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:615q3fdbxze",
+                "name": "read",
+                "arguments": {
+                  "path": "sum.ts"
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2424,
+              "output": 6,
+              "cacheRead": 0,
+              "cacheWrite": 2424,
+              "totalTokens": 4854,
+              "cost": {
+                "input": 0.007272,
+                "output": 0.00009,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0.007362
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        }
+      ],
+      "final": {
+        "stopReason": "stop",
+        "usage": {
+          "input": 2424,
+          "output": 6,
+          "cacheRead": 0,
+          "cacheWrite": 2424,
+          "totalTokens": 4854,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "model": "faux-1",
+        "messagesDigest": "2ccce42395ef162f315cfb48ada609b8ae58641ac5247d2a0d453b8a27fcd293"
+      },
+      "events": [
+        {
+          "type": "start",
+          "partial": {
+            "role": "assistant",
+            "content": [],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_start",
+          "contentIndex": 0,
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "{\"path\":\"sum.ts\"",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": ",\"edits\":[{\"oldT",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "ext\":\"for (l",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "et i = 1; i ",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "< n; i++) {\"",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": ",\"newText\":\"for ",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "(let i = 1; ",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "i <= n; i++) {\"}]}",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "toolcall_end",
+          "contentIndex": 0,
+          "toolCall": {
+            "type": "toolCall",
+            "id": "tool:1780492009855:o0jywh3w1zt",
+            "name": "edit",
+            "arguments": {
+              "path": "sum.ts",
+              "edits": [
+                {
+                  "oldText": "for (let i = 1; i < n; i++) {",
+                  "newText": "for (let i = 1; i <= n; i++) {"
+                }
+              ]
+            }
+          },
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "done",
+          "reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009855:o0jywh3w1zt",
+                "name": "edit",
+                "arguments": {
+                  "path": "sum.ts",
+                  "edits": [
+                    {
+                      "oldText": "for (let i = 1; i < n; i++) {",
+                      "newText": "for (let i = 1; i <= n; i++) {"
+                    }
+                  ]
+                }
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 753,
+              "output": 30,
+              "cacheRead": 1715,
+              "cacheWrite": 753,
+              "totalTokens": 3251,
+              "cost": {
+                "input": 0.002259,
+                "output": 0.00045,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0.002709
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        }
+      ],
+      "final": {
+        "stopReason": "stop",
+        "usage": {
+          "input": 753,
+          "output": 30,
+          "cacheRead": 1715,
+          "cacheWrite": 753,
+          "totalTokens": 3251,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "model": "faux-1",
+        "messagesDigest": "ee4c4e3b0803658778c2c553f428fa3f4a0917b8cf3c119195f47fe1dfc3e039"
+      },
+      "events": [
+        {
+          "type": "start",
+          "partial": {
+            "role": "assistant",
+            "content": [],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 757,
+              "output": 7,
+              "cacheRead": 1759,
+              "cacheWrite": 757,
+              "totalTokens": 3280,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "text_start",
+          "contentIndex": 0,
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Fixed the off-by-one bug."
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 757,
+              "output": 7,
+              "cacheRead": 1759,
+              "cacheWrite": 757,
+              "totalTokens": 3280,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "text_delta",
+          "contentIndex": 0,
+          "delta": "Fixed the off-by-one",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Fixed the off-by-one bug."
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 757,
+              "output": 7,
+              "cacheRead": 1759,
+              "cacheWrite": 757,
+              "totalTokens": 3280,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "text_delta",
+          "contentIndex": 0,
+          "delta": " bug.",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Fixed the off-by-one bug."
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 757,
+              "output": 7,
+              "cacheRead": 1759,
+              "cacheWrite": 757,
+              "totalTokens": 3280,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "text_end",
+          "contentIndex": 0,
+          "content": "Fixed the off-by-one bug.",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Fixed the off-by-one bug."
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 757,
+              "output": 7,
+              "cacheRead": 1759,
+              "cacheWrite": 757,
+              "totalTokens": 3280,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        },
+        {
+          "type": "done",
+          "reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Fixed the off-by-one bug."
+              }
+            ],
+            "api": "faux:1780492009854:7mpaypohfhx",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 757,
+              "output": 7,
+              "cacheRead": 1759,
+              "cacheWrite": 757,
+              "totalTokens": 3280,
+              "cost": {
+                "input": 0.002271,
+                "output": 0.000105,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0.002376
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009855
+          }
+        }
+      ],
+      "final": {
+        "stopReason": "stop",
+        "usage": {
+          "input": 757,
+          "output": 7,
+          "cacheRead": 1759,
+          "cacheWrite": 757,
+          "totalTokens": 3280,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      }
+    }
+  ]
+}
