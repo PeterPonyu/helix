@@ -118,5 +118,5 @@ Prefer product-neutral wording in user-facing copy unless a specific provider or
 
 ## Communication
 
-- Issue and PR discussion happens on GitHub: <https://github.com/code-yeongyu/senpi>.
+- Issue and PR discussion happens on GitHub: <https://github.com/PeterPonyu/helix>.
 - Upstream pi-mono discussions: <https://discord.com/invite/3cU7Bz4UPx>.

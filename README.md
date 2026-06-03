@@ -29,7 +29,7 @@ helix's bioinformatics character is encoded at three layers, not only as plugins
    - **Format identity** — trust the path's bytes, not the user's prose claim about format
 3. **Test layer** — a 4-tier taxonomy (L1 unit, L2 synthetic, L2-real, L3 harness) with real public bioinformatics fixtures from samtools / bcftools / bedtools / biopython / gffutils test data. See [`.helix-notes/test-layers.md`](./.helix-notes/test-layers.md).
 
-The policy layer is what stops helix from being "senpi + a tool dump." Plugin-only forks add capability without changing defaults; helix's persona makes the bioinformatics workflow the default, with the generic coding-agent toolset still available additively.
+The policy layer is what stops helix from being "a generic coding agent + a tool dump." Plugin-only forks add capability without changing defaults; helix's persona makes the bioinformatics workflow the default, with the generic coding-agent toolset still available additively.
 
 ## Bioinformatics extension surface
 
