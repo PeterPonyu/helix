@@ -71,3 +71,6 @@ local-ignore/
 .pi/hf-sessions/
 .pi/hf-sessions-backup/
 collect.sh
+
+# Internal agent tooling artifacts
+.factory/
