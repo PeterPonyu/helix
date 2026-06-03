@@ -79,7 +79,10 @@ The following names describe intended extension directions, but they are not shi
 
 ## Install
 
-Not yet published. Local development:
+Not yet published. npm is the supported, canonical package manager for this
+repo — only `package-lock.json` is committed (there is no `pnpm-lock.yaml`).
+
+Local development:
 
 ```bash
 git clone https://github.com/PeterPonyu/helix.git
