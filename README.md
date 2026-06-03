@@ -89,14 +89,31 @@ git clone https://github.com/PeterPonyu/helix.git
 cd helix
 npm install
 npm run build
-node packages/coding-agent/dist/cli.js
 ```
+
+### First run
+
+After building, provide a provider credential, then start the CLI:
+
+```bash
+# Option A: set a provider API key in the environment, then run
+export ANTHROPIC_API_KEY=...                # or OPENAI_API_KEY, OPENROUTER_API_KEY, etc.
+node packages/coding-agent/dist/cli.js
+
+# Option B: start the CLI, then run the /login slash command in the
+# interactive TUI to configure provider authentication
+node packages/coding-agent/dist/cli.js
+# then type: /login
+```
+
+Config lives in `~/.helix/agent/`. See [Configuration](#configuration) for the
+full list of environment variables and supported providers.
 
 ## Configuration
 
 - Config dir: `~/.helix/agent/`
 - Env vars: `HELIX_CODING_AGENT_DIR`, `HELIX_CODING_AGENT_SESSION_DIR`, plus standard `PI_*` vars inherited from the underlying runtime (e.g. `PI_API_KEY`, `PI_OFFLINE`)
-- Provider auth: `helix login <provider>`
+- Provider auth: per-provider API key env vars (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`), or the `/login` slash command in the interactive TUI
 
 ## Built on
 
