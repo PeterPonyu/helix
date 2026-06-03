@@ -1,5 +1,15 @@
 # Local fork changes
 
+## 2026-06-03 — E2E UX harness fork-drift fixes (test/utilities.ts, CONTRIBUTING.md)
+
+- Changed:
+  - `packages/coding-agent/test/utilities.ts`
+  - `CONTRIBUTING.md`
+- Why: Adding the real-provider E2E UX harness (`packages/coding-agent/test/e2e/`, net-new helix files) surfaced two stale fork references. `test/utilities.ts` resolved test auth from a hardcoded `~/.pi/agent/auth.json`, which no longer matches helix's `~/.helix/agent` / `HELIX_CODING_AGENT_DIR` convention used by `test/setup.ts`; tests with real OAuth creds read the wrong path. `CONTRIBUTING.md` documented the optional pre-PR test commands but did not mention the new harness entrypoint.
+- What changed: `test/utilities.ts` now derives `AUTH_PATH`/the agent dir from `getAgentDir()` (which honors `HELIX_CODING_AGENT_DIR`, else `~/.helix/agent`) instead of a `~/.pi/agent` literal, and the exported `PI_AGENT_DIR` constant was renamed to `HELIX_AGENT_DIR` (no in-repo consumers). `CONTRIBUTING.md` adds `./scripts/e2e.sh` to the optional pre-PR checks with a pointer to `packages/coding-agent/docs/e2e-testing.md`.
+- Why the extension system could not handle this: these are test-utility credential-path resolution and contributor documentation, both outside the runtime extension surface.
+- Merge-conflict risk: low. Expected conflict zones are the auth-path constant block in `test/utilities.ts` and the "Before Submitting a PR" command list in `CONTRIBUTING.md` if upstream rewords either.
+
 ## 2026-05-15 — stop rebuilding linked `senpi` on launch
 
 - Changed:
