@@ -1,6 +1,6 @@
 # packages/coding-agent
 
-`@helix-bio/helix` — primary fork target. The CLI app users actually run (`helix`). Highest merge-conflict surface against upstream `pi-mono`. **Always reach for the extension API before touching anything in `src/core/`**.
+`@peterponyu/helix` — primary fork target. The CLI app users actually run (`helix`). Highest merge-conflict surface against upstream `pi-mono`. **Always reach for the extension API before touching anything in `src/core/`**.
 
 ## STRUCTURE
 
@@ -68,7 +68,7 @@ test/
 - **Keybindings always configurable** — `DEFAULT_EDITOR_KEYBINDINGS` / `DEFAULT_APP_KEYBINDINGS` are the source of truth.
 - **Faux provider for tests** — never spend a real token in `npm test`. Use `harness.ts` + `pi-ai/faux`.
 - **Inlined UUIDv7 in `core/session-manager.ts`** — do NOT re-add the `uuid` package. Documented in `changes.md` 2026-04-17.
-- **Branding**: package name `@helix-bio/helix`, app name `helix`, configDir `.helix`. Self-update target is `PeterPonyu/helix`.
+- **Branding**: package name `@peterponyu/helix`, app name `helix`, configDir `.helix`. Self-update target is `PeterPonyu/helix`.
 
 ## ANTI-PATTERNS
 
