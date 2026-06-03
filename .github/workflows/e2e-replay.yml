@@ -1,0 +1,59 @@
+name: E2E Replay (cassettes, $0)
+
+# Deterministic, cost-free replay of the real-provider E2E harness.
+#
+# Runs the cassette unit tests plus the committed synthetic cassettes in STRICT
+# replay mode: HELIX_CASSETTE_MODE=replay + CI=true means a missing/mismatched
+# cassette is a hard error and the provider stream is NEVER called (no network,
+# no provider keys, $0). Real cassettes are recorded locally by a maintainer
+# with provider keys (HELIX_CASSETTE_MODE=record) and committed separately.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: e2e-replay-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Strict replay: error on miss/mismatch, no passthrough.
+  HELIX_CASSETTE_MODE: replay
+
+jobs:
+  replay:
+    name: E2E cassette replay (no keys, $0)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # No `secrets:` are referenced anywhere in this job — the replay path must
+    # never need provider credentials.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install system dependencies
+        run: |
+          sudo env DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a apt-get update
+          sudo env DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a apt-get install -y \
+            libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev fd-find ripgrep
+          sudo ln -sf "$(which fdfind)" /usr/local/bin/fd
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The e2e suite uses vitest source aliases for the workspace packages, so a
+      # full build is not required to type-resolve @earendil-works/* here.
+      - name: Replay cassette suite (strict, $0)
+        working-directory: packages/coding-agent
+        env:
+          CI: 'true'
+          HELIX_CASSETTE_MODE: replay
+        run: npx vitest --run test/e2e/cassette

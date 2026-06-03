@@ -1,0 +1,434 @@
+{
+  "version": 1,
+  "metadata": {
+    "provider": "faux",
+    "model": "faux-1",
+    "scenarioId": "faux",
+    "taskId": "read-config-port",
+    "recordedAt": ""
+  },
+  "interactions": [
+    {
+      "request": {
+        "model": "faux-1",
+        "messagesDigest": "c2a1497a380de4e17fed08601ba99a757bc085532896bf2fc7ffe9ea7e89c271"
+      },
+      "events": [
+        {
+          "type": "start",
+          "partial": {
+            "role": "assistant",
+            "content": [],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 7,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4839,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        },
+        {
+          "type": "toolcall_start",
+          "contentIndex": 0,
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009868:stug6b4cxvo",
+                "name": "read",
+                "arguments": {
+                  "path": "config.json"
+                }
+              }
+            ],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 7,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4839,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "{\"path\":\"config.",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009868:stug6b4cxvo",
+                "name": "read",
+                "arguments": {
+                  "path": "config.json"
+                }
+              }
+            ],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 7,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4839,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "json\"}",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009868:stug6b4cxvo",
+                "name": "read",
+                "arguments": {
+                  "path": "config.json"
+                }
+              }
+            ],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 7,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4839,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        },
+        {
+          "type": "toolcall_end",
+          "contentIndex": 0,
+          "toolCall": {
+            "type": "toolCall",
+            "id": "tool:1780492009868:stug6b4cxvo",
+            "name": "read",
+            "arguments": {
+              "path": "config.json"
+            }
+          },
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009868:stug6b4cxvo",
+                "name": "read",
+                "arguments": {
+                  "path": "config.json"
+                }
+              }
+            ],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 7,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4839,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        },
+        {
+          "type": "done",
+          "reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009868:stug6b4cxvo",
+                "name": "read",
+                "arguments": {
+                  "path": "config.json"
+                }
+              }
+            ],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 7,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4839,
+              "cost": {
+                "input": 0.007248,
+                "output": 0.000105,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0.007353
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        }
+      ],
+      "final": {
+        "stopReason": "stop",
+        "usage": {
+          "input": 2416,
+          "output": 7,
+          "cacheRead": 0,
+          "cacheWrite": 2416,
+          "totalTokens": 4839,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "model": "faux-1",
+        "messagesDigest": "730d4e65b7422c7f18966376abad62ccf783a7e48a7e4bc60d3a3f9ba582026a"
+      },
+      "events": [
+        {
+          "type": "start",
+          "partial": {
+            "role": "assistant",
+            "content": [],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 738,
+              "output": 1,
+              "cacheRead": 1707,
+              "cacheWrite": 738,
+              "totalTokens": 3184,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        },
+        {
+          "type": "text_start",
+          "contentIndex": 0,
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "8080"
+              }
+            ],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 738,
+              "output": 1,
+              "cacheRead": 1707,
+              "cacheWrite": 738,
+              "totalTokens": 3184,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        },
+        {
+          "type": "text_delta",
+          "contentIndex": 0,
+          "delta": "8080",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "8080"
+              }
+            ],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 738,
+              "output": 1,
+              "cacheRead": 1707,
+              "cacheWrite": 738,
+              "totalTokens": 3184,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        },
+        {
+          "type": "text_end",
+          "contentIndex": 0,
+          "content": "8080",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "8080"
+              }
+            ],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 738,
+              "output": 1,
+              "cacheRead": 1707,
+              "cacheWrite": 738,
+              "totalTokens": 3184,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        },
+        {
+          "type": "done",
+          "reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "8080"
+              }
+            ],
+            "api": "faux:1780492009867:du83povi3m",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 738,
+              "output": 1,
+              "cacheRead": 1707,
+              "cacheWrite": 738,
+              "totalTokens": 3184,
+              "cost": {
+                "input": 0.0022140000000000003,
+                "output": 0.000015,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0.002229
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009868
+          }
+        }
+      ],
+      "final": {
+        "stopReason": "stop",
+        "usage": {
+          "input": 738,
+          "output": 1,
+          "cacheRead": 1707,
+          "cacheWrite": 738,
+          "totalTokens": 3184,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,511 @@
+{
+  "version": 1,
+  "metadata": {
+    "provider": "faux",
+    "model": "faux-1",
+    "scenarioId": "faux",
+    "taskId": "create-greeting",
+    "recordedAt": ""
+  },
+  "interactions": [
+    {
+      "request": {
+        "model": "faux-1",
+        "messagesDigest": "7388647e6d1870fce0c8cb2f0b849a088f0efe1b9ce279024fbc5fbfe44f36cd"
+      },
+      "events": [
+        {
+          "type": "start",
+          "partial": {
+            "role": "assistant",
+            "content": [],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 12,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4844,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "toolcall_start",
+          "contentIndex": 0,
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009843:ras5f2d1ke",
+                "name": "write",
+                "arguments": {
+                  "path": "greeting.txt",
+                  "content": "Hello"
+                }
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 12,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4844,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "{\"path\":\"gre",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009843:ras5f2d1ke",
+                "name": "write",
+                "arguments": {
+                  "path": "greeting.txt",
+                  "content": "Hello"
+                }
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 12,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4844,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "eting.txt\",\"cont",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009843:ras5f2d1ke",
+                "name": "write",
+                "arguments": {
+                  "path": "greeting.txt",
+                  "content": "Hello"
+                }
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 12,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4844,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "toolcall_delta",
+          "contentIndex": 0,
+          "delta": "ent\":\"Hello\"}",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009843:ras5f2d1ke",
+                "name": "write",
+                "arguments": {
+                  "path": "greeting.txt",
+                  "content": "Hello"
+                }
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 12,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4844,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "toolcall_end",
+          "contentIndex": 0,
+          "toolCall": {
+            "type": "toolCall",
+            "id": "tool:1780492009843:ras5f2d1ke",
+            "name": "write",
+            "arguments": {
+              "path": "greeting.txt",
+              "content": "Hello"
+            }
+          },
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009843:ras5f2d1ke",
+                "name": "write",
+                "arguments": {
+                  "path": "greeting.txt",
+                  "content": "Hello"
+                }
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 12,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4844,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "done",
+          "reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "toolCall",
+                "id": "tool:1780492009843:ras5f2d1ke",
+                "name": "write",
+                "arguments": {
+                  "path": "greeting.txt",
+                  "content": "Hello"
+                }
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 2416,
+              "output": 12,
+              "cacheRead": 0,
+              "cacheWrite": 2416,
+              "totalTokens": 4844,
+              "cost": {
+                "input": 0.007248,
+                "output": 0.00018,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0.007428
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        }
+      ],
+      "final": {
+        "stopReason": "stop",
+        "usage": {
+          "input": 2416,
+          "output": 12,
+          "cacheRead": 0,
+          "cacheWrite": 2416,
+          "totalTokens": 4844,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "model": "faux-1",
+        "messagesDigest": "d1198506088942849c5076b6ef8c2797d155c719539cb404959eabc31eb24582"
+      },
+      "events": [
+        {
+          "type": "start",
+          "partial": {
+            "role": "assistant",
+            "content": [],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 739,
+              "output": 7,
+              "cacheRead": 1707,
+              "cacheWrite": 739,
+              "totalTokens": 3192,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "text_start",
+          "contentIndex": 0,
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Done — created greeting.txt."
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 739,
+              "output": 7,
+              "cacheRead": 1707,
+              "cacheWrite": 739,
+              "totalTokens": 3192,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "text_delta",
+          "contentIndex": 0,
+          "delta": "Done — created greet",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Done — created greeting.txt."
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 739,
+              "output": 7,
+              "cacheRead": 1707,
+              "cacheWrite": 739,
+              "totalTokens": 3192,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "text_delta",
+          "contentIndex": 0,
+          "delta": "ing.txt.",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Done — created greeting.txt."
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 739,
+              "output": 7,
+              "cacheRead": 1707,
+              "cacheWrite": 739,
+              "totalTokens": 3192,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "text_end",
+          "contentIndex": 0,
+          "content": "Done — created greeting.txt.",
+          "partial": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Done — created greeting.txt."
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 739,
+              "output": 7,
+              "cacheRead": 1707,
+              "cacheWrite": 739,
+              "totalTokens": 3192,
+              "cost": {
+                "input": 0,
+                "output": 0,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        },
+        {
+          "type": "done",
+          "reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": [
+              {
+                "type": "text",
+                "text": "Done — created greeting.txt."
+              }
+            ],
+            "api": "faux:1780492009842:ccl00z6kzzi",
+            "provider": "faux",
+            "model": "faux-1",
+            "usage": {
+              "input": 739,
+              "output": 7,
+              "cacheRead": 1707,
+              "cacheWrite": 739,
+              "totalTokens": 3192,
+              "cost": {
+                "input": 0.0022170000000000002,
+                "output": 0.000105,
+                "cacheRead": 0,
+                "cacheWrite": 0,
+                "total": 0.0023220000000000003
+              }
+            },
+            "stopReason": "stop",
+            "timestamp": 1780492009843
+          }
+        }
+      ],
+      "final": {
+        "stopReason": "stop",
+        "usage": {
+          "input": 739,
+          "output": 7,
+          "cacheRead": 1707,
+          "cacheWrite": 739,
+          "totalTokens": 3192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      }
+    }
+  ]
+}

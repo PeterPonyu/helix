@@ -24,13 +24,15 @@
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import type { Model } from "@earendil-works/pi-ai";
+import { getApiProvider, type Model, registerApiProvider } from "@earendil-works/pi-ai";
 import type { AgentSessionEvent } from "../../src/core/agent-session.js";
 import type { AuthStorage } from "../../src/core/auth-storage.js";
 import type { ModelRegistry } from "../../src/core/model-registry.js";
 import type { ResourceLoader } from "../../src/core/resource-loader.js";
 import { createAgentSession } from "../../src/core/sdk.js";
 import { SessionManager } from "../../src/core/session-manager.js";
+import { type CassetteMode, type RecordingApiProvider, wrapApiProviderForRecording } from "./cassette/recorder.js";
+import type { CassetteStore } from "./cassette/store.js";
 
 /** Built-in coding tool names tracked by the harness. */
 export type TrackedToolName = "read" | "edit" | "write" | "bash";
@@ -117,6 +119,28 @@ export interface RunOptions {
 	 * extension so cost flows the same way it does for real providers.
 	 */
 	resourceLoader?: ResourceLoader;
+	/**
+	 * Optional cassette record/replay (Phase 2). When set, the run installs a
+	 * recording/replaying `ApiProvider` over the model's api for the duration of
+	 * the run, then restores the original. Default OFF (non-breaking).
+	 *
+	 * In replay mode the provider serves recorded events with NO network, so the
+	 * resulting RunResult (cost/tokens/toolCalls/files) matches the recorded run.
+	 * In record/auto mode the recorded cassette is persisted on completion (after
+	 * secret scanning) unless the run is aborted.
+	 */
+	cassette?: CassetteRunOptions;
+}
+
+/** Cassette wiring for a single run. */
+export interface CassetteRunOptions {
+	store: CassetteStore;
+	mode: CassetteMode;
+	/**
+	 * Timestamp recorded into cassette metadata. PASSED IN (the recorder core
+	 * never calls Date.now()). Use "" for deterministic fixtures.
+	 */
+	recordedAt?: string;
 }
 
 /** Default budget cap, resolved from env with a $1.00 fallback. */
@@ -182,6 +206,30 @@ export async function runTask(task: Task, scenarioId: string, opts: RunOptions):
 	let rateLimit: Record<string, string> | undefined;
 
 	let dispose: (() => void) | undefined;
+
+	// Cassette record/replay swap (Phase 2). Install a recording/replaying
+	// ApiProvider over the model's api for this run; restore the original in
+	// `finally`. The whole agent/tool loop stays real — only the provider stream
+	// is recorded/replayed.
+	let recordingProvider: RecordingApiProvider | undefined;
+	let restoreProvider: (() => void) | undefined;
+	if (opts.cassette) {
+		const real = getApiProvider(opts.model.api);
+		if (!real) {
+			throw new Error(`No API provider registered for api "${opts.model.api}"; cannot install cassette.`);
+		}
+		recordingProvider = wrapApiProviderForRecording(real, opts.cassette.store, opts.cassette.mode, {
+			metadata: {
+				provider: opts.model.provider,
+				model: opts.model.id,
+				scenarioId,
+				taskId: task.id,
+				recordedAt: opts.cassette.recordedAt ?? "",
+			},
+		});
+		registerApiProvider(recordingProvider);
+		restoreProvider = () => registerApiProvider(real);
+	}
 
 	try {
 		const { session: created } = await createAgentSession({
@@ -298,6 +346,12 @@ export async function runTask(task: Task, scenarioId: string, opts: RunOptions):
 
 		const passed = !ghost && !abortedOverBudget && !abortedMaxTurns && !transportError;
 
+		// Persist a freshly recorded cassette only for clean runs. Aborted runs
+		// (over-budget / max-turns) are truncated and must not be committed.
+		if (recordingProvider && !abortedOverBudget && !abortedMaxTurns) {
+			recordingProvider.finalize();
+		}
+
 		return {
 			scenarioId,
 			taskId: task.id,
@@ -337,6 +391,13 @@ export async function runTask(task: Task, scenarioId: string, opts: RunOptions):
 			dispose?.();
 		} catch {
 			// ignore dispose errors
+		}
+		// Always restore the original ApiProvider so a cassette run never leaks
+		// the wrapper into subsequent runs/tests.
+		try {
+			restoreProvider?.();
+		} catch {
+			// ignore restore errors
 		}
 		if (existsSync(tempDir)) {
 			rmSync(tempDir, { recursive: true, force: true });
