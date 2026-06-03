@@ -22,12 +22,21 @@
  *   toggled the tool output open (via ctrl+e or clicking)
  *
  * Usage:
+<<<<<<< HEAD
  *   helix -e ./built-in-tool-renderer.ts
  */
 
 import { Text } from "@earendil-works/pi-tui";
 import type { BashToolDetails, EditToolDetails, ExtensionAPI, ReadToolDetails } from "@helix-bio/helix";
 import { createBashTool, createEditTool, createReadTool, createWriteTool } from "@helix-bio/helix";
+=======
+ *   senpi -e ./built-in-tool-renderer.ts
+ */
+
+import type { BashToolDetails, EditToolDetails, ExtensionAPI, ReadToolDetails } from "@code-yeongyu/senpi";
+import { createBashTool, createEditTool, createReadTool, createWriteTool } from "@code-yeongyu/senpi";
+import { Text } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	const cwd = process.cwd();

@@ -48,6 +48,10 @@ import {
 	TUI,
 	visibleWidth,
 } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
+=======
+import chalk from "chalk";
+>>>>>>> upstream/main
 import { spawn, spawnSync } from "child_process";
 import {
 	APP_NAME,
@@ -58,9 +62,15 @@ import {
 	getDocsPath,
 	getShareViewerUrl,
 	VERSION,
+<<<<<<< HEAD
 } from "../../config.js";
 import { type AgentSession, type AgentSessionEvent, parseSkillBlock } from "../../core/agent-session.js";
 import { type AgentSessionRuntime, SessionImportFileNotFoundError } from "../../core/agent-session-runtime.js";
+=======
+} from "../../config.ts";
+import { type AgentSession, type AgentSessionEvent, parseSkillBlock } from "../../core/agent-session.ts";
+import { type AgentSessionRuntime, SessionImportFileNotFoundError } from "../../core/agent-session-runtime.ts";
+>>>>>>> upstream/main
 import type {
 	AutocompleteProviderFactory,
 	EditorFactory,
@@ -70,15 +80,24 @@ import type {
 	ExtensionUIContext,
 	ExtensionUIDialogOptions,
 	ExtensionWidgetOptions,
+<<<<<<< HEAD
 } from "../../core/extensions/index.js";
 import { FooterDataProvider, type ReadonlyFooterDataProvider } from "../../core/footer-data-provider.js";
 import { type AppKeybinding, KeybindingsManager } from "../../core/keybindings.js";
 import { createCompactionSummaryMessage } from "../../core/messages.js";
+=======
+} from "../../core/extensions/index.ts";
+import { FooterDataProvider, type ReadonlyFooterDataProvider } from "../../core/footer-data-provider.ts";
+import { configureHttpDispatcher, formatHttpIdleTimeoutMs } from "../../core/http-dispatcher.ts";
+import { type AppKeybinding, KeybindingsManager } from "../../core/keybindings.ts";
+import { createCompactionSummaryMessage } from "../../core/messages.ts";
+>>>>>>> upstream/main
 import {
 	defaultModelPerProvider,
 	findExactModelReferenceMatch,
 	resolveModelScope,
 	type ScopedModel,
+<<<<<<< HEAD
 } from "../../core/model-resolver.js";
 import { BUILT_IN_PROVIDER_DISPLAY_NAMES } from "../../core/provider-display-names.js";
 import type { ResourceDiagnostic } from "../../core/resource-loader.js";
@@ -127,6 +146,56 @@ import { UserMessageComponent } from "./components/user-message.js";
 import { UserMessageSelectorComponent } from "./components/user-message-selector.js";
 import { formatSessionInfo } from "./session-info-format.js";
 import { resolveStartupToolPaths } from "./startup-tools.js";
+=======
+} from "../../core/model-resolver.ts";
+import { BUILT_IN_PROVIDER_DISPLAY_NAMES } from "../../core/provider-display-names.ts";
+import type { ResourceDiagnostic } from "../../core/resource-loader.ts";
+import { formatMissingSessionCwdPrompt, MissingSessionCwdError } from "../../core/session-cwd.ts";
+import { type SessionContext, SessionManager } from "../../core/session-manager.ts";
+import { BUILTIN_SLASH_COMMANDS } from "../../core/slash-commands.ts";
+import type { SourceInfo } from "../../core/source-info.ts";
+import { isInstallTelemetryEnabled } from "../../core/telemetry.ts";
+import type { TruncationResult } from "../../core/tools/truncate.ts";
+import { getChangelogPath, getNewEntries, parseChangelog } from "../../utils/changelog.ts";
+import { copyToClipboard } from "../../utils/clipboard.ts";
+import { extensionForImageMimeType, readClipboardImage } from "../../utils/clipboard-image.ts";
+import { parseGitUrl } from "../../utils/git.ts";
+import { getCwdRelativePath } from "../../utils/paths.ts";
+import { getPiUserAgent } from "../../utils/pi-user-agent.ts";
+import { killTrackedDetachedChildren } from "../../utils/shell.ts";
+import { checkForNewPiVersion } from "../../utils/version-check.ts";
+import { ArminComponent } from "./components/armin.ts";
+import { AssistantMessageComponent } from "./components/assistant-message.ts";
+import { BashExecutionComponent } from "./components/bash-execution.ts";
+import { BorderedLoader } from "./components/bordered-loader.ts";
+import { BranchSummaryMessageComponent } from "./components/branch-summary-message.ts";
+import { CompactionSummaryMessageComponent } from "./components/compaction-summary-message.ts";
+import { CountdownTimer } from "./components/countdown-timer.ts";
+import { CustomEditor } from "./components/custom-editor.ts";
+import { CustomMessageComponent } from "./components/custom-message.ts";
+import { DaxnutsComponent } from "./components/daxnuts.ts";
+import { DynamicBorder } from "./components/dynamic-border.ts";
+import { EarendilAnnouncementComponent } from "./components/earendil-announcement.ts";
+import { ExtensionEditorComponent } from "./components/extension-editor.ts";
+import { ExtensionInputComponent } from "./components/extension-input.ts";
+import { ExtensionSelectorComponent } from "./components/extension-selector.ts";
+import { FavoriteModelsSelectorComponent } from "./components/favorite-models-selector.ts";
+import { FooterComponent } from "./components/footer.ts";
+import { formatKeyText, keyDisplayText, keyHint, keyText, rawKeyHint } from "./components/keybinding-hints.ts";
+import { LoginDialogComponent } from "./components/login-dialog.ts";
+import { type FavoriteModelIds, getModelFullId } from "./components/model-favorites.ts";
+import { ModelSelectorComponent } from "./components/model-selector.ts";
+import { type AuthSelectorProvider, OAuthSelectorComponent } from "./components/oauth-selector.ts";
+import { SessionSelectorComponent } from "./components/session-selector.ts";
+import { SettingsSelectorComponent } from "./components/settings-selector.ts";
+import { SkillInvocationMessageComponent } from "./components/skill-invocation-message.ts";
+import { ToolExecutionComponent } from "./components/tool-execution.ts";
+import { TreeSelectorComponent } from "./components/tree-selector.ts";
+import { UserMessageComponent } from "./components/user-message.ts";
+import { UserMessageSelectorComponent } from "./components/user-message-selector.ts";
+import { formatSessionInfo } from "./session-info-format.ts";
+import { resolveStartupToolPaths } from "./startup-tools.ts";
+>>>>>>> upstream/main
 import {
 	getAvailableThemes,
 	getAvailableThemesWithPaths,
@@ -142,13 +211,21 @@ import {
 	Theme,
 	type ThemeColor,
 	theme,
+<<<<<<< HEAD
 } from "./theme/theme.js";
+=======
+} from "./theme/theme.ts";
+>>>>>>> upstream/main
 import {
 	blendWorkingStatusShimmerRgbColor,
 	formatToolHookStatusMessageFrame,
 	formatWorkingStatusMessageFrame,
 	type WorkingStatusRgbColor,
+<<<<<<< HEAD
 } from "./working-status.js";
+=======
+} from "./working-status.ts";
+>>>>>>> upstream/main
 
 /** Interface for components that can be expanded/collapsed */
 interface Expandable {
@@ -160,14 +237,28 @@ function isExpandable(obj: unknown): obj is Expandable {
 }
 
 class ExpandableText extends Text implements Expandable {
+<<<<<<< HEAD
 	constructor(
 		private readonly getCollapsedText: () => string,
 		private readonly getExpandedText: () => string,
+=======
+	private readonly getCollapsedText: () => string;
+	private readonly getExpandedText: () => string;
+
+	constructor(
+		getCollapsedText: () => string,
+		getExpandedText: () => string,
+>>>>>>> upstream/main
 		expanded = false,
 		paddingX = 0,
 		paddingY = 0,
 	) {
 		super(expanded ? getExpandedText() : getCollapsedText(), paddingX, paddingY);
+<<<<<<< HEAD
+=======
+		this.getCollapsedText = getCollapsedText;
+		this.getExpandedText = getExpandedText;
+>>>>>>> upstream/main
 	}
 
 	setExpanded(expanded: boolean): void {
@@ -253,6 +344,31 @@ function isUnknownModel(model: Model<any> | undefined): boolean {
 	return !!model && model.provider === "unknown" && model.id === "unknown" && model.api === "unknown";
 }
 
+<<<<<<< HEAD
+=======
+function quoteIfNeeded(value: string): string {
+	if (value.length > 0 && !/[^a-zA-Z0-9_\-./~:@]/.test(value)) {
+		return value;
+	}
+	return `'${value.replace(/'/g, `'\\''`)}'`;
+}
+
+export function formatResumeCommand(sessionManager: SessionManager): string | undefined {
+	if (!process.stdout.isTTY) return undefined;
+	if (!sessionManager.isPersisted()) return undefined;
+
+	const sessionFile = sessionManager.getSessionFile();
+	if (!sessionFile || !fs.existsSync(sessionFile)) return undefined;
+
+	const args = [APP_NAME];
+	if (!sessionManager.usesDefaultSessionDir()) {
+		args.push("--session-dir", quoteIfNeeded(sessionManager.getSessionDir()));
+	}
+	args.push("--session", sessionManager.getSessionId());
+	return args.join(" ");
+}
+
+>>>>>>> upstream/main
 function hasDefaultModelProvider(providerId: string): providerId is keyof typeof defaultModelPerProvider {
 	return providerId in defaultModelPerProvider;
 }
@@ -295,6 +411,10 @@ export interface InteractiveModeOptions {
 
 export class InteractiveMode {
 	private runtimeHost: AgentSessionRuntime;
+<<<<<<< HEAD
+=======
+	private options: InteractiveModeOptions;
+>>>>>>> upstream/main
 	private ui: TUI;
 	private chatContainer: Container;
 	private pendingMessagesContainer: Container;
@@ -314,6 +434,10 @@ export class InteractiveMode {
 	private version: string;
 	private isInitialized = false;
 	private onInputCallback?: (text: string) => void;
+<<<<<<< HEAD
+=======
+	private pendingUserInputs: string[] = [];
+>>>>>>> upstream/main
 	private loadingAnimation: Loader | undefined = undefined;
 	private workingMessage: string | undefined = undefined;
 	private workingVisible = true;
@@ -412,9 +536,12 @@ export class InteractiveMode {
 	private get session(): AgentSession {
 		return this.runtimeHost.session;
 	}
+<<<<<<< HEAD
 	private get agent() {
 		return this.session.agent;
 	}
+=======
+>>>>>>> upstream/main
 	private get sessionManager() {
 		return this.session.sessionManager;
 	}
@@ -422,11 +549,17 @@ export class InteractiveMode {
 		return this.session.settingsManager;
 	}
 
+<<<<<<< HEAD
 	constructor(
 		runtimeHost: AgentSessionRuntime,
 		private options: InteractiveModeOptions = {},
 	) {
 		this.runtimeHost = runtimeHost;
+=======
+	constructor(runtimeHost: AgentSessionRuntime, options: InteractiveModeOptions = {}) {
+		this.runtimeHost = runtimeHost;
+		this.options = options;
+>>>>>>> upstream/main
 		this.runtimeHost.setBeforeSessionInvalidate(() => {
 			this.resetExtensionUI();
 		});
@@ -788,7 +921,11 @@ export class InteractiveMode {
 		// Start version check asynchronously
 		checkForNewPiVersion(this.version).then((newVersion) => {
 			if (newVersion) {
+<<<<<<< HEAD
 				this.showNewVersionNotification(newVersion);
+=======
+				this.showNewVersionNotification(newVersion.version);
+>>>>>>> upstream/main
 			}
 		});
 
@@ -1557,6 +1694,13 @@ export class InteractiveMode {
 		const uiContext = this.createExtensionUIContext();
 		await this.session.bindExtensions({
 			uiContext,
+<<<<<<< HEAD
+=======
+			mode: "tui",
+			abortHandler: () => {
+				this.restoreQueuedMessagesToEditor({ abort: true });
+			},
+>>>>>>> upstream/main
 			commandContextActions: {
 				waitForIdle: () => this.session.agent.waitForIdle(),
 				newSession: async (options) => {
@@ -1633,6 +1777,10 @@ export class InteractiveMode {
 	}
 
 	private applyRuntimeSettings(): void {
+<<<<<<< HEAD
+=======
+		configureHttpDispatcher(this.settingsManager.getHttpIdleTimeoutMs());
+>>>>>>> upstream/main
 		this.footer.setSession(this.session);
 		this.footer.setAutoCompactEnabled(this.session.autoCompactionEnabled);
 		this.footerDataProvider.setCwd(this.sessionManager.getCwd());
@@ -1696,6 +1844,10 @@ export class InteractiveMode {
 		// Create a context for shortcut handlers
 		const createContext = (): ExtensionContext => ({
 			ui: this.createExtensionUIContext(),
+<<<<<<< HEAD
+=======
+			mode: "tui",
+>>>>>>> upstream/main
 			hasUI: true,
 			cwd: this.sessionManager.getCwd(),
 			sessionManager: this.sessionManager,
@@ -1846,7 +1998,11 @@ export class InteractiveMode {
 	private getWorkingIndicatorOptions(): LoaderIndicatorOptions {
 		return (
 			this.workingIndicatorOptions ?? {
+<<<<<<< HEAD
 				frames: [theme.fg("accent", "•")],
+=======
+				frames: [theme.fg("accent", "•"), theme.fg("muted", "◦")],
+>>>>>>> upstream/main
 				intervalMs: DEFAULT_WORKING_STATUS_REFRESH_INTERVAL_MS,
 				messageFormatter: (message, animationElapsedMs) =>
 					formatWorkingStatusMessageFrame(
@@ -2608,6 +2764,25 @@ export class InteractiveMode {
 		// Global debug handler on TUI (works regardless of focus)
 		this.ui.onDebug = () => this.handleDebugCommand();
 		this.defaultEditor.onAction("app.model.select", () => this.showModelSelector());
+<<<<<<< HEAD
+=======
+		this.defaultEditor.onAction("app.history.search", async () => {
+			try {
+				await this.session.prompt("/history");
+			} catch (error) {
+				this.showError(`Failed to open history search: ${error instanceof Error ? error.message : String(error)}`);
+			}
+		});
+		this.defaultEditor.onAction("app.sessions.observe", async () => {
+			try {
+				await this.session.prompt("/sessions");
+			} catch (error) {
+				this.showError(
+					`Failed to open session observer: ${error instanceof Error ? error.message : String(error)}`,
+				);
+			}
+		});
+>>>>>>> upstream/main
 		this.defaultEditor.onAction("app.tools.expand", () => this.toggleToolOutputExpansion());
 		this.defaultEditor.onAction("app.thinking.toggle", () => this.toggleThinkingBlockVisibility());
 		this.defaultEditor.onAction("app.editor.external", () => this.openExternalEditor());
@@ -2782,6 +2957,15 @@ export class InteractiveMode {
 				await this.shutdown();
 				return;
 			}
+<<<<<<< HEAD
+=======
+			if (this.isExtensionCommand(text)) {
+				this.editor.addToHistory?.(text);
+				this.editor.setText("");
+				await this.session.prompt(text);
+				return;
+			}
+>>>>>>> upstream/main
 
 			// Handle bash command (! for normal, !! for excluded from context)
 			if (text.startsWith("!")) {
@@ -2830,6 +3014,11 @@ export class InteractiveMode {
 
 			if (this.onInputCallback) {
 				this.onInputCallback(text);
+<<<<<<< HEAD
+=======
+			} else {
+				this.pendingUserInputs.push(text);
+>>>>>>> upstream/main
 			}
 			this.editor.addToHistory?.(text);
 		};
@@ -3435,6 +3624,14 @@ export class InteractiveMode {
 	}
 
 	async getUserInput(): Promise<string> {
+<<<<<<< HEAD
+=======
+		const queuedInput = this.pendingUserInputs.shift();
+		if (queuedInput !== undefined) {
+			return queuedInput;
+		}
+
+>>>>>>> upstream/main
 		return new Promise((resolve) => {
 			this.onInputCallback = (text: string) => {
 				this.onInputCallback = undefined;
@@ -3475,17 +3672,50 @@ export class InteractiveMode {
 	 */
 	private isShuttingDown = false;
 
+<<<<<<< HEAD
 	private async shutdown(): Promise<void> {
+=======
+	private async shutdown(options?: { fromSignal?: boolean }): Promise<void> {
+>>>>>>> upstream/main
 		if (this.isShuttingDown) return;
 		this.isShuttingDown = true;
 		this.unregisterSignalHandlers();
 
+<<<<<<< HEAD
+=======
+		if (options?.fromSignal) {
+			// Signal-triggered shutdown (SIGTERM/SIGHUP). Emit extension cleanup
+			// (session_shutdown) BEFORE touching the terminal. Extension teardown
+			// such as removing sockets does not write to the tty, so it must not be
+			// skipped if a later terminal-restore write fails on a dead or stalled
+			// terminal. If the terminal is gone, the restore writes below emit EIO,
+			// which the stdout/stderr error handler turns into emergencyTerminalExit;
+			// the render loop is already idle, so this cannot hot-spin (see #4144).
+			await this.runtimeHost.dispose();
+			await this.ui.terminal.drainInput(1000);
+			this.stop();
+			process.exit(0);
+		}
+
+		// Interactive quit (Ctrl+D, Ctrl+C, /quit, extension shutdown()). Stop the
+		// TUI before emitting shutdown events so extension UI cleanup cannot repaint
+		// the final frame while the process is exiting.
+>>>>>>> upstream/main
 		// Drain any in-flight Kitty key release events before stopping.
 		// This prevents escape sequences from leaking to the parent shell over slow SSH.
 		await this.ui.terminal.drainInput(1000);
 
 		this.stop();
 		await this.runtimeHost.dispose();
+<<<<<<< HEAD
+=======
+
+		const resumeCommand = formatResumeCommand(this.sessionManager);
+		if (resumeCommand) {
+			process.stdout.write(`${chalk.dim("To resume this session:")} ${resumeCommand}\n`);
+		}
+
+>>>>>>> upstream/main
 		process.exit(0);
 	}
 
@@ -3546,11 +3776,20 @@ export class InteractiveMode {
 
 		for (const signal of signals) {
 			const handler = () => {
+<<<<<<< HEAD
 				if (signal === "SIGHUP") {
 					this.emergencyTerminalExit();
 				}
 				killTrackedDetachedChildren();
 				void this.shutdown();
+=======
+				// SIGHUP no longer hard-exits: graceful shutdown emits session_shutdown
+				// first, then attempts terminal restore. A genuinely dead terminal
+				// surfaces as an EIO on the restore writes, which the stdout/stderr
+				// error handler converts into emergencyTerminalExit (see #4144, #5080).
+				killTrackedDetachedChildren();
+				void this.shutdown({ fromSignal: true });
+>>>>>>> upstream/main
 			};
 			process.prependListener(signal, handler);
 			this.signalCleanupHandlers.push(() => process.off(signal, handler));
@@ -4106,6 +4345,10 @@ export class InteractiveMode {
 					steeringMode: this.session.steeringMode,
 					followUpMode: this.session.followUpMode,
 					transport: this.settingsManager.getTransport(),
+<<<<<<< HEAD
+=======
+					httpIdleTimeoutMs: this.settingsManager.getHttpIdleTimeoutMs(),
+>>>>>>> upstream/main
 					thinkingLevel: this.session.thinkingLevel,
 					availableThinkingLevels: this.session.getAvailableThinkingLevels(),
 					currentTheme: this.settingsManager.getTheme() || "dark",
@@ -4164,6 +4407,14 @@ export class InteractiveMode {
 						this.settingsManager.setTransport(transport);
 						this.session.agent.transport = transport;
 					},
+<<<<<<< HEAD
+=======
+					onHttpIdleTimeoutMsChange: (timeoutMs) => {
+						this.settingsManager.setHttpIdleTimeoutMs(timeoutMs);
+						configureHttpDispatcher(timeoutMs);
+						this.showStatus(`HTTP idle timeout: ${formatHttpIdleTimeoutMs(timeoutMs)}`);
+					},
+>>>>>>> upstream/main
 					onThinkingLevelChange: (level) => {
 						this.session.setThinkingLevel(level);
 						this.footer.invalidate();
@@ -4659,7 +4910,14 @@ export class InteractiveMode {
 			const selector = new SessionSelectorComponent(
 				(onProgress) =>
 					SessionManager.list(this.sessionManager.getCwd(), this.sessionManager.getSessionDir(), onProgress),
+<<<<<<< HEAD
 				SessionManager.listAll,
+=======
+				(onProgress) =>
+					this.sessionManager.usesDefaultSessionDir()
+						? SessionManager.listAll(onProgress)
+						: SessionManager.listAll(this.sessionManager.getSessionDir(), onProgress),
+>>>>>>> upstream/main
 				async (sessionPath) => {
 					done();
 					await this.handleResumeSession(sessionPath);
@@ -5099,13 +5357,24 @@ export class InteractiveMode {
 									manualCodeReject = undefined;
 								}
 							});
+<<<<<<< HEAD
 					} else if (providerId === "github-copilot") {
 						// GitHub Copilot polls after onAuth
 						dialog.showWaiting("Waiting for browser authentication...");
+=======
+>>>>>>> upstream/main
 					}
 					// For Anthropic: onPrompt is called immediately after
 				},
 
+<<<<<<< HEAD
+=======
+				onDeviceCode: (info) => {
+					dialog.showDeviceCode(info);
+					dialog.showWaiting("Waiting for authentication...");
+				},
+
+>>>>>>> upstream/main
 				onPrompt: async (prompt: { message: string; placeholder?: string }) => {
 					return dialog.showPrompt(prompt.message, prompt.placeholder);
 				},
@@ -5175,6 +5444,10 @@ export class InteractiveMode {
 
 		try {
 			await this.session.reload();
+<<<<<<< HEAD
+=======
+			configureHttpDispatcher(this.settingsManager.getHttpIdleTimeoutMs());
+>>>>>>> upstream/main
 			this.keybindings.reload();
 			const activeHeader = this.customHeader ?? this.builtInHeader;
 			if (isExpandable(activeHeader)) {
@@ -5517,6 +5790,10 @@ export class InteractiveMode {
 		const cycleThinkingLevel = this.getAppKeyDisplay("app.thinking.cycle");
 		const cycleModelForward = this.getAppKeyDisplay("app.model.cycleForward");
 		const selectModel = this.getAppKeyDisplay("app.model.select");
+<<<<<<< HEAD
+=======
+		const observeSessions = this.getAppKeyDisplay("app.sessions.observe");
+>>>>>>> upstream/main
 		const expandTools = this.getAppKeyDisplay("app.tools.expand");
 		const toggleThinking = this.getAppKeyDisplay("app.thinking.toggle");
 		const externalEditor = this.getAppKeyDisplay("app.editor.external");
@@ -5561,6 +5838,10 @@ export class InteractiveMode {
 | \`${cycleThinkingLevel}\` | Cycle thinking level |
 | \`${cycleModelForward}\` / \`${cycleModelBackward}\` | Cycle models |
 | \`${selectModel}\` | Open model selector |
+<<<<<<< HEAD
+=======
+| \`${observeSessions}\` | Observe session transcripts |
+>>>>>>> upstream/main
 | \`${expandTools}\` | Toggle tool output expansion |
 | \`${toggleThinking}\` | Toggle thinking block visibility |
 | \`${externalEditor}\` | Edit message in external editor |

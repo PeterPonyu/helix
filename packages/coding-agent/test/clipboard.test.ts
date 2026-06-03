@@ -1,7 +1,11 @@
 import { execSync, spawn } from "child_process";
 import { platform } from "os";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+<<<<<<< HEAD
 import { copyToClipboard } from "../src/utils/clipboard.js";
+=======
+import { copyToClipboard } from "../src/utils/clipboard.ts";
+>>>>>>> upstream/main
 
 const mocks = vi.hoisted(() => {
 	return {

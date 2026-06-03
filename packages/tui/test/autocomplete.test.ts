@@ -4,7 +4,59 @@ import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { afterEach, beforeEach, describe, it, test } from "node:test";
+<<<<<<< HEAD
 import { CombinedAutocompleteProvider } from "../src/autocomplete.js";
+=======
+import { CombinedAutocompleteProvider } from "../src/autocomplete.ts";
+
+const resolveFdPath = (): string | null => {
+	const command = process.platform === "win32" ? "where" : "which";
+	const result = spawnSync(command, ["fd"], { encoding: "utf-8" });
+	if (result.status !== 0 || !result.stdout) {
+		return null;
+	}
+
+	const firstLine = result.stdout.split(/\r?\n/).find(Boolean);
+	return firstLine ? firstLine.trim() : null;
+};
+
+type FolderStructure = {
+	dirs?: string[];
+	files?: Record<string, string>;
+};
+
+const setupFolder = (baseDir: string, structure: FolderStructure = {}): void => {
+	const dirs = structure.dirs ?? [];
+	const files = structure.files ?? {};
+
+	dirs.forEach((dir) => {
+		mkdirSync(join(baseDir, dir), { recursive: true });
+	});
+	Object.entries(files).forEach(([filePath, contents]) => {
+		const fullPath = join(baseDir, filePath);
+		mkdirSync(dirname(fullPath), { recursive: true });
+		writeFileSync(fullPath, contents);
+	});
+};
+
+const fdPath = resolveFdPath();
+const isFdInstalled = Boolean(fdPath);
+
+const requireFdPath = (): string => {
+	if (!fdPath) {
+		throw new Error("fd is not available");
+	}
+	return fdPath;
+};
+
+const getSuggestions = (
+	provider: CombinedAutocompleteProvider,
+	lines: string[],
+	cursorLine: number,
+	cursorCol: number,
+	force: boolean = false,
+) => provider.getSuggestions(lines, cursorLine, cursorCol, { signal: new AbortController().signal, force });
+>>>>>>> upstream/main
 
 const resolveFdPath = (): string | null => {
 	const command = process.platform === "win32" ? "where" : "which";
@@ -365,7 +417,11 @@ describe("CombinedAutocompleteProvider", () => {
 				dirs: ["packages/coding-agent/examples/extensions/plan-mode"],
 				files: {
 					"packages/coding-agent/examples/extensions/plan-mode/README.md": "readme",
+<<<<<<< HEAD
 					"packages/web-ui/docs/plan.md": "plan",
+=======
+					"packages/tui/docs/plan.md": "plan",
+>>>>>>> upstream/main
 				},
 			};
 			setupFolder(normalBaseDir, structure);
@@ -385,7 +441,11 @@ describe("CombinedAutocompleteProvider", () => {
 			assert.ok(
 				normalize(normalResult).includes("plan-mode/ :: packages/coding-agent/examples/extensions/plan-mode"),
 			);
+<<<<<<< HEAD
 			assert.ok(normalize(normalResult).includes("plan.md :: packages/web-ui/docs/plan.md"));
+=======
+			assert.ok(normalize(normalResult).includes("plan.md :: packages/tui/docs/plan.md"));
+>>>>>>> upstream/main
 		});
 
 		test("continues autocomplete inside quoted @ paths", async () => {

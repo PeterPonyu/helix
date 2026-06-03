@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel, getSupportedThinkingLevels } from "../src/models.js";
+=======
+import { getModel, getSupportedThinkingLevels } from "../src/models.ts";
+>>>>>>> upstream/main
 
 describe("getSupportedThinkingLevels", () => {
 	it("includes xhigh for Anthropic Opus 4.6 on anthropic-messages API", () => {
@@ -8,8 +12,19 @@ describe("getSupportedThinkingLevels", () => {
 		expect(getSupportedThinkingLevels(model!)).toContain("xhigh");
 	});
 
+<<<<<<< HEAD
 	it("includes xhigh for Anthropic Opus 4.7 on anthropic-messages API", () => {
 		const model = getModel("anthropic", "claude-opus-4-7");
+=======
+	it("includes max for Anthropic Opus 4.8 on anthropic-messages API", () => {
+		const model = getModel("anthropic", "claude-opus-4-8");
+		expect(model).toBeDefined();
+		expect(getSupportedThinkingLevels(model!)).toContain("max");
+	});
+
+	it("includes xhigh for Anthropic Opus 4.8 on anthropic-messages API", () => {
+		const model = getModel("anthropic", "claude-opus-4-8");
+>>>>>>> upstream/main
 		expect(model).toBeDefined();
 		expect(getSupportedThinkingLevels(model!)).toContain("xhigh");
 	});
@@ -26,6 +41,21 @@ describe("getSupportedThinkingLevels", () => {
 		expect(getSupportedThinkingLevels(model!)).toContain("xhigh");
 	});
 
+<<<<<<< HEAD
+=======
+	it("includes only medium/high/xhigh for OpenAI GPT-5.5 Pro", () => {
+		const model = getModel("openai", "gpt-5.5-pro");
+		expect(model).toBeDefined();
+		expect(getSupportedThinkingLevels(model!)).toEqual(["medium", "high", "xhigh"]);
+	});
+
+	it("includes only medium/high/xhigh for OpenRouter GPT-5.5 Pro", () => {
+		const model = getModel("openrouter", "openai/gpt-5.5-pro");
+		expect(model).toBeDefined();
+		expect(getSupportedThinkingLevels(model!)).toEqual(["medium", "high", "xhigh"]);
+	});
+
+>>>>>>> upstream/main
 	it("includes only high/xhigh plus off for DeepSeek V4 Flash on the DeepSeek provider", () => {
 		const model = getModel("deepseek", "deepseek-v4-flash");
 		expect(model).toBeDefined();
@@ -38,6 +68,21 @@ describe("getSupportedThinkingLevels", () => {
 		expect(getSupportedThinkingLevels(model!)).toEqual(["off", "high", "xhigh"]);
 	});
 
+<<<<<<< HEAD
+=======
+	it("includes only high plus off for OpenCode Go Kimi K2.6", () => {
+		const model = getModel("opencode-go", "kimi-k2.6");
+		expect(model).toBeDefined();
+		expect(getSupportedThinkingLevels(model!)).toEqual(["off", "high"]);
+	});
+
+	it("includes only high for OpenCode Grok Build", () => {
+		const model = getModel("opencode", "grok-build-0.1");
+		expect(model).toBeDefined();
+		expect(getSupportedThinkingLevels(model!)).toEqual(["high"]);
+	});
+
+>>>>>>> upstream/main
 	it("includes only high/xhigh plus off for DeepSeek V4 Flash on OpenRouter", () => {
 		const model = getModel("openrouter", "deepseek/deepseek-v4-flash");
 		expect(model).toBeDefined();

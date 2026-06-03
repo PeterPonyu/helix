@@ -1,7 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { streamAzureOpenAIResponses } from "../src/providers/azure-openai-responses.js";
 import type { Context } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { streamAzureOpenAIResponses } from "../src/providers/azure-openai-responses.ts";
+import type { Context } from "../src/types.ts";
+>>>>>>> upstream/main
 
 interface CapturedAzureClientOptions {
 	apiKey: string;
@@ -11,14 +17,29 @@ interface CapturedAzureClientOptions {
 	baseURL: string;
 }
 
+<<<<<<< HEAD
 const azureMock = vi.hoisted(() => ({
 	constructorCalls: [] as CapturedAzureClientOptions[],
+=======
+interface CapturedAzureResponsesPayload {
+	prompt_cache_key?: string;
+}
+
+const azureMock = vi.hoisted(() => ({
+	constructorCalls: [] as CapturedAzureClientOptions[],
+	lastParams: undefined as CapturedAzureResponsesPayload | undefined,
+>>>>>>> upstream/main
 }));
 
 vi.mock("openai", () => {
 	class AzureOpenAI {
 		responses = {
+<<<<<<< HEAD
 			create: () => {
+=======
+			create: (params: CapturedAzureResponsesPayload) => {
+				azureMock.lastParams = params;
+>>>>>>> upstream/main
 				throw new Error("mock create");
 			},
 		};
@@ -42,6 +63,10 @@ const originalAzureOpenAIApiKey = process.env.AZURE_OPENAI_API_KEY;
 
 beforeEach(() => {
 	azureMock.constructorCalls.length = 0;
+<<<<<<< HEAD
+=======
+	azureMock.lastParams = undefined;
+>>>>>>> upstream/main
 	delete process.env.AZURE_OPENAI_BASE_URL;
 	delete process.env.AZURE_OPENAI_RESOURCE_NAME;
 	delete process.env.AZURE_OPENAI_API_VERSION;
@@ -126,6 +151,20 @@ describe("azure-openai-responses base URL normalization", () => {
 		expect(result.errorMessage).toContain("Invalid Azure OpenAI base URL");
 	});
 
+<<<<<<< HEAD
+=======
+	it("clamps prompt_cache_key to OpenAI's 64-character limit", async () => {
+		const model = getModel("azure-openai-responses", "gpt-4o-mini");
+		await streamAzureOpenAIResponses(model, context, {
+			apiKey: "test-api-key",
+			azureBaseUrl: "https://my-resource.openai.azure.com",
+			sessionId: "x".repeat(67),
+		}).result();
+
+		expect(azureMock.lastParams?.prompt_cache_key).toBe("x".repeat(64));
+	});
+
+>>>>>>> upstream/main
 	it("builds correct default URL from AZURE_OPENAI_RESOURCE_NAME", async () => {
 		process.env.AZURE_OPENAI_RESOURCE_NAME = "my-resource";
 		const model = getModel("azure-openai-responses", "gpt-4o-mini");

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { ExtensionAPI, ExtensionContext } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, ExtensionContext } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 const COMPACT_THRESHOLD_TOKENS = 100_000;
 

@@ -1,7 +1,12 @@
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { convertResponsesMessages, convertResponsesTools } from "../src/providers/openai-responses-shared.js";
 import type { Context, Model, Tool } from "../src/types.js";
+=======
+import { convertResponsesMessages, convertResponsesTools } from "../src/providers/openai-responses-shared.ts";
+import type { Context, Model, Tool } from "../src/types.ts";
+>>>>>>> upstream/main
 
 const applyPatchTool: Tool = {
 	name: "apply_patch",

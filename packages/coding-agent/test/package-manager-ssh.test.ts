@@ -2,8 +2,13 @@ import { mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { DefaultPackageManager } from "../src/core/package-manager.js";
 import { SettingsManager } from "../src/core/settings-manager.js";
+=======
+import { DefaultPackageManager } from "../src/core/package-manager.ts";
+import { SettingsManager } from "../src/core/settings-manager.ts";
+>>>>>>> upstream/main
 
 describe("Package Manager git source parsing", () => {
 	let tempDir: string;

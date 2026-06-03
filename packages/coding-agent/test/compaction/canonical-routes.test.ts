@@ -1,11 +1,20 @@
 import type { AssistantMessage, Model } from "@earendil-works/pi-ai";
 import { afterEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { type CompactionResult, DEFAULT_COMPACTION_SETTINGS } from "../../src/core/compaction/index.js";
 import { createEventBus } from "../../src/core/event-bus.js";
 import compactionExtension from "../../src/core/extensions/builtin/compaction/index.js";
 import type { BeforeAgentStartEvent } from "../../src/core/extensions/index.js";
 import { createExtensionRuntime, loadExtensionFromFactory } from "../../src/core/extensions/loader.js";
 import type { SessionEntry, SessionMessageEntry } from "../../src/core/session-manager.js";
+=======
+import { type CompactionResult, DEFAULT_COMPACTION_SETTINGS } from "../../src/core/compaction/index.ts";
+import { createEventBus } from "../../src/core/event-bus.ts";
+import compactionExtension from "../../src/core/extensions/builtin/compaction/index.ts";
+import type { BeforeAgentStartEvent } from "../../src/core/extensions/index.ts";
+import { createExtensionRuntime, loadExtensionFromFactory } from "../../src/core/extensions/loader.ts";
+import type { SessionEntry, SessionMessageEntry } from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 const OPENAI_MODEL = {
 	id: "gpt-5.4",
@@ -115,7 +124,11 @@ describe("builtin compaction canonical routes", () => {
 			{
 				type: "before_agent_start",
 				prompt: "incoming prompt ".repeat(1_500),
+<<<<<<< HEAD
 				systemPrompt: "You are helix.",
+=======
+				systemPrompt: "You are senpi.",
+>>>>>>> upstream/main
 				systemPromptOptions: { cwd: process.cwd() },
 			},
 			{
@@ -136,7 +149,11 @@ describe("builtin compaction canonical routes", () => {
 					reserveTokens: 2_000,
 				}),
 				getMessageRevision: () => 1,
+<<<<<<< HEAD
 				getSystemPrompt: () => "You are helix.",
+=======
+				getSystemPrompt: () => "You are senpi.",
+>>>>>>> upstream/main
 				beginCompaction: () => new AbortController().signal,
 				endCompaction: () => {},
 				applyCompaction: async (compaction: CompactionResult) => {
@@ -150,7 +167,11 @@ describe("builtin compaction canonical routes", () => {
 		expect(fetchMock).toHaveBeenCalledTimes(1);
 		expect(appliedCompactions).toHaveLength(1);
 		expect(appliedCompactions[0]?.details).toMatchObject({
+<<<<<<< HEAD
 			schema: "helix.compaction.openai-remote.v1",
+=======
+			schema: "senpi.compaction.openai-remote.v1",
+>>>>>>> upstream/main
 			mode: "openai-remote",
 			transport: "compact-endpoint",
 		});

@@ -8,7 +8,11 @@ import {
 	type ThinkingBudgets,
 	type Transport,
 } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import { runAgentLoop, runAgentLoopContinue } from "./agent-loop.js";
+=======
+import { runAgentLoop, runAgentLoopContinue } from "./agent-loop.ts";
+>>>>>>> upstream/main
 import type {
 	AfterToolCallContext,
 	AfterToolCallResult,
@@ -24,9 +28,15 @@ import type {
 	QueueMode,
 	StreamFn,
 	ToolExecutionMode,
+<<<<<<< HEAD
 } from "./types.js";
 
 export type { QueueMode } from "./types.js";
+=======
+} from "./types.ts";
+
+export type { QueueMode } from "./types.ts";
+>>>>>>> upstream/main
 
 function defaultConvertToLlm(messages: AgentMessage[]): Message[] {
 	return messages.filter(
@@ -118,6 +128,7 @@ export interface AgentOptions {
 
 class PendingMessageQueue {
 	private messages: AgentMessage[] = [];
+<<<<<<< HEAD
 
 	constructor(public mode: QueueMode) {}
 
@@ -125,6 +136,18 @@ class PendingMessageQueue {
 		this.messages.push(message);
 	}
 
+=======
+	public mode: QueueMode;
+
+	constructor(mode: QueueMode) {
+		this.mode = mode;
+	}
+
+	enqueue(message: AgentMessage): void {
+		this.messages.push(message);
+	}
+
+>>>>>>> upstream/main
 	hasItems(): boolean {
 		return this.messages.length > 0;
 	}
@@ -467,6 +490,12 @@ export class Agent {
 
 		try {
 			await executor(abortController.signal);
+<<<<<<< HEAD
+=======
+			while (!abortController.signal.aborted && this.hasQueuedMessages()) {
+				await this.runQueuedMessagesAfterAgentEnd(abortController.signal);
+			}
+>>>>>>> upstream/main
 		} catch (error) {
 			await this.handleRunFailure(error, abortController.signal.aborted);
 		} finally {
@@ -474,6 +503,38 @@ export class Agent {
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	private async runQueuedMessagesAfterAgentEnd(signal: AbortSignal): Promise<void> {
+		const queuedSteering = this.steeringQueue.drain();
+		if (queuedSteering.length > 0) {
+			await runAgentLoop(
+				queuedSteering,
+				this.createContextSnapshot(),
+				this.createLoopConfig({ skipInitialSteeringPoll: true }),
+				(event) => this.processEvents(event),
+				signal,
+				this.streamFn,
+			);
+			return;
+		}
+
+		const queuedFollowUps = this.followUpQueue.drain();
+		if (queuedFollowUps.length === 0) {
+			return;
+		}
+
+		await runAgentLoop(
+			queuedFollowUps,
+			this.createContextSnapshot(),
+			this.createLoopConfig(),
+			(event) => this.processEvents(event),
+			signal,
+			this.streamFn,
+		);
+	}
+
+>>>>>>> upstream/main
 	private async handleRunFailure(error: unknown, aborted: boolean): Promise<void> {
 		const failureMessage = {
 			role: "assistant",

@@ -2,8 +2,13 @@
  * Snake game extension - play snake with /snake command
  */
 
+<<<<<<< HEAD
 import { matchesKey, visibleWidth } from "@earendil-works/pi-tui";
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { matchesKey, visibleWidth } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 
 const GAME_WIDTH = 40;
 const GAME_HEIGHT = 15;
@@ -311,7 +316,11 @@ export default function (pi: ExtensionAPI) {
 		description: "Play Snake!",
 
 		handler: async (_args, ctx) => {
+<<<<<<< HEAD
 			if (!ctx.hasUI) {
+=======
+			if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 				ctx.ui.notify("Snake requires interactive mode", "error");
 				return;
 			}

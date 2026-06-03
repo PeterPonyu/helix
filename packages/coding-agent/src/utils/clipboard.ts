@@ -1,7 +1,12 @@
 import { execSync, spawn } from "child_process";
 import { platform } from "os";
+<<<<<<< HEAD
 import { isWaylandSession } from "./clipboard-image.js";
 import { clipboard } from "./clipboard-native.js";
+=======
+import { isWaylandSession } from "./clipboard-image.ts";
+import { clipboard } from "./clipboard-native.ts";
+>>>>>>> upstream/main
 
 type NativeClipboardExecOptions = {
 	input: string;

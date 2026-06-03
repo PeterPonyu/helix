@@ -57,7 +57,11 @@ function log(message) {
 function usage() {
 	return `Usage: node scripts/sync-upstream.mjs [--dry-run] [--no-push] [--no-pr] [--verbose] [--help]
 
+<<<<<<< HEAD
 Synchronize helix with ${UPSTREAM_REMOTE}/main using fork-aware auto-resolution.
+=======
+Synchronize senpi with ${UPSTREAM_REMOTE}/main using fork-aware auto-resolution.
+>>>>>>> upstream/main
 
 Flags:
 	--dry-run   Preview only; no repository mutations are kept
@@ -247,6 +251,7 @@ function unresolvedPaths(options = {}) {
 	return output.length === 0 ? [] : output.split("\n").filter(Boolean)
 }
 
+<<<<<<< HEAD
 // GitHub refuses to let the default GITHUB_TOKEN push commits that touch
 // .github/workflows/*. The restriction is server-side and cannot be granted
 // via the workflow `permissions:` block. To keep the scheduled sync push-able,
@@ -294,6 +299,8 @@ function conflictStages(path, options = {}) {
 	return stages
 }
 
+=======
+>>>>>>> upstream/main
 function applyAutoResolution(paths, options = {}) {
 	const state = {
 		packageLockTouched: false,
@@ -322,6 +329,7 @@ function applyAutoResolution(paths, options = {}) {
 		}
 
 		if (base === "changes.md") {
+<<<<<<< HEAD
 			// "Take ours": if ours deleted the file (DU, no stage 2), accept
 			// the deletion; else keep our working tree version.
 			const stages = conflictStages(path, options)
@@ -333,11 +341,17 @@ function applyAutoResolution(paths, options = {}) {
 				git(["checkout", "--ours", "--", path], options)
 				git(["add", "--", path], options)
 			}
+=======
+			log(`auto-resolving ${path}: git checkout --ours changes.md`)
+			git(["checkout", "--ours", "--", path], options)
+			git(["add", "--", path], options)
+>>>>>>> upstream/main
 			state.resolved.push(path)
 			continue
 		}
 
 		if (path.endsWith(".md")) {
+<<<<<<< HEAD
 			// "Take theirs": if theirs deleted the file (UD, no stage 3), accept
 			// the deletion via git rm; else restore theirs' content.
 			const stages = conflictStages(path, options)
@@ -349,6 +363,11 @@ function applyAutoResolution(paths, options = {}) {
 				git(["checkout", "--theirs", "--", path], options)
 				git(["add", "--", path], options)
 			}
+=======
+			log(`auto-resolving ${path}: git checkout --theirs markdown`)
+			git(["checkout", "--theirs", "--", path], options)
+			git(["add", "--", path], options)
+>>>>>>> upstream/main
 			state.resolved.push(path)
 			continue
 		}
@@ -361,6 +380,7 @@ function applyAutoResolution(paths, options = {}) {
 }
 
 function regenerateLockfiles(state, options = {}) {
+<<<<<<< HEAD
 	if (state.leftForHumans.length > 0) {
 		// Unresolved conflicts remain — running `npm install` here will choke
 		// on conflict markers inside any leftover package.json
@@ -372,6 +392,8 @@ function regenerateLockfiles(state, options = {}) {
 		return
 	}
 
+=======
+>>>>>>> upstream/main
 	if (state.packageLockTouched) {
 		log("regenerating package-lock.json with npm install")
 		rmSync("node_modules", { recursive: true, force: true })
@@ -468,10 +490,13 @@ function dryRunMerge(options, upstreamHead, shortSha, branchName) {
 		git(["worktree", "add", "--detach", "--quiet", worktreePath, MAIN_BRANCH], options)
 		const dryOptions = { ...options, cwd: worktreePath }
 		const merge = gitTry(["merge", UPSTREAM_BRANCH, "--no-ff", "--no-commit"], dryOptions)
+<<<<<<< HEAD
 		const dryRunWorkflowResets = resetWorkflowFiles(dryOptions)
 		for (const path of dryRunWorkflowResets) {
 			log(`dry-run workflow reset: ${path}`)
 		}
+=======
+>>>>>>> upstream/main
 		if (merge.ok) {
 			log(`dry-run result: clean merge estimated (${upstreamHead.slice(0, 12)} / ${shortSha})`)
 			return CLEAN
@@ -499,6 +524,7 @@ function dryRunMerge(options, upstreamHead, shortSha, branchName) {
 }
 
 function buildPrBody(unresolvedFiles, shortSha) {
+<<<<<<< HEAD
 	// GitHub rejects pull request bodies longer than 65,536 characters with an
 	// HTTP 422 "Validation Failed" response. A heavily-rebranded fork can have
 	// hundreds of conflicting files, so cap the rendered table and summarize the
@@ -506,11 +532,15 @@ function buildPrBody(unresolvedFiles, shortSha) {
 	const MAX_LISTED_FILES = 100
 	const listed = unresolvedFiles.slice(0, MAX_LISTED_FILES)
 	const rows = listed
+=======
+	const rows = unresolvedFiles
+>>>>>>> upstream/main
 		.map((file) => {
 			const suggestion = suggestedResolution(file)
 			return `| \`${file}\` | ${suggestion.resolution} | ${suggestion.reason} |`
 		})
 		.join("\n")
+<<<<<<< HEAD
 	const overflowCount = unresolvedFiles.length - listed.length
 	const overflowNote =
 		overflowCount > 0
@@ -520,16 +550,28 @@ function buildPrBody(unresolvedFiles, shortSha) {
 	return `## Auto-opened by sync-upstream.yml
 
 Upstream \`code-yeongyu/senpi\` advanced to \`${shortSha}\` (full: \`${currentUpstreamHead}\`). Auto-merge applied but the following files require human resolution.
+=======
+
+	return `## Auto-opened by sync-upstream.yml
+
+Upstream \`badlogic/pi-mono\` advanced to \`${shortSha}\` (full: \`${currentUpstreamHead}\`). Auto-merge applied but the following files require human resolution.
+>>>>>>> upstream/main
 
 If a newer sync runs before this PR is resolved, this PR will be **closed and superseded** by the next one.
 
 ## Conflicting files
 
+<<<<<<< HEAD
 **${unresolvedFiles.length} file${unresolvedFiles.length === 1 ? "" : "s"} need human resolution${overflowCount > 0 ? `; the first ${MAX_LISTED_FILES} are listed below` : ""}.**
 
 | File | Suggested resolution | Reason |
 |---|---|---|
 ${rows}${overflowNote}
+=======
+| File | Suggested resolution | Reason |
+|---|---|---|
+${rows}
+>>>>>>> upstream/main
 
 ## Resolution playbook
 
@@ -570,6 +612,7 @@ function suggestedResolution(file) {
 
 function closeSupersededPullRequests(shortSha, options = {}) {
 	log("finding existing open sync-conflict PRs")
+<<<<<<< HEAD
 	// REST issues endpoint instead of `gh pr list --label X`: under the
 	// workflow's GITHUB_TOKEN, the gh-CLI list returns an empty array even
 	// when a labeled PR exists (verified by manual REST query returning the
@@ -589,6 +632,17 @@ function closeSupersededPullRequests(shortSha, options = {}) {
 
 	const pullRequests = Array.isArray(items) ? items.filter((item) => item && item.pull_request) : []
 	if (pullRequests.length === 0) {
+=======
+	const output = run("gh", ["pr", "list", "--label", CONFLICT_LABEL, "--state", "open", "--json", "number,headRefName,title"], options)
+	let pullRequests
+	try {
+		pullRequests = JSON.parse(output)
+	} catch (error) {
+		throw new SyncError(`failed to parse gh pr list output: ${error.message}`)
+	}
+
+	if (!Array.isArray(pullRequests) || pullRequests.length === 0) {
+>>>>>>> upstream/main
 		log("no existing sync-conflict PRs to supersede")
 		return
 	}
@@ -618,6 +672,7 @@ function createConflictPullRequest(unresolved, shortSha, branchName, options = {
 
 	if (!options.noPush) {
 		log(`pushing conflict branch ${branchName}`)
+<<<<<<< HEAD
 		// Force push so a stale remote branch from a previous attempt that
 		// failed *after* push (e.g. on PR creation) doesn't reject the next
 		// run with non-fast-forward. The workflow's concurrency group prevents
@@ -625,10 +680,14 @@ function createConflictPullRequest(unresolved, shortSha, branchName, options = {
 		// so the only competing ref is our own previous attempt -- safe to
 		// overwrite.
 		git(["push", "-u", "--force", "origin", branchName], options)
+=======
+		git(["push", "-u", "origin", branchName], options)
+>>>>>>> upstream/main
 	} else {
 		log(`--no-push set; skipping push for ${branchName}`)
 	}
 
+<<<<<<< HEAD
 	const repoSlug = getOriginRepoSlug(options)
 	const inputPath = join(tmpdir(), `sync-upstream-${shortSha}.json`)
 	writeFileSync(
@@ -693,6 +752,32 @@ function getOriginRepoSlug(options = {}) {
 	return `${match[1]}/${match[2]}`
 }
 
+=======
+	const bodyPath = join(tmpdir(), `sync-upstream-${shortSha}.md`)
+	writeFileSync(bodyPath, buildPrBody(unresolved, shortSha))
+	try {
+		log("creating sync-conflict PR")
+		const url = run("gh", [
+			"pr",
+			"create",
+			"--label",
+			CONFLICT_LABEL,
+			"--base",
+			MAIN_BRANCH,
+			"--head",
+			branchName,
+			"--title",
+			`sync: upstream ${shortSha} (conflicts)`,
+			"--body-file",
+			bodyPath,
+		], options).trim()
+		console.log(url)
+	} finally {
+		rmSync(bodyPath, { force: true })
+	}
+}
+
+>>>>>>> upstream/main
 function printNoPrInstructions(unresolved, branchName) {
 	log("unresolved conflicts remain; --no-pr set")
 	log(`branch left locally with conflict markers: ${branchName}`)
@@ -767,8 +852,11 @@ function main() {
 	log(`merging ${UPSTREAM_BRANCH}`)
 	gitTry(["merge", UPSTREAM_BRANCH, "--no-ff", "--no-commit"], options)
 
+<<<<<<< HEAD
 	resetWorkflowFiles(options)
 
+=======
+>>>>>>> upstream/main
 	const initialConflicts = unresolvedPaths(options)
 	log(`initial conflicts: ${initialConflicts.length}`)
 	const resolutionState = applyAutoResolution(initialConflicts, options)

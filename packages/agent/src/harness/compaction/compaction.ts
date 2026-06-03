@@ -1,14 +1,24 @@
 import type { AssistantMessage, ImageContent, Model, TextContent, Usage } from "@earendil-works/pi-ai";
 import { completeSimple } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { AgentMessage, ThinkingLevel } from "../../types.js";
+=======
+import type { AgentMessage, ThinkingLevel } from "../../types.ts";
+>>>>>>> upstream/main
 import {
 	convertToLlm,
 	createBranchSummaryMessage,
 	createCompactionSummaryMessage,
 	createCustomMessage,
+<<<<<<< HEAD
 } from "../messages.js";
 import { buildSessionContext } from "../session/session.js";
 import { type CompactionEntry, CompactionError, err, ok, type Result, type SessionTreeEntry } from "../types.js";
+=======
+} from "../messages.ts";
+import { buildSessionContext } from "../session/session.ts";
+import { type CompactionEntry, CompactionError, err, ok, type Result, type SessionTreeEntry } from "../types.ts";
+>>>>>>> upstream/main
 import {
 	computeFileLists,
 	createFileOps,
@@ -16,7 +26,11 @@ import {
 	type FileOperations,
 	formatFileOperations,
 	serializeConversation,
+<<<<<<< HEAD
 } from "./utils.js";
+=======
+} from "./utils.ts";
+>>>>>>> upstream/main
 
 /** File-operation details stored on generated compaction entries. */
 export interface CompactionDetails {
@@ -198,12 +212,34 @@ export function shouldCompact(contextTokens: number, contextWindow: number, sett
 	return contextTokens > contextWindow - settings.reserveTokens;
 }
 
+<<<<<<< HEAD
+=======
+const ESTIMATED_IMAGE_CHARS = 4800;
+
+function estimateTextAndImageContentChars(content: string | Array<{ type: string; text?: string }>): number {
+	if (typeof content === "string") {
+		return content.length;
+	}
+
+	let chars = 0;
+	for (const block of content) {
+		if (block.type === "text" && block.text) {
+			chars += block.text.length;
+		} else if (block.type === "image") {
+			chars += ESTIMATED_IMAGE_CHARS;
+		}
+	}
+	return chars;
+}
+
+>>>>>>> upstream/main
 /** Estimate token count for one message using a conservative character heuristic. */
 export function estimateTokens(message: AgentMessage): number {
 	let chars = 0;
 
 	switch (message.role) {
 		case "user": {
+<<<<<<< HEAD
 			const content = (message as { content: string | Array<{ type: string; text?: string }> }).content;
 			if (typeof content === "string") {
 				chars = content.length;
@@ -214,6 +250,11 @@ export function estimateTokens(message: AgentMessage): number {
 					}
 				}
 			}
+=======
+			chars = estimateTextAndImageContentChars(
+				(message as { content: string | Array<{ type: string; text?: string }> }).content,
+			);
+>>>>>>> upstream/main
 			return Math.ceil(chars / 4);
 		}
 		case "assistant": {
@@ -231,6 +272,7 @@ export function estimateTokens(message: AgentMessage): number {
 		}
 		case "custom":
 		case "toolResult": {
+<<<<<<< HEAD
 			if (typeof message.content === "string") {
 				chars = message.content.length;
 			} else {
@@ -243,6 +285,9 @@ export function estimateTokens(message: AgentMessage): number {
 					}
 				}
 			}
+=======
+			chars = estimateTextAndImageContentChars(message.content);
+>>>>>>> upstream/main
 			return Math.ceil(chars / 4);
 		}
 		case "bashExecution": {
@@ -281,6 +326,10 @@ function findValidCutPoints(entries: SessionTreeEntry[], startIndex: number, end
 			}
 			case "thinking_level_change":
 			case "model_change":
+<<<<<<< HEAD
+=======
+			case "active_tools_change":
+>>>>>>> upstream/main
 			case "compaction":
 			case "branch_summary":
 			case "custom":
@@ -620,7 +669,11 @@ Summarize the prefix to provide context for the retained suffix:
 
 Be concise. Focus on what's needed to understand the kept suffix.`;
 
+<<<<<<< HEAD
 export { serializeConversation } from "./utils.js";
+=======
+export { serializeConversation } from "./utils.ts";
+>>>>>>> upstream/main
 
 /** Generate compaction summary data from prepared session history. */
 export async function compact(

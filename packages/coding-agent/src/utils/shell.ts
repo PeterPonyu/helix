@@ -1,7 +1,11 @@
 import { existsSync } from "node:fs";
 import { delimiter } from "node:path";
 import { spawn, spawnSync } from "child_process";
+<<<<<<< HEAD
 import { getBinDir } from "../config.js";
+=======
+import { getBinDir } from "../config.ts";
+>>>>>>> upstream/main
 
 export interface ShellConfig {
 	shell: string;

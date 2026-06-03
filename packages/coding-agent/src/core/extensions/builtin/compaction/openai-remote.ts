@@ -10,12 +10,21 @@ import {
 	type TextContent,
 	type ToolCall,
 } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { CompactionResult } from "../../../compaction/index.js";
 import type { SessionEntry } from "../../../session-manager.js";
 import type { ServiceTier, SessionBeforeCompactEvent } from "../../types.js";
 
 export const OPENAI_REMOTE_COMPACTION_SCHEMA = "helix.compaction.openai-remote.v1";
 export const HELIX_COMPACTION_EVENT = "helix:compaction";
+=======
+import type { CompactionResult } from "../../../compaction/index.ts";
+import type { SessionEntry } from "../../../session-manager.ts";
+import type { ServiceTier, SessionBeforeCompactEvent } from "../../types.ts";
+
+export const OPENAI_REMOTE_COMPACTION_SCHEMA = "senpi.compaction.openai-remote.v1";
+export const SENPI_COMPACTION_EVENT = "senpi:compaction";
+>>>>>>> upstream/main
 
 type OpenAiInputText = { type: "input_text"; text: string };
 type OpenAiInputImage = { type: "input_image"; detail: "auto"; image_url: string };

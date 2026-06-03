@@ -1,5 +1,9 @@
 import * as Diff from "diff";
+<<<<<<< HEAD
 import { theme } from "../theme/theme.js";
+=======
+import { theme } from "../theme/theme.ts";
+>>>>>>> upstream/main
 
 /**
  * Parse diff line to extract prefix, line number, and content.

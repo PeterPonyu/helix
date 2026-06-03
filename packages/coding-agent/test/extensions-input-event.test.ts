@@ -2,11 +2,19 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { AuthStorage } from "../src/core/auth-storage.js";
 import { discoverAndLoadExtensions } from "../src/core/extensions/loader.js";
 import { ExtensionRunner } from "../src/core/extensions/runner.js";
 import { ModelRegistry } from "../src/core/model-registry.js";
 import { SessionManager } from "../src/core/session-manager.js";
+=======
+import { AuthStorage } from "../src/core/auth-storage.ts";
+import { discoverAndLoadExtensions } from "../src/core/extensions/loader.ts";
+import { ExtensionRunner } from "../src/core/extensions/runner.ts";
+import { ModelRegistry } from "../src/core/model-registry.ts";
+import { SessionManager } from "../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 describe("Input Event", () => {
 	let tempDir: string;
@@ -94,6 +102,21 @@ describe("Input Event", () => {
 		}
 	});
 
+<<<<<<< HEAD
+=======
+	it("passes streamingBehavior correctly", async () => {
+		const r = await createRunner(
+			`export default p => p.on("input", async e => { globalThis.testVar = e.streamingBehavior; return { action: "continue" }; });`,
+		);
+		await r.emitInput("x", undefined, "interactive", "steer");
+		expect((globalThis as any).testVar).toBe("steer");
+		await r.emitInput("x", undefined, "interactive", "followUp");
+		expect((globalThis as any).testVar).toBe("followUp");
+		await r.emitInput("x", undefined, "interactive");
+		expect((globalThis as any).testVar).toBeUndefined();
+	});
+
+>>>>>>> upstream/main
 	it("catches handler errors and continues", async () => {
 		const r = await createRunner(`export default p => p.on("input", async () => { throw new Error("boom"); });`);
 		const errs: string[] = [];

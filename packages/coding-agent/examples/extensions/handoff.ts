@@ -12,10 +12,17 @@
  * The generated prompt appears as a draft in the editor for review/editing.
  */
 
+<<<<<<< HEAD
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
 import { complete, type Message } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, SessionEntry } from "@helix-bio/helix";
 import { BorderedLoader, convertToLlm, serializeConversation } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, SessionEntry } from "@code-yeongyu/senpi";
+import { BorderedLoader, convertToLlm, serializeConversation } from "@code-yeongyu/senpi";
+import type { AgentMessage } from "@earendil-works/pi-agent-core";
+import { complete, type Message } from "@earendil-works/pi-ai";
+>>>>>>> upstream/main
 
 const SYSTEM_PROMPT = `You are a context transfer assistant. Given a conversation history and the user's goal for a new thread, generate a focused prompt that:
 
@@ -81,7 +88,11 @@ export default function (pi: ExtensionAPI) {
 	pi.registerCommand("handoff", {
 		description: "Transfer context to a new focused session",
 		handler: async (args, ctx) => {
+<<<<<<< HEAD
 			if (!ctx.hasUI) {
+=======
+			if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 				ctx.ui.notify("handoff requires interactive mode", "error");
 				return;
 			}

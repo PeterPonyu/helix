@@ -2,14 +2,23 @@
  * Extension system for lifecycle events and custom tools.
  */
 
+<<<<<<< HEAD
 export type { SlashCommandInfo, SlashCommandSource } from "../slash-commands.js";
 export type { SourceInfo } from "../source-info.js";
+=======
+export type { SlashCommandInfo, SlashCommandSource } from "../slash-commands.ts";
+export type { SourceInfo } from "../source-info.ts";
+>>>>>>> upstream/main
 export {
 	createExtensionRuntime,
 	discoverAndLoadExtensions,
 	loadExtensionFromFactory,
 	loadExtensions,
+<<<<<<< HEAD
 } from "./loader.js";
+=======
+} from "./loader.ts";
+>>>>>>> upstream/main
 export type {
 	ExtensionErrorListener,
 	ExtensionToolHookLifecycleEvent,
@@ -21,8 +30,13 @@ export type {
 	NewSessionHandler,
 	ShutdownHandler,
 	SwitchSessionHandler,
+<<<<<<< HEAD
 } from "./runner.js";
 export { ExtensionRunner } from "./runner.js";
+=======
+} from "./runner.ts";
+export { ExtensionRunner } from "./runner.ts";
+>>>>>>> upstream/main
 export type {
 	AfterProviderResponseEvent,
 	AgentEndEvent,
@@ -70,6 +84,10 @@ export type {
 	ExtensionFactory,
 	ExtensionFlag,
 	ExtensionHandler,
+<<<<<<< HEAD
+=======
+	ExtensionMode,
+>>>>>>> upstream/main
 	// Runtime
 	ExtensionRuntime,
 	ExtensionShortcut,
@@ -162,7 +180,11 @@ export type {
 	WorkingIndicatorOptions,
 	WriteToolCallEvent,
 	WriteToolResultEvent,
+<<<<<<< HEAD
 } from "./types.js";
+=======
+} from "./types.ts";
+>>>>>>> upstream/main
 // Type guards
 export {
 	defineTool,
@@ -174,5 +196,10 @@ export {
 	isReadToolResult,
 	isToolCallEventType,
 	isWriteToolResult,
+<<<<<<< HEAD
 } from "./types.js";
 export { wrapRegisteredTool, wrapRegisteredTools } from "./wrapper.js";
+=======
+} from "./types.ts";
+export { wrapRegisteredTool, wrapRegisteredTools } from "./wrapper.ts";
+>>>>>>> upstream/main

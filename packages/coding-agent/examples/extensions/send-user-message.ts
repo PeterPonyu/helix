@@ -11,7 +11,11 @@
  *   /followup And then?   - Sends while streaming with followUp delivery
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	// Simple command that sends a user message

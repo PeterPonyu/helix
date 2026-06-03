@@ -11,8 +11,12 @@ import type {
 	ChatCompletionToolMessageParam,
 } from "openai/resources/chat/completions.js";
 import type { FunctionParameters } from "openai/resources/shared.js";
+<<<<<<< HEAD
 import { getEnvApiKey } from "../env-api-keys.js";
 import { calculateCost, clampThinkingLevel, supportsXhigh } from "../models.js";
+=======
+import { calculateCost, clampThinkingLevel, supportsXhigh } from "../models.ts";
+>>>>>>> upstream/main
 import type {
 	AssistantMessage,
 	CacheRetention,
@@ -30,6 +34,7 @@ import type {
 	Tool,
 	ToolCall,
 	ToolResultMessage,
+<<<<<<< HEAD
 } from "../types.js";
 import { AssistantMessageEventStream } from "../utils/event-stream.js";
 import { headersToRecord } from "../utils/headers.js";
@@ -37,13 +42,28 @@ import { parseStreamingJson } from "../utils/json-parse.js";
 import { sanitizeSurrogates } from "../utils/sanitize-unicode.js";
 import { isCloudflareProvider, resolveCloudflareBaseUrl } from "./cloudflare.js";
 import { buildCopilotDynamicHeaders, hasCopilotVisionInput } from "./github-copilot-headers.js";
+=======
+} from "../types.ts";
+import { AssistantMessageEventStream } from "../utils/event-stream.ts";
+import { headersToRecord } from "../utils/headers.ts";
+import { parseStreamingJson } from "../utils/json-parse.ts";
+import { sanitizeSurrogates } from "../utils/sanitize-unicode.ts";
+import { isCloudflareProvider, resolveCloudflareBaseUrl } from "./cloudflare.ts";
+import { buildCopilotDynamicHeaders, hasCopilotVisionInput } from "./github-copilot-headers.ts";
+import { clampOpenAIPromptCacheKey } from "./openai-prompt-cache.ts";
+>>>>>>> upstream/main
 import {
 	applyExtraBody,
 	buildBaseOptions,
 	clampMaxForOpenAI,
 	OPENAI_COMPLETIONS_RESERVED_BODY_KEYS,
+<<<<<<< HEAD
 } from "./simple-options.js";
 import { transformMessages } from "./transform-messages.js";
+=======
+} from "./simple-options.ts";
+import { transformMessages } from "./transform-messages.ts";
+>>>>>>> upstream/main
 
 type OpenAIReasoningDetail = { type?: string; id?: string; data?: string };
 type ChatCompletionChoiceWithUsage = ChatCompletionChunk.Choice & {
@@ -60,7 +80,11 @@ type OpenAICompletionsRequestParams = Omit<
 	tool_stream?: boolean;
 	enable_thinking?: boolean;
 	chat_template_kwargs?: { enable_thinking: boolean; preserve_thinking: boolean };
+<<<<<<< HEAD
 	thinking?: { type: "enabled" | "disabled" };
+=======
+	thinking?: { type: "enabled" | "disabled" } | string;
+>>>>>>> upstream/main
 	reasoning_effort?: string;
 	provider?: OpenAICompletionsCompat["openRouterRouting"];
 	providerOptions?: { gateway: Record<string, string[]> };
@@ -176,7 +200,14 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 		};
 
 		try {
+<<<<<<< HEAD
 			const apiKey = options?.apiKey || getEnvApiKey(model.provider) || "";
+=======
+			const apiKey = options?.apiKey;
+			if (!apiKey) {
+				throw new Error(`No API key for provider: ${model.provider}`);
+			}
+>>>>>>> upstream/main
 			const compat = getCompat(model);
 			const cacheRetention = resolveCacheRetention(options?.cacheRetention);
 			const cacheSessionId = cacheRetention === "none" ? undefined : options?.sessionId;
@@ -189,7 +220,11 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 			const requestOptions = {
 				...(options?.signal ? { signal: options.signal } : {}),
 				...(options?.timeoutMs !== undefined ? { timeout: options.timeoutMs } : {}),
+<<<<<<< HEAD
 				...(options?.maxRetries !== undefined ? { maxRetries: options.maxRetries } : {}),
+=======
+				maxRetries: options?.maxRetries ?? 0,
+>>>>>>> upstream/main
 			};
 			const createChatCompletion = client.chat.completions.create.bind(client.chat.completions) as (
 				body: OpenAICompletionsRequestParams,
@@ -471,6 +506,7 @@ export const streamSimpleOpenAICompletions: StreamFunction<"openai-completions",
 	context: Context,
 	options?: SimpleStreamOptions,
 ): AssistantMessageEventStream => {
+<<<<<<< HEAD
 	const apiKey = options?.apiKey || getEnvApiKey(model.provider);
 	if (!apiKey) {
 		throw new Error(`No API key for provider: ${model.provider}`);
@@ -497,15 +533,37 @@ function createClient(
 	sessionId?: string,
 	compat: ResolvedOpenAICompletionsCompat = getCompat(model),
 ) {
+=======
+	const apiKey = options?.apiKey;
+>>>>>>> upstream/main
 	if (!apiKey) {
-		if (!process.env.OPENAI_API_KEY) {
-			throw new Error(
-				"OpenAI API key is required. Set OPENAI_API_KEY environment variable or pass it as an argument.",
-			);
-		}
-		apiKey = process.env.OPENAI_API_KEY;
+		throw new Error(`No API key for provider: ${model.provider}`);
 	}
 
+<<<<<<< HEAD
+=======
+	const base = buildBaseOptions(model, options, apiKey);
+	const clampedReasoning = options?.reasoning ? clampThinkingLevel(model, options.reasoning) : undefined;
+	const reasoningEffort =
+		clampedReasoning === "off" ? undefined : clampMaxForOpenAI(clampedReasoning, supportsXhigh(model));
+	const toolChoice = (options as OpenAICompletionsOptions | undefined)?.toolChoice;
+
+	return streamOpenAICompletions(model, context, {
+		...base,
+		reasoningEffort,
+		toolChoice,
+	} satisfies OpenAICompletionsOptions);
+};
+
+function createClient(
+	model: Model<"openai-completions">,
+	context: Context,
+	apiKey: string,
+	optionsHeaders?: Record<string, string>,
+	sessionId?: string,
+	compat: ResolvedOpenAICompletionsCompat = getCompat(model),
+) {
+>>>>>>> upstream/main
 	const headers = { ...model.headers };
 	if (model.provider === "github-copilot") {
 		const hasImages = hasCopilotVisionInput(context.messages);
@@ -563,7 +621,11 @@ function buildParams(
 		prompt_cache_key:
 			(model.baseUrl.includes("api.openai.com") && cacheRetention !== "none") ||
 			(cacheRetention === "long" && compat.supportsLongCacheRetention)
+<<<<<<< HEAD
 				? options?.sessionId
+=======
+				? clampOpenAIPromptCacheKey(options?.sessionId)
+>>>>>>> upstream/main
 				: undefined,
 		prompt_cache_retention: cacheRetention === "long" && compat.supportsLongCacheRetention ? "24h" : undefined,
 	};
@@ -618,7 +680,13 @@ function buildParams(
 	} else if (compat.thinkingFormat === "deepseek" && model.reasoning) {
 		if (options?.reasoningEffort) {
 			params.thinking = { type: "enabled" };
+<<<<<<< HEAD
 			params.reasoning_effort = model.thinkingLevelMap?.[options.reasoningEffort] ?? options.reasoningEffort;
+=======
+			if (compat.supportsReasoningEffort) {
+				params.reasoning_effort = model.thinkingLevelMap?.[options.reasoningEffort] ?? options.reasoningEffort;
+			}
+>>>>>>> upstream/main
 		} else if (compat.supportsDisabledThinking !== false) {
 			params.thinking = { type: "disabled" };
 		}
@@ -641,6 +709,15 @@ function buildParams(
 		if (options?.reasoningEffort && compat.supportsReasoningEffort) {
 			togetherParams.reasoning_effort = model.thinkingLevelMap?.[options.reasoningEffort] ?? options.reasoningEffort;
 		}
+<<<<<<< HEAD
+=======
+	} else if (compat.thinkingFormat === "string-thinking" && model.reasoning) {
+		if (options?.reasoningEffort) {
+			params.thinking = model.thinkingLevelMap?.[options.reasoningEffort] ?? options.reasoningEffort;
+		} else if (model.thinkingLevelMap?.off !== null) {
+			params.thinking = model.thinkingLevelMap?.off ?? "none";
+		}
+>>>>>>> upstream/main
 	} else if (options?.reasoningEffort && model.reasoning && compat.supportsReasoningEffort) {
 		// OpenAI-style reasoning_effort
 		params.reasoning_effort = model.thinkingLevelMap?.[options.reasoningEffort] ?? options.reasoningEffort;
@@ -1135,10 +1212,20 @@ function detectCompat(model: Model<"openai-completions">): ResolvedOpenAIComplet
 	const isTogether =
 		provider === "together" || baseUrl.includes("api.together.ai") || baseUrl.includes("api.together.xyz");
 	const isMoonshot = provider === "moonshotai" || provider === "moonshotai-cn" || baseUrl.includes("api.moonshot.");
+<<<<<<< HEAD
 	const isCloudflareWorkersAI = provider === "cloudflare-workers-ai" || baseUrl.includes("api.cloudflare.com");
 	const isCloudflareAiGateway = provider === "cloudflare-ai-gateway" || baseUrl.includes("gateway.ai.cloudflare.com");
 
 	const isNonStandard =
+=======
+	const isOpenRouter = provider === "openrouter" || baseUrl.includes("openrouter.ai");
+	const isCloudflareWorkersAI = provider === "cloudflare-workers-ai" || baseUrl.includes("api.cloudflare.com");
+	const isCloudflareAiGateway = provider === "cloudflare-ai-gateway" || baseUrl.includes("gateway.ai.cloudflare.com");
+	const isNvidia = provider === "nvidia" || baseUrl.includes("integrate.api.nvidia.com");
+
+	const isNonStandard =
+		isNvidia ||
+>>>>>>> upstream/main
 		provider === "cerebras" ||
 		baseUrl.includes("cerebras.ai") ||
 		provider === "xai" ||
@@ -1153,16 +1240,30 @@ function detectCompat(model: Model<"openai-completions">): ResolvedOpenAIComplet
 		isCloudflareWorkersAI ||
 		isCloudflareAiGateway;
 
+<<<<<<< HEAD
 	const useMaxTokens = baseUrl.includes("chutes.ai") || isMoonshot || isCloudflareAiGateway || isTogether;
 
 	const isGrok = provider === "xai" || baseUrl.includes("api.x.ai");
 	const isDeepSeek = provider === "deepseek" || baseUrl.includes("deepseek.com");
+=======
+	const useMaxTokens = baseUrl.includes("chutes.ai") || isMoonshot || isCloudflareAiGateway || isTogether || isNvidia;
+
+	const isGrok = provider === "xai" || baseUrl.includes("api.x.ai");
+	const isDeepSeek = provider === "deepseek" || baseUrl.includes("deepseek.com");
+	const isOpenRouterDeveloperRoleModel =
+		isOpenRouter && (model.id.startsWith("anthropic/") || model.id.startsWith("openai/"));
+>>>>>>> upstream/main
 	const cacheControlFormat = provider === "openrouter" && model.id.startsWith("anthropic/") ? "anthropic" : undefined;
 
 	return {
 		supportsStore: !isNonStandard,
+<<<<<<< HEAD
 		supportsDeveloperRole: !isNonStandard,
 		supportsReasoningEffort: !isGrok && !isZai && !isMoonshot && !isTogether && !isCloudflareAiGateway,
+=======
+		supportsDeveloperRole: isOpenRouterDeveloperRoleModel || (!isNonStandard && !isOpenRouter),
+		supportsReasoningEffort: !isGrok && !isZai && !isMoonshot && !isTogether && !isCloudflareAiGateway && !isNvidia,
+>>>>>>> upstream/main
 		supportsUsageInStreaming: true,
 		maxTokensField: useMaxTokens ? "max_tokens" : "max_completion_tokens",
 		requiresToolResultName: false,
@@ -1175,18 +1276,30 @@ function detectCompat(model: Model<"openai-completions">): ResolvedOpenAIComplet
 				? "zai"
 				: isTogether
 					? "together"
+<<<<<<< HEAD
 					: provider === "openrouter" || baseUrl.includes("openrouter.ai")
+=======
+					: isOpenRouter
+>>>>>>> upstream/main
 						? "openrouter"
 						: "openai",
 		openRouterRouting: {},
 		vercelGatewayRouting: {},
 		zaiToolStream: false,
+<<<<<<< HEAD
 		supportsStrictMode: !isMoonshot && !isTogether && !isCloudflareAiGateway,
+=======
+		supportsStrictMode: !isMoonshot && !isTogether && !isCloudflareAiGateway && !isNvidia,
+>>>>>>> upstream/main
 		supportsDisabledThinking: true,
 		toolCallFormat: undefined,
 		cacheControlFormat,
 		sendSessionAffinityHeaders: false,
+<<<<<<< HEAD
 		supportsLongCacheRetention: !(isTogether || isCloudflareWorkersAI || isCloudflareAiGateway),
+=======
+		supportsLongCacheRetention: !(isTogether || isCloudflareWorkersAI || isCloudflareAiGateway || isNvidia),
+>>>>>>> upstream/main
 	};
 }
 

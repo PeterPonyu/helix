@@ -5,7 +5,11 @@
  * when thinking blocks are hidden.
  *
  * Usage:
+<<<<<<< HEAD
  *   helix --extension examples/extensions/hidden-thinking-label.ts
+=======
+ *   senpi --extension examples/extensions/hidden-thinking-label.ts
+>>>>>>> upstream/main
  *
  * Test:
  *   1. Load this extension
@@ -18,7 +22,11 @@
  *   /thinking-label          Reset to the default label
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI, ExtensionContext } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, ExtensionContext } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 const DEFAULT_LABEL = "Pondering...";
 

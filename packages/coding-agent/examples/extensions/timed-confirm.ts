@@ -7,7 +7,11 @@
  * - /timed-signal - Shows confirm using AbortSignal (manual approach)
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	// Simple approach: use timeout option (recommended)

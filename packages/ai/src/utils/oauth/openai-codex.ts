@@ -5,7 +5,11 @@
  * It is only intended for CLI use, not browser environments.
  */
 
+<<<<<<< HEAD
 // NEVER convert to top-level imports - breaks browser/Vite builds (web-ui)
+=======
+// NEVER convert to top-level imports - breaks browser/Vite builds
+>>>>>>> upstream/main
 let _randomBytes: typeof import("node:crypto").randomBytes | null = null;
 let _http: typeof import("node:http") | null = null;
 if (typeof process !== "undefined" && (process.versions?.node || process.versions?.bun)) {
@@ -17,6 +21,7 @@ if (typeof process !== "undefined" && (process.versions?.node || process.version
 	});
 }
 
+<<<<<<< HEAD
 import { oauthErrorHtml, oauthSuccessHtml } from "./oauth-page.js";
 import { generatePKCE } from "./pkce.js";
 import type { OAuthCredentials, OAuthLoginCallbacks, OAuthPrompt, OAuthProviderInterface } from "./types.js";
@@ -32,6 +37,48 @@ const JWT_CLAIM_PATH = "https://api.openai.com/auth";
 type TokenSuccess = { type: "success"; access: string; refresh: string; expires: number };
 type TokenFailure = { type: "failed"; message: string; status?: number };
 type TokenResult = TokenSuccess | TokenFailure;
+=======
+import { pollOAuthDeviceCodeFlow } from "./device-code.ts";
+import { oauthErrorHtml, oauthSuccessHtml } from "./oauth-page.ts";
+import { generatePKCE } from "./pkce.ts";
+import type {
+	OAuthCredentials,
+	OAuthDeviceCodeInfo,
+	OAuthLoginCallbacks,
+	OAuthPrompt,
+	OAuthProviderInterface,
+} from "./types.ts";
+
+const CALLBACK_HOST = process.env.PI_OAUTH_CALLBACK_HOST || "127.0.0.1";
+const CLIENT_ID = "app_EMoamEEZ73f0CkXaXp7hrann";
+const AUTH_BASE_URL = "https://auth.openai.com";
+const AUTHORIZE_URL = `${AUTH_BASE_URL}/oauth/authorize`;
+const TOKEN_URL = `${AUTH_BASE_URL}/oauth/token`;
+const REDIRECT_URI = "http://localhost:1455/auth/callback";
+const DEVICE_USER_CODE_URL = `${AUTH_BASE_URL}/api/accounts/deviceauth/usercode`;
+const DEVICE_TOKEN_URL = `${AUTH_BASE_URL}/api/accounts/deviceauth/token`;
+const DEVICE_VERIFICATION_URI = `${AUTH_BASE_URL}/codex/device`;
+const DEVICE_REDIRECT_URI = `${AUTH_BASE_URL}/deviceauth/callback`;
+const DEVICE_CODE_TIMEOUT_SECONDS = 15 * 60;
+export const OPENAI_CODEX_BROWSER_LOGIN_METHOD = "browser";
+export const OPENAI_CODEX_DEVICE_CODE_LOGIN_METHOD = "device_code";
+const SCOPE = "openid profile email offline_access";
+const JWT_CLAIM_PATH = "https://api.openai.com/auth";
+
+type OAuthToken = { access: string; refresh: string; expires: number };
+type TokenOperation = "exchange" | "refresh";
+
+type DeviceAuthInfo = {
+	deviceAuthId: string;
+	userCode: string;
+	intervalSeconds: number;
+};
+
+type DeviceTokenSuccess = {
+	authorizationCode: string;
+	codeVerifier: string;
+};
+>>>>>>> upstream/main
 
 type JwtPayload = {
 	[JWT_CLAIM_PATH]?: {
@@ -89,12 +136,55 @@ function decodeJwt(token: string): JwtPayload | null {
 	}
 }
 
+<<<<<<< HEAD
+=======
+async function fetchWithLoginCancellation(input: string, init: RequestInit): Promise<Response> {
+	try {
+		return await fetch(input, init);
+	} catch (error) {
+		if (init.signal?.aborted) {
+			throw new Error("Login cancelled");
+		}
+		throw error;
+	}
+}
+
+async function readTokenResponse(response: Response, operation: TokenOperation): Promise<OAuthToken> {
+	if (!response.ok) {
+		const text = await response.text().catch(() => "");
+		throw new Error(`OpenAI Codex token ${operation} failed (${response.status}): ${text || response.statusText}`);
+	}
+
+	const rawJson = await response.json();
+	const json = rawJson as {
+		access_token?: string;
+		refresh_token?: string;
+		expires_in?: number;
+	} | null;
+	if (!json?.access_token || !json.refresh_token || typeof json.expires_in !== "number") {
+		throw new Error(`OpenAI Codex token ${operation} response missing fields: ${JSON.stringify(json)}`);
+	}
+
+	return {
+		access: json.access_token,
+		refresh: json.refresh_token,
+		expires: Date.now() + json.expires_in * 1000,
+	};
+}
+
+>>>>>>> upstream/main
 async function exchangeAuthorizationCode(
 	code: string,
 	verifier: string,
 	redirectUri: string = REDIRECT_URI,
+<<<<<<< HEAD
 ): Promise<TokenResult> {
 	const response = await fetch(TOKEN_URL, {
+=======
+	signal?: AbortSignal,
+): Promise<OAuthToken> {
+	const response = await fetchWithLoginCancellation(TOKEN_URL, {
+>>>>>>> upstream/main
 		method: "POST",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
 		body: new URLSearchParams({
@@ -104,6 +194,7 @@ async function exchangeAuthorizationCode(
 			code_verifier: verifier,
 			redirect_uri: redirectUri,
 		}),
+<<<<<<< HEAD
 	});
 
 	if (!response.ok) {
@@ -139,6 +230,18 @@ async function exchangeAuthorizationCode(
 async function refreshAccessToken(refreshToken: string): Promise<TokenResult> {
 	try {
 		const response = await fetch(TOKEN_URL, {
+=======
+		signal,
+	});
+
+	return readTokenResponse(response, "exchange");
+}
+
+async function refreshAccessToken(refreshToken: string): Promise<OAuthToken> {
+	let response: Response;
+	try {
+		response = await fetch(TOKEN_URL, {
+>>>>>>> upstream/main
 			method: "POST",
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
 			body: new URLSearchParams({
@@ -147,6 +250,7 @@ async function refreshAccessToken(refreshToken: string): Promise<TokenResult> {
 				client_id: CLIENT_ID,
 			}),
 		});
+<<<<<<< HEAD
 
 		if (!response.ok) {
 			const text = await response.text().catch(() => "");
@@ -186,6 +290,119 @@ async function refreshAccessToken(refreshToken: string): Promise<TokenResult> {
 
 async function createAuthorizationFlow(
 	originator: string = "helix",
+=======
+	} catch (error) {
+		throw new Error(`OpenAI Codex token refresh error: ${error instanceof Error ? error.message : String(error)}`);
+	}
+
+	return readTokenResponse(response, "refresh");
+}
+
+async function startOpenAICodexDeviceAuth(signal?: AbortSignal): Promise<DeviceAuthInfo> {
+	const response = await fetchWithLoginCancellation(DEVICE_USER_CODE_URL, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ client_id: CLIENT_ID }),
+		signal,
+	});
+
+	if (!response.ok) {
+		if (response.status === 404) {
+			throw new Error(
+				"OpenAI Codex device code login is not enabled for this server. Use browser login or verify the server URL.",
+			);
+		}
+		const responseBody = await response.text().catch(() => "");
+		throw new Error(
+			`OpenAI Codex device code request failed with status ${response.status}${responseBody ? `: ${responseBody}` : ""}`,
+		);
+	}
+
+	const rawJson = await response.json();
+	const json = rawJson as {
+		device_auth_id?: string;
+		user_code?: string;
+		interval?: number | string;
+	} | null;
+	const intervalSeconds = typeof json?.interval === "string" ? Number(json.interval.trim()) : json?.interval;
+	if (
+		!json?.device_auth_id ||
+		!json.user_code ||
+		typeof intervalSeconds !== "number" ||
+		!Number.isFinite(intervalSeconds) ||
+		intervalSeconds < 0
+	) {
+		throw new Error(`Invalid OpenAI Codex device code response: ${JSON.stringify(json)}`);
+	}
+
+	return {
+		deviceAuthId: json.device_auth_id,
+		userCode: json.user_code,
+		intervalSeconds,
+	};
+}
+
+async function pollOpenAICodexDeviceAuth(device: DeviceAuthInfo, signal?: AbortSignal): Promise<DeviceTokenSuccess> {
+	return pollOAuthDeviceCodeFlow<DeviceTokenSuccess>({
+		intervalSeconds: device.intervalSeconds,
+		expiresInSeconds: DEVICE_CODE_TIMEOUT_SECONDS,
+		signal,
+		poll: async () => {
+			const response = await fetchWithLoginCancellation(DEVICE_TOKEN_URL, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					device_auth_id: device.deviceAuthId,
+					user_code: device.userCode,
+				}),
+				signal,
+			});
+
+			if (response.ok) {
+				const rawJson = await response.json();
+				const json = rawJson as { authorization_code?: string; code_verifier?: string } | null;
+				if (!json?.authorization_code || !json.code_verifier) {
+					return {
+						status: "failed",
+						message: `Invalid OpenAI Codex device auth token response: ${JSON.stringify(json)}`,
+					};
+				}
+				return {
+					status: "complete",
+					value: { authorizationCode: json.authorization_code, codeVerifier: json.code_verifier },
+				};
+			}
+
+			if (response.status === 403 || response.status === 404) {
+				return { status: "pending" };
+			}
+
+			const responseBody = await response.text().catch(() => "");
+			let errorCode: unknown;
+			try {
+				const json = JSON.parse(responseBody) as { error?: string | { code?: string } } | null;
+				const error = json?.error;
+				errorCode = typeof error === "object" ? error?.code : error;
+			} catch {}
+
+			if (errorCode === "deviceauth_authorization_pending") {
+				return { status: "pending" };
+			}
+			if (errorCode === "slow_down") {
+				return { status: "slow_down" };
+			}
+
+			return {
+				status: "failed",
+				message: `OpenAI Codex device auth failed with status ${response.status}${responseBody ? `: ${responseBody}` : ""}`,
+			};
+		},
+	});
+}
+
+async function createAuthorizationFlow(
+	originator: string = "senpi",
+>>>>>>> upstream/main
 ): Promise<{ verifier: string; state: string; url: string }> {
 	const { verifier, challenge } = await generatePKCE();
 	const state = createState();
@@ -294,6 +511,55 @@ function getAccountId(accessToken: string): string | null {
 	return typeof accountId === "string" && accountId.length > 0 ? accountId : null;
 }
 
+<<<<<<< HEAD
+=======
+function credentialsFromToken(token: OAuthToken): OAuthCredentials {
+	const accountId = getAccountId(token.access);
+	if (!accountId) {
+		throw new Error("Failed to extract accountId from token");
+	}
+
+	return {
+		access: token.access,
+		refresh: token.refresh,
+		expires: token.expires,
+		accountId,
+	};
+}
+
+async function exchangeAuthorizationCodeForCredentials(
+	code: string,
+	verifier: string,
+	redirectUri: string,
+	signal?: AbortSignal,
+): Promise<OAuthCredentials> {
+	return credentialsFromToken(await exchangeAuthorizationCode(code, verifier, redirectUri, signal));
+}
+
+/**
+ * Login with OpenAI Codex OAuth using the Codex device-code flow.
+ */
+export async function loginOpenAICodexDeviceCode(options: {
+	onDeviceCode: (info: OAuthDeviceCodeInfo) => void;
+	signal?: AbortSignal;
+}): Promise<OAuthCredentials> {
+	const device = await startOpenAICodexDeviceAuth(options.signal);
+	options.onDeviceCode({
+		userCode: device.userCode,
+		verificationUri: DEVICE_VERIFICATION_URI,
+		intervalSeconds: device.intervalSeconds,
+		expiresInSeconds: DEVICE_CODE_TIMEOUT_SECONDS,
+	});
+	const code = await pollOpenAICodexDeviceAuth(device, options.signal);
+	return exchangeAuthorizationCodeForCredentials(
+		code.authorizationCode,
+		code.codeVerifier,
+		DEVICE_REDIRECT_URI,
+		options.signal,
+	);
+}
+
+>>>>>>> upstream/main
 /**
  * Login with OpenAI Codex OAuth
  *
@@ -303,7 +569,11 @@ function getAccountId(accessToken: string): string | null {
  * @param options.onManualCodeInput - Optional promise that resolves with user-pasted code.
  *                                    Races with browser callback - whichever completes first wins.
  *                                    Useful for showing paste input immediately alongside browser flow.
+<<<<<<< HEAD
  * @param options.originator - OAuth originator parameter (defaults to "helix")
+=======
+ * @param options.originator - OAuth originator parameter (defaults to "senpi")
+>>>>>>> upstream/main
  */
 export async function loginOpenAICodex(options: {
 	onAuth: (info: { url: string; instructions?: string }) => void;
@@ -391,6 +661,7 @@ export async function loginOpenAICodex(options: {
 			throw new Error("Missing authorization code");
 		}
 
+<<<<<<< HEAD
 		const tokenResult = await exchangeAuthorizationCode(code, verifier);
 		if (tokenResult.type !== "success") {
 			throw new Error(tokenResult.message);
@@ -407,6 +678,9 @@ export async function loginOpenAICodex(options: {
 			expires: tokenResult.expires,
 			accountId,
 		};
+=======
+		return exchangeAuthorizationCodeForCredentials(code, verifier, REDIRECT_URI);
+>>>>>>> upstream/main
 	} finally {
 		server.close();
 	}
@@ -416,6 +690,7 @@ export async function loginOpenAICodex(options: {
  * Refresh OpenAI Codex OAuth token
  */
 export async function refreshOpenAICodexToken(refreshToken: string): Promise<OAuthCredentials> {
+<<<<<<< HEAD
 	const result = await refreshAccessToken(refreshToken);
 	if (result.type !== "success") {
 		throw new Error(result.message);
@@ -432,6 +707,9 @@ export async function refreshOpenAICodexToken(refreshToken: string): Promise<OAu
 		expires: result.expires,
 		accountId,
 	};
+=======
+	return credentialsFromToken(await refreshAccessToken(refreshToken));
+>>>>>>> upstream/main
 }
 
 export const openaiCodexOAuthProvider: OAuthProviderInterface = {
@@ -440,6 +718,31 @@ export const openaiCodexOAuthProvider: OAuthProviderInterface = {
 	usesCallbackServer: true,
 
 	async login(callbacks: OAuthLoginCallbacks): Promise<OAuthCredentials> {
+<<<<<<< HEAD
+=======
+		const loginMethod = await callbacks.onSelect({
+			message: "Select OpenAI Codex login method:",
+			options: [
+				{ id: OPENAI_CODEX_BROWSER_LOGIN_METHOD, label: "Browser login (default)" },
+				{ id: OPENAI_CODEX_DEVICE_CODE_LOGIN_METHOD, label: "Device code login (headless)" },
+			],
+		});
+		if (!loginMethod) {
+			throw new Error("Login cancelled");
+		}
+
+		if (loginMethod === OPENAI_CODEX_DEVICE_CODE_LOGIN_METHOD) {
+			return loginOpenAICodexDeviceCode({
+				onDeviceCode: callbacks.onDeviceCode,
+				signal: callbacks.signal,
+			});
+		}
+
+		if (loginMethod !== OPENAI_CODEX_BROWSER_LOGIN_METHOD) {
+			throw new Error(`Unknown OpenAI Codex login method: ${loginMethod}`);
+		}
+
+>>>>>>> upstream/main
 		return loginOpenAICodex({
 			onAuth: callbacks.onAuth,
 			onPrompt: callbacks.onPrompt,

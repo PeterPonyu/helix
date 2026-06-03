@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import type { ImageContent, TextContent, Tool } from "../../types.js";
 import type { ParsedToolCall, ParserOptions, StreamParser, StreamParserEvent } from "../types.js";
+=======
+import type { ImageContent, TextContent, Tool } from "../../types.ts";
+import type { ParsedToolCall, ParserOptions, StreamParser, StreamParserEvent } from "../types.ts";
+>>>>>>> upstream/main
 
 const STRING_DELIM = '<|"|>';
 const TOOL_CALL_START = "<|tool_call>";

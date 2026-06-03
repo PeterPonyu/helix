@@ -3,10 +3,15 @@
 	"compilerOptions": {
 		"noEmit": true,
 		"paths": {
+<<<<<<< HEAD
 			"@helix-bio/helix": ["./src/index.ts"],
 			"@helix-bio/helix/hooks": ["./src/core/hooks/index.ts"],
 			"@peterponyu/helix": ["./src/index.ts"],
 			"@peterponyu/helix/hooks": ["./src/core/hooks/index.ts"],
+=======
+			"@code-yeongyu/senpi": ["./src/index.ts"],
+			"@code-yeongyu/senpi/hooks": ["./src/core/hooks/index.ts"],
+>>>>>>> upstream/main
 			"@earendil-works/pi-tui": ["../tui/src/index.ts"],
 			"@earendil-works/pi-ai": ["../ai/src/index.ts"],
 			"typebox": ["../../node_modules/typebox"]

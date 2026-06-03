@@ -10,10 +10,17 @@
  * via `tool_call` input mutation without replacing the tool.
  *
  * Config files (merged, project takes precedence):
+<<<<<<< HEAD
  * - ~/.helix/agent/extensions/sandbox.json (global)
  * - <cwd>/.helix/sandbox.json (project-local)
  *
  * Example .helix/sandbox.json:
+=======
+ * - ~/.senpi/agent/extensions/sandbox.json (global)
+ * - <cwd>/.senpi/sandbox.json (project-local)
+ *
+ * Example .senpi/sandbox.json:
+>>>>>>> upstream/main
  * ```json
  * {
  *   "enabled": true,
@@ -30,6 +37,7 @@
  * ```
  *
  * Usage:
+<<<<<<< HEAD
  * - `helix -e ./sandbox` - sandbox enabled with default/config settings
  * - `helix -e ./sandbox --no-sandbox` - disable sandboxing
  * - `/sandbox` - show current sandbox configuration
@@ -37,6 +45,15 @@
  * Setup:
  * 1. Copy sandbox/ directory to ~/.helix/agent/extensions/
  * 2. Run `npm install` in ~/.helix/agent/extensions/sandbox/
+=======
+ * - `senpi -e ./sandbox` - sandbox enabled with default/config settings
+ * - `senpi -e ./sandbox --no-sandbox` - disable sandboxing
+ * - `/sandbox` - show current sandbox configuration
+ *
+ * Setup:
+ * 1. Copy sandbox/ directory to ~/.senpi/agent/extensions/
+ * 2. Run `npm install` in ~/.senpi/agent/extensions/sandbox/
+>>>>>>> upstream/main
  *
  * Linux also requires: bubblewrap, socat, ripgrep
  */
@@ -45,8 +62,13 @@ import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { SandboxManager, type SandboxRuntimeConfig } from "@anthropic-ai/sandbox-runtime";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
 import { type BashOperations, createBashTool, getAgentDir } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { type BashOperations, createBashTool, getAgentDir } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 interface SandboxConfig extends SandboxRuntimeConfig {
 	enabled?: boolean;

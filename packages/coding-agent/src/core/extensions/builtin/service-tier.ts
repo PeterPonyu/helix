@@ -1,6 +1,11 @@
 import type { Api } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import { SettingsManager } from "../../settings-manager.js";
 import type { ExtensionAPI, ServiceTier } from "../types.js";
+=======
+import { SettingsManager } from "../../settings-manager.ts";
+import type { ExtensionAPI, ServiceTier } from "../types.ts";
+>>>>>>> upstream/main
 
 export type { ServiceTier };
 type ProviderPayload = Record<string, unknown>;

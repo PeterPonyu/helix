@@ -12,7 +12,11 @@ import {
 	getAgentDir,
 	SessionManager,
 	type Skill,
+<<<<<<< HEAD
 } from "@helix-bio/helix";
+=======
+} from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 // Or define custom skills inline
 const customSkill: Skill = {
@@ -37,7 +41,11 @@ const loader = new DefaultResourceLoader({
 });
 await loader.reload();
 
+<<<<<<< HEAD
 // Discover all skills from cwd/.helix/skills, ~/.helix/agent/skills, etc.
+=======
+// Discover all skills from cwd/.senpi/skills, ~/.senpi/agent/skills, etc.
+>>>>>>> upstream/main
 const { skills: allSkills, diagnostics } = loader.getSkills();
 console.log(
 	"Discovered skills:",

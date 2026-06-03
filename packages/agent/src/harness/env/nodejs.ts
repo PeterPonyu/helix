@@ -26,7 +26,11 @@ import {
 	ok,
 	type Result,
 	toError,
+<<<<<<< HEAD
 } from "../types.js";
+=======
+} from "../types.ts";
+>>>>>>> upstream/main
 
 function resolvePath(cwd: string, path: string): string {
 	return isAbsolute(path) ? path : resolve(cwd, path);

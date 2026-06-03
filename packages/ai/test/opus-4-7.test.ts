@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel, supportsXhigh } from "../src/models.js";
 import { streamSimple } from "../src/stream.js";
 import type { Context, Model } from "../src/types.js";
+=======
+import { getModel, supportsXhigh } from "../src/models.ts";
+import { streamSimple } from "../src/stream.ts";
+import type { Context, Model } from "../src/types.ts";
+>>>>>>> upstream/main
 
 interface AnthropicThinkingPayload {
 	thinking?: { type: string; budget_tokens?: number; display?: string };

@@ -7,13 +7,21 @@ import { describe, expect, it } from "vitest";
 import {
 	prePruneToolOutputsToBudget,
 	truncateOversizedToolResults,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/compaction/tool-truncation.js";
+=======
+} from "../../src/core/extensions/builtin/compaction/tool-truncation.ts";
+>>>>>>> upstream/main
 import {
 	type FileEntry,
 	migrateSessionEntries,
 	parseSessionEntries,
 	type SessionMessageEntry,
+<<<<<<< HEAD
 } from "../../src/core/session-manager.js";
+=======
+} from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 const TRUNCATION_MARKER_PREFIX = "<truncated:";
 const TRUNCATION_MARKER_SUFFIX = " bytes original>";

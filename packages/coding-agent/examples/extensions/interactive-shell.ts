@@ -5,7 +5,11 @@
  * with full terminal access. The TUI suspends while they run.
  *
  * Usage:
+<<<<<<< HEAD
  *   helix -e examples/extensions/interactive-shell.ts
+=======
+ *   senpi -e examples/extensions/interactive-shell.ts
+>>>>>>> upstream/main
  *
  *   !vim file.txt        # Auto-detected as interactive
  *   !i any-command       # Force interactive mode with !i prefix
@@ -21,7 +25,11 @@
  */
 
 import { spawnSync } from "node:child_process";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 // Default interactive commands - editors, pagers, git ops, TUIs
 const DEFAULT_INTERACTIVE_COMMANDS = [
@@ -146,7 +154,11 @@ export default function (pi: ExtensionAPI) {
 		}
 
 		// No UI available (print mode, RPC, etc.)
+<<<<<<< HEAD
 		if (!ctx.hasUI) {
+=======
+		if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 			return {
 				result: { output: "(interactive commands require TUI)", exitCode: 1, cancelled: false, truncated: false },
 			};

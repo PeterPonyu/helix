@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { type CustomEntry, SessionManager } from "../../src/core/session-manager.js";
+=======
+import { type CustomEntry, SessionManager } from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 describe("SessionManager.saveCustomEntry", () => {
 	it("saves custom entries and includes them in tree traversal", () => {

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import type { ExtensionContext } from "../../types.js";
 import type { Reply, ReplyInput, Request } from "./types.js";
+=======
+import type { ExtensionContext } from "../../types.ts";
+import type { Reply, ReplyInput, Request } from "./types.ts";
+>>>>>>> upstream/main
 
 export async function showPermissionPrompt(ctx: ExtensionContext, request: Request): Promise<ReplyInput> {
 	const title = `Permission required: ${request.permission}`;

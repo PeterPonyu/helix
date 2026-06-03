@@ -3,7 +3,11 @@
  */
 
 import { getKeybindings, type Keybinding, type KeyId } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { theme } from "../theme/theme.js";
+=======
+import { theme } from "../theme/theme.ts";
+>>>>>>> upstream/main
 
 export interface KeyTextFormatOptions {
 	capitalize?: boolean;

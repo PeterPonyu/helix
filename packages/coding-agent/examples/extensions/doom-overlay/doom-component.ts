@@ -7,8 +7,13 @@
 
 import type { Component } from "@earendil-works/pi-tui";
 import { isKeyRelease, type TUI } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import type { DoomEngine } from "./doom-engine.js";
 import { DoomKeys, mapKeyToDoom } from "./doom-keys.js";
+=======
+import type { DoomEngine } from "./doom-engine.ts";
+import { DoomKeys, mapKeyToDoom } from "./doom-keys.ts";
+>>>>>>> upstream/main
 
 function renderHalfBlock(
 	rgba: Uint8Array,

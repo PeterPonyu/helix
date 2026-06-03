@@ -1,13 +1,21 @@
 import { Text } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
+<<<<<<< HEAD
 import type { ExtensionAPI, ExtensionContext } from "../../../types.js";
+=======
+import type { ExtensionAPI, ExtensionContext } from "../../../types.ts";
+>>>>>>> upstream/main
 import {
 	getTodoResultLines,
 	TODO_STATE_ENTRY_TYPE,
 	type TodoItem,
 	type TodoStateEntry,
 	type TodoWriteDetails,
+<<<<<<< HEAD
 } from "../state.js";
+=======
+} from "../state.ts";
+>>>>>>> upstream/main
 
 const DESCRIPTION = `Use this tool to create and manage a structured task list for tracking progress on multi-step work.
 

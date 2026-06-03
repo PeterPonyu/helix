@@ -7,10 +7,17 @@
 
 import type { AgentMessage, ThinkingLevel } from "@earendil-works/pi-agent-core";
 import type { ImageContent, Model } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { SessionStats } from "../../core/agent-session.js";
 import type { BashResult } from "../../core/bash-executor.js";
 import type { CompactionResult } from "../../core/compaction/index.js";
 import type { SourceInfo } from "../../core/source-info.js";
+=======
+import type { SessionStats } from "../../core/agent-session.ts";
+import type { BashResult } from "../../core/bash-executor.ts";
+import type { CompactionResult } from "../../core/compaction/index.ts";
+import type { SourceInfo } from "../../core/source-info.ts";
+>>>>>>> upstream/main
 
 // ============================================================================
 // RPC Commands (stdin)
@@ -49,7 +56,11 @@ export type RpcCommand =
 	| { id?: string; type: "abort_retry" }
 
 	// Bash
+<<<<<<< HEAD
 	| { id?: string; type: "bash"; command: string }
+=======
+	| { id?: string; type: "bash"; command: string; excludeFromContext?: boolean }
+>>>>>>> upstream/main
 	| { id?: string; type: "abort_bash" }
 
 	// Session

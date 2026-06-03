@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+import { readFile as fsReadFile, stat as fsStat } from "node:fs/promises";
+>>>>>>> upstream/main
 import { createInterface } from "node:readline";
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { Text } from "@earendil-works/pi-tui";
 import { spawn } from "child_process";
+<<<<<<< HEAD
 import { readFileSync, statSync } from "fs";
 import path from "path";
 import { type Static, Type } from "typebox";
@@ -11,6 +16,17 @@ import type { ToolDefinition, ToolRenderResultOptions } from "../extensions/type
 import { resolveToCwd } from "./path-utils.js";
 import { getTextOutput, invalidArgText, shortenPath, str } from "./render-utils.js";
 import { wrapToolDefinition } from "./tool-definition-wrapper.js";
+=======
+import path from "path";
+import { type Static, Type } from "typebox";
+import { keyHint } from "../../modes/interactive/components/keybinding-hints.ts";
+import type { Theme } from "../../modes/interactive/theme/theme.ts";
+import { ensureTool } from "../../utils/tools-manager.ts";
+import type { ToolDefinition, ToolRenderResultOptions } from "../extensions/types.ts";
+import { resolveToCwd } from "./path-utils.ts";
+import { getTextOutput, invalidArgText, shortenPath, str } from "./render-utils.ts";
+import { wrapToolDefinition } from "./tool-definition-wrapper.ts";
+>>>>>>> upstream/main
 import {
 	DEFAULT_MAX_BYTES,
 	formatSize,
@@ -18,7 +34,11 @@ import {
 	type TruncationResult,
 	truncateHead,
 	truncateLine,
+<<<<<<< HEAD
 } from "./truncate.js";
+=======
+} from "./truncate.ts";
+>>>>>>> upstream/main
 
 const grepSchema = Type.Object({
 	pattern: Type.String({ description: "Search pattern (regex or literal string)" }),
@@ -55,8 +75,13 @@ export interface GrepOperations {
 }
 
 const defaultGrepOperations: GrepOperations = {
+<<<<<<< HEAD
 	isDirectory: (p) => statSync(p).isDirectory(),
 	readFile: (p) => readFileSync(p, "utf-8"),
+=======
+	isDirectory: async (p) => (await fsStat(p)).isDirectory(),
+	readFile: (p) => fsReadFile(p, "utf-8"),
+>>>>>>> upstream/main
 };
 
 export interface GrepToolOptions {
@@ -66,7 +91,11 @@ export interface GrepToolOptions {
 
 function formatGrepCall(
 	args: { pattern: string; path?: string; glob?: string; limit?: number } | undefined,
+<<<<<<< HEAD
 	theme: typeof import("../../modes/interactive/theme/theme.js").theme,
+=======
+	theme: Theme,
+>>>>>>> upstream/main
 ): string {
 	const pattern = str(args?.pattern);
 	const rawPath = str(args?.path);
@@ -90,7 +119,11 @@ function formatGrepResult(
 		details?: GrepToolDetails;
 	},
 	options: ToolRenderResultOptions,
+<<<<<<< HEAD
 	theme: typeof import("../../modes/interactive/theme/theme.js").theme,
+=======
+	theme: Theme,
+>>>>>>> upstream/main
 	showImages: boolean,
 ): string {
 	const output = getTextOutput(result, showImages).trim();

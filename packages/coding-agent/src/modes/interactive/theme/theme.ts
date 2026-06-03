@@ -10,10 +10,17 @@ import {
 import chalk from "chalk";
 import { type Static, Type } from "typebox";
 import { Compile } from "typebox/compile";
+<<<<<<< HEAD
 import { getCustomThemesDir, getThemesDir } from "../../../config.js";
 import type { SourceInfo } from "../../../core/source-info.js";
 import { closeWatcher, watchWithErrorHandler } from "../../../utils/fs-watch.js";
 import { highlight, supportsLanguage } from "../../../utils/syntax-highlight.js";
+=======
+import { getCustomThemesDir, getThemesDir } from "../../../config.ts";
+import type { SourceInfo } from "../../../core/source-info.ts";
+import { closeWatcher, watchWithErrorHandler } from "../../../utils/fs-watch.ts";
+import { highlight, supportsLanguage } from "../../../utils/syntax-highlight.ts";
+>>>>>>> upstream/main
 
 // ============================================================================
 // Types & Schema
@@ -442,6 +449,7 @@ function getBuiltinThemes(): Record<string, ThemeJson> {
 }
 
 export function getAvailableThemes(): string[] {
+<<<<<<< HEAD
 	const themes = new Set<string>(Object.keys(getBuiltinThemes()));
 	const customThemesDir = getCustomThemesDir();
 	if (fs.existsSync(customThemesDir)) {
@@ -456,6 +464,9 @@ export function getAvailableThemes(): string[] {
 		themes.add(name);
 	}
 	return Array.from(themes).sort();
+=======
+	return getAvailableThemesWithPaths().map(({ name }) => name);
+>>>>>>> upstream/main
 }
 
 export interface ThemeInfo {
@@ -465,6 +476,7 @@ export interface ThemeInfo {
 
 export function getAvailableThemesWithPaths(): ThemeInfo[] {
 	const themesDir = getThemesDir();
+<<<<<<< HEAD
 	const customThemesDir = getCustomThemesDir();
 	const result: ThemeInfo[] = [];
 
@@ -489,11 +501,63 @@ export function getAvailableThemesWithPaths(): ThemeInfo[] {
 		if (!result.some((t) => t.name === name)) {
 			result.push({ name, path: theme.sourcePath });
 		}
+=======
+	const result: ThemeInfo[] = [];
+	const seen = new Set<string>();
+	const addTheme = (themeInfo: ThemeInfo) => {
+		if (seen.has(themeInfo.name)) {
+			return;
+		}
+		seen.add(themeInfo.name);
+		result.push(themeInfo);
+	};
+
+	// Built-in themes
+	for (const name of Object.keys(getBuiltinThemes())) {
+		addTheme({ name, path: path.join(themesDir, `${name}.json`) });
+	}
+
+	// Custom themes
+	for (const themeInfo of getCustomThemeInfos()) {
+		addTheme(themeInfo);
+	}
+
+	for (const [name, theme] of registeredThemes.entries()) {
+		addTheme({ name, path: theme.sourcePath });
+>>>>>>> upstream/main
 	}
 
 	return result.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+<<<<<<< HEAD
+=======
+function getCustomThemeInfos(): ThemeInfo[] {
+	const customThemesDir = getCustomThemesDir();
+	const result: ThemeInfo[] = [];
+	if (!fs.existsSync(customThemesDir)) {
+		return result;
+	}
+
+	for (const file of fs.readdirSync(customThemesDir)) {
+		if (!file.endsWith(".json")) {
+			continue;
+		}
+		const themePath = path.join(customThemesDir, file);
+		try {
+			const customTheme = loadThemeFromPath(themePath);
+			if (customTheme.name) {
+				result.push({ name: customTheme.name, path: themePath });
+			}
+		} catch {
+			// Invalid themes are ignored here; the resource loader reports them
+			// during normal startup/reload.
+		}
+	}
+	return result;
+}
+
+>>>>>>> upstream/main
 function parseThemeJson(label: string, json: unknown): ThemeJson {
 	if (!validateThemeJson.Check(json)) {
 		const errors = Array.from(validateThemeJson.Errors(json));
@@ -1034,17 +1098,38 @@ function buildCliHighlightTheme(t: Theme): CliHighlightTheme {
 		built_in: (s: string) => t.fg("syntaxType", s),
 		literal: (s: string) => t.fg("syntaxNumber", s),
 		number: (s: string) => t.fg("syntaxNumber", s),
+<<<<<<< HEAD
 		string: (s: string) => t.fg("syntaxString", s),
 		comment: (s: string) => t.fg("syntaxComment", s),
+=======
+		regexp: (s: string) => t.fg("syntaxString", s),
+		string: (s: string) => t.fg("syntaxString", s),
+		comment: (s: string) => t.fg("syntaxComment", s),
+		doctag: (s: string) => t.fg("syntaxComment", s),
+		meta: (s: string) => t.fg("muted", s),
+>>>>>>> upstream/main
 		function: (s: string) => t.fg("syntaxFunction", s),
 		title: (s: string) => t.fg("syntaxFunction", s),
 		class: (s: string) => t.fg("syntaxType", s),
 		type: (s: string) => t.fg("syntaxType", s),
+<<<<<<< HEAD
+=======
+		tag: (s: string) => t.fg("syntaxPunctuation", s),
+		name: (s: string) => t.fg("syntaxKeyword", s),
+>>>>>>> upstream/main
 		attr: (s: string) => t.fg("syntaxVariable", s),
 		variable: (s: string) => t.fg("syntaxVariable", s),
 		params: (s: string) => t.fg("syntaxVariable", s),
 		operator: (s: string) => t.fg("syntaxOperator", s),
 		punctuation: (s: string) => t.fg("syntaxPunctuation", s),
+<<<<<<< HEAD
+=======
+		emphasis: (s: string) => t.italic(s),
+		strong: (s: string) => t.bold(s),
+		link: (s: string) => t.underline(s),
+		addition: (s: string) => t.fg("toolDiffAdded", s),
+		deletion: (s: string) => t.fg("toolDiffRemoved", s),
+>>>>>>> upstream/main
 	};
 }
 

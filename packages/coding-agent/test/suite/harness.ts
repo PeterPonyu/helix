@@ -13,6 +13,7 @@ import type { AgentMessage, AgentTool } from "@earendil-works/pi-agent-core";
 import { Agent } from "@earendil-works/pi-agent-core";
 import type { FauxModelDefinition, FauxProviderRegistration, FauxResponseStep, Model } from "@earendil-works/pi-ai";
 import { registerFauxProvider } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import { AgentSession, type AgentSessionEvent } from "../../src/core/agent-session.js";
 import { AuthStorage } from "../../src/core/auth-storage.js";
 import type { ExtensionRunner } from "../../src/core/extensions/index.js";
@@ -22,11 +23,26 @@ import { SessionManager } from "../../src/core/session-manager.js";
 import type { Settings } from "../../src/core/settings-manager.js";
 import { SettingsManager } from "../../src/core/settings-manager.js";
 import type { ExtensionFactory, ResourceLoader } from "../../src/index.js";
+=======
+import { AgentSession, type AgentSessionEvent } from "../../src/core/agent-session.ts";
+import { AuthStorage } from "../../src/core/auth-storage.ts";
+import type { ExtensionRunner } from "../../src/core/extensions/index.ts";
+import { convertToLlm } from "../../src/core/messages.ts";
+import { ModelRegistry } from "../../src/core/model-registry.ts";
+import { SessionManager } from "../../src/core/session-manager.ts";
+import type { Settings } from "../../src/core/settings-manager.ts";
+import { SettingsManager } from "../../src/core/settings-manager.ts";
+import type { ExtensionFactory, ResourceLoader } from "../../src/index.ts";
+>>>>>>> upstream/main
 import {
 	type CreateTestExtensionsResultInput,
 	createTestExtensionsResult,
 	createTestResourceLoader,
+<<<<<<< HEAD
 } from "../utilities.js";
+=======
+} from "../utilities.ts";
+>>>>>>> upstream/main
 
 type MessageTextPart = { type: "text"; text: string };
 const CONTINUATION_DIRECTIVE_HEADER = "[SYSTEM DIRECTIVE: SENPI - TODO CONTINUATION]";
@@ -74,6 +90,12 @@ export interface HarnessOptions {
 	settings?: Partial<Settings>;
 	systemPrompt?: string;
 	tools?: AgentTool[];
+<<<<<<< HEAD
+=======
+	initialActiveToolNames?: string[];
+	allowedToolNames?: string[];
+	excludedToolNames?: string[];
+>>>>>>> upstream/main
 	resourceLoader?: ResourceLoader;
 	extensionFactories?: Array<ExtensionFactory | CreateTestExtensionsResultInput>;
 	withConfiguredAuth?: boolean;
@@ -192,6 +214,12 @@ export async function createHarness(options: HarnessOptions = {}): Promise<Harne
 		modelRegistry,
 		resourceLoader,
 		baseToolsOverride: toolMap,
+<<<<<<< HEAD
+=======
+		initialActiveToolNames: options.initialActiveToolNames,
+		allowedToolNames: options.allowedToolNames,
+		excludedToolNames: options.excludedToolNames,
+>>>>>>> upstream/main
 		extensionRunnerRef,
 	});
 

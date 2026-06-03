@@ -17,10 +17,17 @@ import {
 	Text,
 	type TUI,
 } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import type { KeybindingsManager } from "../../../core/keybindings.js";
 import { getEditorTheme, theme } from "../theme/theme.js";
 import { DynamicBorder } from "./dynamic-border.js";
 import { keyHint } from "./keybinding-hints.js";
+=======
+import type { KeybindingsManager } from "../../../core/keybindings.ts";
+import { getEditorTheme, theme } from "../theme/theme.ts";
+import { DynamicBorder } from "./dynamic-border.ts";
+import { keyHint } from "./keybinding-hints.ts";
+>>>>>>> upstream/main
 
 export class ExtensionEditorComponent extends Container implements Focusable {
 	private editor: Editor;

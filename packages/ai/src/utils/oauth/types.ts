@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { Api, Model } from "../../types.js";
+=======
+import type { Api, Model } from "../../types.ts";
+>>>>>>> upstream/main
 
 export type OAuthCredentials = {
 	refresh: string;
@@ -23,6 +27,16 @@ export type OAuthAuthInfo = {
 	instructions?: string;
 };
 
+<<<<<<< HEAD
+=======
+export type OAuthDeviceCodeInfo = {
+	userCode: string;
+	verificationUri: string;
+	intervalSeconds?: number;
+	expiresInSeconds?: number;
+};
+
+>>>>>>> upstream/main
 export type OAuthSelectOption = {
 	id: string;
 	label: string;
@@ -35,11 +49,19 @@ export type OAuthSelectPrompt = {
 
 export interface OAuthLoginCallbacks {
 	onAuth: (info: OAuthAuthInfo) => void;
+<<<<<<< HEAD
+=======
+	onDeviceCode: (info: OAuthDeviceCodeInfo) => void;
+>>>>>>> upstream/main
 	onPrompt: (prompt: OAuthPrompt) => Promise<string>;
 	onProgress?: (message: string) => void;
 	onManualCodeInput?: () => Promise<string>;
 	/** Show an interactive selector and return the selected option id, or undefined on cancel. */
+<<<<<<< HEAD
 	onSelect?: (prompt: OAuthSelectPrompt) => Promise<string | undefined>;
+=======
+	onSelect: (prompt: OAuthSelectPrompt) => Promise<string | undefined>;
+>>>>>>> upstream/main
 	signal?: AbortSignal;
 }
 

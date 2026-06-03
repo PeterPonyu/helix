@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { getToolPath } from "../../utils/tools-manager.js";
+=======
+import { getToolPath } from "../../utils/tools-manager.ts";
+>>>>>>> upstream/main
 
 type StartupTool = "fd" | "rg";
 

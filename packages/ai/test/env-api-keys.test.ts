@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { findEnvKeys, getEnvApiKey } from "../src/env-api-keys.js";
+=======
+import { findEnvKeys, getEnvApiKey } from "../src/env-api-keys.ts";
+>>>>>>> upstream/main
 
 const originalCopilotGitHubToken = process.env.COPILOT_GITHUB_TOKEN;
 const originalGhToken = process.env.GH_TOKEN;

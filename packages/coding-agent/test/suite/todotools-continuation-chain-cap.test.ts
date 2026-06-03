@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { type FauxResponseStep, fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
 import { afterEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { ENV_AGENT_DIR } from "../../src/config.js";
 import { HELIX_SYSTEM_PREFIX } from "../../src/core/extensions/builtin/system-messages.js";
 import {
@@ -16,6 +17,20 @@ import type { TodoItem } from "../../src/core/extensions/builtin/todotools/state
 import type { ExtensionRuntime, ExtensionUIContext } from "../../src/core/extensions/types.js";
 import { createTestExtensionsResult, createTestResourceLoader } from "../utilities.js";
 import { createHarness, type Harness } from "./harness.js";
+=======
+import { ENV_AGENT_DIR } from "../../src/config.ts";
+import { SENPI_SYSTEM_PREFIX } from "../../src/core/extensions/builtin/system-messages.ts";
+import {
+	buildContinuationPrompt,
+	CONTINUATION_DIRECTIVE,
+} from "../../src/core/extensions/builtin/todotools/continuation/prompt.ts";
+import { CONTINUATION_CHAIN_CAP } from "../../src/core/extensions/builtin/todotools/continuation/runtime.ts";
+import todotoolsExtension from "../../src/core/extensions/builtin/todotools/index.ts";
+import type { TodoItem } from "../../src/core/extensions/builtin/todotools/state.ts";
+import type { ExtensionRuntime, ExtensionUIContext } from "../../src/core/extensions/types.ts";
+import { createTestExtensionsResult, createTestResourceLoader } from "../utilities.ts";
+import { createHarness, type Harness } from "./harness.ts";
+>>>>>>> upstream/main
 
 const REPO_ROOT = fileURLToPath(new URL("../../../../", import.meta.url));
 
@@ -161,7 +176,11 @@ describe("todotools continuation chain cap", () => {
 		expect(injectedMessages).toEqual(
 			Array.from(
 				{ length: CONTINUATION_CHAIN_CAP },
+<<<<<<< HEAD
 				() => `${HELIX_SYSTEM_PREFIX}\n${buildContinuationPrompt(PENDING_TODOS)}`,
+=======
+				() => `${SENPI_SYSTEM_PREFIX}\n${buildContinuationPrompt(PENDING_TODOS)}`,
+>>>>>>> upstream/main
 			),
 		);
 

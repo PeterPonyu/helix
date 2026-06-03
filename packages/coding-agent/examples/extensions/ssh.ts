@@ -5,8 +5,13 @@
  * When --ssh is provided, read/write/edit/bash run on the remote.
  *
  * Usage:
+<<<<<<< HEAD
  *   helix -e ./ssh.ts --ssh user@host
  *   helix -e ./ssh.ts --ssh user@host:/remote/path
+=======
+ *   senpi -e ./ssh.ts --ssh user@host
+ *   senpi -e ./ssh.ts --ssh user@host:/remote/path
+>>>>>>> upstream/main
  *
  * Requirements:
  *   - SSH key-based auth (no password prompts)
@@ -14,7 +19,11 @@
  */
 
 import { spawn } from "node:child_process";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 import {
 	type BashOperations,
 	createBashTool,
@@ -24,7 +33,11 @@ import {
 	type EditOperations,
 	type ReadOperations,
 	type WriteOperations,
+<<<<<<< HEAD
 } from "@helix-bio/helix";
+=======
+} from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 function sshExec(remote: string, command: string): Promise<Buffer> {
 	return new Promise((resolve, reject) => {

@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import type { Api, Model, OpenAICompletionsCompat } from "../types.js";
 import type { ToolCallFormat } from "./types.js";
 
 export { getProtocol, transformContext } from "./context-transformer.js";
 export { wrapStreamWithToolCallMiddleware } from "./stream-wrapper.js";
+=======
+import type { Api, Model, OpenAICompletionsCompat } from "../types.ts";
+import type { ToolCallFormat } from "./types.ts";
+
+export { getProtocol, transformContext } from "./context-transformer.ts";
+export { wrapStreamWithToolCallMiddleware } from "./stream-wrapper.ts";
+>>>>>>> upstream/main
 export type {
 	ParsedToolCall,
 	StreamParser,
@@ -10,7 +18,11 @@ export type {
 	ToolCallFormat,
 	ToolCallProtocol,
 	ToolResultContent,
+<<<<<<< HEAD
 } from "./types.js";
+=======
+} from "./types.ts";
+>>>>>>> upstream/main
 
 /**
  * Extracts the tool call format from a model's compatibility settings.

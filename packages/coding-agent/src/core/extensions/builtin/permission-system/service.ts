@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { evaluate } from "./evaluate.js";
 import { createLocalEventEmitter, type PermissionEventEmitter } from "./events.js";
+=======
+import { evaluate } from "./evaluate.ts";
+import { createLocalEventEmitter, type PermissionEventEmitter } from "./events.ts";
+>>>>>>> upstream/main
 import {
 	CorrectedError,
 	DeniedError,
@@ -8,7 +13,11 @@ import {
 	type ReplyInput,
 	type Request,
 	type Ruleset,
+<<<<<<< HEAD
 } from "./types.js";
+=======
+} from "./types.ts";
+>>>>>>> upstream/main
 
 type RequestInput = Omit<Request, "id"> & { id?: string };
 

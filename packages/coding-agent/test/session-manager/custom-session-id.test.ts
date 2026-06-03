@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { SessionManager } from "../../src/core/session-manager.js";
+=======
+import { existsSync, mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { basename, join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { SessionManager } from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 const UUID_V7_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
@@ -13,6 +21,26 @@ describe("SessionManager.newSession with custom id", () => {
 		expect(session.getSessionId()).toBe("my-custom-id");
 	});
 
+<<<<<<< HEAD
+=======
+	it("allows alphanumeric session ids with interior punctuation", () => {
+		const session = SessionManager.inMemory();
+		session.newSession({ id: "abc-123_def.456" });
+		expect(session.getSessionId()).toBe("abc-123_def.456");
+	});
+
+	it("rejects invalid custom session ids", () => {
+		const invalidIds = ["", "-abc", "abc-", "_abc", "abc_", ".abc", "abc.", "abc/def", "abc\\def", "abc def"];
+
+		for (const id of invalidIds) {
+			const session = SessionManager.inMemory();
+			expect(() => session.newSession({ id })).toThrow(
+				"Session id must be non-empty, contain only alphanumeric characters",
+			);
+		}
+	});
+
+>>>>>>> upstream/main
 	it("generates a UUIDv7 id when no id is provided", () => {
 		const session = SessionManager.inMemory();
 		session.newSession();
@@ -46,6 +74,21 @@ describe("SessionManager.newSession with custom id", () => {
 		expect(session.getHeader()!.id).toBe(session.getSessionId());
 	});
 
+<<<<<<< HEAD
+=======
+	it("uses the provided id when creating a persisted session", () => {
+		const tempDir = mkdtempSync(join(tmpdir(), "pi-session-manager-"));
+		const session = SessionManager.create(tempDir, tempDir, { id: "created-session-id" });
+
+		expect(session.getSessionId()).toBe("created-session-id");
+		expect(session.getHeader()!.id).toBe("created-session-id");
+		const sessionFile = session.getSessionFile()!;
+		expect(sessionFile).toContain("created-session-id");
+		expect(basename(sessionFile)).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{3}Z_created-session-id\.jsonl$/);
+		expect(existsSync(sessionFile)).toBe(false);
+	});
+
+>>>>>>> upstream/main
 	it("generates a UUIDv7 id when creating a branched session", () => {
 		const session = SessionManager.inMemory();
 		const firstId = session.appendMessage({
@@ -106,4 +149,31 @@ describe("SessionManager.newSession with custom id", () => {
 		expect(header!.id).toMatch(UUID_V7_RE);
 		expect(header!.parentSession).toBe(sourcePath);
 	});
+<<<<<<< HEAD
+=======
+
+	it("uses the provided id when forking from another session file", () => {
+		const tempDir = mkdtempSync(join(tmpdir(), "pi-session-manager-"));
+		const sourcePath = join(tempDir, "source.jsonl");
+		writeFileSync(
+			sourcePath,
+			`${JSON.stringify({
+				type: "session",
+				version: 3,
+				id: "source-session-id",
+				timestamp: new Date().toISOString(),
+				cwd: tempDir,
+			})}\n`,
+		);
+
+		const forked = SessionManager.forkFrom(sourcePath, tempDir, tempDir, { id: "forked-session-id" });
+		const header = forked.getHeader();
+		expect(header).not.toBeNull();
+		expect(header!.id).toBe("forked-session-id");
+		expect(header!.parentSession).toBe(sourcePath);
+		const sessionFile = forked.getSessionFile()!;
+		expect(sessionFile).toContain("forked-session-id");
+		expect(basename(sessionFile)).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{3}Z_forked-session-id\.jsonl$/);
+	});
+>>>>>>> upstream/main
 });

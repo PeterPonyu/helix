@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { type KeyId, matchesKey } from "./keys.js";
+=======
+import { type KeyId, matchesKey } from "./keys.ts";
+>>>>>>> upstream/main
 
 /**
  * Global keybinding registry.

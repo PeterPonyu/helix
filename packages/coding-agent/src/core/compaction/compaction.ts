@@ -15,8 +15,13 @@ import {
 	createCustomMessage,
 	filterContextExcludedMessages,
 	isContextExcludedCustomMessage,
+<<<<<<< HEAD
 } from "../messages.js";
 import { buildSessionContext, type CompactionEntry, type SessionEntry } from "../session-manager.js";
+=======
+} from "../messages.ts";
+import { buildSessionContext, type CompactionEntry, type SessionEntry } from "../session-manager.ts";
+>>>>>>> upstream/main
 import {
 	computeFileLists,
 	createFileOps,
@@ -25,7 +30,11 @@ import {
 	formatFileOperations,
 	SUMMARIZATION_SYSTEM_PROMPT,
 	serializeConversation,
+<<<<<<< HEAD
 } from "./utils.js";
+=======
+} from "./utils.ts";
+>>>>>>> upstream/main
 
 type SummarizationStreamFn = StreamFn;
 
@@ -253,6 +262,27 @@ export function shouldCompact(contextTokens: number, contextWindow: number, sett
 // Cut point detection
 // ============================================================================
 
+<<<<<<< HEAD
+=======
+const ESTIMATED_IMAGE_CHARS = 4800;
+
+function estimateTextAndImageContentChars(content: string | Array<{ type: string; text?: string }>): number {
+	if (typeof content === "string") {
+		return content.length;
+	}
+
+	let chars = 0;
+	for (const block of content) {
+		if (block.type === "text" && block.text) {
+			chars += block.text.length;
+		} else if (block.type === "image") {
+			chars += ESTIMATED_IMAGE_CHARS;
+		}
+	}
+	return chars;
+}
+
+>>>>>>> upstream/main
 /**
  * Estimate token count for a message using chars/4 heuristic.
  * This is conservative (overestimates tokens).
@@ -262,6 +292,7 @@ export function estimateTokens(message: AgentMessage): number {
 
 	switch (message.role) {
 		case "user": {
+<<<<<<< HEAD
 			const content = (message as { content: string | Array<{ type: string; text?: string }> }).content;
 			if (typeof content === "string") {
 				chars = content.length;
@@ -272,6 +303,11 @@ export function estimateTokens(message: AgentMessage): number {
 					}
 				}
 			}
+=======
+			chars = estimateTextAndImageContentChars(
+				(message as { content: string | Array<{ type: string; text?: string }> }).content,
+			);
+>>>>>>> upstream/main
 			return Math.ceil(chars / 4);
 		}
 		case "assistant": {
@@ -289,6 +325,7 @@ export function estimateTokens(message: AgentMessage): number {
 		}
 		case "custom":
 		case "toolResult": {
+<<<<<<< HEAD
 			if (typeof message.content === "string") {
 				chars = message.content.length;
 			} else {
@@ -301,6 +338,9 @@ export function estimateTokens(message: AgentMessage): number {
 					}
 				}
 			}
+=======
+			chars = estimateTextAndImageContentChars(message.content);
+>>>>>>> upstream/main
 			return Math.ceil(chars / 4);
 		}
 		case "bashExecution": {

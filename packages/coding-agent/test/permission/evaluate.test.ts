@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { evaluate } from "../../src/core/extensions/builtin/permission-system/evaluate.js";
 import type { Rule, Ruleset } from "../../src/core/extensions/builtin/permission-system/types.js";
+=======
+import { evaluate } from "../../src/core/extensions/builtin/permission-system/evaluate.ts";
+import type { Rule, Ruleset } from "../../src/core/extensions/builtin/permission-system/types.ts";
+>>>>>>> upstream/main
 
 function createRule(permission: string, pattern: string, action: Rule["action"]): Rule {
 	return { permission, pattern, action };

@@ -1,9 +1,16 @@
 import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { NodeExecutionEnv } from "../../src/harness/env/nodejs.js";
 import { JsonlSessionRepo } from "../../src/harness/session/jsonl-repo.js";
 import { InMemorySessionRepo } from "../../src/harness/session/memory-repo.js";
 import { createAssistantMessage, createTempDir, createUserMessage } from "./session-test-utils.js";
+=======
+import { NodeExecutionEnv } from "../../src/harness/env/nodejs.ts";
+import { JsonlSessionRepo } from "../../src/harness/session/jsonl-repo.ts";
+import { InMemorySessionRepo } from "../../src/harness/session/memory-repo.ts";
+import { createAssistantMessage, createTempDir, createUserMessage } from "./session-test-utils.ts";
+>>>>>>> upstream/main
 
 describe("InMemorySessionRepo", () => {
 	it("opens, deletes, and forks by metadata", async () => {

@@ -7,8 +7,13 @@
  * Usage: /status [message] - sends a status message with custom rendering
  */
 
+<<<<<<< HEAD
 import { Box, Text } from "@earendil-works/pi-tui";
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { Box, Text } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	// Register custom renderer for "status-update" messages

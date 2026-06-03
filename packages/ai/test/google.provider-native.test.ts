@@ -1,9 +1,17 @@
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { streamGoogle } from "../src/providers/google.js";
 import { convertMessages } from "../src/providers/google-shared.js";
 import { streamGoogleVertex } from "../src/providers/google-vertex.js";
 import type { AssistantMessage, Context, ProviderNativeContent } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { streamGoogle } from "../src/providers/google.ts";
+import { convertMessages } from "../src/providers/google-shared.ts";
+import { streamGoogleVertex } from "../src/providers/google-vertex.ts";
+import type { AssistantMessage, Context, ProviderNativeContent } from "../src/types.ts";
+>>>>>>> upstream/main
 
 const googleGenAiMock = vi.hoisted(() => ({
 	streamChunks: [] as Array<Record<string, unknown>>,

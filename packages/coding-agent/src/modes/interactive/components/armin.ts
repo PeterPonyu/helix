@@ -3,7 +3,11 @@
  */
 
 import type { Component, TUI } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { theme } from "../theme/theme.js";
+=======
+import { theme } from "../theme/theme.ts";
+>>>>>>> upstream/main
 
 // XBM image: 31x36 pixels, LSB first, 1=background, 0=foreground
 const WIDTH = 31;

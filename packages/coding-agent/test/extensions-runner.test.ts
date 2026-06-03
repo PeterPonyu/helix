@@ -6,19 +6,39 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { AuthStorage } from "../src/core/auth-storage.js";
 import { DEFAULT_COMPACTION_SETTINGS } from "../src/core/compaction/index.js";
 import { createEventBus } from "../src/core/event-bus.js";
+=======
+import { AuthStorage } from "../src/core/auth-storage.ts";
+import { DEFAULT_COMPACTION_SETTINGS } from "../src/core/compaction/index.ts";
+import { createEventBus } from "../src/core/event-bus.ts";
+>>>>>>> upstream/main
 import {
 	createExtensionRuntime,
 	discoverAndLoadExtensions,
 	loadExtensionFromFactory,
+<<<<<<< HEAD
 } from "../src/core/extensions/loader.js";
 import { ExtensionRunner, type ExtensionToolHookLifecycleEvent } from "../src/core/extensions/runner.js";
 import type { ExtensionActions, ExtensionContextActions, ProviderConfig } from "../src/core/extensions/types.js";
 import { KeybindingsManager, type KeyId } from "../src/core/keybindings.js";
 import { ModelRegistry } from "../src/core/model-registry.js";
 import { SessionManager } from "../src/core/session-manager.js";
+=======
+} from "../src/core/extensions/loader.ts";
+import { ExtensionRunner, type ExtensionToolHookLifecycleEvent } from "../src/core/extensions/runner.ts";
+import type {
+	ExtensionActions,
+	ExtensionContextActions,
+	ExtensionUIContext,
+	ProviderConfig,
+} from "../src/core/extensions/types.ts";
+import { KeybindingsManager, type KeyId } from "../src/core/keybindings.ts";
+import { ModelRegistry } from "../src/core/model-registry.ts";
+import { SessionManager } from "../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 describe("ExtensionRunner", () => {
 	let tempDir: string;
@@ -42,7 +62,11 @@ describe("ExtensionRunner", () => {
 
 	const providerModelConfig: ProviderConfig = {
 		baseUrl: "https://provider.test/v1",
+<<<<<<< HEAD
 		apiKey: "PROVIDER_TEST_KEY",
+=======
+		apiKey: "provider-test-key",
+>>>>>>> upstream/main
 		api: "openai-completions",
 		models: [
 			{
@@ -451,6 +475,41 @@ describe("ExtensionRunner", () => {
 			controller.abort();
 			expect(ctx.signal?.aborted).toBe(true);
 		});
+<<<<<<< HEAD
+=======
+
+		it("exposes print mode and hasUI false by default", async () => {
+			const result = await discoverAndLoadExtensions([], tempDir, tempDir);
+			const runner = new ExtensionRunner(result.extensions, result.runtime, tempDir, sessionManager, modelRegistry);
+			runner.bindCore(extensionActions, extensionContextActions);
+
+			const ctx = runner.createContext();
+			expect(ctx.mode).toBe("print");
+			expect(ctx.hasUI).toBe(false);
+		});
+
+		it("exposes rpc mode with hasUI true when an RPC UI context is provided", async () => {
+			const result = await discoverAndLoadExtensions([], tempDir, tempDir);
+			const runner = new ExtensionRunner(result.extensions, result.runtime, tempDir, sessionManager, modelRegistry);
+			runner.bindCore(extensionActions, extensionContextActions);
+			runner.setUIContext({} as ExtensionUIContext, "rpc");
+
+			const ctx = runner.createContext();
+			expect(ctx.mode).toBe("rpc");
+			expect(ctx.hasUI).toBe(true);
+		});
+
+		it("exposes tui mode with hasUI true when a TUI UI context is provided", async () => {
+			const result = await discoverAndLoadExtensions([], tempDir, tempDir);
+			const runner = new ExtensionRunner(result.extensions, result.runtime, tempDir, sessionManager, modelRegistry);
+			runner.bindCore(extensionActions, extensionContextActions);
+			runner.setUIContext({} as ExtensionUIContext, "tui");
+
+			const ctx = runner.createContext();
+			expect(ctx.mode).toBe("tui");
+			expect(ctx.hasUI).toBe(true);
+		});
+>>>>>>> upstream/main
 	});
 
 	describe("error handling", () => {
@@ -860,7 +919,11 @@ describe("ExtensionRunner", () => {
 
 		it("uses bounded custom hook status labels", async () => {
 			const runtime = createExtensionRuntime();
+<<<<<<< HEAD
 			const extensionPath = path.join(tempDir, ".helix", "extensions", "check-output.ts");
+=======
+			const extensionPath = path.join(tempDir, ".senpi", "extensions", "check-output.ts");
+>>>>>>> upstream/main
 			const extension = await loadExtensionFromFactory(
 				(pi) => {
 					pi.on("tool_result", async () => undefined);

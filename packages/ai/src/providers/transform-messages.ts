@@ -7,7 +7,11 @@ import type {
 	TextContent,
 	ToolCall,
 	ToolResultMessage,
+<<<<<<< HEAD
 } from "../types.js";
+=======
+} from "../types.ts";
+>>>>>>> upstream/main
 
 const NON_VISION_USER_IMAGE_PLACEHOLDER = "(image omitted: model does not support images)";
 const NON_VISION_TOOL_IMAGE_PLACEHOLDER = "(tool image omitted: model does not support images)";
@@ -63,6 +67,16 @@ export interface TransformMessagesOptions {
 	 * thinking attached to tool calls is preserved for provider validation.
 	 */
 	preserveThinking?: boolean;
+<<<<<<< HEAD
+=======
+	preserveTextSignatures?: boolean;
+	/**
+	 * Preserve same-model thinking blocks that do not carry a usable signature
+	 * so provider adapters can downgrade them to plain text or provider-specific
+	 * compatibility payloads.
+	 */
+	preserveUnsignedThinking?: boolean;
+>>>>>>> upstream/main
 }
 
 /**
@@ -80,6 +94,11 @@ export function transformMessages<TApi extends Api>(
 	const toolCallIdMap = new Map<string, string>();
 	const imageAwareMessages = downgradeUnsupportedImages(messages, model);
 	const preserveThinking = options.preserveThinking ?? true;
+<<<<<<< HEAD
+=======
+	const preserveTextSignatures = options.preserveTextSignatures ?? false;
+	const preserveUnsignedThinking = options.preserveUnsignedThinking ?? false;
+>>>>>>> upstream/main
 
 	// First pass: transform messages (unsupported image downgrade, thinking blocks, tool call ID normalization)
 	const transformed = imageAwareMessages.map((msg) => {
@@ -114,12 +133,25 @@ export function transformMessages<TApi extends Api>(
 					if (block.redacted) {
 						return isSameModel && preserveProviderState ? { ...block } : [];
 					}
+<<<<<<< HEAD
 					// For same model: keep thinking blocks with signatures (needed for replay)
 					// even if the thinking text is empty (OpenAI encrypted reasoning)
 					if (isSameModel && preserveProviderState && block.thinkingSignature) return { ...block };
 					// Skip empty thinking blocks, convert others to plain text
 					if (!block.thinking || block.thinking.trim() === "") return [];
 					if (isSameModel) return preserveProviderState ? { ...block } : [];
+=======
+					const hasUsableSignature =
+						typeof block.thinkingSignature === "string" && block.thinkingSignature.trim().length > 0;
+					// For same model: keep thinking blocks with signatures (needed for replay)
+					// even if the thinking text is empty (OpenAI encrypted reasoning)
+					if (isSameModel && preserveProviderState && hasUsableSignature) return { ...block };
+					// Skip empty thinking blocks, convert others to plain text
+					if (!block.thinking || block.thinking.trim() === "") return [];
+					if (isSameModel) {
+						return preserveProviderState || (preserveUnsignedThinking && !hasUsableSignature) ? { ...block } : [];
+					}
+>>>>>>> upstream/main
 					return {
 						type: "text" as const,
 						text: block.thinking,
@@ -127,7 +159,11 @@ export function transformMessages<TApi extends Api>(
 				}
 
 				if (block.type === "text") {
+<<<<<<< HEAD
 					if (isSameModel && preserveProviderState) return { ...block };
+=======
+					if (isSameModel && (preserveProviderState || preserveTextSignatures)) return { ...block };
+>>>>>>> upstream/main
 					return {
 						type: "text" as const,
 						text: block.text,

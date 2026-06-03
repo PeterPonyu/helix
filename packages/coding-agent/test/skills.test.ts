@@ -1,9 +1,15 @@
 import { homedir } from "os";
 import { join, resolve } from "path";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import type { ResourceDiagnostic } from "../src/core/diagnostics.js";
 import { formatSkillsForPrompt, loadSkills, loadSkillsFromDir, type Skill } from "../src/core/skills.js";
 import { createSyntheticSourceInfo } from "../src/core/source-info.js";
+=======
+import type { ResourceDiagnostic } from "../src/core/diagnostics.ts";
+import { formatSkillsForPrompt, loadSkills, loadSkillsFromDir, type Skill } from "../src/core/skills.ts";
+import { createSyntheticSourceInfo } from "../src/core/source-info.ts";
+>>>>>>> upstream/main
 
 const fixturesDir = resolve(__dirname, "fixtures/skills");
 const collisionFixturesDir = resolve(__dirname, "fixtures/skills-collision");
@@ -373,11 +379,19 @@ describe("skills", () => {
 		});
 
 		it("should expand ~ in skillPaths", () => {
+<<<<<<< HEAD
 			const homeSkillsDir = join(homedir(), ".helix/agent/skills");
 			const { skills: withTilde } = loadSkills({
 				agentDir: emptyAgentDir,
 				cwd: emptyCwd,
 				skillPaths: ["~/.helix/agent/skills"],
+=======
+			const homeSkillsDir = join(homedir(), ".senpi/agent/skills");
+			const { skills: withTilde } = loadSkills({
+				agentDir: emptyAgentDir,
+				cwd: emptyCwd,
+				skillPaths: ["~/.senpi/agent/skills"],
+>>>>>>> upstream/main
 				includeDefaults: true,
 			});
 			const { skills: withoutTilde } = loadSkills({

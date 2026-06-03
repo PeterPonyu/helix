@@ -1,6 +1,11 @@
 import { describe, expect, test } from "vitest";
+<<<<<<< HEAD
 import { buildToolSection } from "../../src/core/dynamic-prompt/tool-section.js";
 import type { AvailableTool } from "../../src/core/dynamic-prompt/types.js";
+=======
+import { buildToolSection } from "../../src/core/dynamic-prompt/tool-section.ts";
+import type { AvailableTool } from "../../src/core/dynamic-prompt/types.ts";
+>>>>>>> upstream/main
 
 describe("buildToolSection", () => {
 	test("groups tools by category", () => {

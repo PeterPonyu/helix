@@ -2,10 +2,17 @@ import { createServer, type IncomingMessage, type ServerResponse } from "node:ht
 import type { AddressInfo } from "node:net";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { findEnvKeys, getEnvApiKey } from "../src/env-api-keys.js";
 import { getModel } from "../src/models.js";
 import { streamAnthropic } from "../src/providers/anthropic.js";
 import type { Context, Model, Tool } from "../src/types.js";
+=======
+import { findEnvKeys, getEnvApiKey } from "../src/env-api-keys.ts";
+import { getModel, getModels } from "../src/models.ts";
+import { streamAnthropic } from "../src/providers/anthropic.ts";
+import type { Context, Model, Tool } from "../src/types.ts";
+>>>>>>> upstream/main
 
 const originalFireworksApiKey = process.env.FIREWORKS_API_KEY;
 
@@ -38,12 +45,23 @@ describe("Fireworks models", () => {
 	});
 
 	it("registers the Fire Pass turbo router model", () => {
+<<<<<<< HEAD
 		const model = getModel("fireworks", "accounts/fireworks/routers/kimi-k2p5-turbo");
 
 		expect(model).toBeDefined();
 		expect(model.api).toBe("anthropic-messages");
 		expect(model.baseUrl).toBe("https://api.fireworks.ai/inference");
 		expect(model.input).toEqual(["text", "image"]);
+=======
+		const model = getModels("fireworks").find(
+			(candidate) => candidate.id.startsWith("accounts/fireworks/routers/") && candidate.id.endsWith("-turbo"),
+		);
+
+		expect(model).toBeDefined();
+		expect(model?.api).toBe("anthropic-messages");
+		expect(model?.baseUrl).toBe("https://api.fireworks.ai/inference");
+		expect(model?.input).toEqual(["text", "image"]);
+>>>>>>> upstream/main
 	});
 
 	it("resolves FIREWORKS_API_KEY from the environment", () => {
@@ -95,8 +113,13 @@ function createFireworksModel(compat?: Model<"anthropic-messages">["compat"]): M
 
 function createAnthropicModel(): Model<"anthropic-messages"> {
 	return {
+<<<<<<< HEAD
 		id: "claude-opus-4-7",
 		name: "Claude Opus 4.7",
+=======
+		id: "claude-opus-4-8",
+		name: "Claude Opus 4.8",
+>>>>>>> upstream/main
 		api: "anthropic-messages",
 		provider: "anthropic",
 		baseUrl: "http://127.0.0.1:0", // overridden by captureAnthropicRequest

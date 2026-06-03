@@ -37,7 +37,11 @@ vi.mock("child_process", () => ({
 	}),
 }));
 
+<<<<<<< HEAD
 import { FooterDataProvider } from "../src/core/footer-data-provider.js";
+=======
+import { FooterDataProvider } from "../src/core/footer-data-provider.ts";
+>>>>>>> upstream/main
 
 type WorktreeFixture = {
 	worktreeDir: string;
@@ -77,7 +81,11 @@ function createReftableWorktree(tempDir: string): WorktreeFixture {
 	return { worktreeDir, reftableDir };
 }
 
+<<<<<<< HEAD
 async function waitFor(condition: () => boolean, timeoutMs = 3000): Promise<void> {
+=======
+async function waitFor(condition: () => boolean, timeoutMs = 10000): Promise<void> {
+>>>>>>> upstream/main
 	const startedAt = Date.now();
 	while (!condition()) {
 		if (Date.now() - startedAt > timeoutMs) {

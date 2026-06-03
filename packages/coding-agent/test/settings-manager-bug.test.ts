@@ -1,8 +1,13 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { join } from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { CONFIG_DIR_NAME } from "../src/config.js";
 import { SettingsManager } from "../src/core/settings-manager.js";
+=======
+import { CONFIG_DIR_NAME } from "../src/config.ts";
+import { SettingsManager } from "../src/core/settings-manager.ts";
+>>>>>>> upstream/main
 
 /**
  * Tests for the fix to a bug where external file changes to arrays were overwritten.

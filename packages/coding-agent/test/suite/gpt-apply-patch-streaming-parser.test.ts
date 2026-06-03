@@ -3,7 +3,11 @@ import {
 	parsePatch,
 	StreamingPatchParser,
 	seekSequence,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/gpt-apply-patch/index.js";
+=======
+} from "../../src/core/extensions/builtin/gpt-apply-patch/index.ts";
+>>>>>>> upstream/main
 
 describe("gpt apply_patch streaming parser", () => {
 	it("streams complete file sections before the end marker", () => {

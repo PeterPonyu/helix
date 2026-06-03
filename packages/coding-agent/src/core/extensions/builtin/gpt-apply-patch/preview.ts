@@ -1,16 +1,28 @@
 import { readFile } from "node:fs/promises";
+<<<<<<< HEAD
 import { parsePatch } from "./parser.js";
 import { createPatchDiff } from "./patch-diff.js";
 import { replaceChunks } from "./patch-replace.js";
 import { formatPatchPreview, formatPendingPatchPaths } from "./preview-format.js";
+=======
+import { parsePatch } from "./parser.ts";
+import { createPatchDiff } from "./patch-diff.ts";
+import { replaceChunks } from "./patch-replace.ts";
+import { formatPatchPreview, formatPendingPatchPaths } from "./preview-format.ts";
+>>>>>>> upstream/main
 import type {
 	ApplyPatchPreview,
 	ApplyPatchPreviewFile,
 	ApplyPatchProgress,
 	ApplyPatchToolDetails,
 	ParsedPatch,
+<<<<<<< HEAD
 } from "./types.js";
 import { resolvePatchPath } from "./workspace.js";
+=======
+} from "./types.ts";
+import { resolvePatchPath } from "./workspace.ts";
+>>>>>>> upstream/main
 
 async function readExistingFileForPreview(absolutePath: string): Promise<string> {
 	try {

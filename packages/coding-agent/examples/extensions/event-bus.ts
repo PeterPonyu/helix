@@ -7,7 +7,11 @@
  * Usage: /emit [event-name] [data] - emit an event on the bus
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI, ExtensionContext } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, ExtensionContext } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	// Store ctx for use in event handler

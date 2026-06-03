@@ -10,9 +10,15 @@
  * correct for that point in history.
  */
 
+<<<<<<< HEAD
 import { StringEnum } from "@earendil-works/pi-ai";
 import { matchesKey, Text, truncateToWidth } from "@earendil-works/pi-tui";
 import type { ExtensionAPI, ExtensionContext, Theme } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, ExtensionContext, Theme } from "@code-yeongyu/senpi";
+import { StringEnum } from "@earendil-works/pi-ai";
+import { matchesKey, Text, truncateToWidth } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 import { Type } from "typebox";
 
 interface Todo {
@@ -284,7 +290,11 @@ export default function (pi: ExtensionAPI) {
 	pi.registerCommand("todos", {
 		description: "Show all todos on the current branch",
 		handler: async (_args, ctx) => {
+<<<<<<< HEAD
 			if (!ctx.hasUI) {
+=======
+			if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 				ctx.ui.notify("/todos requires interactive mode", "error");
 				return;
 			}

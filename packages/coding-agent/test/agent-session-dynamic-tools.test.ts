@@ -4,10 +4,17 @@ import { join } from "node:path";
 import { getModel } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { DefaultResourceLoader } from "../src/core/resource-loader.js";
 import { createAgentSession } from "../src/core/sdk.js";
 import { SessionManager } from "../src/core/session-manager.js";
 import { SettingsManager } from "../src/core/settings-manager.js";
+=======
+import { DefaultResourceLoader } from "../src/core/resource-loader.ts";
+import { createAgentSession } from "../src/core/sdk.ts";
+import { SessionManager } from "../src/core/session-manager.ts";
+import { SettingsManager } from "../src/core/settings-manager.ts";
+>>>>>>> upstream/main
 
 describe("AgentSession dynamic tool registration", () => {
 	let tempDir: string;
@@ -72,6 +79,12 @@ describe("AgentSession dynamic tool registration", () => {
 		const readTool = allTools.find((tool) => tool.name === "read");
 
 		expect(allTools.map((tool) => tool.name)).toContain("dynamic_tool");
+<<<<<<< HEAD
+=======
+		expect(dynamicTool?.promptGuidelines).toEqual([
+			"Use dynamic_tool when the user asks for dynamic behavior tests.",
+		]);
+>>>>>>> upstream/main
 		expect(dynamicTool?.sourceInfo).toMatchObject({
 			path: "<inline:1>",
 			source: "inline",

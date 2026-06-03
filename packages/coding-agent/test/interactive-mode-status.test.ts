@@ -1,11 +1,24 @@
 import os, { homedir } from "node:os";
 import * as path from "node:path";
+<<<<<<< HEAD
 import { type AutocompleteProvider, CombinedAutocompleteProvider, Container } from "@earendil-works/pi-tui";
 import { beforeAll, describe, expect, test, vi } from "vitest";
 import type { AutocompleteProviderFactory } from "../src/core/extensions/types.js";
 import type { SourceInfo } from "../src/core/source-info.js";
 import { InteractiveMode } from "../src/modes/interactive/interactive-mode.js";
 import { initTheme } from "../src/modes/interactive/theme/theme.js";
+=======
+import { type AutocompleteProvider, CombinedAutocompleteProvider, setKeybindings } from "@earendil-works/pi-tui";
+import { beforeAll, describe, expect, test, vi } from "vitest";
+import { type Component, Container, type Focusable, TUI } from "../../tui/src/tui.ts";
+import { VirtualTerminal } from "../../tui/test/virtual-terminal.ts";
+import type { AutocompleteProviderFactory } from "../src/core/extensions/types.ts";
+import { KeybindingsManager } from "../src/core/keybindings.ts";
+import type { SourceInfo } from "../src/core/source-info.ts";
+import { InteractiveMode } from "../src/modes/interactive/interactive-mode.ts";
+import { initTheme } from "../src/modes/interactive/theme/theme.ts";
+import { stripAnsi } from "../src/utils/ansi.ts";
+>>>>>>> upstream/main
 
 function renderLastLine(container: Container, width = 120): string {
 	const last = container.children[container.children.length - 1];
@@ -17,6 +30,44 @@ function renderAll(container: Container, width = 120): string {
 	return container.children.flatMap((child) => child.render(width)).join("\n");
 }
 
+<<<<<<< HEAD
+=======
+class TestFocusableComponent implements Component, Focusable {
+	focused = false;
+	inputs: string[] = [];
+	private readonly label: string;
+	private text = "";
+
+	constructor(label: string) {
+		this.label = label;
+	}
+
+	handleInput(data: string): void {
+		this.inputs.push(data);
+	}
+
+	getText(): string {
+		return this.text;
+	}
+
+	setText(text: string): void {
+		this.text = text;
+	}
+
+	render(): string[] {
+		return [this.label];
+	}
+
+	invalidate(): void {}
+}
+
+async function flushTui(tui: TUI, terminal: VirtualTerminal): Promise<void> {
+	tui.requestRender(true);
+	await Promise.resolve();
+	await terminal.waitForRender();
+}
+
+>>>>>>> upstream/main
 function normalizeRenderedOutput(container: Container, width = 220): string {
 	return renderAll(container, width)
 		.replace(/\u001b\[[0-9;]*m/g, "")
@@ -148,6 +199,81 @@ describe("InteractiveMode.createExtensionUIContext setTheme", () => {
 	});
 });
 
+<<<<<<< HEAD
+=======
+describe("InteractiveMode.showExtensionCustom", () => {
+	beforeAll(() => {
+		initTheme("dark");
+	});
+
+	test("overlay custom UI reclaims input after non-overlay custom UI closes", async () => {
+		const terminal = new VirtualTerminal(80, 24);
+		const ui = new TUI(terminal);
+		const editorContainer = new Container();
+		const editor = new TestFocusableComponent("EDITOR");
+		const palette = new TestFocusableComponent("PALETTE");
+		const overlay = new TestFocusableComponent("OVERLAY");
+		const replacement = new TestFocusableComponent("REPLACEMENT");
+		let closeOverlay: (value: string) => void = () => {
+			throw new Error("closeOverlay was not initialized");
+		};
+		let closeReplacement: (value: string) => void = () => {
+			throw new Error("closeReplacement was not initialized");
+		};
+		const fakeThis = {
+			editor,
+			editorContainer,
+			keybindings: {},
+			ui,
+		};
+		const showExtensionCustom = <T>(
+			factory: (tui: TUI, theme: unknown, keybindings: unknown, done: (result: T) => void) => Component,
+			options?: { overlay?: boolean },
+		): Promise<T> =>
+			(InteractiveMode as any).prototype.showExtensionCustom.call(fakeThis, factory, options) as Promise<T>;
+
+		editorContainer.addChild(editor);
+		ui.addChild(editorContainer);
+		ui.addChild(palette);
+		ui.setFocus(palette);
+		ui.start();
+		try {
+			const overlayPromise = showExtensionCustom<string>(
+				(_tui, _theme, _keybindings, done) => {
+					closeOverlay = done;
+					return overlay;
+				},
+				{ overlay: true },
+			);
+			await flushTui(ui, terminal);
+			expect(overlay.focused).toBe(true);
+
+			const replacementPromise = showExtensionCustom<string>((_tui, _theme, _keybindings, done) => {
+				closeReplacement = done;
+				return replacement;
+			});
+			await flushTui(ui, terminal);
+			expect(replacement.focused).toBe(true);
+
+			closeReplacement("done");
+			await replacementPromise;
+			await flushTui(ui, terminal);
+			terminal.sendInput("x");
+			await flushTui(ui, terminal);
+
+			expect(overlay.inputs).toEqual(["x"]);
+			expect(editor.inputs).toEqual([]);
+			expect(overlay.focused).toBe(true);
+
+			closeOverlay("closed");
+			await overlayPromise;
+		} finally {
+			ui.stop();
+		}
+	});
+});
+
+>>>>>>> upstream/main
 describe("InteractiveMode.createExtensionUIContext addAutocompleteProvider", () => {
 	test("stores wrapper factories and rebuilds autocomplete immediately", () => {
 		const wrapper: AutocompleteProviderFactory = (current) => current;
@@ -217,6 +343,43 @@ describe("InteractiveMode.setupAutocompleteProvider", () => {
 	});
 });
 
+<<<<<<< HEAD
+=======
+describe("InteractiveMode.getWorkingIndicatorOptions", () => {
+	beforeAll(() => {
+		initTheme("dark");
+		setKeybindings(new KeybindingsManager());
+	});
+
+	test("uses a visible animated bullet indicator with animated working text", () => {
+		// Given
+		const fakeThis: any = {
+			workingIndicatorOptions: undefined,
+			getWorkingElapsedSeconds: () => 7,
+		};
+
+		// When
+		const options = (InteractiveMode as any).prototype.getWorkingIndicatorOptions.call(fakeThis);
+		const messageFormatter = options.messageFormatter;
+
+		// Then
+		expect(options.frames).toHaveLength(2);
+		expect(stripAnsi(options.frames[0])).toBe("•");
+		expect(stripAnsi(options.frames[1])).toBe("◦");
+		expect(options.messageIntervalMs).toBeGreaterThan(0);
+		expect(typeof messageFormatter).toBe("function");
+		expect(messageFormatter).toBeDefined();
+
+		const firstFrame = messageFormatter("Working", 0);
+		const nextFrame = messageFormatter("Working", 1_000);
+
+		expect(stripAnsi(firstFrame)).toBe("Working (7s • esc to interrupt)");
+		expect(stripAnsi(nextFrame)).toBe("Working (7s • esc to interrupt)");
+		expect(firstFrame).not.toBe(nextFrame);
+	});
+});
+
+>>>>>>> upstream/main
 describe("InteractiveMode.showLoadedResources", () => {
 	beforeAll(() => {
 		initTheme("dark");
@@ -898,6 +1061,7 @@ describe("InteractiveMode.showLoadedResources", () => {
 				{ path: "<builtin:todowrite>" },
 				{ path: "<builtin:redraws>" },
 				{
+<<<<<<< HEAD
 					path: `${home}/.helix/agent/extensions/diff.js`,
 					sourceInfo: {
 						path: `${home}/.helix/agent/extensions/diff.js`,
@@ -905,6 +1069,15 @@ describe("InteractiveMode.showLoadedResources", () => {
 						scope: "user",
 						origin: "top-level",
 						baseDir: `${home}/.helix/agent/extensions`,
+=======
+					path: `${home}/.senpi/agent/extensions/diff.js`,
+					sourceInfo: {
+						path: `${home}/.senpi/agent/extensions/diff.js`,
+						source: "local",
+						scope: "user",
+						origin: "top-level",
+						baseDir: `${home}/.senpi/agent/extensions`,
+>>>>>>> upstream/main
 					},
 				},
 			],
@@ -917,7 +1090,11 @@ describe("InteractiveMode.showLoadedResources", () => {
 		expect(output).toContain("redraws");
 		expect(output).toContain("todo");
 		expect(output).toContain("user");
+<<<<<<< HEAD
 		expect(output).toContain("~/.helix/agent/extensions/diff.js");
+=======
+		expect(output).toContain("~/.senpi/agent/extensions/diff.js");
+>>>>>>> upstream/main
 		expect(output).not.toContain("todowrite");
 	});
 });

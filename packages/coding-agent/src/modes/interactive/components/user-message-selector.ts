@@ -1,6 +1,11 @@
 import { type Component, Container, getKeybindings, Spacer, Text, truncateToWidth } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { theme } from "../theme/theme.js";
 import { DynamicBorder } from "./dynamic-border.js";
+=======
+import { theme } from "../theme/theme.ts";
+import { DynamicBorder } from "./dynamic-border.ts";
+>>>>>>> upstream/main
 
 interface UserMessageItem {
 	id: string; // Entry ID in the session

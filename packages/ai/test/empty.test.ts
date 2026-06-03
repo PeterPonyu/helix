@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { complete } from "../src/stream.js";
 import type { Api, AssistantMessage, Context, Model, StreamOptions, UserMessage } from "../src/types.js";
@@ -9,6 +10,18 @@ import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-u
 import { hasBedrockCredentials } from "./bedrock-utils.js";
 import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } from "./cloudflare-utils.js";
 import { resolveApiKey } from "./oauth.js";
+=======
+import { getModel } from "../src/models.ts";
+import { complete } from "../src/stream.ts";
+import type { Api, AssistantMessage, Context, Model, StreamOptions, UserMessage } from "../src/types.ts";
+
+type StreamOptionsWithExtras = StreamOptions & Record<string, unknown>;
+
+import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.ts";
+import { hasBedrockCredentials } from "./bedrock-utils.ts";
+import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } from "./cloudflare-utils.ts";
+import { resolveApiKey } from "./oauth.ts";
+>>>>>>> upstream/main
 
 // Resolve OAuth tokens at module level (async, runs before tests)
 const oauthTokens = await Promise.all([
@@ -630,37 +643,65 @@ describe("AI Providers Empty Message Tests", () => {
 
 	describe("GitHub Copilot Provider Empty Messages", () => {
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should handle empty content array",
 			{ retry: 3, timeout: 30000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should handle empty content array",
+			{ retry: 3, timeout: 30000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 				await testEmptyMessage(llm, { apiKey: githubCopilotToken });
 			},
 		);
 
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should handle empty string content",
 			{ retry: 3, timeout: 30000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should handle empty string content",
+			{ retry: 3, timeout: 30000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 				await testEmptyStringMessage(llm, { apiKey: githubCopilotToken });
 			},
 		);
 
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should handle whitespace-only content",
 			{ retry: 3, timeout: 30000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should handle whitespace-only content",
+			{ retry: 3, timeout: 30000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 				await testWhitespaceOnlyMessage(llm, { apiKey: githubCopilotToken });
 			},
 		);
 
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should handle empty assistant message in conversation",
 			{ retry: 3, timeout: 30000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should handle empty assistant message in conversation",
+			{ retry: 3, timeout: 30000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 				await testEmptyAssistantMessage(llm, { apiKey: githubCopilotToken });
 			},
 		);

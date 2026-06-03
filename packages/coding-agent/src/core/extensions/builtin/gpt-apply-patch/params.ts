@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { ApplyPatchParams } from "./types.js";
+=======
+import type { ApplyPatchParams } from "./types.ts";
+>>>>>>> upstream/main
 
 export function normalizeApplyPatchArguments(args: unknown): ApplyPatchParams {
 	if (typeof args === "string") {

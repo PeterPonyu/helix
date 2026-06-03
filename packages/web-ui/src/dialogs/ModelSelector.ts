@@ -8,12 +8,43 @@ import { html, type PropertyValues, type TemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { createRef, ref } from "lit/directives/ref.js";
 import { Brain, Image as ImageIcon } from "lucide";
-import { Input } from "../components/Input.js";
-import { getAppStorage } from "../storage/app-storage.js";
-import type { AutoDiscoveryProviderType } from "../storage/stores/custom-providers-store.js";
-import { formatModelCost } from "../utils/format.js";
-import { i18n } from "../utils/i18n.js";
-import { discoverModels } from "../utils/model-discovery.js";
+import { Input } from "../components/Input.ts";
+import { getAppStorage } from "../storage/app-storage.ts";
+import type { AutoDiscoveryProviderType } from "../storage/stores/custom-providers-store.ts";
+import { formatModelCost } from "../utils/format.ts";
+import { i18n } from "../utils/i18n.ts";
+import { discoverModels } from "../utils/model-discovery.ts";
+
+/**
+ * Score a query against a text using subsequence matching.
+ * All query characters must appear in order in the text.
+ * Higher score = tighter match (fewer gaps between matched characters).
+ * Returns 0 if no match.
+ */
+function subsequenceScore(query: string, text: string): number {
+	let qi = 0;
+	let ti = 0;
+	let gaps = 0;
+	let lastMatchIndex = -1;
+
+	while (qi < query.length && ti < text.length) {
+		if (query[qi] === text[ti]) {
+			if (lastMatchIndex >= 0) {
+				gaps += ti - lastMatchIndex - 1;
+			}
+			lastMatchIndex = ti;
+			qi++;
+		}
+		ti++;
+	}
+
+	// All query chars must match
+	if (qi < query.length) return 0;
+
+	// Score: longer query match = better, fewer gaps = better
+	// Normalize so exact substring gets highest score
+	return query.length / (query.length + gaps);
+}
 
 /**
  * Score a query against a text using subsequence matching.

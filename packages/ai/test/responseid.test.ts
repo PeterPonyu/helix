@@ -1,9 +1,17 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { complete } from "../src/stream.js";
 import type { Api, Context, Model, StreamOptions } from "../src/types.js";
 import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.js";
 import { resolveApiKey } from "./oauth.js";
+=======
+import { getModel } from "../src/models.ts";
+import { complete } from "../src/stream.ts";
+import type { Api, Context, Model, StreamOptions } from "../src/types.ts";
+import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.ts";
+import { resolveApiKey } from "./oauth.ts";
+>>>>>>> upstream/main
 
 type StreamOptionsWithExtras = StreamOptions & Record<string, unknown>;
 

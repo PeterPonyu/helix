@@ -1,6 +1,11 @@
 import type { ImageContent, Model, SimpleStreamOptions, TextContent, Transport } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { AgentEvent, AgentMessage, AgentTool, QueueMode, ThinkingLevel } from "../index.js";
 import type { Session } from "./session/session.js";
+=======
+import type { AgentEvent, AgentMessage, AgentTool, QueueMode, ThinkingLevel } from "../index.ts";
+import type { Session } from "./session/session.ts";
+>>>>>>> upstream/main
 
 /** Result of a fallible operation. Expected failures are returned as `ok: false` instead of thrown. */
 export type Result<TValue, TError> = { ok: true; value: TValue } | { ok: false; error: TError };
@@ -121,6 +126,7 @@ export type FileErrorCode =
 /** Error returned by {@link FileSystem} file operations. */
 export class FileError extends Error {
 	readonly cause?: unknown;
+<<<<<<< HEAD
 
 	constructor(
 		/** Backend-independent error code. */
@@ -132,6 +138,18 @@ export class FileError extends Error {
 	) {
 		super(message);
 		this.name = "FileError";
+=======
+	/** Backend-independent error code. */
+	public code: FileErrorCode;
+	/** Absolute addressed path associated with the failure, when available. */
+	public path?: string;
+
+	constructor(code: FileErrorCode, message: string, path?: string, cause?: Error) {
+		super(message, cause === undefined ? undefined : { cause });
+		this.name = "FileError";
+		this.code = code;
+		this.path = path;
+>>>>>>> upstream/main
 		if (cause !== undefined) this.cause = cause;
 	}
 }
@@ -148,6 +166,7 @@ export type ExecutionErrorCode =
 /** Error returned by {@link ExecutionEnv.exec}. */
 export class ExecutionError extends Error {
 	readonly cause?: unknown;
+<<<<<<< HEAD
 
 	constructor(
 		/** Backend-independent error code. */
@@ -157,6 +176,15 @@ export class ExecutionError extends Error {
 	) {
 		super(message);
 		this.name = "ExecutionError";
+=======
+	/** Backend-independent error code. */
+	public code: ExecutionErrorCode;
+
+	constructor(code: ExecutionErrorCode, message: string, cause?: Error) {
+		super(message, cause === undefined ? undefined : { cause });
+		this.name = "ExecutionError";
+		this.code = code;
+>>>>>>> upstream/main
 		if (cause !== undefined) this.cause = cause;
 	}
 }
@@ -167,6 +195,7 @@ export type CompactionErrorCode = "aborted" | "summarization_failed" | "invalid_
 /** Error returned by compaction helpers. */
 export class CompactionError extends Error {
 	readonly cause?: unknown;
+<<<<<<< HEAD
 
 	constructor(
 		/** Backend-independent error code. */
@@ -176,6 +205,15 @@ export class CompactionError extends Error {
 	) {
 		super(message);
 		this.name = "CompactionError";
+=======
+	/** Backend-independent error code. */
+	public code: CompactionErrorCode;
+
+	constructor(code: CompactionErrorCode, message: string, cause?: Error) {
+		super(message, cause === undefined ? undefined : { cause });
+		this.name = "CompactionError";
+		this.code = code;
+>>>>>>> upstream/main
 		if (cause !== undefined) this.cause = cause;
 	}
 }
@@ -185,6 +223,7 @@ export type BranchSummaryErrorCode = "aborted" | "summarization_failed" | "inval
 
 /** Error returned by branch summarization helpers. */
 export class BranchSummaryError extends Error {
+<<<<<<< HEAD
 	constructor(
 		/** Backend-independent error code. */
 		public code: BranchSummaryErrorCode,
@@ -193,6 +232,15 @@ export class BranchSummaryError extends Error {
 	) {
 		super(message, cause === undefined ? undefined : { cause });
 		this.name = "BranchSummaryError";
+=======
+	/** Backend-independent error code. */
+	public code: BranchSummaryErrorCode;
+
+	constructor(code: BranchSummaryErrorCode, message: string, cause?: Error) {
+		super(message, cause === undefined ? undefined : { cause });
+		this.name = "BranchSummaryError";
+		this.code = code;
+>>>>>>> upstream/main
 	}
 }
 
@@ -206,6 +254,7 @@ export type SessionErrorCode =
 
 /** Error thrown by session storage, repositories, and session tree operations. */
 export class SessionError extends Error {
+<<<<<<< HEAD
 	constructor(
 		/** Session subsystem error code. */
 		public code: SessionErrorCode,
@@ -214,6 +263,15 @@ export class SessionError extends Error {
 	) {
 		super(message, cause === undefined ? undefined : { cause });
 		this.name = "SessionError";
+=======
+	/** Session subsystem error code. */
+	public code: SessionErrorCode;
+
+	constructor(code: SessionErrorCode, message: string, cause?: Error) {
+		super(message, cause === undefined ? undefined : { cause });
+		this.name = "SessionError";
+		this.code = code;
+>>>>>>> upstream/main
 	}
 }
 
@@ -230,6 +288,7 @@ export type AgentHarnessErrorCode =
 
 /** Public AgentHarness failure with a stable top-level classification. */
 export class AgentHarnessError extends Error {
+<<<<<<< HEAD
 	constructor(
 		public code: AgentHarnessErrorCode,
 		message: string,
@@ -237,6 +296,14 @@ export class AgentHarnessError extends Error {
 	) {
 		super(message, cause === undefined ? undefined : { cause });
 		this.name = "AgentHarnessError";
+=======
+	public code: AgentHarnessErrorCode;
+
+	constructor(code: AgentHarnessErrorCode, message: string, cause?: Error) {
+		super(message, cause === undefined ? undefined : { cause });
+		this.name = "AgentHarnessError";
+		this.code = code;
+>>>>>>> upstream/main
 	}
 }
 
@@ -368,6 +435,14 @@ export interface ModelChangeEntry extends SessionTreeEntryBase {
 	modelId: string;
 }
 
+<<<<<<< HEAD
+=======
+export interface ActiveToolsChangeEntry extends SessionTreeEntryBase {
+	type: "active_tools_change";
+	activeToolNames: string[];
+}
+
+>>>>>>> upstream/main
 export interface CompactionEntry<T = unknown> extends SessionTreeEntryBase {
 	type: "compaction";
 	summary: string;
@@ -419,6 +494,10 @@ export type SessionTreeEntry =
 	| MessageEntry
 	| ThinkingLevelChangeEntry
 	| ModelChangeEntry
+<<<<<<< HEAD
+=======
+	| ActiveToolsChangeEntry
+>>>>>>> upstream/main
 	| CompactionEntry
 	| BranchSummaryEntry
 	| CustomEntry
@@ -431,6 +510,10 @@ export interface SessionContext {
 	messages: AgentMessage[];
 	thinkingLevel: string;
 	model: { provider: string; modelId: string } | null;
+<<<<<<< HEAD
+=======
+	activeToolNames: string[] | null;
+>>>>>>> upstream/main
 }
 
 export interface SessionMetadata {
@@ -460,7 +543,11 @@ export interface SessionStorage<TMetadata extends SessionMetadata = SessionMetad
 	getEntries(): Promise<SessionTreeEntry[]>;
 }
 
+<<<<<<< HEAD
 export type { Session } from "./session/session.js";
+=======
+export type { Session } from "./session/session.ts";
+>>>>>>> upstream/main
 
 export interface SessionCreateOptions {
 	id?: string;
@@ -607,19 +694,41 @@ export interface SessionTreeEvent {
 	fromHook?: boolean;
 }
 
+<<<<<<< HEAD
 export interface ModelSelectEvent {
 	type: "model_select";
+=======
+export interface ModelUpdateEvent {
+	type: "model_update";
+>>>>>>> upstream/main
 	model: Model<any>;
 	previousModel: Model<any> | undefined;
 	source: "set" | "restore";
 }
 
+<<<<<<< HEAD
 export interface ThinkingLevelSelectEvent {
 	type: "thinking_level_select";
+=======
+export interface ThinkingLevelUpdateEvent {
+	type: "thinking_level_update";
+>>>>>>> upstream/main
 	level: ThinkingLevel;
 	previousLevel: ThinkingLevel;
 }
 
+<<<<<<< HEAD
+=======
+export interface ToolsUpdateEvent {
+	type: "tools_update";
+	toolNames: string[];
+	previousToolNames: string[];
+	activeToolNames: string[];
+	previousActiveToolNames: string[];
+	source: "set" | "restore";
+}
+
+>>>>>>> upstream/main
 export interface ResourcesUpdateEvent<
 	TSkill extends Skill = Skill,
 	TPromptTemplate extends PromptTemplate = PromptTemplate,
@@ -648,9 +757,16 @@ export type AgentHarnessOwnEvent<
 	| SessionCompactEvent
 	| SessionBeforeTreeEvent
 	| SessionTreeEvent
+<<<<<<< HEAD
 	| ModelSelectEvent
 	| ThinkingLevelSelectEvent
 	| ResourcesUpdateEvent<TSkill, TPromptTemplate>;
+=======
+	| ModelUpdateEvent
+	| ThinkingLevelUpdateEvent
+	| ResourcesUpdateEvent<TSkill, TPromptTemplate>
+	| ToolsUpdateEvent;
+>>>>>>> upstream/main
 
 export type AgentHarnessEvent<TSkill extends Skill = Skill, TPromptTemplate extends PromptTemplate = PromptTemplate> =
 	| AgentEvent
@@ -710,9 +826,16 @@ export type AgentHarnessEventResultMap = {
 	session_compact: undefined;
 	session_before_tree: SessionBeforeTreeResult | undefined;
 	session_tree: undefined;
+<<<<<<< HEAD
 	model_select: undefined;
 	thinking_level_select: undefined;
 	resources_update: undefined;
+=======
+	model_update: undefined;
+	thinking_level_update: undefined;
+	resources_update: undefined;
+	tools_update: undefined;
+>>>>>>> upstream/main
 	queue_update: undefined;
 	save_point: undefined;
 	abort: undefined;
@@ -826,4 +949,8 @@ export interface AgentHarnessOptions<
 	followUpMode?: QueueMode;
 }
 
+<<<<<<< HEAD
 export type { AgentHarness } from "./agent-harness.js";
+=======
+export type { AgentHarness } from "./agent-harness.ts";
+>>>>>>> upstream/main

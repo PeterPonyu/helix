@@ -3,7 +3,11 @@
  *
  * Demonstrates ctx.getSystemPrompt() for accessing the effective system prompt.
  */
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	pi.on("agent_start", (_event, ctx) => {

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env npx tsx
+=======
+#!/usr/bin/env node
+>>>>>>> upstream/main
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";

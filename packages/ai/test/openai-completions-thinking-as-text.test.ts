@@ -2,7 +2,11 @@ import { once } from "node:events";
 import http from "node:http";
 import type { AddressInfo } from "node:net";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { convertMessages, streamOpenAICompletions } from "../src/providers/openai-completions.js";
+=======
+import { convertMessages, streamOpenAICompletions } from "../src/providers/openai-completions.ts";
+>>>>>>> upstream/main
 import type {
 	AssistantMessage,
 	AssistantMessageEvent,
@@ -10,7 +14,11 @@ import type {
 	Model,
 	OpenAICompletionsCompat,
 	Usage,
+<<<<<<< HEAD
 } from "../src/types.js";
+=======
+} from "../src/types.ts";
+>>>>>>> upstream/main
 
 const emptyUsage: Usage = {
 	input: 0,

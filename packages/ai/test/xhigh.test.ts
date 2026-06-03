@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { stream } from "../src/stream.js";
 import type { Context, Model } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { stream } from "../src/stream.ts";
+import type { Context, Model } from "../src/types.ts";
+>>>>>>> upstream/main
 
 function makeContext(): Context {
 	return {

@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { type LabelEntry, SessionManager } from "../../src/core/session-manager.js";
+=======
+import { type LabelEntry, SessionManager } from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 describe("SessionManager labels", () => {
 	it("sets and gets labels", () => {

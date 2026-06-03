@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { findEnvKeys, getEnvApiKey } from "../src/env-api-keys.js";
 import { getModel } from "../src/models.js";
+=======
+import { findEnvKeys, getEnvApiKey } from "../src/env-api-keys.ts";
+import { getModel } from "../src/models.ts";
+>>>>>>> upstream/main
 
 const originalTogetherApiKey = process.env.TOGETHER_API_KEY;
 

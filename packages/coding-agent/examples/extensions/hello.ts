@@ -2,8 +2,13 @@
  * Hello Tool - Minimal custom tool example
  */
 
+<<<<<<< HEAD
 import { Type } from "@earendil-works/pi-ai";
 import { defineTool, type ExtensionAPI } from "@helix-bio/helix";
+=======
+import { defineTool, type ExtensionAPI } from "@code-yeongyu/senpi";
+import { Type } from "@earendil-works/pi-ai";
+>>>>>>> upstream/main
 
 const helloTool = defineTool({
 	name: "hello",

@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import type { AssistantMessage } from "../src/types.js";
 import { isContextOverflow } from "../src/utils/overflow.js";
+=======
+import type { AssistantMessage } from "../src/types.ts";
+import { isContextOverflow } from "../src/utils/overflow.ts";
+>>>>>>> upstream/main
 
 function createErrorMessage(errorMessage: string): AssistantMessage {
 	return {
@@ -49,6 +54,16 @@ describe("isContextOverflow", () => {
 		expect(isContextOverflow(message, 131072)).toBe(true);
 	});
 
+<<<<<<< HEAD
+=======
+	it("detects OpenRouter Poolside maximum allowed input length errors", () => {
+		const message = createErrorMessage(
+			"Provider returned error: Input length 131393 exceeds the maximum allowed input length of 131040 tokens.",
+		);
+		expect(isContextOverflow(message, 131072)).toBe(true);
+	});
+
+>>>>>>> upstream/main
 	it("does not treat generic non-overflow Ollama errors as overflow", () => {
 		const message = createErrorMessage("500 `model runner crashed unexpectedly`");
 		expect(isContextOverflow(message, 32768)).toBe(false);

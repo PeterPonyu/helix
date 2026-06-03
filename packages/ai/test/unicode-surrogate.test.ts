@@ -1,5 +1,6 @@
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { complete } from "../src/stream.js";
 import type { Api, Context, Model, StreamOptions, ToolResultMessage } from "../src/types.js";
@@ -10,6 +11,18 @@ import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-u
 import { hasBedrockCredentials } from "./bedrock-utils.js";
 import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } from "./cloudflare-utils.js";
 import { resolveApiKey } from "./oauth.js";
+=======
+import { getModel } from "../src/models.ts";
+import { complete } from "../src/stream.ts";
+import type { Api, Context, Model, StreamOptions, ToolResultMessage } from "../src/types.ts";
+
+type StreamOptionsWithExtras = StreamOptions & Record<string, unknown>;
+
+import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.ts";
+import { hasBedrockCredentials } from "./bedrock-utils.ts";
+import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } from "./cloudflare-utils.ts";
+import { resolveApiKey } from "./oauth.ts";
+>>>>>>> upstream/main
 
 // Empty schema for test tools - must be proper OBJECT type for Cloud Code Assist
 const emptySchema = Type.Object({});
@@ -396,28 +409,49 @@ describe("AI Providers Unicode Surrogate Pair Tests", () => {
 
 	describe("GitHub Copilot Provider Unicode Handling", () => {
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should handle emoji in tool results",
 			{ retry: 3, timeout: 30000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should handle emoji in tool results",
+			{ retry: 3, timeout: 30000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 				await testEmojiInToolResults(llm, { apiKey: githubCopilotToken });
 			},
 		);
 
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should handle real-world LinkedIn comment data with emoji",
 			{ retry: 3, timeout: 30000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should handle real-world LinkedIn comment data with emoji",
+			{ retry: 3, timeout: 30000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 				await testRealWorldLinkedInData(llm, { apiKey: githubCopilotToken });
 			},
 		);
 
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should handle unpaired high surrogate (0xD83D) in tool results",
 			{ retry: 3, timeout: 30000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should handle unpaired high surrogate (0xD83D) in tool results",
+			{ retry: 3, timeout: 30000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 				await testUnpairedHighSurrogate(llm, { apiKey: githubCopilotToken });
 			},
 		);

@@ -5,11 +5,19 @@
  * Uses `ctx.ui.setTitle()` to update the terminal title via the extension API.
  *
  * Usage:
+<<<<<<< HEAD
  *   helix --extension examples/extensions/titlebar-spinner.ts
  */
 
 import path from "node:path";
 import type { ExtensionAPI, ExtensionContext } from "@helix-bio/helix";
+=======
+ *   senpi --extension examples/extensions/titlebar-spinner.ts
+ */
+
+import path from "node:path";
+import type { ExtensionAPI, ExtensionContext } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 const BRAILLE_FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
 

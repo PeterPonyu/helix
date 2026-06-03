@@ -1,15 +1,24 @@
 /**
  * Overlay Test - validates overlay compositing with inline text inputs
  *
+<<<<<<< HEAD
  * Usage: helix --extension ./examples/extensions/overlay-test.ts
+=======
+ * Usage: senpi --extension ./examples/extensions/overlay-test.ts
+>>>>>>> upstream/main
  *
  * Run /overlay-test to show a floating overlay with:
  * - Inline text inputs within menu items
  * - Edge case tests (wide chars, styled text, emoji)
  */
 
+<<<<<<< HEAD
 import { CURSOR_MARKER, type Focusable, matchesKey, visibleWidth } from "@earendil-works/pi-tui";
 import type { ExtensionAPI, ExtensionCommandContext, Theme } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, ExtensionCommandContext, Theme } from "@code-yeongyu/senpi";
+import { CURSOR_MARKER, type Focusable, matchesKey, visibleWidth } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	pi.registerCommand("overlay-test", {
@@ -42,10 +51,20 @@ class OverlayTestComponent implements Focusable {
 		{ label: "Cancel", hasInput: false, text: "", cursor: 0 },
 	];
 
+<<<<<<< HEAD
 	constructor(
 		private theme: Theme,
 		private done: (result: { action: string; query?: string } | undefined) => void,
 	) {}
+=======
+	private theme: Theme;
+	private done: (result: { action: string; query?: string } | undefined) => void;
+
+	constructor(theme: Theme, done: (result: { action: string; query?: string } | undefined) => void) {
+		this.theme = theme;
+		this.done = done;
+	}
+>>>>>>> upstream/main
 
 	handleInput(data: string): void {
 		if (matchesKey(data, "escape")) {

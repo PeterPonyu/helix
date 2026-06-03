@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env tsx
+=======
+#!/usr/bin/env node
+>>>>>>> upstream/main
 /**
  * Live probe for OpenAI Codex Responses websocket-cached mode.
  *
@@ -9,15 +13,25 @@
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Type } from "typebox";
+<<<<<<< HEAD
 import { AuthStorage } from "../../coding-agent/src/core/auth-storage.js";
 import { getModel } from "../src/models.js";
+=======
+import { AuthStorage } from "../../coding-agent/src/core/auth-storage.ts";
+import { getModel } from "../src/models.ts";
+>>>>>>> upstream/main
 import {
 	closeOpenAICodexWebSocketSessions,
 	getOpenAICodexWebSocketDebugStats,
 	resetOpenAICodexWebSocketDebugStats,
 	streamOpenAICodexResponses,
+<<<<<<< HEAD
 } from "../src/providers/openai-codex-responses.js";
 import type { AssistantMessage, Context, Message, Model, Tool, ToolResultMessage, Transport } from "../src/types.js";
+=======
+} from "../src/providers/openai-codex-responses.ts";
+import type { AssistantMessage, Context, Message, Model, Tool, ToolResultMessage, Transport } from "../src/types.ts";
+>>>>>>> upstream/main
 
 type ThinkingLevel = "minimal" | "low" | "medium" | "high" | "xhigh";
 
@@ -85,7 +99,11 @@ function required(value: string | undefined, flag: string): string {
 }
 
 function printHelp(): void {
+<<<<<<< HEAD
 	console.log(`Usage: npx tsx test/codex-websocket-cached-probe.ts [options]
+=======
+	console.log(`Usage: node test/codex-websocket-cached-probe.ts [options]
+>>>>>>> upstream/main
 
 Options:
   --turns <n>          Number of user turns. Default: ${DEFAULT_TURNS}

@@ -1,8 +1,14 @@
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { fauxAssistantMessage, fauxText, registerFauxProvider } from "../../src/providers/faux.js";
 import { stream, streamSimple } from "../../src/stream.js";
 import type { Context, Model, Tool } from "../../src/types.js";
+=======
+import { fauxAssistantMessage, fauxText, registerFauxProvider } from "../../src/providers/faux.ts";
+import { stream, streamSimple } from "../../src/stream.ts";
+import type { Context, Model, Tool } from "../../src/types.ts";
+>>>>>>> upstream/main
 
 function userMessage(content: string) {
 	return { role: "user" as const, content, timestamp: Date.now() };

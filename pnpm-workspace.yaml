@@ -4,7 +4,11 @@ packages:
   - "packages/coding-agent/examples/extensions/with-deps"
   - "packages/coding-agent/examples/extensions/custom-provider-anthropic"
   - "packages/coding-agent/examples/extensions/custom-provider-gitlab-duo"
+<<<<<<< HEAD
   - "packages/coding-agent/examples/extensions/sandbox"
+=======
+  - "packages/coding-agent/examples/extensions/custom-provider-qwen-cli"
+>>>>>>> upstream/main
 
 nodeLinker: hoisted
 linkWorkspacePackages: deep

@@ -1,4 +1,4 @@
-> helix can create TUI components. Ask it to build one for your use case.
+> senpi can create TUI components. Ask it to build one for your use case.
 
 # TUI Components
 
@@ -50,9 +50,9 @@ When a `Focusable` component has focus, TUI:
 1. Sets `focused = true` on the component
 2. Scans rendered output for `CURSOR_MARKER` (a zero-width APC escape sequence)
 3. Positions the hardware terminal cursor at that location
-4. Shows the hardware cursor
+4. Shows the hardware cursor only when `showHardwareCursor` is enabled
 
-This enables IME candidate windows to appear at the correct position for CJK input methods. The `Editor` and `Input` built-in components already implement this interface.
+The cursor remains hidden by default. This keeps the fake cursor rendering, while still positioning the hardware cursor for terminals that track IME candidate windows with hidden cursors. Some terminals require a visible hardware cursor for IME positioning; enable it with `showHardwareCursor`, `setShowHardwareCursor(true)`, or `PI_HARDWARE_CURSOR=1`. The `Editor` and `Input` built-in components already implement this interface.
 
 ### Container Components with Embedded Inputs
 
@@ -145,14 +145,23 @@ const result = await ctx.ui.custom<string | null>(
       // Responsive: hide on narrow terminals
       visible: (termWidth, termHeight) => termWidth >= 80,
     },
-    // Get handle for programmatic visibility control
+    // Get handle for programmatic focus and visibility control
     onHandle: (handle) => {
+      // handle.focus() - focus this overlay and bring it to the visual front
+      // handle.unfocus() - release input to normal fallback
+      // handle.unfocus({ target }) - release input to a specific component or null
       // handle.setHidden(true/false) - toggle visibility
       // handle.hide() - permanently remove
     },
   }
 );
 ```
+
+### Overlay Focus
+
+A focused visible overlay keeps input ownership across temporary non-overlay UI. If an overlay opens another `ctx.ui.custom()` component without `{ overlay: true }`, that replacement UI receives input while it is active; when it closes, the focused overlay can reclaim input.
+
+Use `handle.unfocus()` when a visible overlay should stop owning input and let TUI fall back to another visible capturing overlay or the previous focus target. Use `handle.unfocus({ target })` when a specific component should receive input while the overlay stays visible. Passing `{ target: null }` intentionally leaves no focused component until focus is set again.
 
 ### Overlay Lifecycle
 
@@ -425,7 +434,7 @@ renderResult(result, options, theme, context) {
 **For Markdown**, use `getMarkdownTheme()`:
 
 ```typescript
-import { getMarkdownTheme } from "@helix-bio/helix";
+import { getMarkdownTheme } from "@code-yeongyu/senpi";
 import { Markdown } from "@earendil-works/pi-tui";
 
 renderResult(result, options, theme, context) {
@@ -590,8 +599,8 @@ These patterns cover the most common UI needs in extensions. **Copy these patter
 For letting users pick from a list of options. Use `SelectList` from `@earendil-works/pi-tui` with `DynamicBorder` for framing.
 
 ```typescript
-import type { ExtensionAPI } from "@helix-bio/helix";
-import { DynamicBorder } from "@helix-bio/helix";
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { DynamicBorder } from "@code-yeongyu/senpi";
 import { Container, type SelectItem, SelectList, Text } from "@earendil-works/pi-tui";
 
 pi.registerCommand("pick", {
@@ -650,7 +659,7 @@ pi.registerCommand("pick", {
 For operations that take time and should be cancellable. `BorderedLoader` shows a spinner and handles escape to cancel.
 
 ```typescript
-import { BorderedLoader } from "@helix-bio/helix";
+import { BorderedLoader } from "@code-yeongyu/senpi";
 
 pi.registerCommand("fetch", {
   handler: async (_args, ctx) => {
@@ -682,7 +691,7 @@ pi.registerCommand("fetch", {
 For toggling multiple settings. Use `SettingsList` from `@earendil-works/pi-tui` with `getSettingsListTheme()`.
 
 ```typescript
-import { getSettingsListTheme } from "@helix-bio/helix";
+import { getSettingsListTheme } from "@code-yeongyu/senpi";
 import { Container, type SettingItem, SettingsList, Text } from "@earendil-works/pi-tui";
 
 pi.registerCommand("settings", {
@@ -737,7 +746,7 @@ ctx.ui.setStatus("my-ext", undefined);
 
 ### Pattern 4b: Working Indicator Customization
 
-Customize the inline working indicator shown while helix is streaming a response.
+Customize the inline working indicator shown while senpi is streaming a response.
 
 ```typescript
 // Static indicator
@@ -822,7 +831,7 @@ Token stats available via `ctx.sessionManager.getBranch()` and `ctx.model`.
 Replace the main input editor with a custom implementation. Useful for modal editing (vim), different keybindings (emacs), or specialized input handling.
 
 ```typescript
-import { CustomEditor, type ExtensionAPI } from "@helix-bio/helix";
+import { CustomEditor, type ExtensionAPI } from "@code-yeongyu/senpi";
 import { matchesKey, truncateToWidth } from "@earendil-works/pi-tui";
 
 type Mode = "normal" | "insert";

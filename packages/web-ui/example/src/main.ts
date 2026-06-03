@@ -25,7 +25,11 @@ import "./app.css";
 import { icon } from "@mariozechner/mini-lit";
 import { Button } from "@mariozechner/mini-lit/dist/Button.js";
 import { Input } from "@mariozechner/mini-lit/dist/Input.js";
+<<<<<<< HEAD
 import { createSystemNotification, customConvertToLlm, registerCustomMessageRenderers } from "./custom-messages.js";
+=======
+import { createSystemNotification, customConvertToLlm, registerCustomMessageRenderers } from "./custom-messages.ts";
+>>>>>>> upstream/main
 
 // Register custom message renderers
 registerCustomMessageRenderers();

@@ -3,8 +3,13 @@
  * Uses Kitty keyboard protocol for smooth movement (press/release detection)
  */
 
+<<<<<<< HEAD
 import { isKeyRelease, Key, matchesKey, visibleWidth } from "@earendil-works/pi-tui";
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { isKeyRelease, Key, matchesKey, visibleWidth } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 
 const GAME_WIDTH = 60;
 const GAME_HEIGHT = 24;
@@ -529,7 +534,11 @@ export default function (pi: ExtensionAPI) {
 		description: "Play Space Invaders!",
 
 		handler: async (_args, ctx) => {
+<<<<<<< HEAD
 			if (!ctx.hasUI) {
+=======
+			if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 				ctx.ui.notify("Space Invaders requires interactive mode", "error");
 				return;
 			}

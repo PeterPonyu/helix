@@ -1,8 +1,16 @@
 import { mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+<<<<<<< HEAD
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { canonicalizePath, getCwdRelativePath, isLocalPath } from "../src/utils/paths.js";
+=======
+import { homedir, tmpdir } from "node:os";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+import { afterEach, describe, expect, it } from "vitest";
+import { canonicalizePath, getCwdRelativePath, isLocalPath, normalizePath, resolvePath } from "../src/utils/paths.ts";
+>>>>>>> upstream/main
 
 let tempDir: string;
 
@@ -73,6 +81,58 @@ describe("getCwdRelativePath", () => {
 	});
 });
 
+<<<<<<< HEAD
+=======
+describe("resolvePath", () => {
+	it("expands only home tilde shortcuts", () => {
+		const cwd = join(tmpdir(), "pi-paths-cwd");
+		expect(normalizePath("~")).toBe(homedir());
+		expect(normalizePath("~/file.txt")).toBe(join(homedir(), "file.txt"));
+		expect(resolvePath("~draft.md", cwd)).toBe(resolve(cwd, "~draft.md"));
+		expect(normalizePath("~draft.md")).toBe("~draft.md");
+	});
+
+	it("resolves relative paths against the base directory", () => {
+		const cwd = join(tmpdir(), "pi-paths-cwd");
+		expect(resolvePath("subdir/file.txt", cwd)).toBe(resolve(cwd, "subdir/file.txt"));
+		expect(resolvePath("subdir/file.txt", pathToFileURL(cwd).href)).toBe(resolve(cwd, "subdir/file.txt"));
+	});
+
+	it("accepts file URLs", () => {
+		const dir = createTempDir();
+		const filePath = join(dir, "file with spaces.txt");
+		expect(resolvePath(pathToFileURL(filePath).href, join(dir, "base"))).toBe(resolve(filePath));
+	});
+
+	it("throws for invalid file URLs", () => {
+		expect(() => resolvePath("file:///%E0%A4%A")).toThrow();
+	});
+
+	it("preserves POSIX absolute paths with literal percent sequences", () => {
+		if (process.platform === "win32") {
+			return;
+		}
+
+		const dir = createTempDir();
+		for (const filePath of [join(dir, "report%2026.md"), join(dir, "foo%2Fbar"), join(dir, "malformed%A.md")]) {
+			expect(resolvePath(filePath, join(dir, "base"))).toBe(resolve(filePath));
+		}
+	});
+
+	it("does not treat Windows file URL pathname strings as native paths", () => {
+		if (process.platform !== "win32") {
+			return;
+		}
+
+		const dir = createTempDir();
+		const filePath = join(dir, "dir", "SKILL.md");
+		const pathname = pathToFileURL(filePath).pathname;
+		expect(pathname).toMatch(/^\/[A-Za-z]:/);
+		expect(resolvePath(pathname, "E:\\project")).toBe(resolve(pathname));
+	});
+});
+
+>>>>>>> upstream/main
 describe("isLocalPath", () => {
 	it("returns true for bare names", () => {
 		expect(isLocalPath("my-package")).toBe(true);
@@ -82,6 +142,13 @@ describe("isLocalPath", () => {
 		expect(isLocalPath("./foo")).toBe(true);
 	});
 
+<<<<<<< HEAD
+=======
+	it("returns true for file URLs", () => {
+		expect(isLocalPath("file:///tmp/foo")).toBe(true);
+	});
+
+>>>>>>> upstream/main
 	it("returns false for npm: protocol", () => {
 		expect(isLocalPath("npm:package")).toBe(false);
 	});

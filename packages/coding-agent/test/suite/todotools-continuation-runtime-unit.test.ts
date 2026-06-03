@@ -1,9 +1,16 @@
 import { fauxAssistantMessage } from "@earendil-works/pi-ai";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { HELIX_CONVERSATION_EVENT, HELIX_SYSTEM_PREFIX } from "../../src/core/extensions/builtin/system-messages.js";
 import { buildContinuationPrompt } from "../../src/core/extensions/builtin/todotools/continuation/prompt.js";
 import { installContinuation } from "../../src/core/extensions/builtin/todotools/continuation/runtime.js";
 import type { TodoItem } from "../../src/core/extensions/builtin/todotools/state.js";
+=======
+import { SENPI_CONVERSATION_EVENT, SENPI_SYSTEM_PREFIX } from "../../src/core/extensions/builtin/system-messages.ts";
+import { buildContinuationPrompt } from "../../src/core/extensions/builtin/todotools/continuation/prompt.ts";
+import { installContinuation } from "../../src/core/extensions/builtin/todotools/continuation/runtime.ts";
+import type { TodoItem } from "../../src/core/extensions/builtin/todotools/state.ts";
+>>>>>>> upstream/main
 import type {
 	AgentEndEvent,
 	BeforeAgentStartEvent,
@@ -11,7 +18,11 @@ import type {
 	ExtensionUIContext,
 	SessionShutdownEvent,
 	SessionStartEvent,
+<<<<<<< HEAD
 } from "../../src/core/extensions/types.js";
+=======
+} from "../../src/core/extensions/types.ts";
+>>>>>>> upstream/main
 
 type EventHandler = (event: unknown, ctx: ExtensionContext) => unknown | Promise<unknown>;
 
@@ -61,6 +72,10 @@ function createMockContext(options?: {
 	return {
 		cwd: options?.cwd ?? "/tmp/project",
 		hasUI: options?.hasUI ?? true,
+<<<<<<< HEAD
+=======
+		mode: options?.hasUI === false ? "print" : "tui",
+>>>>>>> upstream/main
 		isIdle: options?.isIdle ?? (() => true),
 		sessionManager: {
 			getSessionId: () => options?.sessionId ?? "session-1",
@@ -200,12 +215,20 @@ describe("todotools continuation runtime", () => {
 		expect(mockPi.sendUserMessage).toHaveBeenCalledTimes(1);
 		expect(mockPi.sendUserMessage).toHaveBeenNthCalledWith(
 			1,
+<<<<<<< HEAD
 			`${HELIX_SYSTEM_PREFIX}\n${buildContinuationPrompt(pendingTodos)}`,
+=======
+			`${SENPI_SYSTEM_PREFIX}\n${buildContinuationPrompt(pendingTodos)}`,
+>>>>>>> upstream/main
 		);
 		expect(mockPi.sendUserMessage.mock.calls[0]).toHaveLength(1);
 		expect(typeof mockPi.sendUserMessage.mock.calls[0]?.[0]).toBe("string");
 		expect(mockPi.events.emit).toHaveBeenCalledWith(
+<<<<<<< HEAD
 			HELIX_CONVERSATION_EVENT,
+=======
+			SENPI_CONVERSATION_EVENT,
+>>>>>>> upstream/main
 			expect.objectContaining({
 				version: 1,
 				source: "builtin",
@@ -214,9 +237,15 @@ describe("todotools continuation runtime", () => {
 				sessionId: "session-1",
 				conversation: expect.objectContaining({
 					kind: "user_message",
+<<<<<<< HEAD
 					prefix: HELIX_SYSTEM_PREFIX,
 				}),
 				text: `${HELIX_SYSTEM_PREFIX}\n${buildContinuationPrompt(pendingTodos)}`,
+=======
+					prefix: SENPI_SYSTEM_PREFIX,
+				}),
+				text: `${SENPI_SYSTEM_PREFIX}\n${buildContinuationPrompt(pendingTodos)}`,
+>>>>>>> upstream/main
 			}),
 		);
 	});
@@ -428,7 +457,11 @@ describe("todotools continuation runtime", () => {
 			}),
 		);
 		expect(mockPi.events.emit).toHaveBeenCalledWith(
+<<<<<<< HEAD
 			HELIX_CONVERSATION_EVENT,
+=======
+			SENPI_CONVERSATION_EVENT,
+>>>>>>> upstream/main
 			expect.objectContaining({
 				version: 1,
 				source: "builtin",
@@ -437,7 +470,11 @@ describe("todotools continuation runtime", () => {
 				sessionId: "session-3",
 				conversation: expect.objectContaining({
 					kind: "user_message",
+<<<<<<< HEAD
 					prefix: HELIX_SYSTEM_PREFIX,
+=======
+					prefix: SENPI_SYSTEM_PREFIX,
+>>>>>>> upstream/main
 				}),
 				errorMessage: "follow-up failed",
 			}),

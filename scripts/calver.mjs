@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 /**
+<<<<<<< HEAD
  * CalVer (Calendar Versioning) computation for the helix monorepo.
+=======
+ * CalVer (Calendar Versioning) computation for the senpi monorepo.
+>>>>>>> upstream/main
  *
  * Version format: `YYYY.M.D` for the first release of the day, then
  * `YYYY.M.D-N` (N >= 2) for each subsequent same-day re-release.
@@ -33,7 +37,11 @@
 import { execFileSync } from "node:child_process";
 
 const DEFAULT_PACKAGES = [
+<<<<<<< HEAD
 	"@helix-bio/helix",
+=======
+	"@code-yeongyu/senpi",
+>>>>>>> upstream/main
 	"@earendil-works/pi-ai",
 	"@earendil-works/pi-agent-core",
 	"@earendil-works/pi-tui",
@@ -55,7 +63,11 @@ function computeToday(now = new Date()) {
 /**
  * Fetch published versions for a single npm package, tolerating any failure.
  *
+<<<<<<< HEAD
  * @param {string} pkg npm package name (e.g. `"@helix-bio/helix"`).
+=======
+ * @param {string} pkg npm package name (e.g. `"@code-yeongyu/senpi"`).
+>>>>>>> upstream/main
  * @returns {string[]} Array of versions, or `[]` on any failure.
  */
 function fetchRegistryVersions(pkg) {
@@ -188,7 +200,11 @@ function printHelp() {
 	const text = [
 		"Usage: node scripts/calver.mjs [--print | --json | --help]",
 		"",
+<<<<<<< HEAD
 		"Computes the next CalVer version for the helix monorepo.",
+=======
+		"Computes the next CalVer version for the senpi monorepo.",
+>>>>>>> upstream/main
 		"",
 		"Options:",
 		"  --print   Print next version to stdout (default).",

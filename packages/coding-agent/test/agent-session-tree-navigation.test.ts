@@ -10,7 +10,11 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { API_KEY, createTestSession, type TestSessionContext } from "./utilities.js";
+=======
+import { API_KEY, createTestSession, type TestSessionContext } from "./utilities.ts";
+>>>>>>> upstream/main
 
 describe.skipIf(!API_KEY)("AgentSession tree navigation e2e", () => {
 	let ctx: TestSessionContext;

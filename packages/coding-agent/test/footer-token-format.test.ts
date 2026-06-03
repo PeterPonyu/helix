@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { stripAnsi } from "../src/utils/ansi.js";
+=======
+import { stripAnsi } from "../src/utils/ansi.ts";
+>>>>>>> upstream/main
 
 vi.mock("@earendil-works/pi-tui", async () => import("@earendil-works/pi-tui"));
 vi.mock("../src/modes/interactive/theme/theme.js", () => ({
@@ -59,7 +63,11 @@ function createFooterData(): unknown {
 describe("FooterComponent token formatting", () => {
 	it("renders comma-formatted token counters and context window usage", async () => {
 		// given
+<<<<<<< HEAD
 		const { FooterComponent } = await import("../src/modes/interactive/components/footer.js");
+=======
+		const { FooterComponent } = await import("../src/modes/interactive/components/footer.ts");
+>>>>>>> upstream/main
 		const Footer = FooterComponent as new (
 			session: unknown,
 			footerData: unknown,

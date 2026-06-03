@@ -6,7 +6,11 @@ import {
 	isSafeCommand,
 	markCompletedSteps,
 	type TodoItem,
+<<<<<<< HEAD
 } from "../examples/extensions/plan-mode/utils.js";
+=======
+} from "../examples/extensions/plan-mode/utils.ts";
+>>>>>>> upstream/main
 
 describe("isSafeCommand", () => {
 	describe("safe commands", () => {

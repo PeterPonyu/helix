@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 export namespace Wildcard {
 	export function match(value: string, pattern: string): boolean {
+=======
+export const Wildcard = {
+	match(value: string, pattern: string): boolean {
+>>>>>>> upstream/main
 		if (value === "" && pattern === "") {
 			return true;
 		}
@@ -51,5 +56,10 @@ export namespace Wildcard {
 		}
 
 		return patternIdx === pattern.length;
+<<<<<<< HEAD
 	}
 }
+=======
+	},
+} as const;
+>>>>>>> upstream/main

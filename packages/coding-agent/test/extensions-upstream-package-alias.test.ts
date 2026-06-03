@@ -2,7 +2,11 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { discoverAndLoadExtensions } from "../src/core/extensions/loader.js";
+=======
+import { discoverAndLoadExtensions } from "../src/core/extensions/loader.ts";
+>>>>>>> upstream/main
 
 describe("upstream package name alias for extension loader", () => {
 	let tempDir: string;
@@ -18,18 +22,31 @@ describe("upstream package name alias for extension loader", () => {
 		fs.rmSync(tempDir, { recursive: true, force: true });
 	});
 
+<<<<<<< HEAD
 	it("resolves runtime imports from @helix-bio/helix", async () => {
 		// given a third-party extension that imports a runtime helper
 		// from the upstream package name (the case for any pi-extension
 		// authored against pi-mono and run under helix)
 		const extCode = `
 			import { defineTool } from "@helix-bio/helix";
+=======
+	it("resolves runtime imports from @code-yeongyu/senpi", async () => {
+		// given a third-party extension that imports a runtime helper
+		// from the upstream package name (the case for any pi-extension
+		// authored against pi-mono and run under senpi)
+		const extCode = `
+			import { defineTool } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 			import { Type } from "typebox";
 
 			const upstreamTool = defineTool({
 				name: "upstream_aliased_tool",
 				label: "Upstream Aliased Tool",
+<<<<<<< HEAD
 				description: "Verifies @helix-bio/helix resolves under helix",
+=======
+				description: "Verifies @code-yeongyu/senpi resolves under senpi",
+>>>>>>> upstream/main
 				parameters: Type.Object({}),
 				execute: async () => ({ content: [{ type: "text", text: "ok" }] }),
 			});
@@ -45,7 +62,11 @@ describe("upstream package name alias for extension loader", () => {
 
 		// then it must load without "Cannot find module" errors and
 		// register the tool, proving the alias maps the upstream name
+<<<<<<< HEAD
 		// to the helix runtime
+=======
+		// to the senpi runtime
+>>>>>>> upstream/main
 		expect(result.errors).toHaveLength(0);
 		expect(result.extensions).toHaveLength(1);
 		expect(result.extensions[0]?.tools.has("upstream_aliased_tool")).toBe(true);
@@ -53,8 +74,13 @@ describe("upstream package name alias for extension loader", () => {
 
 	it("resolves runtime imports from the upstream @mariozechner package names", async () => {
 		// given extensions installed from upstream pi packages still import
+<<<<<<< HEAD
 		// @mariozechner peer package names. Under helix these must resolve to the
 		// already-loaded helix runtime instead of an extension-local duplicate.
+=======
+		// @mariozechner peer package names. Under senpi these must resolve to the
+		// already-loaded senpi runtime instead of an extension-local duplicate.
+>>>>>>> upstream/main
 		const extCode = `
 			import { StringEnum } from "@mariozechner/pi-ai";
 			import { Text } from "@mariozechner/pi-tui";
@@ -87,7 +113,11 @@ describe("upstream package name alias for extension loader", () => {
 	});
 
 	it("resolves runtime imports from the upstream @earendil-works coding agent package", async () => {
+<<<<<<< HEAD
 		// given a project extension migrated from .pi to .helix still imports
+=======
+		// given a project extension migrated from .pi to .senpi still imports
+>>>>>>> upstream/main
 		// the upstream coding-agent package name used by pi-mono
 		const extCode = `
 			import { DynamicBorder, type ExtensionAPI } from "@earendil-works/pi-coding-agent";
@@ -108,13 +138,21 @@ describe("upstream package name alias for extension loader", () => {
 		expect(result.extensions[0]?.messageRenderers.has("earendil_alias_renderer")).toBe(true);
 	});
 
+<<<<<<< HEAD
 	it("resolves type-only imports from @helix-bio/helix", async () => {
+=======
+	it("resolves type-only imports from @code-yeongyu/senpi", async () => {
+>>>>>>> upstream/main
 		// given a third-party extension that uses a type-only import
 		// (the most common shape for upstream-named imports). Type-only
 		// imports erase at runtime but a missing alias still surfaces
 		// when the bundler/transpiler eagerly resolves the specifier
 		const extCode = `
+<<<<<<< HEAD
 			import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+			import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 			import { Type } from "typebox";
 
 			export default function (pi: ExtensionAPI) {

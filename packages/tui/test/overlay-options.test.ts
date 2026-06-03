@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
+<<<<<<< HEAD
 import type { Component } from "../src/tui.js";
 import { TUI } from "../src/tui.js";
 import { VirtualTerminal } from "./virtual-terminal.js";
@@ -9,6 +10,20 @@ class StaticOverlay implements Component {
 		private lines: string[],
 		public requestedWidth?: number,
 	) {}
+=======
+import type { Component } from "../src/tui.ts";
+import { TUI } from "../src/tui.ts";
+import { VirtualTerminal } from "./virtual-terminal.ts";
+
+class StaticOverlay implements Component {
+	private lines: string[];
+	requestedWidth?: number;
+
+	constructor(lines: string[], requestedWidth?: number) {
+		this.lines = lines;
+		this.requestedWidth = requestedWidth;
+	}
+>>>>>>> upstream/main
 
 	render(width: number): string[] {
 		// Store the width we were asked to render at for verification

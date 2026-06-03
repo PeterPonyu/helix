@@ -1,10 +1,18 @@
 import type { AgentToolResult } from "@earendil-works/pi-agent-core";
 import { Box, type Component, Container, getCapabilities, Image, Spacer, Text, type TUI } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import type { ToolDefinition, ToolRenderContext } from "../../../core/extensions/types.js";
 import { createAllToolDefinitions, type ToolName } from "../../../core/tools/index.js";
 import { getTextOutput as getRenderedTextOutput } from "../../../core/tools/render-utils.js";
 import { convertToPng } from "../../../utils/image-convert.js";
 import { theme } from "../theme/theme.js";
+=======
+import type { ToolDefinition, ToolRenderContext } from "../../../core/extensions/types.ts";
+import { createAllToolDefinitions, type ToolName } from "../../../core/tools/index.ts";
+import { getTextOutput as getRenderedTextOutput } from "../../../core/tools/render-utils.ts";
+import { convertToPng } from "../../../utils/image-convert.ts";
+import { theme } from "../theme/theme.ts";
+>>>>>>> upstream/main
 
 export interface ToolExecutionOptions {
 	showImages?: boolean;
@@ -226,7 +234,37 @@ export class ToolExecutionComponent extends Container {
 		if (this.cachedLines && this.cachedWidth === width && this.cachedSignature === signature) {
 			return [...this.cachedLines];
 		}
+<<<<<<< HEAD
 		const lines = super.render(width);
+=======
+
+		let lines: string[];
+		if (this.hasRendererDefinition() && this.getRenderShell() === "self") {
+			const contentLines = this.selfRenderContainer.render(width);
+			if (contentLines.length === 0 && this.imageComponents.length === 0) {
+				return [];
+			}
+
+			lines = [];
+			if (contentLines.length > 0) {
+				lines.push("");
+				lines.push(...contentLines);
+			}
+			for (let i = 0; i < this.imageComponents.length; i++) {
+				const spacer = this.imageSpacers[i];
+				if (spacer) {
+					lines.push(...spacer.render(width));
+				}
+				const imageComponent = this.imageComponents[i];
+				if (imageComponent) {
+					lines.push(...imageComponent.render(width));
+				}
+			}
+		} else {
+			lines = super.render(width);
+		}
+
+>>>>>>> upstream/main
 		this.cachedWidth = width;
 		this.cachedSignature = signature;
 		this.cachedLines = [...lines];

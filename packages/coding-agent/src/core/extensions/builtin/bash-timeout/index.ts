@@ -1,20 +1,34 @@
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../../types.js";
+=======
+import type { ExtensionAPI } from "../../types.ts";
+>>>>>>> upstream/main
 
 import {
 	applyBashTimeout,
 	type BashToolInputLike,
 	buildBashTimeoutPrompt,
 	resolveBashTimeoutDefaults,
+<<<<<<< HEAD
 } from "./timeout.js";
 
 export type { BashTimeoutDefaults, BashToolInputLike } from "./timeout.js";
+=======
+} from "./timeout.ts";
+
+export type { BashTimeoutDefaults, BashToolInputLike } from "./timeout.ts";
+>>>>>>> upstream/main
 export {
 	applyBashTimeout,
 	BASH_DEFAULT_TIMEOUT_SECONDS,
 	BASH_MAX_TIMEOUT_SECONDS,
 	buildBashTimeoutPrompt,
 	resolveBashTimeoutDefaults,
+<<<<<<< HEAD
 } from "./timeout.js";
+=======
+} from "./timeout.ts";
+>>>>>>> upstream/main
 
 export default function bashTimeoutExtension(pi: ExtensionAPI): void {
 	const env = typeof process !== "undefined" ? process.env : {};

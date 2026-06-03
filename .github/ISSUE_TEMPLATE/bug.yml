@@ -5,9 +5,15 @@ body:
   - type: markdown
     attributes:
       value: |
+<<<<<<< HEAD
         **Before you start:** Read [CONTRIBUTING.md](https://github.com/PeterPonyu/helix/blob/main/CONTRIBUTING.md).
 
         Issues stay open for maintainer review. Reports that skip the quality bar in [CONTRIBUTING.md](https://github.com/PeterPonyu/helix/blob/main/CONTRIBUTING.md) may be closed without extended triage.
+=======
+        **Before you start:** Read [CONTRIBUTING.md](https://github.com/code-yeongyu/senpi/blob/main/CONTRIBUTING.md).
+
+        Issues stay open for maintainer review. Reports that skip the quality bar in [CONTRIBUTING.md](https://github.com/code-yeongyu/senpi/blob/main/CONTRIBUTING.md) may be closed without extended triage.
+>>>>>>> upstream/main
 
         Keep this short. If it doesn't fit on one screen, it's too long. Write in your own voice.
 

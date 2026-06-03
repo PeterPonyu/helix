@@ -1,6 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { type CompactionPreparation, DEFAULT_COMPACTION_SETTINGS } from "../../src/core/compaction/index.js";
 import compactionExtension from "../../src/core/extensions/builtin/compaction/index.js";
+=======
+import { type CompactionPreparation, DEFAULT_COMPACTION_SETTINGS } from "../../src/core/compaction/index.ts";
+import compactionExtension from "../../src/core/extensions/builtin/compaction/index.ts";
+>>>>>>> upstream/main
 import type {
 	ExtensionAPI,
 	ExtensionContext,
@@ -8,8 +13,13 @@ import type {
 	SessionBeforeCompactEvent,
 	SessionBeforeCompactResult,
 	SessionCompactEvent,
+<<<<<<< HEAD
 } from "../../src/core/extensions/index.js";
 import type { CompactionEntry, SessionEntry } from "../../src/core/session-manager.js";
+=======
+} from "../../src/core/extensions/index.ts";
+import type { CompactionEntry, SessionEntry } from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 const CHECKPOINT_CUSTOM_TYPE = "compaction.agent-checkpoint";
 const TODO_SNAPSHOT_CUSTOM_TYPE = "compaction.todo-snapshot";
@@ -64,6 +74,10 @@ function createExtensionContext(entries: SessionEntry[]): ExtensionContext {
 
 	return {
 		hasUI: false,
+<<<<<<< HEAD
+=======
+		mode: "print",
+>>>>>>> upstream/main
 		ui: Object.assign(Object.create(null), {
 			notify: vi.fn(),
 		}) as ExtensionContext["ui"],

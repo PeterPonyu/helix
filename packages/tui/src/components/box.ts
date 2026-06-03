@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import type { Component } from "../tui.js";
 import { applyBackgroundToLine, visibleWidth } from "../utils.js";
+=======
+import type { Component } from "../tui.ts";
+import { applyBackgroundToLine, visibleWidth } from "../utils.ts";
+>>>>>>> upstream/main
 
 type RenderCache = {
 	childLines: string[];

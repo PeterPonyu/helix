@@ -1,5 +1,9 @@
 import type { Api, Model, OpenAIResponsesCompat } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { ExtensionAPI, ExtensionContext } from "../../types.js";
+=======
+import type { ExtensionAPI, ExtensionContext } from "../../types.ts";
+>>>>>>> upstream/main
 
 type ToolDefinition = Record<string, unknown>;
 type OpenAiWebSearchModel = Pick<Model<Api>, "api" | "baseUrl" | "compat">;

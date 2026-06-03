@@ -1,13 +1,22 @@
 import { symlink } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { NodeExecutionEnv } from "../../src/harness/env/nodejs.js";
+=======
+import { NodeExecutionEnv } from "../../src/harness/env/nodejs.ts";
+>>>>>>> upstream/main
 import {
 	formatPromptTemplateInvocation,
 	loadPromptTemplates,
 	loadSourcedPromptTemplates,
+<<<<<<< HEAD
 } from "../../src/harness/prompt-templates.js";
 import { createTempDir } from "./session-test-utils.js";
+=======
+} from "../../src/harness/prompt-templates.ts";
+import { createTempDir } from "./session-test-utils.ts";
+>>>>>>> upstream/main
 
 describe("loadPromptTemplates", () => {
 	it("loads markdown templates non-recursively from one or more dirs", async () => {

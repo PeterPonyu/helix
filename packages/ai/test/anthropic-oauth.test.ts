@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { loginAnthropic, refreshAnthropicToken } from "../src/utils/oauth/anthropic.js";
+=======
+import { loginAnthropic, refreshAnthropicToken } from "../src/utils/oauth/anthropic.ts";
+>>>>>>> upstream/main
 
 function jsonResponse(body: unknown, status: number = 200): Response {
 	return new Response(JSON.stringify(body), {

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import type { CompactionReason } from "../../types.js";
 import type { CompactionExtensionState } from "./state.js";
+=======
+import type { CompactionReason } from "../../types.ts";
+import type { CompactionExtensionState } from "./state.ts";
+>>>>>>> upstream/main
 
 export const softCap = 3;
 export const hardCap = 10;

@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import type { CustomEntry, SessionEntry } from "../../../session-manager.js";
 import type { ExtensionAPI, ExtensionContext } from "../../types.js";
 
 const TODO_SNAPSHOT_CUSTOM_TYPE = "compaction.todo-snapshot";
 const TODO_SNAPSHOT_SCHEMA = "helix.compaction.todo-snapshot.v1";
+=======
+import type { CustomEntry, SessionEntry } from "../../../session-manager.ts";
+import type { ExtensionAPI, ExtensionContext } from "../../types.ts";
+
+const TODO_SNAPSHOT_CUSTOM_TYPE = "compaction.todo-snapshot";
+const TODO_SNAPSHOT_SCHEMA = "senpi.compaction.todo-snapshot.v1";
+>>>>>>> upstream/main
 
 export interface TodoEntry {
 	id: string;

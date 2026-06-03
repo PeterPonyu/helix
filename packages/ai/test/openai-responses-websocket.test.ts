@@ -1,7 +1,12 @@
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { type OpenAIResponsesOptions, streamOpenAIResponses } from "../src/providers/openai-responses.js";
 import type { Context, Model, Tool } from "../src/types.js";
+=======
+import { type OpenAIResponsesOptions, streamOpenAIResponses } from "../src/providers/openai-responses.ts";
+import type { Context, Model, Tool } from "../src/types.ts";
+>>>>>>> upstream/main
 
 const sentFrames: string[] = [];
 const constructedUrls: string[] = [];

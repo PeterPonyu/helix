@@ -13,6 +13,7 @@
  */
 
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { complete } from "../src/stream.js";
 import type { Api, Context, Model, StreamOptions, Usage } from "../src/types.js";
@@ -24,6 +25,19 @@ import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-u
 import { hasBedrockCredentials } from "./bedrock-utils.js";
 import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } from "./cloudflare-utils.js";
 import { resolveApiKey } from "./oauth.js";
+=======
+import { getModel } from "../src/models.ts";
+import { complete } from "../src/stream.ts";
+import type { Api, Context, Model, StreamOptions, Usage } from "../src/types.ts";
+import { getLiveEnvApiKey, OPENROUTER_LIVE_TEST_FLAG } from "./live-api-gates.ts";
+
+type StreamOptionsWithExtras = StreamOptions & Record<string, unknown>;
+
+import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.ts";
+import { hasBedrockCredentials } from "./bedrock-utils.ts";
+import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } from "./cloudflare-utils.ts";
+import { resolveApiKey } from "./oauth.ts";
+>>>>>>> upstream/main
 
 // Resolve OAuth tokens at module level (async, runs before tests)
 const oauthTokens = await Promise.all([
@@ -180,6 +194,7 @@ describe("totalTokens field", () => {
 	});
 
 	describe.skipIf(!process.env.OPENAI_API_KEY)("OpenAI Responses", () => {
+<<<<<<< HEAD
 		it("gpt-4o - should return totalTokens equal to sum of components", { retry: 3, timeout: 60000 }, async () => {
 			const llm = getModel("openai", "gpt-4o");
 
@@ -192,6 +207,24 @@ describe("totalTokens field", () => {
 			assertTotalTokensEqualsComponents(first);
 			assertTotalTokensEqualsComponents(second);
 		});
+=======
+		it(
+			"claude-haiku-4.5 - should return totalTokens equal to sum of components",
+			{ retry: 3, timeout: 60000 },
+			async () => {
+				const llm = getModel("openai", "gpt-4o");
+
+				console.log(`\nOpenAI Responses / ${llm.id}:`);
+				const { first, second } = await testTotalTokensWithCache(llm);
+
+				logUsage("First request", first);
+				logUsage("Second request", second);
+
+				assertTotalTokensEqualsComponents(first);
+				assertTotalTokensEqualsComponents(second);
+			},
+		);
+>>>>>>> upstream/main
 	});
 
 	describe.skipIf(!hasAzureOpenAICredentials())("Azure OpenAI Responses", () => {
@@ -668,10 +701,17 @@ describe("totalTokens field", () => {
 		);
 
 		it(
+<<<<<<< HEAD
 			"google/gemini-2.0-flash-001 - should return totalTokens equal to sum of components",
 			{ retry: 3, timeout: 60000 },
 			async () => {
 				const llm = getModel("openrouter", "google/gemini-2.0-flash-001");
+=======
+			"google/gemini-2.5-flash - should return totalTokens equal to sum of components",
+			{ retry: 3, timeout: 60000 },
+			async () => {
+				const llm = getModel("openrouter", "google/gemini-2.5-flash");
+>>>>>>> upstream/main
 
 				console.log(`\nOpenRouter / ${llm.id}:`);
 				const { first, second } = await testTotalTokensWithCache(llm, { apiKey: openRouterApiKey });
@@ -685,10 +725,17 @@ describe("totalTokens field", () => {
 		);
 
 		it(
+<<<<<<< HEAD
 			"meta-llama/llama-4-scout - should return totalTokens equal to sum of components",
 			{ retry: 3, timeout: 60000 },
 			async () => {
 				const llm = getModel("openrouter", "meta-llama/llama-4-scout");
+=======
+			"deepseek/deepseek-chat - should return totalTokens equal to sum of components",
+			{ retry: 3, timeout: 60000 },
+			async () => {
+				const llm = getModel("openrouter", "deepseek/deepseek-chat");
+>>>>>>> upstream/main
 
 				console.log(`\nOpenRouter / ${llm.id}:`);
 				const { first, second } = await testTotalTokensWithCache(llm, { apiKey: openRouterApiKey });
@@ -708,10 +755,17 @@ describe("totalTokens field", () => {
 
 	describe("GitHub Copilot (OAuth)", () => {
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should return totalTokens equal to sum of components",
 			{ retry: 3, timeout: 60000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should return totalTokens equal to sum of components",
+			{ retry: 3, timeout: 60000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 
 				console.log(`\nGitHub Copilot / ${llm.id}:`);
 				const { first, second } = await testTotalTokensWithCache(llm, { apiKey: githubCopilotToken });

@@ -1,9 +1,17 @@
 import type { Transport } from "@earendil-works/pi-ai";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+<<<<<<< HEAD
 import { homedir } from "os";
 import { dirname, join } from "path";
 import lockfile from "proper-lockfile";
 import { CONFIG_DIR_NAME, getAgentDir } from "../config.js";
+=======
+import { dirname, join } from "path";
+import lockfile from "proper-lockfile";
+import { CONFIG_DIR_NAME, getAgentDir } from "../config.ts";
+import { normalizePath, resolvePath } from "../utils/paths.ts";
+import { DEFAULT_HTTP_IDLE_TIMEOUT_MS, parseHttpIdleTimeoutMs } from "./http-dispatcher.ts";
+>>>>>>> upstream/main
 
 export interface CompactionSettings {
 	enabled?: boolean; // default: true
@@ -85,8 +93,11 @@ export type PackageSource =
 			themes?: string[];
 	  };
 
+<<<<<<< HEAD
 const DEFAULT_PROVIDER_TIMEOUT_MS = 300_000;
 
+=======
+>>>>>>> upstream/main
 export interface Settings {
 	lastChangelogVersion?: string;
 	defaultProvider?: string;
@@ -128,6 +139,11 @@ export interface Settings {
 	warnings?: WarningSettings;
 	sessionDir?: string; // Custom session storage directory (same format as --session-dir CLI flag)
 	openai?: OpenAISettings;
+<<<<<<< HEAD
+=======
+	httpIdleTimeoutMs?: number; // HTTP header/body idle timeout in milliseconds; 0 disables it
+	websocketConnectTimeoutMs?: number; // WebSocket connect/open handshake timeout in milliseconds; 0 disables it
+>>>>>>> upstream/main
 }
 
 /** Deep merge settings: project/overrides take precedence, nested objects merge recursively */
@@ -161,6 +177,20 @@ function deepMergeSettings(base: Settings, overrides: Settings): Settings {
 	return result;
 }
 
+<<<<<<< HEAD
+=======
+function parseTimeoutSetting(value: unknown, settingName: string): number | undefined {
+	const timeoutMs = parseHttpIdleTimeoutMs(value);
+	if (timeoutMs !== undefined) {
+		return timeoutMs;
+	}
+	if (value !== undefined) {
+		throw new Error(`Invalid ${settingName} setting: ${String(value)}`);
+	}
+	return undefined;
+}
+
+>>>>>>> upstream/main
 export type SettingsScope = "global" | "project";
 
 export interface SettingsStorage {
@@ -177,8 +207,15 @@ export class FileSettingsStorage implements SettingsStorage {
 	private projectSettingsPath: string;
 
 	constructor(cwd: string, agentDir: string) {
+<<<<<<< HEAD
 		this.globalSettingsPath = join(agentDir, "settings.json");
 		this.projectSettingsPath = join(cwd, CONFIG_DIR_NAME, "settings.json");
+=======
+		const resolvedCwd = resolvePath(cwd);
+		const resolvedAgentDir = resolvePath(agentDir);
+		this.globalSettingsPath = join(resolvedAgentDir, "settings.json");
+		this.projectSettingsPath = join(resolvedCwd, CONFIG_DIR_NAME, "settings.json");
+>>>>>>> upstream/main
 	}
 
 	private acquireLockSyncWithRetry(path: string): () => void {
@@ -596,6 +633,7 @@ export class SettingsManager {
 
 	getSessionDir(): string | undefined {
 		const sessionDir = this.settings.sessionDir;
+<<<<<<< HEAD
 		if (!sessionDir) {
 			return sessionDir;
 		}
@@ -606,6 +644,9 @@ export class SettingsManager {
 			return join(homedir(), sessionDir.slice(2));
 		}
 		return sessionDir;
+=======
+		return sessionDir ? normalizePath(sessionDir) : sessionDir;
+>>>>>>> upstream/main
 	}
 
 	getDefaultProvider(): string | undefined {
@@ -771,14 +812,40 @@ export class SettingsManager {
 		};
 	}
 
+<<<<<<< HEAD
 	getProviderRetrySettings(): { timeoutMs: number; maxRetries?: number; maxRetryDelayMs: number } {
 		return {
 			timeoutMs: this.settings.retry?.provider?.timeoutMs ?? DEFAULT_PROVIDER_TIMEOUT_MS,
+=======
+	getHttpIdleTimeoutMs(): number {
+		return parseTimeoutSetting(this.settings.httpIdleTimeoutMs, "httpIdleTimeoutMs") ?? DEFAULT_HTTP_IDLE_TIMEOUT_MS;
+	}
+
+	setHttpIdleTimeoutMs(timeoutMs: number): void {
+		if (!Number.isFinite(timeoutMs) || timeoutMs < 0) {
+			throw new Error(`Invalid httpIdleTimeoutMs setting: ${String(timeoutMs)}`);
+		}
+		this.globalSettings.httpIdleTimeoutMs = Math.floor(timeoutMs);
+		this.markModified("httpIdleTimeoutMs");
+		this.save();
+	}
+
+	getProviderRetrySettings(): { timeoutMs?: number; maxRetries?: number; maxRetryDelayMs: number } {
+		return {
+			timeoutMs: this.settings.retry?.provider?.timeoutMs,
+>>>>>>> upstream/main
 			maxRetries: this.settings.retry?.provider?.maxRetries,
 			maxRetryDelayMs: this.settings.retry?.provider?.maxRetryDelayMs ?? 60000,
 		};
 	}
 
+<<<<<<< HEAD
+=======
+	getWebSocketConnectTimeoutMs(): number | undefined {
+		return parseTimeoutSetting(this.settings.websocketConnectTimeoutMs, "websocketConnectTimeoutMs");
+	}
+
+>>>>>>> upstream/main
 	getHideThinkingBlock(): boolean {
 		return this.settings.hideThinkingBlock ?? false;
 	}

@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { addServiceTierToPayload, type ServiceTier } from "../../src/core/extensions/builtin/service-tier.js";
+=======
+import { addServiceTierToPayload, type ServiceTier } from "../../src/core/extensions/builtin/service-tier.ts";
+>>>>>>> upstream/main
 
 describe("service-tier builtin extension", () => {
 	it("leaves payload unchanged when service tier is unset", () => {

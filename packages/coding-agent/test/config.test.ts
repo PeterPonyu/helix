@@ -7,7 +7,11 @@ import {
 	getSelfUpdateCommand,
 	getSelfUpdateUnavailableInstruction,
 	getUpdateInstruction,
+<<<<<<< HEAD
 } from "../src/config.js";
+=======
+} from "../src/config.ts";
+>>>>>>> upstream/main
 
 const execPathDescriptor = Object.getOwnPropertyDescriptor(process, "execPath");
 const originalPath = process.env.PATH;
@@ -153,7 +157,11 @@ describe("detectInstallMethod", () => {
 
 		expect(detectInstallMethod()).toBe("pnpm");
 		expect(getUpdateInstruction("@earendil-works/pi-coding-agent")).toBe(
+<<<<<<< HEAD
 			"Run: pnpm install -g @earendil-works/pi-coding-agent",
+=======
+			"Run: pnpm install -g --ignore-scripts --config.minimumReleaseAge=0 @earendil-works/pi-coding-agent",
+>>>>>>> upstream/main
 		);
 	});
 
@@ -175,14 +183,28 @@ describe("detectInstallMethod", () => {
 		expect(detectInstallMethod()).toBe("npm");
 		expect(command).toEqual({
 			command: "npm",
+<<<<<<< HEAD
 			args: ["--prefix", prefix, "install", "-g", "@earendil-works/pi-coding-agent"],
 			display: `npm --prefix ${prefix} install -g @earendil-works/pi-coding-agent`,
+=======
+			args: [
+				"--prefix",
+				prefix,
+				"install",
+				"-g",
+				"--ignore-scripts",
+				"--min-release-age=0",
+				"@earendil-works/pi-coding-agent",
+			],
+			display: `npm --prefix ${prefix} install -g --ignore-scripts --min-release-age=0 @earendil-works/pi-coding-agent`,
+>>>>>>> upstream/main
 		});
 	});
 
 	test("self-updates renamed packages from the current install prefix", () => {
 		const { prefix } = createNpmPrefixInstall();
 
+<<<<<<< HEAD
 		const command = getSelfUpdateCommand("@helix-bio/helix", undefined, "@new-scope/pi");
 
 		expect(command).toEqual({
@@ -199,6 +221,24 @@ describe("detectInstallMethod", () => {
 					command: "npm",
 					args: ["--prefix", prefix, "install", "-g", "@new-scope/pi"],
 					display: `npm --prefix ${prefix} install -g @new-scope/pi`,
+=======
+		const command = getSelfUpdateCommand("@code-yeongyu/senpi", undefined, "@new-scope/pi");
+
+		expect(command).toEqual({
+			command: "npm",
+			args: ["--prefix", prefix, "install", "-g", "--ignore-scripts", "--min-release-age=0", "@new-scope/pi"],
+			display: `npm --prefix ${prefix} uninstall -g @code-yeongyu/senpi && npm --prefix ${prefix} install -g --ignore-scripts --min-release-age=0 @new-scope/pi`,
+			steps: [
+				{
+					command: "npm",
+					args: ["--prefix", prefix, "uninstall", "-g", "@code-yeongyu/senpi"],
+					display: `npm --prefix ${prefix} uninstall -g @code-yeongyu/senpi`,
+				},
+				{
+					command: "npm",
+					args: ["--prefix", prefix, "install", "-g", "--ignore-scripts", "--min-release-age=0", "@new-scope/pi"],
+					display: `npm --prefix ${prefix} install -g --ignore-scripts --min-release-age=0 @new-scope/pi`,
+>>>>>>> upstream/main
 				},
 			],
 		});
@@ -211,8 +251,21 @@ describe("detectInstallMethod", () => {
 
 		expect(command).toEqual({
 			command: "npm",
+<<<<<<< HEAD
 			args: ["--prefix", prefix, "install", "-g", "@earendil-works/pi-coding-agent"],
 			display: `npm --prefix ${prefix} install -g @earendil-works/pi-coding-agent`,
+=======
+			args: [
+				"--prefix",
+				prefix,
+				"install",
+				"-g",
+				"--ignore-scripts",
+				"--min-release-age=0",
+				"@earendil-works/pi-coding-agent",
+			],
+			display: `npm --prefix ${prefix} install -g --ignore-scripts --min-release-age=0 @earendil-works/pi-coding-agent`,
+>>>>>>> upstream/main
 		});
 	});
 
@@ -221,7 +274,19 @@ describe("detectInstallMethod", () => {
 
 		const command = getSelfUpdateCommand("@earendil-works/pi-coding-agent", []);
 
+<<<<<<< HEAD
 		expect(command?.args).toEqual(["--prefix", prefix, "install", "-g", "@earendil-works/pi-coding-agent"]);
+=======
+		expect(command?.args).toEqual([
+			"--prefix",
+			prefix,
+			"install",
+			"-g",
+			"--ignore-scripts",
+			"--min-release-age=0",
+			"@earendil-works/pi-coding-agent",
+		]);
+>>>>>>> upstream/main
 	});
 
 	test("quotes npm self-update display paths", () => {
@@ -229,7 +294,13 @@ describe("detectInstallMethod", () => {
 
 		const command = getSelfUpdateCommand("@earendil-works/pi-coding-agent");
 
+<<<<<<< HEAD
 		expect(command?.display).toBe(`npm --prefix "${prefix}" install -g @earendil-works/pi-coding-agent`);
+=======
+		expect(command?.display).toBe(
+			`npm --prefix "${prefix}" install -g --ignore-scripts --min-release-age=0 @earendil-works/pi-coding-agent`,
+		);
+>>>>>>> upstream/main
 	});
 
 	test("does not infer Windows npm custom prefixes from package paths", () => {
@@ -239,7 +310,11 @@ describe("detectInstallMethod", () => {
 
 		expect(detectInstallMethod()).toBe("npm");
 		expect(getUpdateInstruction("@earendil-works/pi-coding-agent")).toBe(
+<<<<<<< HEAD
 			"Run: npm install -g @earendil-works/pi-coding-agent",
+=======
+			"Run: npm install -g --ignore-scripts --min-release-age=0 @earendil-works/pi-coding-agent",
+>>>>>>> upstream/main
 		);
 	});
 
@@ -251,19 +326,29 @@ describe("detectInstallMethod", () => {
 		expect(detectInstallMethod()).toBe("bun");
 		expect(command).toEqual({
 			command: "bun",
+<<<<<<< HEAD
 			args: ["install", "-g", "@earendil-works/pi-coding-agent"],
 			display: "bun install -g @earendil-works/pi-coding-agent",
+=======
+			args: ["install", "-g", "--ignore-scripts", "--minimum-release-age=0", "@earendil-works/pi-coding-agent"],
+			display: "bun install -g --ignore-scripts --minimum-release-age=0 @earendil-works/pi-coding-agent",
+>>>>>>> upstream/main
 		});
 	});
 
 	test("self-updates renamed pnpm global installs by removing the old package first", () => {
 		createPnpmGlobalInstall();
 
+<<<<<<< HEAD
 		const command = getSelfUpdateCommand("@helix-bio/helix", undefined, "@new-scope/pi");
+=======
+		const command = getSelfUpdateCommand("@code-yeongyu/senpi", undefined, "@new-scope/pi");
+>>>>>>> upstream/main
 
 		expect(detectInstallMethod()).toBe("pnpm");
 		expect(command).toEqual({
 			command: "pnpm",
+<<<<<<< HEAD
 			args: ["install", "-g", "@new-scope/pi"],
 			display: "pnpm remove -g @helix-bio/helix && pnpm install -g @new-scope/pi",
 			steps: [
@@ -276,6 +361,21 @@ describe("detectInstallMethod", () => {
 					command: "pnpm",
 					args: ["install", "-g", "@new-scope/pi"],
 					display: "pnpm install -g @new-scope/pi",
+=======
+			args: ["install", "-g", "--ignore-scripts", "--config.minimumReleaseAge=0", "@new-scope/pi"],
+			display:
+				"pnpm remove -g @code-yeongyu/senpi && pnpm install -g --ignore-scripts --config.minimumReleaseAge=0 @new-scope/pi",
+			steps: [
+				{
+					command: "pnpm",
+					args: ["remove", "-g", "@code-yeongyu/senpi"],
+					display: "pnpm remove -g @code-yeongyu/senpi",
+				},
+				{
+					command: "pnpm",
+					args: ["install", "-g", "--ignore-scripts", "--config.minimumReleaseAge=0", "@new-scope/pi"],
+					display: "pnpm install -g --ignore-scripts --config.minimumReleaseAge=0 @new-scope/pi",
+>>>>>>> upstream/main
 				},
 			],
 		});
@@ -319,19 +419,29 @@ describe("detectInstallMethod", () => {
 		expect(detectInstallMethod()).toBe("pnpm");
 		expect(command).toEqual({
 			command: "pnpm",
+<<<<<<< HEAD
 			args: ["install", "-g", packageName],
 			display: `pnpm install -g ${packageName}`,
+=======
+			args: ["install", "-g", "--ignore-scripts", "--config.minimumReleaseAge=0", packageName],
+			display: `pnpm install -g --ignore-scripts --config.minimumReleaseAge=0 ${packageName}`,
+>>>>>>> upstream/main
 		});
 	});
 
 	test("self-updates renamed yarn global installs by removing the old package first", () => {
 		createYarnGlobalInstall();
 
+<<<<<<< HEAD
 		const command = getSelfUpdateCommand("@helix-bio/helix", undefined, "@new-scope/pi");
+=======
+		const command = getSelfUpdateCommand("@code-yeongyu/senpi", undefined, "@new-scope/pi");
+>>>>>>> upstream/main
 
 		expect(detectInstallMethod()).toBe("yarn");
 		expect(command).toEqual({
 			command: "yarn",
+<<<<<<< HEAD
 			args: ["global", "add", "@new-scope/pi"],
 			display: "yarn global remove @helix-bio/helix && yarn global add @new-scope/pi",
 			steps: [
@@ -344,6 +454,20 @@ describe("detectInstallMethod", () => {
 					command: "yarn",
 					args: ["global", "add", "@new-scope/pi"],
 					display: "yarn global add @new-scope/pi",
+=======
+			args: ["global", "add", "--ignore-scripts", "@new-scope/pi"],
+			display: "yarn global remove @code-yeongyu/senpi && yarn global add --ignore-scripts @new-scope/pi",
+			steps: [
+				{
+					command: "yarn",
+					args: ["global", "remove", "@code-yeongyu/senpi"],
+					display: "yarn global remove @code-yeongyu/senpi",
+				},
+				{
+					command: "yarn",
+					args: ["global", "add", "--ignore-scripts", "@new-scope/pi"],
+					display: "yarn global add --ignore-scripts @new-scope/pi",
+>>>>>>> upstream/main
 				},
 			],
 		});
@@ -352,11 +476,16 @@ describe("detectInstallMethod", () => {
 	test("self-updates renamed bun global installs by removing the old package first", () => {
 		createBunGlobalInstall();
 
+<<<<<<< HEAD
 		const command = getSelfUpdateCommand("@helix-bio/helix", undefined, "@new-scope/pi");
+=======
+		const command = getSelfUpdateCommand("@code-yeongyu/senpi", undefined, "@new-scope/pi");
+>>>>>>> upstream/main
 
 		expect(detectInstallMethod()).toBe("bun");
 		expect(command).toEqual({
 			command: "bun",
+<<<<<<< HEAD
 			args: ["install", "-g", "@new-scope/pi"],
 			display: "bun uninstall -g @helix-bio/helix && bun install -g @new-scope/pi",
 			steps: [
@@ -369,6 +498,21 @@ describe("detectInstallMethod", () => {
 					command: "bun",
 					args: ["install", "-g", "@new-scope/pi"],
 					display: "bun install -g @new-scope/pi",
+=======
+			args: ["install", "-g", "--ignore-scripts", "--minimum-release-age=0", "@new-scope/pi"],
+			display:
+				"bun uninstall -g @code-yeongyu/senpi && bun install -g --ignore-scripts --minimum-release-age=0 @new-scope/pi",
+			steps: [
+				{
+					command: "bun",
+					args: ["uninstall", "-g", "@code-yeongyu/senpi"],
+					display: "bun uninstall -g @code-yeongyu/senpi",
+				},
+				{
+					command: "bun",
+					args: ["install", "-g", "--ignore-scripts", "--minimum-release-age=0", "@new-scope/pi"],
+					display: "bun install -g --ignore-scripts --minimum-release-age=0 @new-scope/pi",
+>>>>>>> upstream/main
 				},
 			],
 		});

@@ -5,8 +5,13 @@ import {
 	buildContinuationPrompt,
 	CONTINUATION_DIRECTIVE,
 	countIncomplete,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/todotools/continuation/prompt.js";
 import type { TodoItem } from "../../src/core/extensions/builtin/todotools/state.js";
+=======
+} from "../../src/core/extensions/builtin/todotools/continuation/prompt.ts";
+import type { TodoItem } from "../../src/core/extensions/builtin/todotools/state.ts";
+>>>>>>> upstream/main
 
 const CONTINUATION_PROMPT_FIXTURE_PATH = fileURLToPath(
 	new URL("./fixtures/continuation-prompt-golden.txt", import.meta.url),

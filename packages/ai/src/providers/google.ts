@@ -5,8 +5,12 @@ import {
 	ThinkingLevel as GoogleGenAIThinkingLevel,
 	type ThinkingConfig,
 } from "@google/genai";
+<<<<<<< HEAD
 import { getEnvApiKey } from "../env-api-keys.js";
 import { calculateCost, clampThinkingLevel } from "../models.js";
+=======
+import { calculateCost, clampThinkingLevel } from "../models.ts";
+>>>>>>> upstream/main
 import type {
 	Api,
 	AssistantMessage,
@@ -20,10 +24,17 @@ import type {
 	ThinkingContent,
 	ThinkingLevel,
 	ToolCall,
+<<<<<<< HEAD
 } from "../types.js";
 import { AssistantMessageEventStream } from "../utils/event-stream.js";
 import { sanitizeSurrogates } from "../utils/sanitize-unicode.js";
 import type { GoogleThinkingLevel } from "./google-shared.js";
+=======
+} from "../types.ts";
+import { AssistantMessageEventStream } from "../utils/event-stream.ts";
+import { sanitizeSurrogates } from "../utils/sanitize-unicode.ts";
+import type { GoogleThinkingLevel } from "./google-shared.ts";
+>>>>>>> upstream/main
 import {
 	convertMessages,
 	convertTools,
@@ -32,8 +43,13 @@ import {
 	mapToolChoice,
 	retainThoughtSignature,
 	toProviderNativeContent,
+<<<<<<< HEAD
 } from "./google-shared.js";
 import { applyExtraBody, buildBaseOptions, GOOGLE_RESERVED_BODY_KEYS } from "./simple-options.js";
+=======
+} from "./google-shared.ts";
+import { applyExtraBody, buildBaseOptions, GOOGLE_RESERVED_BODY_KEYS } from "./simple-options.ts";
+>>>>>>> upstream/main
 
 const THINKING_LEVEL_MAP: Record<GoogleThinkingLevel, GoogleGenAIThinkingLevel> = {
 	THINKING_LEVEL_UNSPECIFIED: GoogleGenAIThinkingLevel.THINKING_LEVEL_UNSPECIFIED,
@@ -82,7 +98,14 @@ export const streamGoogle: StreamFunction<"google-generative-ai", GoogleOptions>
 		};
 
 		try {
+<<<<<<< HEAD
 			const apiKey = options?.apiKey || getEnvApiKey(model.provider) || "";
+=======
+			const apiKey = options?.apiKey;
+			if (!apiKey) {
+				throw new Error(`No API key for provider: ${model.provider}`);
+			}
+>>>>>>> upstream/main
 			const client = createClient(model, apiKey, options?.headers);
 			let params = buildParams(model, context, options);
 			const nextParams = await options?.onPayload?.(params, model);
@@ -317,7 +340,11 @@ export const streamSimpleGoogle: StreamFunction<"google-generative-ai", SimpleSt
 	context: Context,
 	options?: SimpleStreamOptions,
 ): AssistantMessageEventStream => {
+<<<<<<< HEAD
 	const apiKey = options?.apiKey || getEnvApiKey(model.provider);
+=======
+	const apiKey = options?.apiKey;
+>>>>>>> upstream/main
 	if (!apiKey) {
 		throw new Error(`No API key for provider: ${model.provider}`);
 	}

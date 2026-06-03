@@ -4,7 +4,11 @@
  * Context files provide project-specific instructions loaded into the system prompt.
  */
 
+<<<<<<< HEAD
 import { createAgentSession, DefaultResourceLoader, getAgentDir, SessionManager } from "@helix-bio/helix";
+=======
+import { createAgentSession, DefaultResourceLoader, getAgentDir, SessionManager } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 // Disable context files entirely by returning an empty list in agentsFilesOverride.
 const loader = new DefaultResourceLoader({

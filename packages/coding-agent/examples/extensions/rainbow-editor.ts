@@ -1,10 +1,17 @@
 /**
  * Rainbow Editor - highlights "ultrathink" with animated shine effect
  *
+<<<<<<< HEAD
  * Usage: helix --extension ./examples/extensions/rainbow-editor.ts
  */
 
 import { CustomEditor, type ExtensionAPI } from "@helix-bio/helix";
+=======
+ * Usage: senpi --extension ./examples/extensions/rainbow-editor.ts
+ */
+
+import { CustomEditor, type ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 // Base colors (coral → yellow → green → teal → blue → purple → pink)
 const COLORS: [number, number, number][] = [

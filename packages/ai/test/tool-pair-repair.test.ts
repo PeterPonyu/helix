@@ -6,7 +6,11 @@ import {
 	TOOL_RESULT_PLACEHOLDER,
 	type ToolResultMessage,
 	type UserMessage,
+<<<<<<< HEAD
 } from "../src/index.js";
+=======
+} from "../src/index.ts";
+>>>>>>> upstream/main
 
 function userMsg(text: string, timestamp: number): UserMessage {
 	return { role: "user", content: [{ type: "text", text }], timestamp };

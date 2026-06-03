@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { createBuiltinParserRegistry } from "../../src/core/extensions/builtin/permission-system/parsers.js";
 import { createBashToolDefinition } from "../../src/core/tools/bash.js";
 import { createEditToolDefinition } from "../../src/core/tools/edit.js";
@@ -7,6 +8,16 @@ import { createGrepToolDefinition } from "../../src/core/tools/grep.js";
 import { createLsToolDefinition } from "../../src/core/tools/ls.js";
 import { createReadToolDefinition } from "../../src/core/tools/read.js";
 import { createWriteToolDefinition } from "../../src/core/tools/write.js";
+=======
+import { createBuiltinParserRegistry } from "../../src/core/extensions/builtin/permission-system/parsers.ts";
+import { createBashToolDefinition } from "../../src/core/tools/bash.ts";
+import { createEditToolDefinition } from "../../src/core/tools/edit.ts";
+import { createFindToolDefinition } from "../../src/core/tools/find.ts";
+import { createGrepToolDefinition } from "../../src/core/tools/grep.ts";
+import { createLsToolDefinition } from "../../src/core/tools/ls.ts";
+import { createReadToolDefinition } from "../../src/core/tools/read.ts";
+import { createWriteToolDefinition } from "../../src/core/tools/write.ts";
+>>>>>>> upstream/main
 
 describe("parser contract tests", () => {
 	const cwd = "/workspace/project";

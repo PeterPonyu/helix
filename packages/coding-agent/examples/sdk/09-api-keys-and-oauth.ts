@@ -4,10 +4,17 @@
  * Configure API key resolution via AuthStorage and ModelRegistry.
  */
 
+<<<<<<< HEAD
 import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "@helix-bio/helix";
 
 // Default: AuthStorage uses ~/.helix/agent/auth.json
 // ModelRegistry loads built-in + custom models from ~/.helix/agent/models.json
+=======
+import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "@code-yeongyu/senpi";
+
+// Default: AuthStorage uses ~/.senpi/agent/auth.json
+// ModelRegistry loads built-in + custom models from ~/.senpi/agent/models.json
+>>>>>>> upstream/main
 const authStorage = AuthStorage.create();
 const modelRegistry = ModelRegistry.create(authStorage);
 

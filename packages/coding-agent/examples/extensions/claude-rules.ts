@@ -12,14 +12,22 @@
  * - Organize with subdirectories: Group related rules (e.g., frontend/, backend/)
  *
  * Usage:
+<<<<<<< HEAD
  * 1. Copy this file to ~/.helix/agent/extensions/ or your project's .helix/extensions/
+=======
+ * 1. Copy this file to ~/.senpi/agent/extensions/ or your project's .senpi/extensions/
+>>>>>>> upstream/main
  * 2. Create .claude/rules/ folder in your project root
  * 3. Add .md files with your rules
  */
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 /**
  * Recursively find all .md files in a directory

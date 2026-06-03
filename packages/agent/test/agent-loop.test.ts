@@ -8,8 +8,14 @@ import {
 } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { agentLoop, agentLoopContinue } from "../src/agent-loop.js";
 import type { AgentContext, AgentEvent, AgentLoopConfig, AgentMessage, AgentTool } from "../src/types.js";
+=======
+import { agentLoop, agentLoopContinue } from "../src/agent-loop.ts";
+import type { CustomMessage } from "../src/harness/messages.ts";
+import type { AgentContext, AgentEvent, AgentLoopConfig, AgentMessage, AgentTool } from "../src/types.ts";
+>>>>>>> upstream/main
 
 // Mock stream for testing - mimics MockAssistantStream
 class MockAssistantStream extends EventStream<AssistantMessageEvent, AssistantMessage> {
@@ -26,7 +32,13 @@ class MockAssistantStream extends EventStream<AssistantMessageEvent, AssistantMe
 }
 
 class ThrowingAssistantStream extends EventStream<AssistantMessageEvent, AssistantMessage> {
+<<<<<<< HEAD
 	constructor(private readonly thrownError: Error) {
+=======
+	private readonly thrownError: Error;
+
+	constructor(thrownError: Error) {
+>>>>>>> upstream/main
 		super(
 			(event) => event.type === "done" || event.type === "error",
 			(event) => {
@@ -35,6 +47,10 @@ class ThrowingAssistantStream extends EventStream<AssistantMessageEvent, Assista
 				throw new Error("Unexpected event type");
 			},
 		);
+<<<<<<< HEAD
+=======
+		this.thrownError = thrownError;
+>>>>>>> upstream/main
 	}
 
 	override async *[Symbol.asyncIterator](): AsyncIterator<AssistantMessageEvent> {
@@ -329,7 +345,11 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should handle custom message types via convertToLlm", async () => {
+<<<<<<< HEAD
 		const notification: AgentMessage = {
+=======
+		const notification: CustomMessage = {
+>>>>>>> upstream/main
 			role: "custom",
 			customType: "notification",
 			content: "This is a notification",
@@ -1572,7 +1592,11 @@ describe("agentLoopContinue with AgentMessage", () => {
 	});
 
 	it("should allow custom message types as last message (caller responsibility)", async () => {
+<<<<<<< HEAD
 		const customMessage: AgentMessage = {
+=======
+		const customMessage: CustomMessage = {
+>>>>>>> upstream/main
 			role: "custom",
 			customType: "hook",
 			content: "Hook content",

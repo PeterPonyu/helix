@@ -15,8 +15,12 @@
  */
 
 import { mkdtemp, writeFile } from "node:fs/promises";
+<<<<<<< HEAD
 import { Text } from "@earendil-works/pi-tui";
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 import {
 	DEFAULT_MAX_BYTES,
 	DEFAULT_MAX_LINES,
@@ -24,7 +28,12 @@ import {
 	type TruncationResult,
 	truncateHead,
 	withFileMutationQueue,
+<<<<<<< HEAD
 } from "@helix-bio/helix";
+=======
+} from "@code-yeongyu/senpi";
+import { Text } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 import { execSync } from "child_process";
 import { tmpdir } from "os";
 import { join } from "path";

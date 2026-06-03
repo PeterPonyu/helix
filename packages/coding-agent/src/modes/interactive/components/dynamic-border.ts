@@ -1,5 +1,9 @@
 import type { Component } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { theme } from "../theme/theme.js";
+=======
+import { theme } from "../theme/theme.ts";
+>>>>>>> upstream/main
 
 /**
  * Dynamic border component that adjusts to viewport width.

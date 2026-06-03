@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { PhotonImageType } from "./photon.js";
+=======
+import type { PhotonImageType } from "./photon.ts";
+>>>>>>> upstream/main
 
 type Photon = typeof import("@silvia-odwyer/photon-node");
 

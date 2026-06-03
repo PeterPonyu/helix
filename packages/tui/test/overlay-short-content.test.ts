@@ -1,10 +1,23 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
+<<<<<<< HEAD
 import { type Component, TUI } from "../src/tui.js";
 import { VirtualTerminal } from "./virtual-terminal.js";
 
 class SimpleContent implements Component {
 	constructor(private lines: string[]) {}
+=======
+import { type Component, TUI } from "../src/tui.ts";
+import { VirtualTerminal } from "./virtual-terminal.ts";
+
+class SimpleContent implements Component {
+	private lines: string[];
+
+	constructor(lines: string[]) {
+		this.lines = lines;
+	}
+
+>>>>>>> upstream/main
 	render(): string[] {
 		return this.lines;
 	}

@@ -1,5 +1,9 @@
 import { Box, Container, Markdown, type MarkdownTheme } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { getMarkdownTheme, theme } from "../theme/theme.js";
+=======
+import { getMarkdownTheme, theme } from "../theme/theme.ts";
+>>>>>>> upstream/main
 
 const OSC133_ZONE_START = "\x1b]133;A\x07";
 const OSC133_ZONE_END = "\x1b]133;B\x07";
@@ -15,9 +19,22 @@ export class UserMessageComponent extends Container {
 		super();
 		this.contentBox = new Box(1, 1, (content: string) => theme.bg("userMessageBg", content));
 		this.contentBox.addChild(
+<<<<<<< HEAD
 			new Markdown(text, 0, 0, markdownTheme, {
 				color: (content: string) => theme.fg("userMessageText", content),
 			}),
+=======
+			new Markdown(
+				text,
+				0,
+				0,
+				markdownTheme,
+				{
+					color: (content: string) => theme.fg("userMessageText", content),
+				},
+				{ preserveOrderedListMarkers: true },
+			),
+>>>>>>> upstream/main
 		);
 		this.addChild(this.contentBox);
 	}

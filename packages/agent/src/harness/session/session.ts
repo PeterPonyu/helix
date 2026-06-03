@@ -1,7 +1,14 @@
 import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { AgentMessage } from "../../types.js";
 import { createBranchSummaryMessage, createCompactionSummaryMessage, createCustomMessage } from "../messages.js";
 import type {
+=======
+import type { AgentMessage } from "../../types.ts";
+import { createBranchSummaryMessage, createCompactionSummaryMessage, createCustomMessage } from "../messages.ts";
+import type {
+	ActiveToolsChangeEntry,
+>>>>>>> upstream/main
 	BranchSummaryEntry,
 	CompactionEntry,
 	CustomEntry,
@@ -15,12 +22,21 @@ import type {
 	SessionStorage,
 	SessionTreeEntry,
 	ThinkingLevelChangeEntry,
+<<<<<<< HEAD
 } from "../types.js";
 import { SessionError } from "../types.js";
+=======
+} from "../types.ts";
+import { SessionError } from "../types.ts";
+>>>>>>> upstream/main
 
 export function buildSessionContext(pathEntries: SessionTreeEntry[]): SessionContext {
 	let thinkingLevel = "off";
 	let model: { provider: string; modelId: string } | null = null;
+<<<<<<< HEAD
+=======
+	let activeToolNames: string[] | null = null;
+>>>>>>> upstream/main
 	let compaction: CompactionEntry | null = null;
 
 	for (const entry of pathEntries) {
@@ -30,6 +46,11 @@ export function buildSessionContext(pathEntries: SessionTreeEntry[]): SessionCon
 			model = { provider: entry.provider, modelId: entry.modelId };
 		} else if (entry.type === "message" && entry.message.role === "assistant") {
 			model = { provider: entry.message.provider, modelId: entry.message.model };
+<<<<<<< HEAD
+=======
+		} else if (entry.type === "active_tools_change") {
+			activeToolNames = [...entry.activeToolNames];
+>>>>>>> upstream/main
 		} else if (entry.type === "compaction") {
 			compaction = entry;
 		}
@@ -72,7 +93,11 @@ export function buildSessionContext(pathEntries: SessionTreeEntry[]): SessionCon
 		}
 	}
 
+<<<<<<< HEAD
 	return { messages, thinkingLevel, model };
+=======
+	return { messages, thinkingLevel, model, activeToolNames };
+>>>>>>> upstream/main
 }
 
 export class Session<TMetadata extends SessionMetadata = SessionMetadata> {
@@ -156,6 +181,19 @@ export class Session<TMetadata extends SessionMetadata = SessionMetadata> {
 		} satisfies ModelChangeEntry);
 	}
 
+<<<<<<< HEAD
+=======
+	async appendActiveToolsChange(activeToolNames: string[]): Promise<string> {
+		return this.appendTypedEntry({
+			type: "active_tools_change",
+			id: await this.storage.createEntryId(),
+			parentId: await this.storage.getLeafId(),
+			timestamp: new Date().toISOString(),
+			activeToolNames: [...activeToolNames],
+		} satisfies ActiveToolsChangeEntry);
+	}
+
+>>>>>>> upstream/main
 	async appendCompaction<T = unknown>(
 		summary: string,
 		firstKeptEntryId: string,

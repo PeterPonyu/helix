@@ -4,6 +4,11 @@
 		"module": "ES2022",
 		"lib": ["ES2022", "DOM", "DOM.Iterable"],
 		"moduleResolution": "bundler",
+<<<<<<< HEAD
+=======
+        "allowImportingTsExtensions": true,
+        "rewriteRelativeImportExtensions": true,
+>>>>>>> upstream/main
 		"paths": {
 			"*": ["./*"],
 			"@earendil-works/pi-agent-core": ["../../agent/src/index.ts"],

@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import promptPresetExtension from "../../src/core/extensions/builtin/prompt-preset/index.js";
 import { createHarness, type Harness } from "./harness.js";
+=======
+import promptPresetExtension from "../../src/core/extensions/builtin/prompt-preset/index.ts";
+import { createHarness, type Harness } from "./harness.ts";
+>>>>>>> upstream/main
 
 function getRequiredModel(harness: Harness, modelId: string) {
 	const model = harness.getModel(modelId);
@@ -71,11 +76,19 @@ describe("prompt preset model switching", () => {
 		const promptChange = await harness.session.setModel(getRequiredModel(harness, "claude-sonnet-4-5"));
 
 		// then
+<<<<<<< HEAD
 		expect(promptChange?.systemPromptName).toBe("fallback (helix-current)");
 		expect(harness.session.systemPrompt).toContain("## Available Tools");
 		expect(harness.session.systemPrompt).not.toContain("Maintain coherent state");
 		expect(harness.eventsOfType("system_prompt_change").map((event) => event.systemPromptName)).toEqual([
 			"fallback (helix-current)",
+=======
+		expect(promptChange?.systemPromptName).toBe("fallback (senpi-current)");
+		expect(harness.session.systemPrompt).toContain("## Available Tools");
+		expect(harness.session.systemPrompt).not.toContain("Maintain coherent state");
+		expect(harness.eventsOfType("system_prompt_change").map((event) => event.systemPromptName)).toEqual([
+			"fallback (senpi-current)",
+>>>>>>> upstream/main
 		]);
 	});
 

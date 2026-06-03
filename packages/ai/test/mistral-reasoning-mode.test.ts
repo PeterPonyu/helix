@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { streamSimple } from "../src/stream.js";
 import type { AssistantMessage, Context, Model, SimpleStreamOptions } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { streamSimple } from "../src/stream.ts";
+import type { AssistantMessage, Context, Model, SimpleStreamOptions } from "../src/types.ts";
+>>>>>>> upstream/main
 
 interface MistralPayload {
 	promptMode?: "reasoning";

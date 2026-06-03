@@ -5,7 +5,11 @@
  */
 
 import { Text } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../types.js";
+=======
+import type { ExtensionAPI } from "../types.ts";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	pi.registerCommand("tui", {

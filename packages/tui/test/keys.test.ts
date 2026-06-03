@@ -11,7 +11,11 @@ import {
 	matchesKey,
 	parseKey,
 	setKittyProtocolActive,
+<<<<<<< HEAD
 } from "../src/keys.js";
+=======
+} from "../src/keys.ts";
+>>>>>>> upstream/main
 
 function withEnv(name: string, value: string | undefined, fn: () => void): void {
 	const previous = process.env[name];

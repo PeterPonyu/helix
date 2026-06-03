@@ -5,9 +5,15 @@ import {
 	fauxAssistantMessage,
 	fauxText,
 	registerFauxProvider,
+<<<<<<< HEAD
 } from "../../src/providers/faux.js";
 import { complete, stream } from "../../src/stream.js";
 import type { Context, Model, Tool } from "../../src/types.js";
+=======
+} from "../../src/providers/faux.ts";
+import { complete, stream } from "../../src/stream.ts";
+import type { Context, Model, Tool } from "../../src/types.ts";
+>>>>>>> upstream/main
 
 const weatherTool: Tool = {
 	name: "get_weather",

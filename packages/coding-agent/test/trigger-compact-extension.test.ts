@@ -1,10 +1,20 @@
 import { describe, expect, test, vi } from "vitest";
+<<<<<<< HEAD
 import triggerCompactExtension from "../examples/extensions/trigger-compact.js";
 import { DEFAULT_COMPACTION_SETTINGS } from "../src/core/compaction/index.js";
 import type { ExtensionAPI, ExtensionCommandContext, ExtensionContext } from "../src/core/extensions/index.js";
 
 function createContext(tokens: number | null, compact = vi.fn()): ExtensionContext {
 	return {
+=======
+import triggerCompactExtension from "../examples/extensions/trigger-compact.ts";
+import { DEFAULT_COMPACTION_SETTINGS } from "../src/core/compaction/index.ts";
+import type { ExtensionAPI, ExtensionCommandContext, ExtensionContext } from "../src/core/extensions/index.ts";
+
+function createContext(tokens: number | null, compact = vi.fn()): ExtensionContext {
+	return {
+		mode: "print",
+>>>>>>> upstream/main
 		hasUI: false,
 		ui: {} as ExtensionContext["ui"],
 		cwd: process.cwd(),

@@ -1,7 +1,14 @@
 // Core session management
 
+<<<<<<< HEAD
 // Config paths
 export { getAgentDir, VERSION } from "./config.js";
+=======
+export { type Args, parseArgs } from "./cli/args.ts";
+
+// Config paths
+export { getAgentDir, VERSION } from "./config.ts";
+>>>>>>> upstream/main
 export {
 	AgentSession,
 	type AgentSessionConfig,
@@ -12,7 +19,11 @@ export {
 	type PromptOptions,
 	parseSkillBlock,
 	type SessionStats,
+<<<<<<< HEAD
 } from "./core/agent-session.js";
+=======
+} from "./core/agent-session.ts";
+>>>>>>> upstream/main
 // Auth and model registry
 export {
 	type ApiKeyCredential,
@@ -23,7 +34,11 @@ export {
 	FileAuthStorageBackend,
 	InMemoryAuthStorageBackend,
 	type OAuthCredential,
+<<<<<<< HEAD
 } from "./core/auth-storage.js";
+=======
+} from "./core/auth-storage.ts";
+>>>>>>> upstream/main
 // Compaction
 export {
 	type BranchPreparation,
@@ -46,8 +61,13 @@ export {
 	prepareBranchEntries,
 	serializeConversation,
 	shouldCompact,
+<<<<<<< HEAD
 } from "./core/compaction/index.js";
 export { createEventBus, type EventBus, type EventBusController } from "./core/event-bus.js";
+=======
+} from "./core/compaction/index.ts";
+export { createEventBus, type EventBus, type EventBusController } from "./core/event-bus.ts";
+>>>>>>> upstream/main
 // Extension system
 export type {
 	AgentEndEvent,
@@ -128,7 +148,11 @@ export type {
 	WidgetPlacement,
 	WorkingIndicatorOptions,
 	WriteToolCallEvent,
+<<<<<<< HEAD
 } from "./core/extensions/index.js";
+=======
+} from "./core/extensions/index.ts";
+>>>>>>> upstream/main
 export {
 	createExtensionRuntime,
 	defineTool,
@@ -144,11 +168,19 @@ export {
 	isWriteToolResult,
 	wrapRegisteredTool,
 	wrapRegisteredTools,
+<<<<<<< HEAD
 } from "./core/extensions/index.js";
 // Footer data provider (git branch + extension statuses - data not otherwise available to extensions)
 export type { ReadonlyFooterDataProvider } from "./core/footer-data-provider.js";
 export { convertToLlm } from "./core/messages.js";
 export { ModelRegistry } from "./core/model-registry.js";
+=======
+} from "./core/extensions/index.ts";
+// Footer data provider (git branch + extension statuses - data not otherwise available to extensions)
+export type { ReadonlyFooterDataProvider } from "./core/footer-data-provider.ts";
+export { convertToLlm } from "./core/messages.ts";
+export { ModelRegistry } from "./core/model-registry.ts";
+>>>>>>> upstream/main
 export type {
 	PackageManager,
 	PathMetadata,
@@ -156,10 +188,17 @@ export type {
 	ProgressEvent,
 	ResolvedPaths,
 	ResolvedResource,
+<<<<<<< HEAD
 } from "./core/package-manager.js";
 export { DefaultPackageManager } from "./core/package-manager.js";
 export type { ResourceCollision, ResourceDiagnostic, ResourceLoader } from "./core/resource-loader.js";
 export { DefaultResourceLoader, loadProjectContextFiles } from "./core/resource-loader.js";
+=======
+} from "./core/package-manager.ts";
+export { DefaultPackageManager } from "./core/package-manager.ts";
+export type { ResourceCollision, ResourceDiagnostic, ResourceLoader } from "./core/resource-loader.ts";
+export { DefaultResourceLoader, loadProjectContextFiles } from "./core/resource-loader.ts";
+>>>>>>> upstream/main
 // SDK for programmatic usage
 export {
 	AgentSessionRuntime,
@@ -187,7 +226,11 @@ export {
 	createReadTool,
 	createWriteTool,
 	type PromptTemplate,
+<<<<<<< HEAD
 } from "./core/sdk.js";
+=======
+} from "./core/sdk.ts";
+>>>>>>> upstream/main
 export {
 	type BranchSummaryEntry,
 	buildSessionContext,
@@ -210,14 +253,22 @@ export {
 	SessionManager,
 	type SessionMessageEntry,
 	type ThinkingLevelChangeEntry,
+<<<<<<< HEAD
 } from "./core/session-manager.js";
+=======
+} from "./core/session-manager.ts";
+>>>>>>> upstream/main
 export {
 	type CompactionSettings,
 	type ImageSettings,
 	type PackageSource,
 	type RetrySettings,
 	SettingsManager,
+<<<<<<< HEAD
 } from "./core/settings-manager.js";
+=======
+} from "./core/settings-manager.ts";
+>>>>>>> upstream/main
 // Skills
 export {
 	formatSkillsForPrompt,
@@ -227,8 +278,13 @@ export {
 	loadSkillsFromDir,
 	type Skill,
 	type SkillFrontmatter,
+<<<<<<< HEAD
 } from "./core/skills.js";
 export { createSyntheticSourceInfo } from "./core/source-info.js";
+=======
+} from "./core/skills.ts";
+export { createSyntheticSourceInfo } from "./core/source-info.ts";
+>>>>>>> upstream/main
 // Tools
 export {
 	type BashOperations,
@@ -278,9 +334,15 @@ export {
 	type WriteToolInput,
 	type WriteToolOptions,
 	withFileMutationQueue,
+<<<<<<< HEAD
 } from "./core/tools/index.js";
 // Main entry point
 export { type MainOptions, main } from "./main.js";
+=======
+} from "./core/tools/index.ts";
+// Main entry point
+export { type MainOptions, main } from "./main.ts";
+>>>>>>> upstream/main
 // Run modes for programmatic SDK usage
 export {
 	InteractiveMode,
@@ -295,7 +357,11 @@ export {
 	type RpcSessionState,
 	runPrintMode,
 	runRpcMode,
+<<<<<<< HEAD
 } from "./modes/index.js";
+=======
+} from "./modes/index.ts";
+>>>>>>> upstream/main
 // UI components for extensions
 export {
 	ArminComponent,
@@ -334,7 +400,11 @@ export {
 	UserMessageComponent,
 	UserMessageSelectorComponent,
 	type VisualTruncateResult,
+<<<<<<< HEAD
 } from "./modes/interactive/components/index.js";
+=======
+} from "./modes/interactive/components/index.ts";
+>>>>>>> upstream/main
 // Theme utilities for custom tools and extensions
 export {
 	getLanguageFromPath,
@@ -345,9 +415,20 @@ export {
 	initTheme,
 	Theme,
 	type ThemeColor,
+<<<<<<< HEAD
 } from "./modes/interactive/theme/theme.js";
 // Clipboard utilities
 export { copyToClipboard } from "./utils/clipboard.js";
 export { parseFrontmatter, stripFrontmatter } from "./utils/frontmatter.js";
 // Shell utilities
 export { getShellConfig } from "./utils/shell.js";
+=======
+} from "./modes/interactive/theme/theme.ts";
+// Clipboard utilities
+export { copyToClipboard } from "./utils/clipboard.ts";
+export { parseFrontmatter, stripFrontmatter } from "./utils/frontmatter.ts";
+export { convertToPng } from "./utils/image-convert.ts";
+export { formatDimensionNote, type ResizedImage, resizeImage } from "./utils/image-resize.ts";
+// Shell utilities
+export { getShellConfig } from "./utils/shell.ts";
+>>>>>>> upstream/main

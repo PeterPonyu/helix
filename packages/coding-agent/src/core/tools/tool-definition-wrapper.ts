@@ -1,5 +1,9 @@
 import type { AgentTool } from "@earendil-works/pi-agent-core";
+<<<<<<< HEAD
 import type { ExtensionContext, ToolDefinition } from "../extensions/types.js";
+=======
+import type { ExtensionContext, ToolDefinition } from "../extensions/types.ts";
+>>>>>>> upstream/main
 
 /** Wrap a ToolDefinition into an AgentTool for the core runtime. */
 export function wrapToolDefinition<TDetails = unknown>(

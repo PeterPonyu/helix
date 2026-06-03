@@ -7,8 +7,13 @@ import {
 	resetOpenAICodexWebSocketDebugStats,
 	streamOpenAICodexResponses,
 	streamSimpleOpenAICodexResponses,
+<<<<<<< HEAD
 } from "../src/providers/openai-codex-responses.js";
 import type { Context, Model } from "../src/types.js";
+=======
+} from "../src/providers/openai-codex-responses.ts";
+import type { Context, Model } from "../src/types.ts";
+>>>>>>> upstream/main
 
 const originalAgentDir = process.env.PI_CODING_AGENT_DIR;
 
@@ -142,7 +147,11 @@ describe("openai-codex streaming", () => {
 				expect(headers?.get("Authorization")).toBe(`Bearer ${token}`);
 				expect(headers?.get("chatgpt-account-id")).toBe("acc_test");
 				expect(headers?.get("OpenAI-Beta")).toBe("responses=experimental");
+<<<<<<< HEAD
 				expect(headers?.get("originator")).toBe("helix");
+=======
+				expect(headers?.get("originator")).toBe("senpi");
+>>>>>>> upstream/main
 				expect(headers?.get("accept")).toBe("text/event-stream");
 				expect(headers?.has("x-api-key")).toBe(false);
 				return new Response(stream, {
@@ -173,9 +182,12 @@ describe("openai-codex streaming", () => {
 			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
 		};
 
+<<<<<<< HEAD
 		// transport: "sse" skips the production default's WebSocket attempt
 		// (unmocked in this file) which has variable latency and intermittently
 		// exceeds the 30s vitest timeout under CI load.
+=======
+>>>>>>> upstream/main
 		const streamResult = streamOpenAICodexResponses(model, context, { apiKey: token, transport: "sse" });
 		let sawTextDelta = false;
 		let sawDone = false;
@@ -314,7 +326,178 @@ describe("openai-codex streaming", () => {
 		expect(result.stopReason).toBe("length");
 	});
 
+<<<<<<< HEAD
 	it("sets session_id/x-client-request-id headers and prompt_cache_key when sessionId is provided", async () => {
+=======
+	it("aborts SSE fetch when response headers do not arrive", async () => {
+		vi.useFakeTimers();
+		const token = mockToken();
+
+		const fetchMock = vi.fn((input: string | URL, init?: RequestInit) => {
+			const url = typeof input === "string" ? input : input.toString();
+			if (url !== "https://chatgpt.com/backend-api/codex/responses") {
+				throw new Error(`Unexpected URL: ${url}`);
+			}
+
+			const signal = init?.signal;
+			if (!signal) {
+				throw new Error("Expected SSE fetch to receive an abort signal");
+			}
+
+			return new Promise<Response>((_, reject) => {
+				const onAbort = () => {
+					const reason = signal.reason;
+					reject(reason instanceof Error ? reason : new Error("SSE fetch aborted"));
+				};
+				if (signal.aborted) {
+					onAbort();
+					return;
+				}
+				signal.addEventListener("abort", onAbort, { once: true });
+			});
+		});
+		vi.stubGlobal("fetch", fetchMock);
+
+		const model: Model<"openai-codex-responses"> = {
+			id: "gpt-5.1-codex",
+			name: "GPT-5.1 Codex",
+			api: "openai-codex-responses",
+			provider: "openai-codex",
+			baseUrl: "https://chatgpt.com/backend-api",
+			reasoning: true,
+			input: ["text"],
+			cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+			contextWindow: 400000,
+			maxTokens: 128000,
+		};
+		const context: Context = {
+			systemPrompt: "You are a helpful assistant.",
+			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
+		};
+
+		const resultPromise = streamOpenAICodexResponses(model, context, {
+			apiKey: token,
+			transport: "sse",
+		}).result();
+		await vi.advanceTimersByTimeAsync(0);
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+
+		await vi.advanceTimersByTimeAsync(10_000);
+		const result = await resultPromise;
+		expect(result.stopReason).toBe("error");
+		expect(result.errorMessage).toBe("Codex SSE response headers timed out after 10000ms");
+	});
+
+	it("aborts SSE body reads after response headers arrive", async () => {
+		const token = mockToken();
+		const encoder = new TextEncoder();
+		const timers: ReturnType<typeof setTimeout>[] = [];
+		let cancelled = false;
+		const stream = new ReadableStream<Uint8Array>({
+			start(controller) {
+				const enqueue = (chunk: string) => {
+					if (!cancelled) controller.enqueue(encoder.encode(chunk));
+				};
+				enqueue(
+					`${[
+						`data: ${JSON.stringify({
+							type: "response.output_item.added",
+							item: { type: "message", id: "msg_1", role: "assistant", status: "in_progress", content: [] },
+						})}`,
+						`data: ${JSON.stringify({ type: "response.content_part.added", part: { type: "output_text", text: "" } })}`,
+						`data: ${JSON.stringify({ type: "response.output_text.delta", delta: "one" })}`,
+					].join("\n\n")}\n\n`,
+				);
+				timers.push(
+					setTimeout(() => {
+						enqueue(`data: ${JSON.stringify({ type: "response.output_text.delta", delta: "two" })}\n\n`);
+					}, 10),
+				);
+				timers.push(
+					setTimeout(() => {
+						if (cancelled) return;
+						enqueue(
+							`${[
+								`data: ${JSON.stringify({
+									type: "response.output_item.done",
+									item: {
+										type: "message",
+										id: "msg_1",
+										role: "assistant",
+										status: "completed",
+										content: [{ type: "output_text", text: "onetwo" }],
+									},
+								})}`,
+								`data: ${JSON.stringify({
+									type: "response.completed",
+									response: {
+										status: "completed",
+										usage: {
+											input_tokens: 5,
+											output_tokens: 3,
+											total_tokens: 8,
+											input_tokens_details: { cached_tokens: 0 },
+										},
+									},
+								})}`,
+							].join("\n\n")}\n\n`,
+						);
+						controller.close();
+					}, 20),
+				);
+			},
+			cancel() {
+				cancelled = true;
+				for (const timer of timers) clearTimeout(timer);
+			},
+		});
+
+		vi.stubGlobal(
+			"fetch",
+			vi.fn(async () => new Response(stream, { status: 200, headers: { "content-type": "text/event-stream" } })),
+		);
+
+		const model: Model<"openai-codex-responses"> = {
+			id: "gpt-5.1-codex",
+			name: "GPT-5.1 Codex",
+			api: "openai-codex-responses",
+			provider: "openai-codex",
+			baseUrl: "https://chatgpt.com/backend-api",
+			reasoning: true,
+			input: ["text"],
+			cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+			contextWindow: 400000,
+			maxTokens: 128000,
+		};
+		const context: Context = {
+			systemPrompt: "You are a helpful assistant.",
+			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
+		};
+		const controller = new AbortController();
+		const events: string[] = [];
+
+		const resultStream = streamOpenAICodexResponses(model, context, {
+			apiKey: token,
+			transport: "sse",
+			signal: controller.signal,
+		});
+		for await (const event of resultStream) {
+			events.push(event.type === "text_delta" ? `text_delta:${event.delta}` : event.type);
+			if (event.type === "text_delta" && event.delta === "one") {
+				controller.abort();
+			}
+		}
+
+		const result = await resultStream.result();
+		expect(result.stopReason).toBe("aborted");
+		expect(result.errorMessage).toBe("Request was aborted");
+		expect(events).toContain("text_delta:one");
+		expect(events).not.toContain("text_delta:two");
+		expect(cancelled).toBe(true);
+	});
+
+	it("sets session-id/x-client-request-id headers and prompt_cache_key when sessionId is provided", async () => {
+>>>>>>> upstream/main
 		const tempDir = mkdtempSync(join(tmpdir(), "pi-codex-stream-"));
 		process.env.PI_CODING_AGENT_DIR = tempDir;
 
@@ -375,7 +558,12 @@ describe("openai-codex streaming", () => {
 			if (url === "https://chatgpt.com/backend-api/codex/responses") {
 				const headers = init?.headers instanceof Headers ? init.headers : undefined;
 				// Verify sessionId is set in headers
+<<<<<<< HEAD
 				expect(headers?.get("session_id")).toBe(sessionId);
+=======
+				expect(headers?.get("session-id")).toBe(sessionId);
+				expect(headers?.has("session_id")).toBe(false);
+>>>>>>> upstream/main
 				expect(headers?.get("x-client-request-id")).toBe(sessionId);
 
 				// Verify sessionId is set in request body as prompt_cache_key
@@ -410,12 +598,68 @@ describe("openai-codex streaming", () => {
 			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
 		};
 
+<<<<<<< HEAD
 		// transport: "sse" pins the test to the mocked SSE path; see note on
 		// the first "streams SSE responses" test above.
+=======
+>>>>>>> upstream/main
 		const streamResult = streamOpenAICodexResponses(model, context, { apiKey: token, sessionId, transport: "sse" });
 		await streamResult.result();
 	});
 
+<<<<<<< HEAD
+=======
+	it("clamps prompt_cache_key to OpenAI's 64-character limit", async () => {
+		const token = mockToken();
+		const sessionId = "x".repeat(67);
+		let capturedPayload: { prompt_cache_key?: string } | undefined;
+		const encoder = new TextEncoder();
+		vi.stubGlobal(
+			"fetch",
+			vi.fn(
+				async () =>
+					new Response(
+						new ReadableStream<Uint8Array>({
+							start(controller) {
+								controller.enqueue(encoder.encode(buildSSEPayload({ status: "completed" })));
+								controller.close();
+							},
+						}),
+						{ status: 200, headers: { "content-type": "text/event-stream" } },
+					),
+			),
+		);
+
+		const model: Model<"openai-codex-responses"> = {
+			id: "gpt-5.1-codex",
+			name: "GPT-5.1 Codex",
+			api: "openai-codex-responses",
+			provider: "openai-codex",
+			baseUrl: "https://chatgpt.com/backend-api",
+			reasoning: true,
+			input: ["text"],
+			cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+			contextWindow: 400000,
+			maxTokens: 128000,
+		};
+		const context: Context = {
+			systemPrompt: "You are a helpful assistant.",
+			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
+		};
+
+		await streamOpenAICodexResponses(model, context, {
+			apiKey: token,
+			transport: "sse",
+			sessionId,
+			onPayload: (payload) => {
+				capturedPayload = payload as { prompt_cache_key?: string };
+			},
+		}).result();
+
+		expect(capturedPayload?.prompt_cache_key).toBe("x".repeat(64));
+	});
+
+>>>>>>> upstream/main
 	it("preserves gpt-5.5 xhigh reasoning effort from simple options", async () => {
 		const tempDir = mkdtempSync(join(tmpdir(), "pi-codex-stream-"));
 		process.env.PI_CODING_AGENT_DIR = tempDir;
@@ -468,11 +712,14 @@ describe("openai-codex streaming", () => {
 			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
 		};
 
+<<<<<<< HEAD
 		// transport: "sse" so the test exercises only the mocked SSE path.
 		// Without it, the production default "auto" tries a real WebSocket
 		// handshake to chatgpt.com (fetchMock doesn't cover WebSocket), which
 		// has variable latency and intermittently exceeds the 30s vitest
 		// timeout under CI load.
+=======
+>>>>>>> upstream/main
 		await streamSimpleOpenAICodexResponses(model, context, {
 			apiKey: token,
 			reasoning: "xhigh",
@@ -523,6 +770,10 @@ describe("openai-codex streaming", () => {
 			})}`,
 		].join("\n\n")}\n\n`;
 
+<<<<<<< HEAD
+=======
+		let requestedReasoning: unknown;
+>>>>>>> upstream/main
 		const encoder = new TextEncoder();
 		const stream = new ReadableStream<Uint8Array>({
 			start(controller) {
@@ -541,7 +792,11 @@ describe("openai-codex streaming", () => {
 			}
 			if (url === "https://chatgpt.com/backend-api/codex/responses") {
 				const body = typeof init?.body === "string" ? (JSON.parse(init.body) as Record<string, unknown>) : null;
+<<<<<<< HEAD
 				expect(body?.reasoning).toEqual({ effort: "low", summary: "auto" });
+=======
+				requestedReasoning = body?.reasoning;
+>>>>>>> upstream/main
 
 				return new Response(stream, {
 					status: 200,
@@ -560,6 +815,10 @@ describe("openai-codex streaming", () => {
 			provider: "openai-codex",
 			baseUrl: "https://chatgpt.com/backend-api",
 			reasoning: true,
+<<<<<<< HEAD
+=======
+			thinkingLevelMap: { minimal: "low" },
+>>>>>>> upstream/main
 			input: ["text"],
 			cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
 			contextWindow: 400000,
@@ -574,11 +833,18 @@ describe("openai-codex streaming", () => {
 		const streamResult = streamOpenAICodexResponses(model, context, {
 			apiKey: token,
 			reasoningEffort: "minimal",
+<<<<<<< HEAD
 			// transport: "sse" pins the test to the mocked SSE path. See note
 			// on the "preserves gpt-5.5 xhigh reasoning effort" test above.
 			transport: "sse",
 		});
 		await streamResult.result();
+=======
+			transport: "sse",
+		});
+		await streamResult.result();
+		expect(requestedReasoning).toEqual({ effort: "low", summary: "auto" });
+>>>>>>> upstream/main
 	});
 
 	it.each([
@@ -668,9 +934,17 @@ describe("openai-codex streaming", () => {
 				messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
 			};
 
+<<<<<<< HEAD
 			// transport: "sse" pins the test to the mocked SSE path; see note on
 			// the first "streams SSE responses" test above.
 			const result = await streamOpenAICodexResponses(model, context, { apiKey: token, serviceTier, transport: "sse" }).result();
+=======
+			const result = await streamOpenAICodexResponses(model, context, {
+				apiKey: token,
+				serviceTier,
+				transport: "sse",
+			}).result();
+>>>>>>> upstream/main
 
 			expect(result.usage.cost.input).toBe(1 * multiplier);
 			expect(result.usage.cost.output).toBe(2 * multiplier);
@@ -678,7 +952,11 @@ describe("openai-codex streaming", () => {
 		},
 	);
 
+<<<<<<< HEAD
 	it("does not set session_id/x-client-request-id headers when sessionId is not provided", async () => {
+=======
+	it("does not set session-id/x-client-request-id headers when sessionId is not provided", async () => {
+>>>>>>> upstream/main
 		const tempDir = mkdtempSync(join(tmpdir(), "pi-codex-stream-"));
 		process.env.PI_CODING_AGENT_DIR = tempDir;
 
@@ -738,6 +1016,10 @@ describe("openai-codex streaming", () => {
 			if (url === "https://chatgpt.com/backend-api/codex/responses") {
 				const headers = init?.headers instanceof Headers ? init.headers : undefined;
 				// Verify headers are not set when sessionId is not provided
+<<<<<<< HEAD
+=======
+				expect(headers?.has("session-id")).toBe(false);
+>>>>>>> upstream/main
 				expect(headers?.has("session_id")).toBe(false);
 				expect(headers?.has("x-client-request-id")).toBe(false);
 
@@ -769,14 +1051,22 @@ describe("openai-codex streaming", () => {
 			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
 		};
 
+<<<<<<< HEAD
 		// No sessionId provided. transport: "sse" pins to mocked SSE path;
 		// see note on the first "streams SSE responses" test above.
+=======
+		// No sessionId provided
+>>>>>>> upstream/main
 		const streamResult = streamOpenAICodexResponses(model, context, { apiKey: token, transport: "sse" });
 		await streamResult.result();
 	});
 	it("forwards auto transport from streamSimple options and uses cached websocket context", async () => {
 		const token = mockToken();
 		const sentBodies: unknown[] = [];
+<<<<<<< HEAD
+=======
+		let capturedWebSocketHeaders: Record<string, string> | undefined;
+>>>>>>> upstream/main
 
 		const fetchMock = vi.fn(async () => new Response("unexpected fetch", { status: 500 }));
 		vi.stubGlobal("fetch", fetchMock);
@@ -784,7 +1074,14 @@ describe("openai-codex streaming", () => {
 		class MockWebSocket {
 			private listeners = new Map<string, Set<(event: unknown) => void>>();
 
+<<<<<<< HEAD
 			constructor(_url: string, _protocols?: string | string[] | { headers?: Record<string, string> }) {
+=======
+			constructor(_url: string, protocols?: string | string[] | { headers?: Record<string, string> }) {
+				if (protocols && typeof protocols === "object" && !Array.isArray(protocols)) {
+					capturedWebSocketHeaders = protocols.headers;
+				}
+>>>>>>> upstream/main
 				queueMicrotask(() => this.dispatch("open", {}));
 			}
 
@@ -875,6 +1172,12 @@ describe("openai-codex streaming", () => {
 		}).result();
 
 		expect(sentBodies).toHaveLength(1);
+<<<<<<< HEAD
+=======
+		expect(capturedWebSocketHeaders?.["session-id"]).toBe("session-auto");
+		expect(capturedWebSocketHeaders?.session_id).toBeUndefined();
+		expect(capturedWebSocketHeaders?.["x-client-request-id"]).toBe("session-auto");
+>>>>>>> upstream/main
 		expect(global.fetch).not.toHaveBeenCalled();
 		expect(getOpenAICodexWebSocketDebugStats("session-auto")).toMatchObject({
 			cachedContextRequests: 1,
@@ -882,6 +1185,283 @@ describe("openai-codex streaming", () => {
 		});
 	});
 
+<<<<<<< HEAD
+=======
+	it("falls back to SSE when websocket connect does not open before the connect timeout", async () => {
+		vi.useFakeTimers();
+		const token = mockToken();
+		const encoder = new TextEncoder();
+		const sse = buildSSEPayload({ status: "completed" });
+
+		const fetchMock = vi.fn(async (input: string | URL) => {
+			const url = typeof input === "string" ? input : input.toString();
+			if (url !== "https://chatgpt.com/backend-api/codex/responses") {
+				throw new Error(`Unexpected URL: ${url}`);
+			}
+
+			return new Response(
+				new ReadableStream<Uint8Array>({
+					start(controller) {
+						controller.enqueue(encoder.encode(sse));
+						controller.close();
+					},
+				}),
+				{ status: 200, headers: { "content-type": "text/event-stream" } },
+			);
+		});
+		vi.stubGlobal("fetch", fetchMock);
+
+		class MockWebSocket {
+			private listeners = new Map<string, Set<(event: unknown) => void>>();
+
+			addEventListener(type: string, listener: (event: unknown) => void): void {
+				let listeners = this.listeners.get(type);
+				if (!listeners) {
+					listeners = new Set();
+					this.listeners.set(type, listeners);
+				}
+				listeners.add(listener);
+			}
+
+			removeEventListener(type: string, listener: (event: unknown) => void): void {
+				this.listeners.get(type)?.delete(listener);
+			}
+
+			send(): void {
+				throw new Error("send should not be called before websocket open");
+			}
+
+			close(): void {}
+		}
+
+		vi.stubGlobal("WebSocket", MockWebSocket);
+
+		const model: Model<"openai-codex-responses"> = {
+			id: "gpt-5.1-codex",
+			name: "GPT-5.1 Codex",
+			api: "openai-codex-responses",
+			provider: "openai-codex",
+			baseUrl: "https://chatgpt.com/backend-api",
+			reasoning: true,
+			input: ["text"],
+			cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+			contextWindow: 400000,
+			maxTokens: 128000,
+		};
+		const context: Context = {
+			systemPrompt: "You are a helpful assistant.",
+			messages: [{ role: "user", content: "Say hello", timestamp: 1 }],
+		};
+
+		const resultPromise = streamOpenAICodexResponses(model, context, {
+			apiKey: token,
+			sessionId: "ws-connect-timeout",
+			transport: "auto",
+			timeoutMs: 300_000,
+			websocketConnectTimeoutMs: 50,
+		}).result();
+
+		await vi.advanceTimersByTimeAsync(50);
+
+		const result = await resultPromise;
+		expect(result.content.find((content) => content.type === "text")?.text).toBe("Hello");
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+		expect(getOpenAICodexWebSocketDebugStats("ws-connect-timeout")).toMatchObject({
+			websocketFailures: 1,
+			sseFallbacks: 1,
+			websocketFallbackActive: true,
+			lastWebSocketError: "WebSocket connect timeout after 50ms",
+		});
+	});
+
+	it("falls back to SSE when a websocket is idle before the first event", async () => {
+		vi.useFakeTimers();
+		const token = mockToken();
+		const sentBodies: unknown[] = [];
+		const encoder = new TextEncoder();
+		const sse = buildSSEPayload({ status: "completed" });
+
+		const fetchMock = vi.fn(async (input: string | URL) => {
+			const url = typeof input === "string" ? input : input.toString();
+			if (url !== "https://chatgpt.com/backend-api/codex/responses") {
+				throw new Error(`Unexpected URL: ${url}`);
+			}
+
+			return new Response(
+				new ReadableStream<Uint8Array>({
+					start(controller) {
+						controller.enqueue(encoder.encode(sse));
+						controller.close();
+					},
+				}),
+				{ status: 200, headers: { "content-type": "text/event-stream" } },
+			);
+		});
+		vi.stubGlobal("fetch", fetchMock);
+
+		class MockWebSocket {
+			static OPEN = 1;
+			readyState = MockWebSocket.OPEN;
+			private listeners = new Map<string, Set<(event: unknown) => void>>();
+
+			constructor(_url: string, _protocols?: string | string[] | { headers?: Record<string, string> }) {
+				queueMicrotask(() => this.dispatch("open", {}));
+			}
+
+			addEventListener(type: string, listener: (event: unknown) => void): void {
+				let listeners = this.listeners.get(type);
+				if (!listeners) {
+					listeners = new Set();
+					this.listeners.set(type, listeners);
+				}
+				listeners.add(listener);
+			}
+
+			removeEventListener(type: string, listener: (event: unknown) => void): void {
+				this.listeners.get(type)?.delete(listener);
+			}
+
+			send(data: string): void {
+				sentBodies.push(JSON.parse(data));
+			}
+
+			close(): void {
+				this.readyState = 3;
+			}
+
+			private dispatch(type: string, event: unknown): void {
+				for (const listener of this.listeners.get(type) ?? []) {
+					listener(event);
+				}
+			}
+		}
+
+		vi.stubGlobal("WebSocket", MockWebSocket);
+
+		const model: Model<"openai-codex-responses"> = {
+			id: "gpt-5.1-codex",
+			name: "GPT-5.1 Codex",
+			api: "openai-codex-responses",
+			provider: "openai-codex",
+			baseUrl: "https://chatgpt.com/backend-api",
+			reasoning: true,
+			input: ["text"],
+			cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+			contextWindow: 400000,
+			maxTokens: 128000,
+		};
+		const context: Context = {
+			systemPrompt: "You are a helpful assistant.",
+			messages: [{ role: "user", content: "Say hello", timestamp: 1 }],
+		};
+
+		const resultPromise = streamOpenAICodexResponses(model, context, {
+			apiKey: token,
+			sessionId: "ws-idle-before-start",
+			transport: "auto",
+			timeoutMs: 50,
+		}).result();
+
+		await vi.advanceTimersByTimeAsync(0);
+		expect(sentBodies).toHaveLength(1);
+		await vi.advanceTimersByTimeAsync(50);
+
+		const result = await resultPromise;
+		expect(result.content.find((content) => content.type === "text")?.text).toBe("Hello");
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+		expect(getOpenAICodexWebSocketDebugStats("ws-idle-before-start")).toMatchObject({
+			websocketFailures: 1,
+			sseFallbacks: 1,
+			websocketFallbackActive: true,
+		});
+	});
+
+	it("errors when a websocket is idle after the stream started", async () => {
+		vi.useFakeTimers();
+		const token = mockToken();
+
+		const fetchMock = vi.fn(async () => new Response("unexpected fetch", { status: 500 }));
+		vi.stubGlobal("fetch", fetchMock);
+
+		class MockWebSocket {
+			static OPEN = 1;
+			readyState = MockWebSocket.OPEN;
+			private listeners = new Map<string, Set<(event: unknown) => void>>();
+
+			constructor(_url: string, _protocols?: string | string[] | { headers?: Record<string, string> }) {
+				queueMicrotask(() => this.dispatch("open", {}));
+			}
+
+			addEventListener(type: string, listener: (event: unknown) => void): void {
+				let listeners = this.listeners.get(type);
+				if (!listeners) {
+					listeners = new Set();
+					this.listeners.set(type, listeners);
+				}
+				listeners.add(listener);
+			}
+
+			removeEventListener(type: string, listener: (event: unknown) => void): void {
+				this.listeners.get(type)?.delete(listener);
+			}
+
+			send(): void {
+				queueMicrotask(() => {
+					this.dispatch("message", {
+						data: JSON.stringify({
+							type: "response.output_item.added",
+							item: { type: "message", id: "msg_1", role: "assistant", status: "in_progress", content: [] },
+						}),
+					});
+				});
+			}
+
+			close(): void {
+				this.readyState = 3;
+			}
+
+			private dispatch(type: string, event: unknown): void {
+				for (const listener of this.listeners.get(type) ?? []) {
+					listener(event);
+				}
+			}
+		}
+
+		vi.stubGlobal("WebSocket", MockWebSocket);
+
+		const model: Model<"openai-codex-responses"> = {
+			id: "gpt-5.1-codex",
+			name: "GPT-5.1 Codex",
+			api: "openai-codex-responses",
+			provider: "openai-codex",
+			baseUrl: "https://chatgpt.com/backend-api",
+			reasoning: true,
+			input: ["text"],
+			cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+			contextWindow: 400000,
+			maxTokens: 128000,
+		};
+		const context: Context = {
+			systemPrompt: "You are a helpful assistant.",
+			messages: [{ role: "user", content: "Say hello", timestamp: 1 }],
+		};
+
+		const resultPromise = streamOpenAICodexResponses(model, context, {
+			apiKey: token,
+			transport: "auto",
+			timeoutMs: 50,
+		}).result();
+
+		await vi.advanceTimersByTimeAsync(0);
+		await vi.advanceTimersByTimeAsync(50);
+
+		const result = await resultPromise;
+		expect(result.stopReason).toBe("error");
+		expect(result.errorMessage).toBe("WebSocket idle timeout after 50ms");
+		expect(fetchMock).not.toHaveBeenCalled();
+	});
+
+>>>>>>> upstream/main
 	it("sends only response input deltas in websocket-cached mode", async () => {
 		const token = mockToken();
 		const sentBodies: unknown[] = [];
@@ -1089,7 +1669,15 @@ describe("openai-codex streaming", () => {
 			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
 		};
 
+<<<<<<< HEAD
 		const resultPromise = streamOpenAICodexResponses(model, context, { apiKey: token, transport: "sse" }).result();
+=======
+		const resultPromise = streamOpenAICodexResponses(model, context, {
+			apiKey: token,
+			transport: "sse",
+			maxRetries: 1,
+		}).result();
+>>>>>>> upstream/main
 		await vi.advanceTimersByTimeAsync(0);
 		expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), expectedDelay);
 
@@ -1151,6 +1739,7 @@ describe("openai-codex streaming", () => {
 			messages: [{ role: "user", content: "Say hello", timestamp: Date.now() }],
 		};
 
+<<<<<<< HEAD
 		const resultPromise = streamOpenAICodexResponses(model, context, { apiKey: token, transport: "sse" }).result();
 		await vi.advanceTimersByTimeAsync(0);
 		expect(setTimeoutSpy).toHaveBeenNthCalledWith(1, expect.any(Function), 1000);
@@ -1160,6 +1749,26 @@ describe("openai-codex streaming", () => {
 
 		await vi.advanceTimersToNextTimerAsync();
 		expect(setTimeoutSpy).toHaveBeenNthCalledWith(3, expect.any(Function), 4000);
+=======
+		const retryTimeoutDelays = () =>
+			setTimeoutSpy.mock.calls
+				.map((call) => call[1])
+				.filter((delay): delay is number => delay === 1000 || delay === 2000 || delay === 4000);
+
+		const resultPromise = streamOpenAICodexResponses(model, context, {
+			apiKey: token,
+			transport: "sse",
+			maxRetries: 3,
+		}).result();
+		await vi.advanceTimersByTimeAsync(0);
+		expect(retryTimeoutDelays()).toEqual([1000]);
+
+		await vi.advanceTimersToNextTimerAsync();
+		expect(retryTimeoutDelays()).toEqual([1000, 2000]);
+
+		await vi.advanceTimersToNextTimerAsync();
+		expect(retryTimeoutDelays()).toEqual([1000, 2000, 4000]);
+>>>>>>> upstream/main
 
 		await vi.advanceTimersToNextTimerAsync();
 		const result = await resultPromise;

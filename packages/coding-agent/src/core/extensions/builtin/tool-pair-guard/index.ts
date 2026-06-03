@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../../types.js";
 import { sanitizeAnthropicPayload } from "./sanitize-anthropic-payload.js";
 import { sanitizeOpenAIChatCompletionsPayload } from "./sanitize-openai-chat-completions-payload.js";
 import { sanitizeOpenAIResponsesPayload } from "./sanitize-openai-responses-payload.js";
+=======
+import type { ExtensionAPI } from "../../types.ts";
+import { sanitizeAnthropicPayload } from "./sanitize-anthropic-payload.ts";
+import { sanitizeOpenAIChatCompletionsPayload } from "./sanitize-openai-chat-completions-payload.ts";
+import { sanitizeOpenAIResponsesPayload } from "./sanitize-openai-responses-payload.ts";
+>>>>>>> upstream/main
 
 /** Guards provider requests by keeping tool-call/result pairs balanced. */
 export default function toolPairGuardExtension(pi: ExtensionAPI): void {

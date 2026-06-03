@@ -3,6 +3,7 @@
  *
  * Used for:
  * - `pi -p "prompt"` - text output
+<<<<<<< HEAD
  * - `helix --mode json "prompt"` - JSON event stream
  */
 
@@ -11,6 +12,16 @@ import type { AgentSessionRuntime } from "../core/agent-session-runtime.js";
 import { flushRawStdout, writeRawStdout } from "../core/output-guard.js";
 import { killTrackedDetachedChildren } from "../utils/shell.js";
 import { formatProviderNativeBody, formatProviderNativeSummary } from "./provider-native-rendering.js";
+=======
+ * - `senpi --mode json "prompt"` - JSON event stream
+ */
+
+import type { AssistantMessage, ImageContent } from "@earendil-works/pi-ai";
+import type { AgentSessionRuntime } from "../core/agent-session-runtime.ts";
+import { flushRawStdout, writeRawStdout } from "../core/output-guard.ts";
+import { killTrackedDetachedChildren } from "../utils/shell.ts";
+import { formatProviderNativeBody, formatProviderNativeSummary } from "./provider-native-rendering.ts";
+>>>>>>> upstream/main
 
 /**
  * Options for print mode.
@@ -72,6 +83,10 @@ export async function runPrintMode(runtimeHost: AgentSessionRuntime, options: Pr
 	const rebindSession = async (): Promise<void> => {
 		session = runtimeHost.session;
 		await session.bindExtensions({
+<<<<<<< HEAD
+=======
+			mode: mode === "json" ? "json" : "print",
+>>>>>>> upstream/main
 			commandContextActions: {
 				waitForIdle: () => session.agent.waitForIdle(),
 				newSession: async (newSessionOptions) => runtimeHost.newSession(newSessionOptions),

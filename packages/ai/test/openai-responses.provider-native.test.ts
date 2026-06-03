@@ -1,8 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { streamOpenAIResponses } from "../src/providers/openai-responses.js";
 import { convertResponsesMessages } from "../src/providers/openai-responses-shared.js";
 import type { AssistantMessage, Context, ProviderNativeContent } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { streamOpenAIResponses } from "../src/providers/openai-responses.ts";
+import { convertResponsesMessages } from "../src/providers/openai-responses-shared.ts";
+import type { AssistantMessage, Context, ProviderNativeContent } from "../src/types.ts";
+>>>>>>> upstream/main
 
 function createSseResponse(events: unknown[]): Response {
 	const body = events.map((event) => `data: ${JSON.stringify(event)}\n\n`).join("");

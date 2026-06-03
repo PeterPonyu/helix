@@ -9,7 +9,7 @@ Example extensions for pi-coding-agent.
 pi --extension examples/extensions/permission-gate.ts
 
 # Or copy to extensions directory for auto-discovery
-cp permission-gate.ts ~/.helix/agent/extensions/
+cp permission-gate.ts ~/.senpi/agent/extensions/
 ```
 
 ## Examples
@@ -74,6 +74,7 @@ cp permission-gate.ts ~/.helix/agent/extensions/
 | `reload-runtime.ts` | Adds `/reload-runtime` and `reload_runtime` tool showing safe reload flow |
 | `interactive-shell.ts` | Run interactive commands (vim, htop) with full terminal via `user_bash` hook |
 | `inline-bash.ts` | Expands `!{command}` patterns in prompts via `input` event transformation |
+| `input-transform-streaming.ts` | Skips expensive input preprocessing for mid-stream steering via `streamingBehavior` |
 
 ### Git Integration
 
@@ -95,7 +96,7 @@ cp permission-gate.ts ~/.helix/agent/extensions/
 
 | Extension | Description |
 |-----------|-------------|
-| `mac-system-theme.ts` | Syncs helix theme with macOS dark/light mode |
+| `mac-system-theme.ts` | Syncs senpi theme with macOS dark/light mode |
 
 ### Resources
 
@@ -136,7 +137,7 @@ cp permission-gate.ts ~/.helix/agent/extensions/
 See [docs/extensions.md](../../docs/extensions.md) for full documentation.
 
 ```typescript
-import type { ExtensionAPI } from "@helix-bio/helix";
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
 import { Type } from "typebox";
 
 export default function (pi: ExtensionAPI) {

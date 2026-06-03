@@ -5,8 +5,13 @@
  * without paying for an extra follow-up LLM turn.
  */
 
+<<<<<<< HEAD
 import { Text } from "@earendil-works/pi-tui";
 import { defineTool, type ExtensionAPI } from "@helix-bio/helix";
+=======
+import { defineTool, type ExtensionAPI } from "@code-yeongyu/senpi";
+import { Text } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 import { Type } from "typebox";
 
 interface StructuredOutputDetails {

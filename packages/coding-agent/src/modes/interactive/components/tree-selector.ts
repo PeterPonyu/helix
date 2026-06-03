@@ -9,10 +9,17 @@ import {
 	TruncatedText,
 	truncateToWidth,
 } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import type { SessionTreeNode } from "../../../core/session-manager.js";
 import { theme } from "../theme/theme.js";
 import { DynamicBorder } from "./dynamic-border.js";
 import { keyHint, keyText } from "./keybinding-hints.js";
+=======
+import type { SessionTreeNode } from "../../../core/session-manager.ts";
+import { theme } from "../theme/theme.ts";
+import { DynamicBorder } from "./dynamic-border.ts";
+import { keyHint, keyText } from "./keybinding-hints.ts";
+>>>>>>> upstream/main
 
 /** Gutter info: position (displayIndent where connector was) and whether to show │ */
 interface GutterInfo {
@@ -1064,7 +1071,15 @@ class TreeList implements Component {
 
 /** Component that displays the current search query */
 class SearchLine implements Component {
+<<<<<<< HEAD
 	constructor(private treeList: TreeList) {}
+=======
+	private treeList: TreeList;
+
+	constructor(treeList: TreeList) {
+		this.treeList = treeList;
+	}
+>>>>>>> upstream/main
 
 	invalidate(): void {}
 

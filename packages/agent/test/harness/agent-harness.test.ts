@@ -1,5 +1,6 @@
 import { fauxAssistantMessage, fauxToolCall, getModel, registerFauxProvider } from "@earendil-works/pi-ai";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { AgentHarness } from "../../src/harness/agent-harness.js";
 import { NodeExecutionEnv } from "../../src/harness/env/nodejs.js";
 import { InMemorySessionStorage } from "../../src/harness/session/memory-storage.js";
@@ -8,6 +9,16 @@ import type { PromptTemplate, Skill } from "../../src/harness/types.js";
 import type { AgentMessage, AgentTool } from "../../src/types.js";
 import { calculateTool } from "../utils/calculate.js";
 import { getCurrentTimeTool } from "../utils/get-current-time.js";
+=======
+import { AgentHarness } from "../../src/harness/agent-harness.ts";
+import { NodeExecutionEnv } from "../../src/harness/env/nodejs.ts";
+import { InMemorySessionStorage } from "../../src/harness/session/memory-storage.ts";
+import { Session } from "../../src/harness/session/session.ts";
+import type { PromptTemplate, Skill } from "../../src/harness/types.ts";
+import type { AgentMessage, AgentTool } from "../../src/types.ts";
+import { calculateTool } from "../utils/calculate.ts";
+import { getCurrentTimeTool } from "../utils/get-current-time.ts";
+>>>>>>> upstream/main
 
 interface AppSkill extends Skill {
 	source: "project" | "user";
@@ -17,10 +28,13 @@ interface AppPromptTemplate extends PromptTemplate {
 	source: "project" | "user";
 }
 
+<<<<<<< HEAD
 interface AppTool extends AgentTool {
 	source: "builtin" | "extension";
 }
 
+=======
+>>>>>>> upstream/main
 const registrations: Array<{ unregister(): void }> = [];
 
 function textFromUserMessages(messages: Array<{ role: string; content: unknown }>): string[] {
@@ -458,11 +472,118 @@ describe("AgentHarness", () => {
 		});
 	});
 
+<<<<<<< HEAD
+=======
+	it("preserves app tool types for getters and update events", async () => {
+		const session = new Session(new InMemorySessionStorage());
+		const env = new NodeExecutionEnv({ cwd: process.cwd() });
+		const model = getModel("anthropic", "claude-sonnet-4-5");
+		type AppTool = AgentTool<typeof calculateTool.parameters, undefined> & { source: "builtin" | "extension" };
+		const inspectTool: AppTool = { ...calculateTool, name: "inspect", source: "builtin" };
+		const searchTool: AppTool = { ...calculateTool, name: "search", source: "extension" };
+		const harness = new AgentHarness<AppSkill, AppPromptTemplate, AppTool>({
+			env,
+			session,
+			model,
+			tools: [inspectTool, searchTool],
+			activeToolNames: ["inspect"],
+		});
+		const updates: Array<{
+			toolNames: string[];
+			previousToolNames: string[];
+			activeToolNames: string[];
+			previousActiveToolNames: string[];
+			source: "set" | "restore";
+		}> = [];
+		harness.subscribe((event) => {
+			if (event.type === "tools_update") {
+				updates.push({
+					toolNames: event.toolNames,
+					previousToolNames: event.previousToolNames,
+					activeToolNames: event.activeToolNames,
+					previousActiveToolNames: event.previousActiveToolNames,
+					source: event.source,
+				});
+				expect(harness.getActiveTools().map((tool) => tool.name)).toEqual(event.activeToolNames);
+			}
+		});
+
+		const tools = harness.getTools();
+		const activeTools = harness.getActiveTools();
+		tools.pop();
+		activeTools.pop();
+		expect(harness.getTools().map((tool) => tool.name)).toEqual(["inspect", "search"]);
+		expect(harness.getActiveTools().map((tool) => tool.source)).toEqual(["builtin"]);
+
+		await harness.setActiveTools(["search"]);
+		await harness.setTools([searchTool], ["search"]);
+		await expect(harness.setActiveTools(["missing"])).rejects.toMatchObject({ code: "invalid_argument" });
+		await expect(harness.setActiveTools(["search", "search"])).rejects.toMatchObject({ code: "invalid_argument" });
+		await expect(harness.setTools([inspectTool])).rejects.toMatchObject({ code: "invalid_argument" });
+		await expect(harness.setTools([inspectTool, inspectTool], ["inspect"])).rejects.toMatchObject({
+			code: "invalid_argument",
+		});
+
+		expect(updates).toEqual([
+			{
+				toolNames: ["inspect", "search"],
+				previousToolNames: ["inspect", "search"],
+				activeToolNames: ["search"],
+				previousActiveToolNames: ["inspect"],
+				source: "set",
+			},
+			{
+				toolNames: ["search"],
+				previousToolNames: ["inspect", "search"],
+				activeToolNames: ["search"],
+				previousActiveToolNames: ["search"],
+				source: "set",
+			},
+		]);
+		expect(harness.getTools().map((tool) => tool.source)).toEqual(["extension"]);
+		expect(harness.getActiveTools().map((tool) => tool.name)).toEqual(["search"]);
+		expect((await session.buildContext()).activeToolNames).toEqual(["search"]);
+	});
+
+	it("validates constructor tool names", () => {
+		const session = new Session(new InMemorySessionStorage());
+		const env = new NodeExecutionEnv({ cwd: process.cwd() });
+		const model = getModel("anthropic", "claude-sonnet-4-5");
+		expect(
+			() => new AgentHarness({ env, session, model, tools: [calculateTool], activeToolNames: ["missing"] }),
+		).toThrow(/Unknown tool/);
+		expect(
+			() =>
+				new AgentHarness({
+					env,
+					session,
+					model,
+					tools: [calculateTool, calculateTool],
+					activeToolNames: [calculateTool.name],
+				}),
+		).toThrow(/Duplicate tool/);
+		expect(
+			() =>
+				new AgentHarness({
+					env,
+					session,
+					model,
+					tools: [calculateTool],
+					activeToolNames: [calculateTool.name, calculateTool.name],
+				}),
+		).toThrow(/Duplicate active tool/);
+	});
+
+>>>>>>> upstream/main
 	it("preserves app resource types for getters and update events", async () => {
 		const session = new Session(new InMemorySessionStorage());
 		const env = new NodeExecutionEnv({ cwd: process.cwd() });
 		const model = getModel("anthropic", "claude-sonnet-4-5");
+<<<<<<< HEAD
 		const harness = new AgentHarness<AppSkill, AppPromptTemplate, AppTool>({ env, session, model });
+=======
+		const harness = new AgentHarness<AppSkill, AppPromptTemplate, AgentTool>({ env, session, model });
+>>>>>>> upstream/main
 		const skill: AppSkill = {
 			name: "inspect",
 			description: "Inspect things",

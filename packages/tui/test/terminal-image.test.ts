@@ -4,7 +4,11 @@
 
 import assert from "node:assert";
 import { describe, it } from "node:test";
+<<<<<<< HEAD
 import { Image } from "../src/components/image.js";
+=======
+import { Image } from "../src/components/image.ts";
+>>>>>>> upstream/main
 import {
 	deleteAllKittyImages,
 	deleteKittyImage,
@@ -16,11 +20,19 @@ import {
 	resetCapabilitiesCache,
 	setCapabilities,
 	setCellDimensions,
+<<<<<<< HEAD
 } from "../src/terminal-image.js";
+=======
+} from "../src/terminal-image.ts";
+>>>>>>> upstream/main
 
 const ENV_KEYS = [
 	"TERM",
 	"TERM_PROGRAM",
+<<<<<<< HEAD
+=======
+	"TERMINAL_EMULATOR",
+>>>>>>> upstream/main
 	"COLORTERM",
 	"TMUX",
 	"KITTY_WINDOW_ID",
@@ -206,19 +218,44 @@ describe("detectCapabilities", () => {
 		});
 	});
 
+<<<<<<< HEAD
 	it("forces hyperlinks: false under tmux even if outer terminal supports OSC 8", () => {
 		withEnv({ TMUX: "/tmp/tmux-1000/default,1234,0", TERM_PROGRAM: "ghostty" }, () => {
 			const caps = detectCapabilities();
+=======
+	it("enables hyperlinks under tmux when the client forwards them", () => {
+		withEnv({ TMUX: "/tmp/tmux-1000/default,1234,0", TERM_PROGRAM: "ghostty" }, () => {
+			const caps = detectCapabilities(() => true);
+			assert.strictEqual(caps.hyperlinks, true);
+			assert.strictEqual(caps.images, null);
+		});
+	});
+
+	it("disables hyperlinks under tmux when the client does not forward them", () => {
+		withEnv({ TMUX: "/tmp/tmux-1000/default,1234,0", TERM_PROGRAM: "ghostty" }, () => {
+			const caps = detectCapabilities(() => false);
+>>>>>>> upstream/main
 			assert.strictEqual(caps.hyperlinks, false);
 			assert.strictEqual(caps.images, null);
 		});
 	});
 
+<<<<<<< HEAD
 	it("forces hyperlinks: false when TERM starts with 'tmux'", () => {
 		withEnv({ TERM: "tmux-256color", TERM_PROGRAM: "iterm.app" }, () => {
 			const caps = detectCapabilities();
 			assert.strictEqual(caps.hyperlinks, false);
 			assert.strictEqual(caps.images, null);
+=======
+	it("checks tmux capability when TERM starts with 'tmux'", () => {
+		withEnv({ TERM: "tmux-256color", TERM_PROGRAM: "iterm.app" }, () => {
+			const caps = detectCapabilities(() => true);
+			assert.strictEqual(caps.hyperlinks, true);
+			assert.strictEqual(caps.images, null);
+
+			const caps2 = detectCapabilities(() => false);
+			assert.strictEqual(caps2.hyperlinks, false);
+>>>>>>> upstream/main
 		});
 	});
 
@@ -273,16 +310,38 @@ describe("detectCapabilities", () => {
 		});
 	});
 
+<<<<<<< HEAD
 	it("detects truecolor for Windows Terminal outside multiplexers", () => {
 		withEnv({ WT_SESSION: "session", TERM: "xterm-256color" }, () => {
 			const caps = detectCapabilities();
 			assert.strictEqual(caps.trueColor, true);
+=======
+	it("enables truecolor and hyperlinks for Windows Terminal outside multiplexers", () => {
+		withEnv({ WT_SESSION: "session", TERM: "xterm-256color" }, () => {
+			const caps = detectCapabilities();
+			assert.strictEqual(caps.trueColor, true);
+			assert.strictEqual(caps.hyperlinks, true);
+			assert.strictEqual(caps.images, null);
+		});
+	});
+
+	it("enables truecolor without hyperlinks for JetBrains terminal", () => {
+		withEnv({ TERMINAL_EMULATOR: "JetBrains-JediTerm", TERM: "xterm-256color" }, () => {
+			const caps = detectCapabilities();
+			assert.strictEqual(caps.trueColor, true);
+			assert.strictEqual(caps.hyperlinks, false);
+			assert.strictEqual(caps.images, null);
+>>>>>>> upstream/main
 		});
 	});
 
 	it("does not inherit Windows Terminal truecolor through tmux", () => {
 		withEnv({ WT_SESSION: "session", TMUX: "/tmp/tmux-1000/default,1234,0", TERM: "tmux-256color" }, () => {
+<<<<<<< HEAD
 			const caps = detectCapabilities();
+=======
+			const caps = detectCapabilities(() => false);
+>>>>>>> upstream/main
 			assert.strictEqual(caps.trueColor, false);
 			assert.strictEqual(caps.hyperlinks, false);
 			assert.strictEqual(caps.images, null);
@@ -291,7 +350,11 @@ describe("detectCapabilities", () => {
 
 	it("trusts explicit truecolor hints through tmux", () => {
 		withEnv({ COLORTERM: "truecolor", TMUX: "/tmp/tmux-1000/default,1234,0", TERM: "tmux-256color" }, () => {
+<<<<<<< HEAD
 			const caps = detectCapabilities();
+=======
+			const caps = detectCapabilities(() => false);
+>>>>>>> upstream/main
 			assert.strictEqual(caps.trueColor, true);
 			assert.strictEqual(caps.hyperlinks, false);
 			assert.strictEqual(caps.images, null);

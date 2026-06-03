@@ -2,8 +2,13 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import type { ExtensionAPI, ExtensionFactory } from "../src/core/extensions/types.js";
 import { DefaultResourceLoader } from "../src/core/resource-loader.js";
+=======
+import type { ExtensionAPI, ExtensionFactory } from "../src/core/extensions/types.ts";
+import { DefaultResourceLoader } from "../src/core/resource-loader.ts";
+>>>>>>> upstream/main
 
 type JitiImporter = (path: string) => Promise<ExtensionFactory>;
 type CreateJiti = () => { import: JitiImporter };
@@ -26,12 +31,21 @@ describe("default global extension fast path", () => {
 	beforeEach(() => {
 		tempDir = join(
 			tmpdir(),
+<<<<<<< HEAD
 			`helix-default-extension-fast-path-${Date.now()}-${Math.random().toString(36).slice(2)}`,
 		);
 		agentDir = join(tempDir, "agent");
 		cwd = join(tempDir, "project");
 		previousAgentDir = process.env.HELIX_CODING_AGENT_DIR;
 		process.env.HELIX_CODING_AGENT_DIR = agentDir;
+=======
+			`senpi-default-extension-fast-path-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+		);
+		agentDir = join(tempDir, "agent");
+		cwd = join(tempDir, "project");
+		previousAgentDir = process.env.SENPI_CODING_AGENT_DIR;
+		process.env.SENPI_CODING_AGENT_DIR = agentDir;
+>>>>>>> upstream/main
 		mkdirSync(cwd, { recursive: true });
 		mkdirSync(join(agentDir, "extensions"), { recursive: true });
 		jitiMock.createJiti.mockReturnValue({ import: jitiMock.importExtension });
@@ -40,9 +54,15 @@ describe("default global extension fast path", () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 		if (previousAgentDir === undefined) {
+<<<<<<< HEAD
 			delete process.env.HELIX_CODING_AGENT_DIR;
 		} else {
 			process.env.HELIX_CODING_AGENT_DIR = previousAgentDir;
+=======
+			delete process.env.SENPI_CODING_AGENT_DIR;
+		} else {
+			process.env.SENPI_CODING_AGENT_DIR = previousAgentDir;
+>>>>>>> upstream/main
 		}
 		if (existsSync(tempDir)) {
 			rmSync(tempDir, { recursive: true, force: true });

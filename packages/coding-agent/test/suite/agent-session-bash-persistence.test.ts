@@ -3,8 +3,13 @@ import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import type { BashOperations } from "../../src/core/tools/bash.js";
 import { createHarness, type Harness } from "./harness.js";
+=======
+import type { BashOperations } from "../../src/core/tools/bash.ts";
+import { createHarness, type Harness } from "./harness.ts";
+>>>>>>> upstream/main
 
 function getEntryTypes(harness: Harness): string[] {
 	return harness.sessionManager.getEntries().map((entry) => entry.type);
@@ -85,8 +90,13 @@ describe("AgentSession bash and persistence characterization", () => {
 		releaseToolExecution?.();
 		await firstPrompt;
 
+<<<<<<< HEAD
 		expect(harness.session.hasPendingBashMessages).toBe(true);
 		expect(harness.session.messages.some((message) => message.role === "bashExecution")).toBe(false);
+=======
+		expect(harness.session.hasPendingBashMessages).toBe(false);
+		expect(harness.session.messages.some((message) => message.role === "bashExecution")).toBe(true);
+>>>>>>> upstream/main
 
 		await harness.session.prompt("next turn");
 

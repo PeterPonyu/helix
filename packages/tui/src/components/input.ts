@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { getKeybindings } from "../keybindings.js";
 import { decodeKittyPrintable } from "../keys.js";
 import { KillRing } from "../kill-ring.js";
@@ -6,6 +7,17 @@ import { UndoStack } from "../undo-stack.js";
 import { getSegmenter, isPunctuationChar, isWhitespaceChar, sliceByColumn, visibleWidth } from "../utils.js";
 
 const segmenter = getSegmenter();
+=======
+import { getKeybindings } from "../keybindings.ts";
+import { decodeKittyPrintable } from "../keys.ts";
+import { KillRing } from "../kill-ring.ts";
+import { type Component, CURSOR_MARKER, type Focusable } from "../tui.ts";
+import { UndoStack } from "../undo-stack.ts";
+import { getGraphemeSegmenter, isWhitespaceChar, sliceByColumn, visibleWidth } from "../utils.ts";
+import { findWordBackward, findWordForward } from "../word-navigation.ts";
+
+const segmenter = getGraphemeSegmenter();
+>>>>>>> upstream/main
 
 interface InputState {
 	value: string;
@@ -206,6 +218,7 @@ export class Input implements Component, Focusable {
 		});
 		if (!hasControlChars) {
 			this.insertCharacter(data);
+<<<<<<< HEAD
 		}
 	}
 
@@ -412,7 +425,158 @@ export class Input implements Component, Focusable {
 					next = iterator.next();
 				}
 			}
+=======
+>>>>>>> upstream/main
 		}
+	}
+
+	private insertCharacter(char: string): void {
+		// Undo coalescing: consecutive word chars coalesce into one undo unit
+		if (isWhitespaceChar(char) || this.lastAction !== "type-word") {
+			this.pushUndo();
+		}
+		this.lastAction = "type-word";
+
+		this.value = this.value.slice(0, this.cursor) + char + this.value.slice(this.cursor);
+		this.cursor += char.length;
+	}
+
+	private handleBackspace(): void {
+		this.lastAction = null;
+		if (this.cursor > 0) {
+			this.pushUndo();
+			const beforeCursor = this.value.slice(0, this.cursor);
+			const graphemes = [...segmenter.segment(beforeCursor)];
+			const lastGrapheme = graphemes[graphemes.length - 1];
+			const graphemeLength = lastGrapheme ? lastGrapheme.segment.length : 1;
+			this.value = this.value.slice(0, this.cursor - graphemeLength) + this.value.slice(this.cursor);
+			this.cursor -= graphemeLength;
+		}
+	}
+
+	private handleForwardDelete(): void {
+		this.lastAction = null;
+		if (this.cursor < this.value.length) {
+			this.pushUndo();
+			const afterCursor = this.value.slice(this.cursor);
+			const graphemes = [...segmenter.segment(afterCursor)];
+			const firstGrapheme = graphemes[0];
+			const graphemeLength = firstGrapheme ? firstGrapheme.segment.length : 1;
+			this.value = this.value.slice(0, this.cursor) + this.value.slice(this.cursor + graphemeLength);
+		}
+	}
+
+	private deleteToLineStart(): void {
+		if (this.cursor === 0) return;
+		this.pushUndo();
+		const deletedText = this.value.slice(0, this.cursor);
+		this.killRing.push(deletedText, { prepend: true, accumulate: this.lastAction === "kill" });
+		this.lastAction = "kill";
+		this.value = this.value.slice(this.cursor);
+		this.cursor = 0;
+	}
+
+	private deleteToLineEnd(): void {
+		if (this.cursor >= this.value.length) return;
+		this.pushUndo();
+		const deletedText = this.value.slice(this.cursor);
+		this.killRing.push(deletedText, { prepend: false, accumulate: this.lastAction === "kill" });
+		this.lastAction = "kill";
+		this.value = this.value.slice(0, this.cursor);
+	}
+
+	private deleteWordBackwards(): void {
+		if (this.cursor === 0) return;
+
+		// Save lastAction before cursor movement (moveWordBackwards resets it)
+		const wasKill = this.lastAction === "kill";
+
+		this.pushUndo();
+
+		const oldCursor = this.cursor;
+		this.moveWordBackwards();
+		const deleteFrom = this.cursor;
+		this.cursor = oldCursor;
+
+		const deletedText = this.value.slice(deleteFrom, this.cursor);
+		this.killRing.push(deletedText, { prepend: true, accumulate: wasKill });
+		this.lastAction = "kill";
+
+		this.value = this.value.slice(0, deleteFrom) + this.value.slice(this.cursor);
+		this.cursor = deleteFrom;
+	}
+
+	private deleteWordForward(): void {
+		if (this.cursor >= this.value.length) return;
+
+		// Save lastAction before cursor movement (moveWordForwards resets it)
+		const wasKill = this.lastAction === "kill";
+
+		this.pushUndo();
+
+		const oldCursor = this.cursor;
+		this.moveWordForwards();
+		const deleteTo = this.cursor;
+		this.cursor = oldCursor;
+
+		const deletedText = this.value.slice(this.cursor, deleteTo);
+		this.killRing.push(deletedText, { prepend: false, accumulate: wasKill });
+		this.lastAction = "kill";
+
+		this.value = this.value.slice(0, this.cursor) + this.value.slice(deleteTo);
+	}
+
+	private yank(): void {
+		const text = this.killRing.peek();
+		if (!text) return;
+
+		this.pushUndo();
+
+		this.value = this.value.slice(0, this.cursor) + text + this.value.slice(this.cursor);
+		this.cursor += text.length;
+		this.lastAction = "yank";
+	}
+
+	private yankPop(): void {
+		if (this.lastAction !== "yank" || this.killRing.length <= 1) return;
+
+		this.pushUndo();
+
+		// Delete the previously yanked text (still at end of ring before rotation)
+		const prevText = this.killRing.peek() || "";
+		this.value = this.value.slice(0, this.cursor - prevText.length) + this.value.slice(this.cursor);
+		this.cursor -= prevText.length;
+
+		// Rotate and insert new entry
+		this.killRing.rotate();
+		const text = this.killRing.peek() || "";
+		this.value = this.value.slice(0, this.cursor) + text + this.value.slice(this.cursor);
+		this.cursor += text.length;
+		this.lastAction = "yank";
+	}
+
+	private pushUndo(): void {
+		this.undoStack.push({ value: this.value, cursor: this.cursor });
+	}
+
+	private undo(): void {
+		const snapshot = this.undoStack.pop();
+		if (!snapshot) return;
+		this.value = snapshot.value;
+		this.cursor = snapshot.cursor;
+		this.lastAction = null;
+	}
+
+	private moveWordBackwards(): void {
+		if (this.cursor === 0) return;
+		this.lastAction = null;
+		this.cursor = findWordBackward(this.value, this.cursor);
+	}
+
+	private moveWordForwards(): void {
+		if (this.cursor >= this.value.length) return;
+		this.lastAction = null;
+		this.cursor = findWordForward(this.value, this.cursor);
 	}
 
 	private handlePaste(pastedText: string): void {

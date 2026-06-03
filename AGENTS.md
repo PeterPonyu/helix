@@ -10,16 +10,17 @@
 
 ## Code Quality
 
-- Read files in full before making wide-ranging changes, before editing files you have not already fully inspected, and when the user asks you to investigate or audit something. Do not rely only on search snippets for broad changes.
-- No `any` types unless absolutely necessary
-- Single-line helper functions with a single call site are forbidden; inline them instead.
-- Check node_modules for external API type definitions instead of guessing
-- **NEVER use inline imports** - no `await import("./foo.js")`, no `import("pkg").Type` in type positions, no dynamic imports for types. Always use standard top-level imports.
-- NEVER remove or downgrade code to fix type errors from outdated dependencies; upgrade the dependency instead
-- Always ask before removing functionality or code that appears to be intentional
-- Do not preserve backward compatibility unless the user explicitly asks for it
-- Never hardcode key checks with, eg. `matchesKey(keyData, "ctrl+x")`. All keybindings must be configurable. Add default to matching object (`DEFAULT_EDITOR_KEYBINDINGS` or `DEFAULT_APP_KEYBINDINGS`)
-- NEVER modify `packages/ai/src/models.generated.ts` directly. Update `packages/ai/scripts/generate-models.ts` instead.
+- Read files in full before wide-ranging changes, before editing files you have not fully inspected, and when asked to investigate or audit. Do not rely on search snippets for broad changes.
+- No `any` unless absolutely necessary.
+- Inline single-line helpers that have only one call site.
+- Check node_modules for external API types; don't guess.
+- **No inline imports** (`await import()`, `import("pkg").Type`, dynamic type imports). Top-level imports only.
+- Never remove or downgrade code to fix type errors from outdated deps; upgrade the dep instead.
+- Use only erasable TypeScript syntax (Node strip-only mode) in code checked by the root config (`packages/*/src`, `packages/*/test`, `packages/coding-agent/examples`): no parameter properties, `enum`, `namespace`/`module`, `import =`, `export =`, or other constructs needing JS emit. Use explicit fields with constructor assignments.
+- Always ask before removing functionality or code that appears intentional.
+- Do not preserve backward compatibility unless the user asks for it.
+- Never hardcode key checks (e.g. `matchesKey(keyData, "ctrl+x")`). Add defaults to `DEFAULT_EDITOR_KEYBINDINGS` or `DEFAULT_APP_KEYBINDINGS` so they stay configurable.
+- Never modify `packages/ai/src/models.generated.ts` directly; update `packages/ai/scripts/generate-models.ts` instead, then regenerate. Including the resulting `models.generated.ts` diff is always OK, even if regeneration includes unrelated upstream model metadata changes.
 
 ## Commands
 
@@ -33,6 +34,7 @@
 - When writing tests, run them, identify issues in either the test or implementation, and iterate until fixed.
 - For `packages/coding-agent/test/suite/`, use `test/suite/harness.ts` plus the faux provider. Do not use real provider APIs, real API keys, or paid tokens.
 - Put issue-specific regressions under `packages/coding-agent/test/suite/regressions/` and name them `<issue-number>-<short-slug>.test.ts`.
+- For ad-hoc scripts, write the script to a temporary file (for example under `/tmp`) using `write`, run that file, edit it if needed, and remove it when it is no longer needed. Do not embed multi-line scripts directly in `bash` commands.
 - Don't commit speculatively. Commit when the user asks, or when their task delegation continues a plan whose terminal step is commit/push (e.g. "마저진행해줘", "finish this", "계속해줘"). Treat such delegation as the ask — don't stall mid-plan to demand a literal "commit" keyword.
 
 ## Contribution Triage
@@ -40,10 +42,16 @@
 - Issues and PRs stay open for maintainer review.
 - Issues and PRs that do not meet the quality bar in `CONTRIBUTING.md` may be closed without extended triage.
 
+When reviewing PRs:
+
+- Do not run `gh pr checkout`, `git switch`, or otherwise move the worktree to the PR branch unless the user explicitly asks.
+- Use `gh pr view`, `gh pr diff`, `gh api`, and local `git show`/`git diff` against fetched refs to inspect PR metadata, commits, and patches without changing branches.
+- If you need PR file contents, fetch/read them into temporary files or use `git show <ref>:<path>` without switching branches.
+
 When creating issues:
 
 - Add `pkg:*` labels to indicate which package(s) the issue affects
-  - Available labels: `pkg:agent`, `pkg:ai`, `pkg:coding-agent`, `pkg:tui`, `pkg:web-ui`
+  - Available labels: `pkg:agent`, `pkg:ai`, `pkg:coding-agent`, `pkg:tui`
 - If an issue spans multiple packages, add all relevant labels
 
 When posting issue/PR comments:
@@ -75,7 +83,7 @@ To test pi's TUI in a controlled terminal environment:
 tmux new-session -d -s pi-test -x 80 -y 24
 
 # Start pi from source
-tmux send-keys -t pi-test "cd /path/to/helix && ./helix-test.sh" Enter
+tmux send-keys -t pi-test "cd /Users/badlogic/workspaces/pi-mono && ./pi-test.sh" Enter
 
 # Wait for startup, then capture output
 sleep 3 && tmux capture-pane -t pi-test -p
@@ -182,15 +190,41 @@ Create provider file exporting:
 
 ### Steps
 
-1. **Update CHANGELOGs**: Ensure all changes since last release are documented in the `[Unreleased]` section of each affected package's CHANGELOG.md
+1. **Update CHANGELOGs**: ask the user whether they ran the `/cl` prompt on the latest commit on `main`. If not, they must run `/cl` first to audit and update each package's `[Unreleased]` section before releasing.
 
-2. **Run release script**:
+2. **Local smoke test**: build an unpublished release and smoke test from outside the repo so it cannot resolve workspace files:
    ```bash
-   npm run release:patch    # Fixes and additions
-   npm run release:minor    # API breaking changes
-   ```
+   npm run release:local -- --out /tmp/pi-local-release --force
+   cd /tmp
 
-The script handles: version bump, CHANGELOG finalization, commit, tag, publish, and adding new `[Unreleased]` sections.
+   # Node package install smoke tests
+   /tmp/pi-local-release/node/pi --help
+   /tmp/pi-local-release/node/pi --version
+   /tmp/pi-local-release/node/pi --list-models
+   /tmp/pi-local-release/node/pi -p "Say exactly: ok"
+   /tmp/pi-local-release/node/pi
+
+   # Bun binary smoke tests
+   /tmp/pi-local-release/bun/pi --help
+   /tmp/pi-local-release/bun/pi --version
+   /tmp/pi-local-release/bun/pi --list-models
+   /tmp/pi-local-release/bun/pi -p "Say exactly: ok"
+   /tmp/pi-local-release/bun/pi
+   ```
+   Verify both Node and Bun startup, model/account listing, interactive startup, and at least one real prompt with the intended default provider. The bare commands `/tmp/pi-local-release/node/pi` and `/tmp/pi-local-release/bun/pi` start interactive mode; run each in tmux, submit a prompt, and wait for the model reply before considering the interactive smoke test passed. Failures are release blockers unless the user explicitly accepts the risk.
+
+3. **Run the release script**:
+   ```bash
+   PI_ALLOW_LOCKFILE_CHANGE=1 npm_config_min_release_age=0 npm run release:patch    # Fixes and additions
+   PI_ALLOW_LOCKFILE_CHANGE=1 npm_config_min_release_age=0 npm run release:minor    # API breaking changes
+   ```
+   Use `npm_config_min_release_age=0` only for the release command. The repo's normal npm age gate can otherwise block the release lockfile refresh when the current workspace package version was published recently. Review any lockfile or shrinkwrap diffs the release creates before push.
+
+   The release script bumps all package versions, updates changelogs, regenerates release artifacts, runs `npm run check`, commits `Release vX.Y.Z`, tags `vX.Y.Z`, adds fresh `## [Unreleased]` changelog sections, commits `Add [Unreleased] section for next cycle`, then pushes `main` and the tag. Do not rerun the release script after a tag was pushed.
+
+4. **CI publishes npm packages**: pushing the `vX.Y.Z` tag triggers `.github/workflows/build-binaries.yml`. The `publish-npm` job uses npm trusted publishing through GitHub Actions OIDC with environment `npm-publish`; no local `npm publish`, `npm whoami`, OTP, or WebAuthn flow is required.
+
+5. **If CI publish fails**: inspect the failed `publish-npm` job. The publish helper is idempotent and skips package versions already present on npm, so rerun the tag workflow after fixing CI or transient npm issues. Do not rerun `npm run release:patch` or `npm run release:minor` for the same version.
 
 ## **CRITICAL** Git Rules for Parallel Agents **CRITICAL**
 

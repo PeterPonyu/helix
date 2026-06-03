@@ -1,8 +1,13 @@
 /**
  * Inline Bash Extension - expands inline bash commands in user prompts.
  *
+<<<<<<< HEAD
  * Start helix with this extension:
  *   helix -e ./examples/extensions/inline-bash.ts
+=======
+ * Start senpi with this extension:
+ *   senpi -e ./examples/extensions/inline-bash.ts
+>>>>>>> upstream/main
  *
  * Then type prompts with inline bash:
  *   What's in !{pwd}?
@@ -14,7 +19,11 @@
  *
  * Note: Regular !command syntax (whole-line bash) is preserved and works as before.
  */
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	const PATTERN = /!\{([^}]+)\}/g;

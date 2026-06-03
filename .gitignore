@@ -65,12 +65,19 @@ out.jsonl
 pi-*.html
 out.html
 packages/coding-agent/binaries/
+<<<<<<< HEAD
+=======
+packages/coding-agent/*.tgz
+>>>>>>> upstream/main
 todo.md
 plans/
 local-ignore/
 .pi/hf-sessions/
 .pi/hf-sessions-backup/
 collect.sh
+<<<<<<< HEAD
 
 # Internal agent tooling artifacts
 .factory/
+=======
+>>>>>>> upstream/main

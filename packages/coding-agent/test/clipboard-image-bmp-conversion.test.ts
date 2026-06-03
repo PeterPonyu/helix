@@ -68,7 +68,11 @@ vi.mock("@mariozechner/clipboard", () => ({
 
 describe("readClipboardImage BMP conversion", () => {
 	test("converts BMP to PNG on Wayland/WSLg", async () => {
+<<<<<<< HEAD
 		const { readClipboardImage } = await import("../src/utils/clipboard-image.js");
+=======
+		const { readClipboardImage } = await import("../src/utils/clipboard-image.ts");
+>>>>>>> upstream/main
 
 		// Simulate Wayland session (WSLg)
 		const image = await readClipboardImage({

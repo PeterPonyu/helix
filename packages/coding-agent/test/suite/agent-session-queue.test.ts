@@ -2,7 +2,11 @@ import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../../src/index.js";
+=======
+import type { ExtensionAPI } from "../../src/index.ts";
+>>>>>>> upstream/main
 import {
 	createHarness,
 	getAssistantTexts,
@@ -10,7 +14,11 @@ import {
 	getUserTexts,
 	type Harness,
 	type HarnessOptions,
+<<<<<<< HEAD
 } from "./harness.js";
+=======
+} from "./harness.ts";
+>>>>>>> upstream/main
 
 async function createWaitingHarness(options: Pick<HarnessOptions, "extensionFactories" | "tools"> = {}): Promise<{
 	harness: Harness;
@@ -484,4 +492,30 @@ describe("AgentSession queue characterization", () => {
 			'Extension command "/testcmd" cannot be queued. Use prompt() or execute the command when not streaming.',
 		);
 	});
+<<<<<<< HEAD
+=======
+
+	it("delivers follow-ups queued during agent_end", async () => {
+		let sent = false;
+		const harness = await createHarness({
+			extensionFactories: [
+				(pi: ExtensionAPI) => {
+					pi.on("agent_end", async () => {
+						if (sent) return;
+						sent = true;
+						pi.sendUserMessage("conflict report", { deliverAs: "followUp" });
+					});
+				},
+			],
+		});
+		harnesses.push(harness);
+
+		harness.setResponses([fauxAssistantMessage("reply"), fauxAssistantMessage("follow-up reply")]);
+
+		await harness.session.prompt("hello");
+		await harness.session.agent.waitForIdle();
+
+		expect(getUserTexts(harness)).toEqual(["hello", "conflict report"]);
+	});
+>>>>>>> upstream/main
 });

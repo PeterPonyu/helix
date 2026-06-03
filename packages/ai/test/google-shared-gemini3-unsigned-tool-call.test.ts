@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { convertMessages } from "../src/providers/google-shared.js";
 import type { AssistantMessage, Context, Model } from "../src/types.js";
+=======
+import { convertMessages } from "../src/providers/google-shared.ts";
+import type { AssistantMessage, Context, Model } from "../src/types.ts";
+>>>>>>> upstream/main
 
 function makeGemini3Model<TApi extends "google-generative-ai" | "google-vertex">(
 	api: TApi,

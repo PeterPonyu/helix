@@ -13,6 +13,7 @@ import {
 	truncateToWidth,
 	visibleWidth,
 } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { KeybindingsManager } from "../../../core/keybindings.js";
 import type { SessionInfo, SessionListProgress } from "../../../core/session-manager.js";
 import { canonicalizePath as _canonicalizePath } from "../../../utils/paths.js";
@@ -20,6 +21,15 @@ import { theme } from "../theme/theme.js";
 import { DynamicBorder } from "./dynamic-border.js";
 import { keyHint, keyText } from "./keybinding-hints.js";
 import { filterAndSortSessions, hasSessionName, type NameFilter, type SortMode } from "./session-selector-search.js";
+=======
+import { KeybindingsManager } from "../../../core/keybindings.ts";
+import type { SessionInfo, SessionListProgress } from "../../../core/session-manager.ts";
+import { canonicalizePath as _canonicalizePath } from "../../../utils/paths.ts";
+import { theme } from "../theme/theme.ts";
+import { DynamicBorder } from "./dynamic-border.ts";
+import { keyHint, keyText } from "./keybinding-hints.ts";
+import { filterAndSortSessions, hasSessionName, type NameFilter, type SortMode } from "./session-selector-search.ts";
+>>>>>>> upstream/main
 
 type SessionScope = "current" | "all";
 

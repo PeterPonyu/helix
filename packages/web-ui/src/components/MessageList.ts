@@ -6,7 +6,11 @@ import type {
 import { html, LitElement, type TemplateResult } from "lit";
 import { property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
+<<<<<<< HEAD
 import { renderMessage } from "./message-renderer-registry.js";
+=======
+import { renderMessage } from "./message-renderer-registry.ts";
+>>>>>>> upstream/main
 
 export class MessageList extends LitElement {
 	@property({ type: Array }) messages: AgentMessage[] = [];

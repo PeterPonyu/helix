@@ -1,14 +1,59 @@
 import * as fs from "node:fs";
 import { createRequire } from "node:module";
 import * as path from "node:path";
+<<<<<<< HEAD
 import { setKittyProtocolActive } from "./keys.js";
 import { StdinBuffer } from "./stdin-buffer.js";
+=======
+import { fileURLToPath } from "node:url";
+import { setKittyProtocolActive } from "./keys.ts";
+import { isNativeModifierPressed } from "./native-modifiers.ts";
+import { StdinBuffer } from "./stdin-buffer.ts";
+>>>>>>> upstream/main
 
 const cjsRequire = createRequire(import.meta.url);
 
 const TERMINAL_PROGRESS_KEEPALIVE_MS = 1000;
 const TERMINAL_PROGRESS_ACTIVE_SEQUENCE = "\x1b]9;4;3\x07";
 const TERMINAL_PROGRESS_CLEAR_SEQUENCE = "\x1b]9;4;0;\x07";
+<<<<<<< HEAD
+=======
+const APPLE_TERMINAL_SHIFT_ENTER_SEQUENCE = "\x1b[13;2u";
+const DESIRED_KITTY_KEYBOARD_PROTOCOL_FLAGS = 7;
+const KITTY_KEYBOARD_PROTOCOL_FALLBACK_TIMEOUT_MS = 150;
+const KEYBOARD_PROTOCOL_RESPONSE_FRAGMENT_TIMEOUT_MS = 150;
+const KITTY_KEYBOARD_PROTOCOL_QUERY = `\x1b[>${DESIRED_KITTY_KEYBOARD_PROTOCOL_FLAGS}u\x1b[?u\x1b[c`;
+
+export type KeyboardProtocolNegotiationSequence =
+	| { type: "kitty-flags"; flags: number }
+	| { type: "device-attributes" };
+
+export function parseKeyboardProtocolNegotiationSequence(
+	sequence: string,
+): KeyboardProtocolNegotiationSequence | undefined {
+	const kittyFlags = sequence.match(/^\x1b\[\?(\d+)u$/);
+	if (kittyFlags) {
+		return { type: "kitty-flags", flags: Number.parseInt(kittyFlags[1]!, 10) };
+	}
+	if (/^\x1b\[\?[\d;]*c$/.test(sequence)) {
+		return { type: "device-attributes" };
+	}
+	return undefined;
+}
+
+function isKeyboardProtocolNegotiationSequencePrefix(sequence: string, allowBareEscapePrefix: boolean): boolean {
+	return (allowBareEscapePrefix && sequence === "\x1b") || sequence === "\x1b[" || /^\x1b\[\?[\d;]*$/.test(sequence);
+}
+
+export function isAppleTerminalSession(): boolean {
+	return process.platform === "darwin" && process.env.TERM_PROGRAM === "Apple_Terminal";
+}
+
+export function normalizeAppleTerminalInput(data: string, isAppleTerminal: boolean, isShiftPressed: boolean): string {
+	if (isAppleTerminal && data === "\r" && isShiftPressed) return APPLE_TERMINAL_SHIFT_ENTER_SEQUENCE;
+	return data;
+}
+>>>>>>> upstream/main
 
 /**
  * Minimal terminal interface for TUI
@@ -66,6 +111,15 @@ export class ProcessTerminal implements Terminal {
 	private resizeHandler?: () => void;
 	private _kittyProtocolActive = false;
 	private _modifyOtherKeysActive = false;
+<<<<<<< HEAD
+=======
+	private keyboardProtocolPushed = false;
+	private keyboardProtocolNegotiationPending = false;
+	private keyboardProtocolLateResponsePending = false;
+	private keyboardProtocolNegotiationBuffer = "";
+	private keyboardProtocolFallbackTimer?: ReturnType<typeof setTimeout>;
+	private keyboardProtocolBufferFlushTimer?: ReturnType<typeof setTimeout>;
+>>>>>>> upstream/main
 	private stdinBuffer?: StdinBuffer;
 	private stdinDataHandler?: (data: string) => void;
 	private progressInterval?: ReturnType<typeof setInterval>;
@@ -135,6 +189,7 @@ export class ProcessTerminal implements Terminal {
 	private setupStdinBuffer(): void {
 		this.stdinBuffer = new StdinBuffer({ timeout: 10 });
 
+<<<<<<< HEAD
 		// Kitty protocol response pattern: \x1b[?<flags>u
 		const kittyResponsePattern = /^\x1b\[\?(\d+)u$/;
 
@@ -160,6 +215,32 @@ export class ProcessTerminal implements Terminal {
 			if (this.inputHandler) {
 				this.inputHandler(sequence);
 			}
+=======
+		// Forward individual sequences to the input handler
+		this.stdinBuffer.on("data", (sequence) => {
+			if (this.keyboardProtocolNegotiationPending) {
+				const negotiationSequence = this.readKeyboardProtocolNegotiationSequence(sequence, true);
+				if (negotiationSequence === "pending") {
+					return; // Wait for the rest of a split negotiation response.
+				}
+				if (this.handleKeyboardProtocolNegotiationSequence(negotiationSequence)) {
+					return;
+				}
+			}
+
+			if (this.keyboardProtocolLateResponsePending) {
+				const negotiationSequence = this.readKeyboardProtocolNegotiationSequence(sequence, false);
+				if (negotiationSequence === "pending") {
+					this.scheduleKeyboardProtocolNegotiationBufferFlush();
+					return; // Wait for the rest of a split late negotiation response.
+				}
+				if (this.handleKeyboardProtocolNegotiationSequence(negotiationSequence)) {
+					return;
+				}
+			}
+
+			this.forwardInputSequence(sequence);
+>>>>>>> upstream/main
 		});
 
 		// Re-wrap paste content with bracketed paste markers for existing editor handling
@@ -176,6 +257,7 @@ export class ProcessTerminal implements Terminal {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Query terminal for Kitty keyboard protocol support and enable if available.
 	 *
 	 * Sends CSI ? u to query current flags. If terminal responds with CSI ? <flags> u,
@@ -188,11 +270,26 @@ export class ProcessTerminal implements Terminal {
 	 *
 	 * The response is detected in setupStdinBuffer's data handler, which properly
 	 * handles the case where the response arrives split across multiple stdin events.
+=======
+	 * Query terminal for Kitty keyboard protocol support and enable it if available.
+	 *
+	 * Kitty's progressive enhancement detection requires requesting the desired
+	 * flags before querying them. The trailing DA query is a sentinel supported by
+	 * terminals that do not know Kitty keyboard protocol. A short timeout remains
+	 * as a backup for terminals, PTYs, and SSH sessions that delay, split, or drop
+	 * the DA response.
+	 *
+	 * The requested flags are:
+	 * - 1 = disambiguate escape codes
+	 * - 2 = report event types (press/repeat/release)
+	 * - 4 = report alternate keys (shifted key, base layout key)
+>>>>>>> upstream/main
 	 */
 	private queryAndEnableKittyProtocol(): void {
 		this.setupStdinBuffer();
 		process.stdin.on("data", this.stdinDataHandler!);
 		if (process.env.TMUX !== undefined || process.env.TMUX_PANE !== undefined) {
+<<<<<<< HEAD
 			process.stdout.write("\x1b[>4;2m");
 			this._modifyOtherKeysActive = true;
 		}
@@ -203,6 +300,131 @@ export class ProcessTerminal implements Terminal {
 				this._modifyOtherKeysActive = true;
 			}
 		}, 150);
+=======
+			this.enableModifyOtherKeys();
+		}
+		this.keyboardProtocolPushed = true;
+		this.keyboardProtocolNegotiationPending = true;
+		this.keyboardProtocolLateResponsePending = false;
+		this.clearKeyboardProtocolNegotiationBuffer();
+		process.stdout.write(KITTY_KEYBOARD_PROTOCOL_QUERY);
+		this.keyboardProtocolFallbackTimer = setTimeout(() => {
+			this.keyboardProtocolFallbackTimer = undefined;
+			this.keyboardProtocolNegotiationPending = false;
+			this.keyboardProtocolLateResponsePending = true;
+			if (this.keyboardProtocolNegotiationBuffer === "\x1b") {
+				this.flushKeyboardProtocolNegotiationBufferAsInput();
+			} else {
+				this.scheduleKeyboardProtocolNegotiationBufferFlush();
+			}
+			this.enableModifyOtherKeys();
+		}, KITTY_KEYBOARD_PROTOCOL_FALLBACK_TIMEOUT_MS);
+	}
+
+	private handleKeyboardProtocolNegotiationSequence(
+		negotiationSequence: KeyboardProtocolNegotiationSequence | undefined,
+	): boolean {
+		if (!negotiationSequence) return false;
+		if (negotiationSequence.type === "kitty-flags") {
+			if (negotiationSequence.flags !== 0 && !this._kittyProtocolActive) {
+				this._kittyProtocolActive = true;
+				setKittyProtocolActive(true);
+				this.keyboardProtocolNegotiationPending = false;
+				this.keyboardProtocolLateResponsePending = true;
+				this.clearKeyboardProtocolNegotiationBuffer();
+				this.clearKeyboardProtocolFallbackTimer();
+			}
+			return true;
+		}
+
+		this.keyboardProtocolNegotiationPending = false;
+		this.keyboardProtocolLateResponsePending = true;
+		this.clearKeyboardProtocolNegotiationBuffer();
+		this.clearKeyboardProtocolFallbackTimer();
+		this.enableModifyOtherKeys();
+		return true;
+	}
+
+	private readKeyboardProtocolNegotiationSequence(
+		sequence: string,
+		allowBareEscapePrefix: boolean,
+	): KeyboardProtocolNegotiationSequence | "pending" | undefined {
+		if (this.keyboardProtocolNegotiationBuffer) {
+			const bufferedSequence = this.keyboardProtocolNegotiationBuffer + sequence;
+			const negotiationSequence = parseKeyboardProtocolNegotiationSequence(bufferedSequence);
+			if (negotiationSequence) {
+				this.clearKeyboardProtocolNegotiationBuffer();
+				return negotiationSequence;
+			}
+			if (isKeyboardProtocolNegotiationSequencePrefix(bufferedSequence, allowBareEscapePrefix)) {
+				this.setKeyboardProtocolNegotiationBuffer(bufferedSequence);
+				return "pending";
+			}
+			this.flushKeyboardProtocolNegotiationBufferAsInput();
+		}
+
+		const negotiationSequence = parseKeyboardProtocolNegotiationSequence(sequence);
+		if (negotiationSequence) return negotiationSequence;
+		if (isKeyboardProtocolNegotiationSequencePrefix(sequence, allowBareEscapePrefix)) {
+			this.setKeyboardProtocolNegotiationBuffer(sequence);
+			return "pending";
+		}
+		return undefined;
+	}
+
+	private setKeyboardProtocolNegotiationBuffer(sequence: string): void {
+		this.clearKeyboardProtocolNegotiationBufferFlushTimer();
+		this.keyboardProtocolNegotiationBuffer = sequence;
+	}
+
+	private clearKeyboardProtocolNegotiationBuffer(): void {
+		this.clearKeyboardProtocolNegotiationBufferFlushTimer();
+		this.keyboardProtocolNegotiationBuffer = "";
+	}
+
+	private flushKeyboardProtocolNegotiationBufferAsInput(): void {
+		if (!this.keyboardProtocolNegotiationBuffer) return;
+		const sequence = this.keyboardProtocolNegotiationBuffer;
+		this.clearKeyboardProtocolNegotiationBuffer();
+		this.forwardInputSequence(sequence);
+	}
+
+	private scheduleKeyboardProtocolNegotiationBufferFlush(): void {
+		if (!this.keyboardProtocolNegotiationBuffer || this.keyboardProtocolBufferFlushTimer) return;
+		this.keyboardProtocolBufferFlushTimer = setTimeout(() => {
+			this.keyboardProtocolBufferFlushTimer = undefined;
+			this.flushKeyboardProtocolNegotiationBufferAsInput();
+		}, KEYBOARD_PROTOCOL_RESPONSE_FRAGMENT_TIMEOUT_MS);
+	}
+
+	private clearKeyboardProtocolNegotiationBufferFlushTimer(): void {
+		if (!this.keyboardProtocolBufferFlushTimer) return;
+		clearTimeout(this.keyboardProtocolBufferFlushTimer);
+		this.keyboardProtocolBufferFlushTimer = undefined;
+	}
+
+	private forwardInputSequence(sequence: string): void {
+		if (!this.inputHandler) return;
+		const isAppleTerminal = sequence === "\r" && isAppleTerminalSession();
+		const input = normalizeAppleTerminalInput(
+			sequence,
+			isAppleTerminal,
+			isAppleTerminal && isNativeModifierPressed("shift"),
+		);
+		this.inputHandler(input);
+	}
+
+	private enableModifyOtherKeys(): void {
+		if (this._kittyProtocolActive || this._modifyOtherKeysActive) return;
+		process.stdout.write("\x1b[>4;2m");
+		this._modifyOtherKeysActive = true;
+	}
+
+	private clearKeyboardProtocolFallbackTimer(): void {
+		if (!this.keyboardProtocolFallbackTimer) return;
+		clearTimeout(this.keyboardProtocolFallbackTimer);
+		this.keyboardProtocolFallbackTimer = undefined;
+>>>>>>> upstream/main
 	}
 
 	/**
@@ -214,6 +436,7 @@ export class ProcessTerminal implements Terminal {
 	private enableWindowsVTInput(): void {
 		if (process.platform !== "win32") return;
 		try {
+<<<<<<< HEAD
 			// Dynamic require to avoid bundling koffi's 74MB of cross-platform
 			// native binaries into every compiled binary. Koffi is only needed
 			// on Windows for VT input support.
@@ -231,10 +454,37 @@ export class ProcessTerminal implements Terminal {
 			SetConsoleMode(handle, mode[0]! | ENABLE_VIRTUAL_TERMINAL_INPUT);
 		} catch {
 			// koffi not available — Shift+Tab won't be distinguishable from Tab
+=======
+			const arch = process.arch;
+			if (arch !== "x64" && arch !== "arm64") return;
+
+			// Dynamic require so non-Windows and bundled/browser paths never load the
+			// native helper. In the npm package native/ is next to dist/; in compiled
+			// binary archives native/ is copied next to the executable.
+			const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+			const nativePath = path.join("native", "win32", "prebuilds", `win32-${arch}`, "win32-console-mode.node");
+			const candidates = [
+				path.join(moduleDir, "..", nativePath),
+				path.join(moduleDir, nativePath),
+				path.join(path.dirname(process.execPath), nativePath),
+			];
+			for (const modulePath of candidates) {
+				try {
+					const helper = cjsRequire(modulePath) as { enableVirtualTerminalInput?: () => boolean };
+					helper.enableVirtualTerminalInput?.();
+					return;
+				} catch {
+					// Try the next possible packaging location.
+				}
+			}
+		} catch {
+			// Native helper not available — Shift+Tab won't be distinguishable from Tab.
+>>>>>>> upstream/main
 		}
 	}
 
 	async drainInput(maxMs = 1000, idleMs = 50): Promise<void> {
+<<<<<<< HEAD
 		if (this._kittyProtocolActive) {
 			// Disable Kitty keyboard protocol first so any late key releases
 			// do not generate new Kitty escape sequences.
@@ -242,6 +492,22 @@ export class ProcessTerminal implements Terminal {
 			this._kittyProtocolActive = false;
 			setKittyProtocolActive(false);
 		}
+=======
+		const shouldDisableKittyProtocol =
+			this.keyboardProtocolPushed || this._kittyProtocolActive || this.keyboardProtocolNegotiationPending;
+		this.keyboardProtocolLateResponsePending = false;
+		this.clearKeyboardProtocolNegotiationBuffer();
+		this.clearKeyboardProtocolFallbackTimer();
+		if (shouldDisableKittyProtocol) {
+			// Disable Kitty keyboard protocol first so any late key releases
+			// do not generate new Kitty escape sequences.
+			process.stdout.write("\x1b[<u");
+			this.keyboardProtocolPushed = false;
+			this._kittyProtocolActive = false;
+			setKittyProtocolActive(false);
+		}
+		this.keyboardProtocolNegotiationPending = false;
+>>>>>>> upstream/main
 		if (this._modifyOtherKeysActive) {
 			process.stdout.write("\x1b[>4;0m");
 			this._modifyOtherKeysActive = false;
@@ -280,12 +546,29 @@ export class ProcessTerminal implements Terminal {
 		// Disable bracketed paste mode
 		process.stdout.write("\x1b[?2004l");
 
+<<<<<<< HEAD
 		// Disable Kitty keyboard protocol if not already done by drainInput()
 		if (this._kittyProtocolActive) {
 			process.stdout.write("\x1b[<u");
 			this._kittyProtocolActive = false;
 			setKittyProtocolActive(false);
 		}
+=======
+		const shouldDisableKittyProtocol =
+			this.keyboardProtocolPushed || this._kittyProtocolActive || this.keyboardProtocolNegotiationPending;
+		this.keyboardProtocolLateResponsePending = false;
+		this.clearKeyboardProtocolNegotiationBuffer();
+		this.clearKeyboardProtocolFallbackTimer();
+
+		// Disable Kitty keyboard protocol if not already done by drainInput()
+		if (shouldDisableKittyProtocol) {
+			process.stdout.write("\x1b[<u");
+			this.keyboardProtocolPushed = false;
+			this._kittyProtocolActive = false;
+			setKittyProtocolActive(false);
+		}
+		this.keyboardProtocolNegotiationPending = false;
+>>>>>>> upstream/main
 		if (this._modifyOtherKeysActive) {
 			process.stdout.write("\x1b[>4;0m");
 			this._modifyOtherKeysActive = false;

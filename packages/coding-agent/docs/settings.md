@@ -4,8 +4,8 @@ Pi uses JSON settings files with project settings overriding global settings.
 
 | Location | Scope |
 |----------|-------|
-| `~/.helix/agent/settings.json` | Global (all projects) |
-| `.helix/settings.json` | Project (current directory) |
+| `~/.senpi/agent/settings.json` | Global (all projects) |
+| `.senpi/settings.json` | Project (current directory) |
 
 Edit directly or use `/settings` for common options.
 
@@ -32,7 +32,7 @@ Use `promptPreset` when a provider's model ID does not auto-detect to the preset
 }
 ```
 
-Project settings in `.helix/settings.json` override global settings in `~/.helix/agent/settings.json`.
+Project settings in `.senpi/settings.json` override global settings in `~/.senpi/agent/settings.json`.
 When this value is anything other than `"auto"`, it overrides any model-level `promptPreset` configured in `models.json`.
 
 #### thinkingBudgets
@@ -60,7 +60,7 @@ When this value is anything other than `"auto"`, it overrides any model-level `p
 | `treeFilterMode` | string | `"default"` | Default filter for `/tree`: `"default"`, `"no-tools"`, `"user-only"`, `"labeled-only"`, `"all"` |
 | `editorPaddingX` | number | `0` | Horizontal padding for input editor (0-3) |
 | `autocompleteMaxVisible` | number | `5` | Max visible items in autocomplete dropdown (3-20) |
-| `showHardwareCursor` | boolean | `false` | Show terminal cursor |
+| `showHardwareCursor` | boolean | `false` | Show the terminal cursor while TUI positions it for IME support |
 
 ### Telemetry and update checks
 
@@ -115,10 +115,12 @@ Set `PI_SKIP_VERSION_CHECK=1` to disable the Pi version update check. Use `--off
 | `retry.maxRetries` | number | `3` | Maximum agent-level retry attempts |
 | `retry.baseDelayMs` | number | `2000` | Base delay for agent-level exponential backoff (2s, 4s, 8s) |
 | `retry.provider.timeoutMs` | number | `300000` | Provider/SDK request timeout and stream idle timeout in milliseconds |
-| `retry.provider.maxRetries` | number | SDK default | Provider/SDK retry attempts |
+| `retry.provider.maxRetries` | number | `0` | Provider/SDK retry attempts |
 | `retry.provider.maxRetryDelayMs` | number | `60000` | Max server-requested delay before failing (60s) |
 
 When a provider requests a retry delay longer than `retry.provider.maxRetryDelayMs` (e.g., Google's "quota will reset after 5h"), the request fails immediately with an informative error instead of waiting silently. Set to `0` to disable the cap.
+
+Keep `retry.provider.maxRetries` at `0` unless provider-level retries are explicitly needed. Setting it above `0` can make SDK/provider retries handle out-of-usage-limit errors before Pi sees them, which may block the agent until the provider quota resets in some circumstances.
 
 ```json
 {
@@ -141,7 +143,9 @@ When a provider requests a retry delay longer than `retry.provider.maxRetryDelay
 |---------|------|---------|-------------|
 | `steeringMode` | string | `"one-at-a-time"` | How steering messages are sent: `"all"` or `"one-at-a-time"` |
 | `followUpMode` | string | `"one-at-a-time"` | How follow-up messages are sent: `"all"` or `"one-at-a-time"` |
-| `transport` | string | `"sse"` | Preferred transport for providers that support multiple transports: `"sse"`, `"websocket"`, or `"auto"` |
+| `transport` | string | `"auto"` | Preferred transport for providers that support multiple transports: `"sse"`, `"websocket"`, `"websocket-cached"`, or `"auto"` |
+| `httpIdleTimeoutMs` | number | `300000` | HTTP header/body idle timeout in milliseconds, also used by providers with explicit stream idle timeouts. Set to `0` to disable. |
+| `websocketConnectTimeoutMs` | number | `15000` | WebSocket connect/open handshake timeout in milliseconds for providers that support WebSocket transports. Set to `0` to disable. |
 
 ### OpenAI
 
@@ -157,7 +161,7 @@ When a provider requests a retry delay longer than `retry.provider.maxRetryDelay
 }
 ```
 
-When unset, helix leaves provider payloads unchanged. This setting currently applies only to the built-in OpenAI Responses provider path.
+When unset, senpi leaves provider payloads unchanged. This setting currently applies only to the built-in OpenAI Responses provider path.
 
 ### Terminal & Images
 
@@ -223,7 +227,7 @@ When multiple sources specify a session directory, precedence is `--session-dir`
 
 These settings define where to load extensions, skills, prompts, and themes from.
 
-Paths in `~/.helix/agent/settings.json` resolve relative to `~/.helix/agent`. Paths in `.helix/settings.json` resolve relative to `.helix`. Absolute paths and `~` are supported.
+Paths in `~/.senpi/agent/settings.json` resolve relative to `~/.senpi/agent`. Paths in `.senpi/settings.json` resolve relative to `.senpi`. Absolute paths and `~` are supported.
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
@@ -292,16 +296,16 @@ See [packages.md](packages.md) for package management details.
 
 ## Project Overrides
 
-Project settings (`.helix/settings.json`) override global settings. Nested objects are merged:
+Project settings (`.senpi/settings.json`) override global settings. Nested objects are merged:
 
 ```json
-// ~/.helix/agent/settings.json (global)
+// ~/.senpi/agent/settings.json (global)
 {
   "theme": "dark",
   "compaction": { "enabled": true, "reserveTokens": 16384 }
 }
 
-// .helix/settings.json (project)
+// .senpi/settings.json (project)
 {
   "compaction": { "reserveTokens": 8192 }
 }

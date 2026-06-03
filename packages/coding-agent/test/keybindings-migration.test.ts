@@ -2,9 +2,15 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { ENV_AGENT_DIR } from "../src/config.js";
 import { KeybindingsManager } from "../src/core/keybindings.js";
 import { runMigrations } from "../src/migrations.js";
+=======
+import { ENV_AGENT_DIR } from "../src/config.ts";
+import { KeybindingsManager } from "../src/core/keybindings.ts";
+import { runMigrations } from "../src/migrations.ts";
+>>>>>>> upstream/main
 
 describe("keybindings migration", () => {
 	const tempDirs: string[] = [];

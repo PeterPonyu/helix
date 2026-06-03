@@ -15,7 +15,11 @@ import {
 	createAgentSessionServices,
 	getAgentDir,
 	SessionManager,
+<<<<<<< HEAD
 } from "@helix-bio/helix";
+=======
+} from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 const createRuntime: CreateAgentSessionRuntimeFactory = async ({ cwd, sessionManager, sessionStartEvent }) => {
 	const services = await createAgentSessionServices({ cwd });

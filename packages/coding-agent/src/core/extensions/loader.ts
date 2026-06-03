@@ -5,7 +5,10 @@
 
 import * as fs from "node:fs";
 import { createRequire } from "node:module";
+<<<<<<< HEAD
 import * as os from "node:os";
+=======
+>>>>>>> upstream/main
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as _bundledPiAgentCore from "@earendil-works/pi-agent-core";
@@ -20,6 +23,7 @@ import { createJiti } from "jiti/static";
 import * as _bundledTypebox from "typebox";
 import * as _bundledTypeboxCompile from "typebox/compile";
 import * as _bundledTypeboxValue from "typebox/value";
+<<<<<<< HEAD
 import { CONFIG_DIR_NAME, getAgentDir, isBunBinary } from "../../config.js";
 // NOTE: This import works because loader.ts exports are NOT re-exported from index.ts,
 // avoiding a circular dependency. Extensions can import from @helix-bio/helix.
@@ -28,6 +32,17 @@ import { createEventBus, type EventBus } from "../event-bus.js";
 import type { ExecOptions } from "../exec.js";
 import { execCommand } from "../exec.js";
 import { createSyntheticSourceInfo } from "../source-info.js";
+=======
+import { CONFIG_DIR_NAME, getAgentDir, isBunBinary } from "../../config.ts";
+// NOTE: This import works because loader.ts exports are NOT re-exported from index.ts,
+// avoiding a circular dependency. Extensions can import from @code-yeongyu/senpi.
+import * as _bundledPiCodingAgent from "../../index.ts";
+import { resolvePath } from "../../utils/paths.ts";
+import { createEventBus, type EventBus } from "../event-bus.ts";
+import type { ExecOptions } from "../exec.ts";
+import { execCommand } from "../exec.ts";
+import { createSyntheticSourceInfo } from "../source-info.ts";
+>>>>>>> upstream/main
 import type {
 	Extension,
 	ExtensionAPI,
@@ -38,7 +53,11 @@ import type {
 	ProviderConfig,
 	RegisteredCommand,
 	ToolDefinition,
+<<<<<<< HEAD
 } from "./types.js";
+=======
+} from "./types.ts";
+>>>>>>> upstream/main
 
 /** Modules available to extensions via virtualModules (for compiled Bun binary) */
 const VIRTUAL_MODULES: Record<string, unknown> = {
@@ -58,8 +77,12 @@ const VIRTUAL_MODULES: Record<string, unknown> = {
 	"@earendil-works/pi-ai": _bundledPiAi,
 	"@earendil-works/pi-ai/oauth": _bundledPiAiOauth,
 	"@earendil-works/pi-coding-agent": _bundledPiCodingAgent,
+<<<<<<< HEAD
 	"@helix-bio/helix": _bundledPiCodingAgent,
 	"@peterponyu/helix": _bundledPiCodingAgent,
+=======
+	"@code-yeongyu/senpi": _bundledPiCodingAgent,
+>>>>>>> upstream/main
 };
 
 const require = createRequire(import.meta.url);
@@ -74,18 +97,38 @@ function getAliases(): Record<string, string> {
 	if (_aliases) return _aliases;
 
 	const __dirname = path.dirname(fileURLToPath(import.meta.url));
+<<<<<<< HEAD
 	const packageIndex = path.resolve(__dirname, "../..", "index.js");
 
+=======
+>>>>>>> upstream/main
 	const typeboxEntry = require.resolve("typebox");
 	const typeboxCompileEntry = require.resolve("typebox/compile");
 	const typeboxValueEntry = require.resolve("typebox/value");
 
+<<<<<<< HEAD
 	const packagesRoot = path.resolve(__dirname, "../../../../");
 	const resolveWorkspaceOrImport = (workspaceRelativePath: string, specifier: string): string => {
+=======
+	const codingAgentPackageRoot = path.resolve(__dirname, "../../..");
+	const packagesRoot = path.dirname(codingAgentPackageRoot);
+	const resolveWorkspaceOrBundled = (
+		packageName: string,
+		packageEntryRelativePath: string,
+		workspaceRelativePath: string,
+		sourceRelativePath: string,
+		specifier: string,
+	): string => {
+		const bundledPath = path.join(codingAgentPackageRoot, "node_modules", packageName, packageEntryRelativePath);
+		if (fs.existsSync(bundledPath)) {
+			return bundledPath;
+		}
+>>>>>>> upstream/main
 		const workspacePath = path.join(packagesRoot, workspaceRelativePath);
 		if (fs.existsSync(workspacePath)) {
 			return workspacePath;
 		}
+<<<<<<< HEAD
 		return fileURLToPath(import.meta.resolve(specifier));
 	};
 
@@ -98,6 +141,51 @@ function getAliases(): Record<string, string> {
 	_aliases = {
 		"@helix-bio/helix": piCodingAgentEntry,
 		"@peterponyu/helix": piCodingAgentEntry,
+=======
+		const sourcePath = path.join(packagesRoot, sourceRelativePath);
+		if (fs.existsSync(sourcePath)) {
+			return sourcePath;
+		}
+		return typeof import.meta.resolve === "function"
+			? fileURLToPath(import.meta.resolve(specifier))
+			: require.resolve(specifier);
+	};
+
+	const piCodingAgentDistEntry = path.join(codingAgentPackageRoot, "dist/index.js");
+	const piCodingAgentSourceEntry = path.join(codingAgentPackageRoot, "src/index.ts");
+	const piCodingAgentEntry = fs.existsSync(piCodingAgentDistEntry) ? piCodingAgentDistEntry : piCodingAgentSourceEntry;
+	const piAgentCoreEntry = resolveWorkspaceOrBundled(
+		"@earendil-works/pi-agent-core",
+		"dist/index.js",
+		"agent/dist/index.js",
+		"agent/src/index.ts",
+		"@earendil-works/pi-agent-core",
+	);
+	const piTuiEntry = resolveWorkspaceOrBundled(
+		"@earendil-works/pi-tui",
+		"dist/index.js",
+		"tui/dist/index.js",
+		"tui/src/index.ts",
+		"@earendil-works/pi-tui",
+	);
+	const piAiEntry = resolveWorkspaceOrBundled(
+		"@earendil-works/pi-ai",
+		"dist/index.js",
+		"ai/dist/index.js",
+		"ai/src/index.ts",
+		"@earendil-works/pi-ai",
+	);
+	const piAiOauthEntry = resolveWorkspaceOrBundled(
+		"@earendil-works/pi-ai",
+		"dist/oauth.js",
+		"ai/dist/oauth.js",
+		"ai/src/oauth.ts",
+		"@earendil-works/pi-ai/oauth",
+	);
+
+	_aliases = {
+		"@code-yeongyu/senpi": piCodingAgentEntry,
+>>>>>>> upstream/main
 		"@mariozechner/pi-coding-agent": piCodingAgentEntry,
 		"@mariozechner/pi-agent-core": piAgentCoreEntry,
 		"@mariozechner/pi-tui": piTuiEntry,
@@ -119,6 +207,7 @@ function getAliases(): Record<string, string> {
 	return _aliases;
 }
 
+<<<<<<< HEAD
 const UNICODE_SPACES = /[\u00A0\u2000-\u200A\u202F\u205F\u3000]/g;
 
 function normalizeUnicodeSpaces(str: string): string {
@@ -144,6 +233,8 @@ function resolvePath(extPath: string, cwd: string): string {
 	return path.resolve(cwd, expanded);
 }
 
+=======
+>>>>>>> upstream/main
 type HandlerFn = (...args: unknown[]) => Promise<unknown>;
 type ExtensionModuleImporter = ReturnType<typeof createJiti>;
 export type ExtensionFactoryResolver = (extensionPath: string, resolvedPath: string) => ExtensionFactory | undefined;
@@ -242,7 +333,11 @@ function createExtensionAPI(
 			shortcut: KeyId,
 			options: {
 				description?: string;
+<<<<<<< HEAD
 				handler: (ctx: import("./types.js").ExtensionContext) => Promise<void> | void;
+=======
+				handler: (ctx: import("./types.ts").ExtensionContext) => Promise<void> | void;
+>>>>>>> upstream/main
 			},
 		): void {
 			runtime.assertActive();
@@ -406,7 +501,11 @@ async function loadExtension(
 	getImporter: () => ExtensionModuleImporter,
 	factoryResolver?: ExtensionFactoryResolver,
 ): Promise<{ extension: Extension | null; error: string | null }> {
+<<<<<<< HEAD
 	const resolvedPath = resolvePath(extensionPath, cwd);
+=======
+	const resolvedPath = resolvePath(extensionPath, cwd, { normalizeUnicodeSpaces: true });
+>>>>>>> upstream/main
 
 	try {
 		const factory =
@@ -437,7 +536,12 @@ export async function loadExtensionFromFactory(
 	extensionPath = "<inline>",
 ): Promise<Extension> {
 	const extension = createExtension(extensionPath, extensionPath);
+<<<<<<< HEAD
 	const api = createExtensionAPI(extension, runtime, cwd, eventBus);
+=======
+	const resolvedCwd = resolvePath(cwd);
+	const api = createExtensionAPI(extension, runtime, resolvedCwd, eventBus);
+>>>>>>> upstream/main
 	await factory(api);
 	return extension;
 }
@@ -453,6 +557,10 @@ export async function loadExtensions(
 ): Promise<LoadExtensionsResult> {
 	const extensions: Extension[] = [];
 	const errors: Array<{ path: string; error: string }> = [];
+<<<<<<< HEAD
+=======
+	const resolvedCwd = resolvePath(cwd);
+>>>>>>> upstream/main
 	const resolvedEventBus = eventBus ?? createEventBus();
 	const runtime = createExtensionRuntime();
 	let importer: ExtensionModuleImporter | undefined;
@@ -464,7 +572,11 @@ export async function loadExtensions(
 	for (const extPath of paths) {
 		const { extension, error } = await loadExtension(
 			extPath,
+<<<<<<< HEAD
 			cwd,
+=======
+			resolvedCwd,
+>>>>>>> upstream/main
 			resolvedEventBus,
 			runtime,
 			getImporter,
@@ -606,6 +718,11 @@ export async function discoverAndLoadExtensions(
 	agentDir: string = getAgentDir(),
 	eventBus?: EventBus,
 ): Promise<LoadExtensionsResult> {
+<<<<<<< HEAD
+=======
+	const resolvedCwd = resolvePath(cwd);
+	const resolvedAgentDir = resolvePath(agentDir);
+>>>>>>> upstream/main
 	const allPaths: string[] = [];
 	const seen = new Set<string>();
 
@@ -619,17 +736,30 @@ export async function discoverAndLoadExtensions(
 		}
 	};
 
+<<<<<<< HEAD
 	// 1. Project-local extensions: cwd/<configDir>/extensions/
 	const localExtDir = path.join(cwd, CONFIG_DIR_NAME, "extensions");
 	addPaths(discoverExtensionsInDir(localExtDir));
 
 	// 2. Global extensions: agentDir/extensions/
 	const globalExtDir = path.join(agentDir, "extensions");
+=======
+	// 1. Project-local extensions: cwd/${CONFIG_DIR_NAME}/extensions/
+	const localExtDir = path.join(resolvedCwd, CONFIG_DIR_NAME, "extensions");
+	addPaths(discoverExtensionsInDir(localExtDir));
+
+	// 2. Global extensions: agentDir/extensions/
+	const globalExtDir = path.join(resolvedAgentDir, "extensions");
+>>>>>>> upstream/main
 	addPaths(discoverExtensionsInDir(globalExtDir));
 
 	// 3. Explicitly configured paths
 	for (const p of configuredPaths) {
+<<<<<<< HEAD
 		const resolved = resolvePath(p, cwd);
+=======
+		const resolved = resolvePath(p, resolvedCwd, { normalizeUnicodeSpaces: true });
+>>>>>>> upstream/main
 		if (fs.existsSync(resolved) && fs.statSync(resolved).isDirectory()) {
 			// Check for package.json with pi manifest or index.ts
 			const entries = resolveExtensionEntries(resolved);
@@ -645,5 +775,9 @@ export async function discoverAndLoadExtensions(
 		addPaths([resolved]);
 	}
 
+<<<<<<< HEAD
 	return loadExtensions(allPaths, cwd, eventBus);
+=======
+	return loadExtensions(allPaths, resolvedCwd, eventBus);
+>>>>>>> upstream/main
 }

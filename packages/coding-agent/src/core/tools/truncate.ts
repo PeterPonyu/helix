@@ -44,6 +44,20 @@ export interface TruncationOptions {
 	maxBytes?: number;
 }
 
+<<<<<<< HEAD
+=======
+function splitLinesForCounting(content: string): string[] {
+	if (content.length === 0) {
+		return [];
+	}
+	const lines = content.split("\n");
+	if (content.endsWith("\n")) {
+		lines.pop();
+	}
+	return lines;
+}
+
+>>>>>>> upstream/main
 /**
  * Format bytes as human-readable size.
  */
@@ -69,7 +83,11 @@ export function truncateHead(content: string, options: TruncationOptions = {}): 
 	const maxBytes = options.maxBytes ?? DEFAULT_MAX_BYTES;
 
 	const totalBytes = Buffer.byteLength(content, "utf-8");
+<<<<<<< HEAD
 	const lines = content.split("\n");
+=======
+	const lines = splitLinesForCounting(content);
+>>>>>>> upstream/main
 	const totalLines = lines.length;
 
 	// Check if no truncation needed
@@ -159,7 +177,11 @@ export function truncateTail(content: string, options: TruncationOptions = {}): 
 	const maxBytes = options.maxBytes ?? DEFAULT_MAX_BYTES;
 
 	const totalBytes = Buffer.byteLength(content, "utf-8");
+<<<<<<< HEAD
 	const lines = content.split("\n");
+=======
+	const lines = splitLinesForCounting(content);
+>>>>>>> upstream/main
 	const totalLines = lines.length;
 
 	// Check if no truncation needed

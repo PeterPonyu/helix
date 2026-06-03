@@ -1,7 +1,13 @@
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { streamAnthropic } from "../src/providers/anthropic.js";
 import type { Context } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { streamAnthropic } from "../src/providers/anthropic.ts";
+import type { Context } from "../src/types.ts";
+>>>>>>> upstream/main
 
 const mockState = vi.hoisted(() => ({
 	constructorOpts: undefined as Record<string, unknown> | undefined,
@@ -87,7 +93,11 @@ describe("Copilot Claude via Anthropic Messages", () => {
 		const params = mockState.createParams!;
 		expect(params.model).toBe("claude-sonnet-4.6");
 		expect(params.stream).toBe(true);
+<<<<<<< HEAD
 		expect(params.max_tokens).toBeGreaterThan(0);
+=======
+		expect(params.max_tokens).toBe(model.maxTokens);
+>>>>>>> upstream/main
 		expect(Array.isArray(params.messages)).toBe(true);
 	});
 

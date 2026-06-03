@@ -1,6 +1,10 @@
 // Codex-style "File operations" tuning block, shared by every GPT-5.x preset.
 //
+<<<<<<< HEAD
 // This is the helix equivalent of codex-rs/core/gpt_5_2_prompt.md's Task
+=======
+// This is the senpi equivalent of codex-rs/core/gpt_5_2_prompt.md's Task
+>>>>>>> upstream/main
 // execution + Shell commands + apply_patch sections, collapsed into a single
 // paragraph. It exists because GPT models have a strong pre-training prior
 // toward "use python/sed/heredoc to manipulate files", which the function-call
@@ -14,7 +18,11 @@
 //   gives the model the verb to reach for.
 // - Mention `apply_patch`, `read`, the `grep` tool, and forbid python/sed/awk
 //   heredoc-driven shell mutations explicitly. The `grep` tool note prevents
+<<<<<<< HEAD
 //   the model from invoking `grep`/`rg` through bash when helix exposes a
+=======
+//   the model from invoking `grep`/`rg` through bash when senpi exposes a
+>>>>>>> upstream/main
 //   ripgrep-backed `grep` tool already.
 // - Mirror codex's "do not waste tokens re-reading after apply_patch" guard.
 export function buildFileOperationsTuning(): string {

@@ -1,7 +1,12 @@
 import type { AssistantMessage, Model } from "@earendil-works/pi-ai";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { generateBranchSummary, prepareBranchEntries } from "../src/core/compaction/index.js";
 import type { SessionEntry } from "../src/core/session-manager.js";
+=======
+import { generateBranchSummary, prepareBranchEntries } from "../src/core/compaction/index.ts";
+import type { SessionEntry } from "../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 const { completeSimpleMock } = vi.hoisted(() => ({
 	completeSimpleMock: vi.fn(),

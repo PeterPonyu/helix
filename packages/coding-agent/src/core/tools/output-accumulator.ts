@@ -2,7 +2,11 @@ import { randomBytes } from "node:crypto";
 import { createWriteStream, type WriteStream } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+<<<<<<< HEAD
 import { DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES, type TruncationResult, truncateTail } from "./truncate.js";
+=======
+import { DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES, type TruncationResult, truncateTail } from "./truncate.ts";
+>>>>>>> upstream/main
 
 export interface OutputAccumulatorOptions {
 	maxLines?: number;
@@ -45,8 +49,15 @@ export class OutputAccumulator {
 	private tailStartsAtLineBoundary = true;
 	private totalRawBytes = 0;
 	private totalDecodedBytes = 0;
+<<<<<<< HEAD
 	private totalLines = 1;
 	private currentLineBytes = 0;
+=======
+	private completedLines = 0;
+	private totalLines = 0;
+	private currentLineBytes = 0;
+	private hasOpenLine = false;
+>>>>>>> upstream/main
 	private finished = false;
 
 	private tempFilePath: string | undefined;
@@ -164,10 +175,21 @@ export class OutputAccumulator {
 		}
 		if (newlines === 0) {
 			this.currentLineBytes += bytes;
+<<<<<<< HEAD
 		} else {
 			this.totalLines += newlines;
 			this.currentLineBytes = byteLength(text.slice(lastNewline + 1));
 		}
+=======
+			this.hasOpenLine = true;
+		} else {
+			this.completedLines += newlines;
+			const tail = text.slice(lastNewline + 1);
+			this.currentLineBytes = byteLength(tail);
+			this.hasOpenLine = tail.length > 0;
+		}
+		this.totalLines = this.completedLines + (this.hasOpenLine ? 1 : 0);
+>>>>>>> upstream/main
 	}
 
 	private trimTail(): void {

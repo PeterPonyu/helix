@@ -14,19 +14,33 @@
 import type { ChildProcess } from "child_process";
 import { execSync, spawn } from "child_process";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { complete } from "../src/stream.js";
 import type { AssistantMessage, Context, Model, Usage } from "../src/types.js";
 import { isContextOverflow } from "../src/utils/overflow.js";
 import { hasAzureOpenAICredentials } from "./azure-utils.js";
 import { hasBedrockCredentials } from "./bedrock-utils.js";
+=======
+import { getModel, getModels } from "../src/models.ts";
+import { complete } from "../src/stream.ts";
+import type { AssistantMessage, Context, Model, Usage } from "../src/types.ts";
+import { isContextOverflow } from "../src/utils/overflow.ts";
+import { hasAzureOpenAICredentials } from "./azure-utils.ts";
+import { hasBedrockCredentials } from "./bedrock-utils.ts";
+>>>>>>> upstream/main
 import {
 	getLiveEnvApiKey,
 	isLiveApiTestEnabled,
 	LOCAL_LLM_LIVE_TEST_FLAG,
 	OPENROUTER_LIVE_TEST_FLAG,
+<<<<<<< HEAD
 } from "./live-api-gates.js";
 import { resolveApiKey } from "./oauth.js";
+=======
+} from "./live-api-gates.ts";
+import { resolveApiKey } from "./oauth.ts";
+>>>>>>> upstream/main
 
 // Resolve OAuth tokens at module level (async, runs before tests)
 const oauthTokens = await Promise.all([resolveApiKey("github-copilot"), resolveApiKey("openai-codex")]);
@@ -127,6 +141,7 @@ describe("Context overflow error handling", () => {
 
 	// =============================================================================
 	// GitHub Copilot (OAuth)
+<<<<<<< HEAD
 	// Tests both OpenAI and Anthropic models via Copilot
 	// =============================================================================
 
@@ -136,6 +151,17 @@ describe("Context overflow error handling", () => {
 			"gpt-4o - should detect overflow via isContextOverflow",
 			async () => {
 				const model = getModel("github-copilot", "gpt-4o");
+=======
+	// Tests both Google and Anthropic models via Copilot
+	// =============================================================================
+
+	describe("GitHub Copilot (OAuth)", () => {
+		// Google model via Copilot
+		it.skipIf(!githubCopilotToken)(
+			"gemini-2.5-pro - should detect overflow via isContextOverflow",
+			async () => {
+				const model = getModel("github-copilot", "gemini-2.5-pro");
+>>>>>>> upstream/main
 				const result = await testContextOverflow(model, githubCopilotToken!);
 				logResult(result);
 
@@ -306,8 +332,20 @@ describe("Context overflow error handling", () => {
 	// =============================================================================
 
 	describe.skipIf(!process.env.CEREBRAS_API_KEY)("Cerebras", () => {
+<<<<<<< HEAD
 		it("qwen-3-235b - should detect overflow via isContextOverflow", async () => {
 			const model = getModel("cerebras", "qwen-3-235b-a22b-instruct-2507");
+=======
+		it("available model - should detect overflow via isContextOverflow", async () => {
+			const preferredCerebrasModelIds: string[] = ["gpt-oss-120b", "zai-glm-4.7", "llama3.1-8b"];
+			const cerebrasModels = getModels("cerebras");
+			const model =
+				cerebrasModels.find((candidate) => preferredCerebrasModelIds.includes(candidate.id)) ?? cerebrasModels[0];
+			if (!model) {
+				throw new Error("No Cerebras models available");
+			}
+
+>>>>>>> upstream/main
 			const result = await testContextOverflow(model, process.env.CEREBRAS_API_KEY!);
 			logResult(result);
 

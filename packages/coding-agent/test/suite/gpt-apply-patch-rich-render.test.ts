@@ -7,12 +7,21 @@ import {
 	PATCH_PREVIEW_MAX_LINES,
 	renderPatchPreview,
 	truncatePreview,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/gpt-apply-patch/index.js";
 import type { ToolRenderContext } from "../../src/core/extensions/types.js";
 import { initTheme, theme } from "../../src/modes/interactive/theme/theme.js";
 import { stripAnsi } from "../../src/utils/ansi.js";
 import type { Harness } from "./harness.js";
 import { createHarness } from "./harness.js";
+=======
+} from "../../src/core/extensions/builtin/gpt-apply-patch/index.ts";
+import type { ToolRenderContext } from "../../src/core/extensions/types.ts";
+import { initTheme, theme } from "../../src/modes/interactive/theme/theme.ts";
+import { stripAnsi } from "../../src/utils/ansi.ts";
+import type { Harness } from "./harness.ts";
+import { createHarness } from "./harness.ts";
+>>>>>>> upstream/main
 
 type ApplyPatchTool = ReturnType<typeof createApplyPatchTool>;
 type ApplyPatchArgs = { input: string };
@@ -83,7 +92,11 @@ describe("gpt apply_patch rich TUI rendering", () => {
 		const component = tool.renderCall?.(args, theme, createRenderContext(harness.tempDir, args));
 		const rendered = stripAnsi(component?.render(120).join("\n") ?? "");
 
+<<<<<<< HEAD
 		expect(rendered).toContain("Streaming patch");
+=======
+		expect(rendered).toContain("Applying patch");
+>>>>>>> upstream/main
 		expect(rendered).toContain("sample.txt");
 		expect(rendered).toContain("- before");
 		expect(rendered).toContain("+ after");

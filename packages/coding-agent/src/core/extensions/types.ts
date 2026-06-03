@@ -41,6 +41,7 @@ import type {
 	TUI,
 } from "@earendil-works/pi-tui";
 import type { Static, TSchema } from "typebox";
+<<<<<<< HEAD
 import type { Theme } from "../../modes/interactive/theme/theme.js";
 import type { BashResult } from "../bash-executor.js";
 import type { CompactionPreparation, CompactionResult } from "../compaction/index.js";
@@ -50,18 +51,38 @@ import type { ReadonlyFooterDataProvider } from "../footer-data-provider.js";
 import type { KeybindingsManager } from "../keybindings.js";
 import type { CustomMessage } from "../messages.js";
 import type { ModelRegistry } from "../model-registry.js";
+=======
+import type { Theme } from "../../modes/interactive/theme/theme.ts";
+import type { BashResult } from "../bash-executor.ts";
+import type { CompactionPreparation, CompactionResult } from "../compaction/index.ts";
+import type { EventBus } from "../event-bus.ts";
+import type { ExecOptions, ExecResult } from "../exec.ts";
+import type { ReadonlyFooterDataProvider } from "../footer-data-provider.ts";
+import type { KeybindingsManager } from "../keybindings.ts";
+import type { CustomMessage } from "../messages.ts";
+import type { ModelRegistry } from "../model-registry.ts";
+>>>>>>> upstream/main
 import type {
 	BranchSummaryEntry,
 	CompactionEntry,
 	ReadonlySessionManager,
 	SessionEntry,
 	SessionManager,
+<<<<<<< HEAD
 } from "../session-manager.js";
 import type { SlashCommandInfo } from "../slash-commands.js";
 import type { SourceInfo } from "../source-info.js";
 import type { BuildSystemPromptOptions } from "../system-prompt.js";
 import type { BashOperations } from "../tools/bash.js";
 import type { EditToolDetails } from "../tools/edit.js";
+=======
+} from "../session-manager.ts";
+import type { SlashCommandInfo } from "../slash-commands.ts";
+import type { SourceInfo } from "../source-info.ts";
+import type { BuildSystemPromptOptions } from "../system-prompt.ts";
+import type { BashOperations } from "../tools/bash.ts";
+import type { EditToolDetails } from "../tools/edit.ts";
+>>>>>>> upstream/main
 import type {
 	BashToolDetails,
 	BashToolInput,
@@ -75,12 +96,21 @@ import type {
 	ReadToolDetails,
 	ReadToolInput,
 	WriteToolInput,
+<<<<<<< HEAD
 } from "../tools/index.js";
 
 export type { ExecOptions, ExecResult } from "../exec.js";
 export type { BuildSystemPromptOptions } from "../system-prompt.js";
 export type { AgentToolResult, AgentToolUpdateCallback, ToolExecutionMode };
 export type { AppKeybinding, KeybindingsManager } from "../keybindings.js";
+=======
+} from "../tools/index.ts";
+
+export type { ExecOptions, ExecResult } from "../exec.ts";
+export type { BuildSystemPromptOptions } from "../system-prompt.ts";
+export type { AgentToolResult, AgentToolUpdateCallback, ToolExecutionMode };
+export type { AppKeybinding, KeybindingsManager } from "../keybindings.ts";
+>>>>>>> upstream/main
 
 export type ServiceTier = "auto" | "flex" | "priority";
 // biome-ignore format: keep literal union alias consistent with nearby ServiceTier style.
@@ -324,10 +354,21 @@ export interface EndCompactionOptions {
 /**
  * Context passed to extension event handlers.
  */
+<<<<<<< HEAD
 export interface ExtensionContext {
 	/** UI methods for user interaction */
 	ui: ExtensionUIContext;
 	/** Whether UI is available (false in print/RPC mode) */
+=======
+export type ExtensionMode = "tui" | "rpc" | "json" | "print";
+
+export interface ExtensionContext {
+	/** UI methods for user interaction */
+	ui: ExtensionUIContext;
+	/** Current run mode. Use "tui" to guard terminal-only UI such as custom components. */
+	mode: ExtensionMode;
+	/** Whether dialog-capable UI is available (true in TUI and RPC modes) */
+>>>>>>> upstream/main
 	hasUI: boolean;
 	/** Current working directory */
 	cwd: string;
@@ -374,6 +415,12 @@ export interface ExtensionContext {
  * Includes session control methods only safe in user-initiated commands.
  */
 export interface ExtensionCommandContext extends ExtensionContext {
+<<<<<<< HEAD
+=======
+	/** Get the current base system-prompt construction options. */
+	getSystemPromptOptions(): BuildSystemPromptOptions;
+
+>>>>>>> upstream/main
 	/** Wait for the agent to finish streaming */
 	waitForIdle(): Promise<void>;
 
@@ -786,7 +833,11 @@ export interface ModelSelectEvent {
 }
 
 export interface ModelSelectEventResult {
+<<<<<<< HEAD
 	/** Replace the active system prompt after the model switch. `null` resets to the base helix prompt. */
+=======
+	/** Replace the active system prompt after the model switch. `null` resets to the base senpi prompt. */
+>>>>>>> upstream/main
 	systemPrompt?: string | null;
 	/** Human-readable name for the prompt that became active. */
 	systemPromptName?: string;
@@ -841,6 +892,11 @@ export interface InputEvent {
 	images?: ImageContent[];
 	/** Where the input came from */
 	source: InputSource;
+<<<<<<< HEAD
+=======
+	/** How the input will be delivered during streaming, or undefined when idle */
+	streamingBehavior?: "steer" | "followUp";
+>>>>>>> upstream/main
 }
 
 /** Result from input event handler */
@@ -1298,7 +1354,11 @@ export interface ExtensionAPI {
 	/** Get the list of currently active tool names. */
 	getActiveTools(): string[];
 
+<<<<<<< HEAD
 	/** Get all configured tools with parameter schema and source metadata. */
+=======
+	/** Get all configured tools with parameter schema, prompt guidelines, and source metadata. */
+>>>>>>> upstream/main
 	getAllTools(): ToolInfo[];
 
 	/** Set the active tools by name. */
@@ -1341,7 +1401,11 @@ export interface ExtensionAPI {
 	 * // Register a new provider with custom models
 	 * pi.registerProvider("my-proxy", {
 	 *   baseUrl: "https://proxy.example.com",
+<<<<<<< HEAD
 	 *   apiKey: "PROXY_API_KEY",
+=======
+	 *   apiKey: "$PROXY_API_KEY",
+>>>>>>> upstream/main
 	 *   api: "anthropic-messages",
 	 *   models: [
 	 *     {
@@ -1407,7 +1471,11 @@ export interface ProviderConfig {
 	name?: string;
 	/** Base URL for the API endpoint. Required when defining models. */
 	baseUrl?: string;
+<<<<<<< HEAD
 	/** API key or environment variable name. Required when defining models (unless oauth provided). */
+=======
+	/** API key literal, env interpolation ($ENV_VAR or ${ENV_VAR}), or leading !command. Required when defining models (unless oauth provided). */
+>>>>>>> upstream/main
 	apiKey?: string;
 	/** API type. Required at provider or model level when defining models. */
 	api?: Api;
@@ -1509,8 +1577,13 @@ export type GetSessionNameHandler = () => string | undefined;
 
 export type GetActiveToolsHandler = () => string[];
 
+<<<<<<< HEAD
 /** Tool info with name, description, parameter schema, and source metadata */
 export type ToolInfo = Pick<ToolDefinition, "name" | "description" | "parameters"> & {
+=======
+/** Tool info with name, description, parameter schema, prompt guidelines, and source metadata. */
+export type ToolInfo = Pick<ToolDefinition, "name" | "description" | "parameters" | "promptGuidelines"> & {
+>>>>>>> upstream/main
 	sourceInfo: SourceInfo;
 };
 
@@ -1594,6 +1667,10 @@ export interface ExtensionContextActions {
 	getMessageRevision: () => number;
 	applyCompaction: (precomputed: CompactionResult, options: ApplyCompactionOptions) => Promise<ApplyCompactionResult>;
 	getSystemPrompt: () => string;
+<<<<<<< HEAD
+=======
+	getSystemPromptOptions?: () => BuildSystemPromptOptions;
+>>>>>>> upstream/main
 }
 
 /**

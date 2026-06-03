@@ -1,16 +1,28 @@
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { DEFAULT_COMPACTION_SETTINGS } from "../../src/core/compaction/index.js";
 import { createLocalEventEmitter } from "../../src/core/extensions/builtin/permission-system/events.js";
 import { handleNoUI } from "../../src/core/extensions/builtin/permission-system/non-interactive.js";
 import { PermissionService } from "../../src/core/extensions/builtin/permission-system/service.js";
+=======
+import { DEFAULT_COMPACTION_SETTINGS } from "../../src/core/compaction/index.ts";
+import { createLocalEventEmitter } from "../../src/core/extensions/builtin/permission-system/events.ts";
+import { handleNoUI } from "../../src/core/extensions/builtin/permission-system/non-interactive.ts";
+import { PermissionService } from "../../src/core/extensions/builtin/permission-system/service.ts";
+>>>>>>> upstream/main
 import {
 	CorrectedError,
 	DeniedError,
 	RejectedError,
 	type Request,
 	type Ruleset,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/permission-system/types.js";
 import type { ExtensionContext, ExtensionUIContext } from "../../src/core/extensions/types.js";
+=======
+} from "../../src/core/extensions/builtin/permission-system/types.ts";
+import type { ExtensionContext, ExtensionUIContext } from "../../src/core/extensions/types.ts";
+>>>>>>> upstream/main
 
 // =============================================================================
 // Test Helpers
@@ -66,6 +78,10 @@ function createMockContext(overrides: { hasUI?: boolean; ui?: ExtensionUIContext
 	return {
 		ui: overrides.ui ?? createMockUI(),
 		hasUI: overrides.hasUI ?? true,
+<<<<<<< HEAD
+=======
+		mode: overrides.hasUI === false ? "print" : "tui",
+>>>>>>> upstream/main
 		cwd: "/tmp/test",
 		sessionManager: {} as ExtensionContext["sessionManager"],
 		modelRegistry: {} as ExtensionContext["modelRegistry"],

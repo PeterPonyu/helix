@@ -1,6 +1,10 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
+<<<<<<< HEAD
 import { fuzzyFilter, fuzzyMatch } from "../src/fuzzy.js";
+=======
+import { fuzzyFilter, fuzzyMatch } from "../src/fuzzy.ts";
+>>>>>>> upstream/main
 
 describe("fuzzyMatch", () => {
 	it("empty query matches everything with score 0", () => {

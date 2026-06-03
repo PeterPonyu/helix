@@ -1,7 +1,11 @@
 import { type AssistantMessage, type AssistantMessageEvent, EventStream, getModel } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { Agent, type AgentMessage, type AgentTool } from "../src/index.js";
+=======
+import { Agent, type AgentMessage, type AgentTool } from "../src/index.ts";
+>>>>>>> upstream/main
 
 // Mock stream that mimics AssistantMessageEventStream
 class MockAssistantStream extends EventStream<AssistantMessageEvent, AssistantMessage> {

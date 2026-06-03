@@ -1,7 +1,12 @@
 import { homedir } from "node:os";
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { SessionImportFileNotFoundError } from "../src/core/agent-session-runtime.js";
 import { InteractiveMode } from "../src/modes/interactive/interactive-mode.js";
+=======
+import { SessionImportFileNotFoundError } from "../src/core/agent-session-runtime.ts";
+import { InteractiveMode } from "../src/modes/interactive/interactive-mode.ts";
+>>>>>>> upstream/main
 
 type PathCommand = "/export" | "/import";
 

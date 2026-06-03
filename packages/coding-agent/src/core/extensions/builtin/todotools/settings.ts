@@ -44,16 +44,28 @@ function unique(paths: string[]): string[] {
 function getGlobalSettingsPaths(): string[] {
 	const paths: string[] = [];
 	const piAgentDir = process.env.PI_CODING_AGENT_DIR;
+<<<<<<< HEAD
 	const helixAgentDir = process.env.HELIX_CODING_AGENT_DIR;
 	if (piAgentDir) paths.push(join(piAgentDir, "settings.json"));
 	if (helixAgentDir) paths.push(join(helixAgentDir, "settings.json"));
 	paths.push(join(homedir(), ".pi", "agent", "settings.json"));
 	paths.push(join(homedir(), ".helix", "agent", "settings.json"));
+=======
+	const senpiAgentDir = process.env.SENPI_CODING_AGENT_DIR;
+	if (piAgentDir) paths.push(join(piAgentDir, "settings.json"));
+	if (senpiAgentDir) paths.push(join(senpiAgentDir, "settings.json"));
+	paths.push(join(homedir(), ".pi", "agent", "settings.json"));
+	paths.push(join(homedir(), ".senpi", "agent", "settings.json"));
+>>>>>>> upstream/main
 	return unique(paths);
 }
 
 function getProjectSettingsPaths(cwd: string): string[] {
+<<<<<<< HEAD
 	return [join(cwd, ".pi", "settings.json"), join(cwd, ".helix", "settings.json")];
+=======
+	return [join(cwd, ".pi", "settings.json"), join(cwd, ".senpi", "settings.json")];
+>>>>>>> upstream/main
 }
 
 function readMergedSettings(paths: string[]): Record<string, unknown> {
