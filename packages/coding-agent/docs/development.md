@@ -14,7 +14,7 @@ npm run build
 Run from source:
 
 ```bash
-/path/to/helix/pi-test.sh
+/path/to/helix/helix-test.sh
 ```
 
 The script can be run from any directory. Helix keeps the caller's current working directory.
@@ -56,7 +56,7 @@ Never use `__dirname` directly for package assets.
 
 ```bash
 npm test            # Vitest across workspaces (skips live-API; default test runner)
-./pi-test.sh        # Live-API integration suite (env-gated; requires API keys)
+./helix-test.sh     # Live-API integration suite (env-gated; requires API keys)
 npm run check       # Biome + tsgo + browser-smoke + web-ui check (pre-commit equivalent)
 ```
 
