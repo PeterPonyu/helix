@@ -21,12 +21,13 @@ helix periodically rebases on `upstream/main` (i.e. `code-yeongyu/senpi`, which 
 ## Before Submitting a PR
 
 ```bash
-npm run check     # Biome + tsgo + browser-smoke + web-ui check (pre-commit equivalent)
-npm test          # Vitest across workspaces (skips live-API)
-./helix-test.sh   # Optional: live-API integration suite (env-gated; requires API keys)
+npm run check          # Biome + tsgo + browser-smoke + web-ui check (pre-commit equivalent)
+npm test               # Vitest across workspaces (skips live-API)
+./helix-test.sh        # Optional: live-API integration suite (env-gated; requires API keys)
+./scripts/e2e.sh       # Optional: real-provider E2E UX harness (faux at $0 always; live matrix gated on keys)
 ```
 
-`npm run check` and `npm test` must pass. `./helix-test.sh` is only required when your change touches a provider that the live tests exercise.
+`npm run check` and `npm test` must pass. `./helix-test.sh` and `./scripts/e2e.sh` are only required when your change touches a provider that the live tests exercise. `./scripts/e2e.sh` always runs its deterministic faux suite at $0 (no keys) and runs the live provider matrix only when credentials are present; see [`packages/coding-agent/docs/e2e-testing.md`](packages/coding-agent/docs/e2e-testing.md).
 
 Do not edit `CHANGELOG.md`. Changelog entries are added by maintainers.
 
