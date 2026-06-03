@@ -1,5 +1,9 @@
 import { describe, expect, test } from "vitest";
+<<<<<<< HEAD
 import { parseArgs } from "../src/cli/args.js";
+=======
+import { parseArgs } from "../src/cli/args.ts";
+>>>>>>> upstream/main
 
 describe("parseArgs", () => {
 	describe("--version flag", () => {
@@ -130,6 +134,14 @@ describe("parseArgs", () => {
 			expect(result.session).toBe("/path/to/session.jsonl");
 		});
 
+<<<<<<< HEAD
+=======
+		test("parses --session-id", () => {
+			const result = parseArgs(["--session-id", "orchestrated-session"]);
+			expect(result.sessionId).toBe("orchestrated-session");
+		});
+
+>>>>>>> upstream/main
 		test("parses --fork", () => {
 			const result = parseArgs(["--fork", "1234abcd"]);
 			expect(result.fork).toBe("1234abcd");
@@ -152,6 +164,39 @@ describe("parseArgs", () => {
 		});
 	});
 
+<<<<<<< HEAD
+=======
+	describe("--name flag", () => {
+		test("parses --name flag with value", () => {
+			const result = parseArgs(["--name", "my-session"]);
+			expect(result.name).toBe("my-session");
+		});
+
+		test("parses -n shorthand", () => {
+			const result = parseArgs(["-n", "quick-session"]);
+			expect(result.name).toBe("quick-session");
+		});
+
+		test("preserves empty values for main validation", () => {
+			const result = parseArgs(["--name", ""]);
+			expect(result.name).toBe("");
+		});
+
+		test("reports missing value", () => {
+			const result = parseArgs(["--name"]);
+			expect(result.diagnostics).toEqual([{ type: "error", message: "--name requires a value" }]);
+		});
+
+		test("works alongside other flags", () => {
+			const result = parseArgs(["--name", "named-run", "--print", "--model", "gpt-4o", "hello"]);
+			expect(result.name).toBe("named-run");
+			expect(result.print).toBe(true);
+			expect(result.model).toBe("gpt-4o");
+			expect(result.messages).toEqual(["hello"]);
+		});
+	});
+
+>>>>>>> upstream/main
 	describe("--no-session flag", () => {
 		test("parses --no-session flag", () => {
 			const result = parseArgs(["--no-session"]);
@@ -303,6 +348,19 @@ describe("parseArgs", () => {
 			expect(result.tools).toEqual(["read", "bash"]);
 		});
 
+<<<<<<< HEAD
+=======
+		test("parses --exclude-tools flag", () => {
+			const result = parseArgs(["--exclude-tools", "read,bash"]);
+			expect(result.excludeTools).toEqual(["read", "bash"]);
+		});
+
+		test("parses -xt shorthand", () => {
+			const result = parseArgs(["-xt", "read,bash"]);
+			expect(result.excludeTools).toEqual(["read", "bash"]);
+		});
+
+>>>>>>> upstream/main
 		test("parses --no-tools with explicit --tools flags", () => {
 			const result = parseArgs(["--no-tools", "--tools", "read,bash"]);
 			expect(result.noTools).toBe(true);

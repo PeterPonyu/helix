@@ -1,7 +1,12 @@
 import { Type } from "typebox";
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { hermesCreateStreamParser, hermesParseGeneratedText } from "../../src/tool-call-middleware/protocols/hermes.js";
 import type { Tool } from "../../src/types.js";
+=======
+import { hermesCreateStreamParser, hermesParseGeneratedText } from "../../src/tool-call-middleware/protocols/hermes.ts";
+import type { Tool } from "../../src/types.ts";
+>>>>>>> upstream/main
 
 const weatherTool: Tool = {
 	name: "get_weather",

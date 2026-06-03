@@ -5,12 +5,18 @@
  *
  * Test with: npx tsx src/cli-new.ts [args...]
  */
+<<<<<<< HEAD
 import * as undici from "undici";
 import { APP_NAME } from "./config.js";
+=======
+import { APP_NAME } from "./config.js";
+import { configureHttpDispatcher } from "./core/http-dispatcher.js";
+>>>>>>> upstream/main
 import { main } from "./main.js";
 process.title = APP_NAME;
 process.env.PI_CODING_AGENT = "true";
 process.emitWarning = (() => { });
+<<<<<<< HEAD
 // bodyTimeout/headersTimeout default to 300s in undici; long local-LLM stalls
 // (e.g. vLLM buffering a large tool call) exceed that and abort the SSE stream
 // with UND_ERR_BODY_TIMEOUT. Disable both — provider SDKs enforce their own
@@ -20,5 +26,10 @@ undici.setGlobalDispatcher(new undici.EnvHttpProxyAgent({ allowH2: false, bodyTi
 // bundled fetch can otherwise consume compressed responses through npm undici's
 // dispatcher without decompressing them, causing response.json() failures.
 undici.install?.();
+=======
+// Configure undici's global dispatcher before provider SDKs issue requests.
+// Runtime settings are applied once SettingsManager has loaded global/project settings.
+configureHttpDispatcher();
+>>>>>>> upstream/main
 main(process.argv.slice(2));
 //# sourceMappingURL=cli.js.map

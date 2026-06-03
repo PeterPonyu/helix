@@ -5,9 +5,15 @@ import {
 	type SessionMetadata,
 	type SessionStorage,
 	type SessionTreeEntry,
+<<<<<<< HEAD
 } from "../types.js";
 import { Session } from "./session.js";
 import { uuidv7 } from "./uuid.js";
+=======
+} from "../types.ts";
+import { Session } from "./session.ts";
+import { uuidv7 } from "./uuid.ts";
+>>>>>>> upstream/main
 
 export function createSessionId(): string {
 	return uuidv7();

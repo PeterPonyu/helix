@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { parseGitUrl } from "../src/utils/git.js";
+=======
+import { parseGitUrl } from "../src/utils/git.ts";
+>>>>>>> upstream/main
 
 describe("Git URL Parsing", () => {
 	describe("protocol URLs (accepted without git: prefix)", () => {

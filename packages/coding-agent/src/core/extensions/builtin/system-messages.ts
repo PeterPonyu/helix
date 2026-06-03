@@ -1,4 +1,5 @@
 import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { CustomMessage } from "../../messages.js";
 import type { ExtensionAPI } from "../types.js";
 
@@ -12,11 +13,30 @@ export interface HelixConversationEvent {
 	version: 1;
 	source: "builtin";
 	action: HelixConversationAction;
+=======
+import type { CustomMessage } from "../../messages.ts";
+import type { ExtensionAPI } from "../types.ts";
+
+export const SENPI_SYSTEM_PREFIX = "[system:senpi]";
+export const SENPI_CONVERSATION_EVENT = "senpi:conversation";
+
+export type BuiltinSystemMessageRoute = "todotools.continuation";
+export type SenpiConversationAction = "injected" | "failed";
+
+export interface SenpiConversationEvent {
+	version: 1;
+	source: "builtin";
+	action: SenpiConversationAction;
+>>>>>>> upstream/main
 	route: BuiltinSystemMessageRoute;
 	sessionId?: string;
 	timestamp: number;
 	conversation: {
+<<<<<<< HEAD
 		prefix: typeof HELIX_SYSTEM_PREFIX;
+=======
+		prefix: typeof SENPI_SYSTEM_PREFIX;
+>>>>>>> upstream/main
 		kind: "custom_message" | "user_message";
 		customType?: string;
 		deliverAs?: "steer" | "followUp";
@@ -38,7 +58,11 @@ type BuiltinCustomMessageOptions = {
 };
 
 function prefixText(text: string): string {
+<<<<<<< HEAD
 	return text.startsWith(HELIX_SYSTEM_PREFIX) ? text : `${HELIX_SYSTEM_PREFIX}\n${text}`;
+=======
+	return text.startsWith(SENPI_SYSTEM_PREFIX) ? text : `${SENPI_SYSTEM_PREFIX}\n${text}`;
+>>>>>>> upstream/main
 }
 
 function prefixContent(content: string | (TextContent | ImageContent)[]): string | (TextContent | ImageContent)[] {
@@ -48,7 +72,11 @@ function prefixContent(content: string | (TextContent | ImageContent)[]): string
 
 	const firstTextIndex = content.findIndex((part) => part.type === "text");
 	if (firstTextIndex === -1) {
+<<<<<<< HEAD
 		return [{ type: "text", text: HELIX_SYSTEM_PREFIX }, ...content];
+=======
+		return [{ type: "text", text: SENPI_SYSTEM_PREFIX }, ...content];
+>>>>>>> upstream/main
 	}
 
 	return content.map((part, index) => {
@@ -74,12 +102,21 @@ function extractText(content: string | (TextContent | ImageContent)[]): string {
 		.join("\n");
 }
 
+<<<<<<< HEAD
 function emitHelixConversationEvent(pi: ExtensionAPI, event: HelixConversationEvent): void {
 	pi.events.emit(HELIX_CONVERSATION_EVENT, event);
 }
 
 function createBaseEvent(args: {
 	action: HelixConversationAction;
+=======
+function emitSenpiConversationEvent(pi: ExtensionAPI, event: SenpiConversationEvent): void {
+	pi.events.emit(SENPI_CONVERSATION_EVENT, event);
+}
+
+function createBaseEvent(args: {
+	action: SenpiConversationAction;
+>>>>>>> upstream/main
 	route: BuiltinSystemMessageRoute;
 	sessionId?: string;
 	kind: "custom_message" | "user_message";
@@ -88,7 +125,11 @@ function createBaseEvent(args: {
 	triggerTurn?: boolean;
 	text: string;
 	errorMessage?: string;
+<<<<<<< HEAD
 }): HelixConversationEvent {
+=======
+}): SenpiConversationEvent {
+>>>>>>> upstream/main
 	return {
 		version: 1,
 		source: "builtin",
@@ -97,7 +138,11 @@ function createBaseEvent(args: {
 		sessionId: args.sessionId,
 		timestamp: Date.now(),
 		conversation: {
+<<<<<<< HEAD
 			prefix: HELIX_SYSTEM_PREFIX,
+=======
+			prefix: SENPI_SYSTEM_PREFIX,
+>>>>>>> upstream/main
 			kind: args.kind,
 			customType: args.customType,
 			deliverAs: args.deliverAs,
@@ -128,7 +173,11 @@ export function sendBuiltinUserMessage(
 ): void {
 	const prefixedContent = prefixContent(content);
 
+<<<<<<< HEAD
 	emitHelixConversationEvent(
+=======
+	emitSenpiConversationEvent(
+>>>>>>> upstream/main
 		pi,
 		createBaseEvent({
 			action: "injected",
@@ -157,7 +206,11 @@ export function sendBuiltinCustomMessage<TDetails>(
 	const prefixedContent = prefixContent(message.content);
 	const deliverAs = options?.deliverAs === "nextTurn" ? undefined : options?.deliverAs;
 
+<<<<<<< HEAD
 	emitHelixConversationEvent(
+=======
+	emitSenpiConversationEvent(
+>>>>>>> upstream/main
 		pi,
 		createBaseEvent({
 			action: "injected",
@@ -202,7 +255,11 @@ export function emitBuiltinSystemMessageFailure(
 ): void {
 	const prefixedContent = prefixContent(args.content);
 
+<<<<<<< HEAD
 	emitHelixConversationEvent(
+=======
+	emitSenpiConversationEvent(
+>>>>>>> upstream/main
 		pi,
 		createBaseEvent({
 			action: "failed",

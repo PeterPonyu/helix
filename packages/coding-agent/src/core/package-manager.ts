@@ -27,12 +27,21 @@ import type { Readable } from "node:stream";
 import { globSync } from "glob";
 import ignore from "ignore";
 import { minimatch } from "minimatch";
+<<<<<<< HEAD
 import { CONFIG_DIR_NAME } from "../config.js";
 import { spawnProcess, spawnProcessSync } from "../utils/child-process.js";
 import { type GitSource, parseGitUrl } from "../utils/git.js";
 import { canonicalizePath, isLocalPath } from "../utils/paths.js";
 import { isStdoutTakenOver } from "./output-guard.js";
 import type { PackageSource, SettingsManager } from "./settings-manager.js";
+=======
+import { CONFIG_DIR_NAME } from "../config.ts";
+import { spawnProcess, spawnProcessSync } from "../utils/child-process.ts";
+import { type GitSource, parseGitUrl } from "../utils/git.ts";
+import { canonicalizePath, isLocalPath, markPathIgnoredByCloudSync, resolvePath } from "../utils/paths.ts";
+import { isStdoutTakenOver } from "./output-guard.ts";
+import type { PackageSource, SettingsManager } from "./settings-manager.ts";
+>>>>>>> upstream/main
 
 const NETWORK_TIMEOUT_MS = 10000;
 const UPDATE_CHECK_CONCURRENCY = 4;
@@ -763,8 +772,13 @@ export class DefaultPackageManager implements PackageManager {
 	private progressCallback: ProgressCallback | undefined;
 
 	constructor(options: PackageManagerOptions) {
+<<<<<<< HEAD
 		this.cwd = options.cwd;
 		this.agentDir = options.agentDir;
+=======
+		this.cwd = resolvePath(options.cwd);
+		this.agentDir = resolvePath(options.agentDir);
+>>>>>>> upstream/main
 		this.settingsManager = options.settingsManager;
 	}
 
@@ -778,9 +792,27 @@ export class DefaultPackageManager implements PackageManager {
 			scope === "project" ? this.settingsManager.getProjectSettings() : this.settingsManager.getGlobalSettings();
 		const currentPackages = currentSettings.packages ?? [];
 		const normalizedSource = this.normalizePackageSourceForSettings(source, scope);
+<<<<<<< HEAD
 		const exists = currentPackages.some((existing) => this.packageSourcesMatch(existing, source, scope));
 		if (exists) {
 			return false;
+=======
+		const matchIndex = currentPackages.findIndex((existing) => this.packageSourcesMatch(existing, source, scope));
+		if (matchIndex !== -1) {
+			const existing = currentPackages[matchIndex];
+			if (this.getPackageSourceString(existing) === normalizedSource) {
+				return false;
+			}
+			const nextPackages = [...currentPackages];
+			nextPackages[matchIndex] =
+				typeof existing === "string" ? normalizedSource : { ...existing, source: normalizedSource };
+			if (scope === "project") {
+				this.settingsManager.setProjectPackages(nextPackages);
+			} else {
+				this.settingsManager.setPackages(nextPackages);
+			}
+			return true;
+>>>>>>> upstream/main
 		}
 		const nextPackages = [...currentPackages, normalizedSource];
 		if (scope === "project") {
@@ -1035,6 +1067,7 @@ export class DefaultPackageManager implements PackageManager {
 
 		for (const entry of sources) {
 			const parsed = this.parseSource(entry.source);
+<<<<<<< HEAD
 			if (parsed.type === "local" || parsed.pinned) {
 				continue;
 			}
@@ -1043,6 +1076,17 @@ export class DefaultPackageManager implements PackageManager {
 				continue;
 			}
 			gitCandidates.push({ ...entry, parsed });
+=======
+			// Pinned npm versions are fixed. Pinned git refs are configured checkout targets,
+			// so include them to reconcile an existing clone when the configured ref changes.
+			if (parsed.type === "npm") {
+				if (!parsed.pinned) {
+					npmCandidates.push({ ...entry, parsed });
+				}
+			} else if (parsed.type === "git") {
+				gitCandidates.push({ ...entry, parsed });
+			}
+>>>>>>> upstream/main
 		}
 
 		const npmCheckTasks = npmCandidates.map((entry) => async () => ({
@@ -1693,6 +1737,7 @@ export class DefaultPackageManager implements PackageManager {
 
 	private getNpmInstallArgs(specs: string[], installRoot: string): string[] {
 		const packageManagerName = this.getPackageManagerName();
+<<<<<<< HEAD
 		if (packageManagerName === "bun") {
 			return ["install", ...specs, "--cwd", installRoot];
 		}
@@ -1700,6 +1745,27 @@ export class DefaultPackageManager implements PackageManager {
 			return ["install", ...specs, "--prefix", installRoot, "--config.strict-dep-builds=false"];
 		}
 		return ["install", ...specs, "--prefix", installRoot];
+=======
+		// Extension packages run inside pi and resolve pi APIs through loader aliases/virtual modules.
+		// Disable peer dependency resolution for managed installs (npm's --legacy-peer-deps, and
+		// equivalent bun/pnpm settings) so package managers do not install or solve host-provided
+		// @earendil-works/pi-* peers. Stale auto-installed pi peers can otherwise block updates.
+		if (packageManagerName === "bun") {
+			return ["install", ...specs, "--cwd", installRoot, "--omit=peer"];
+		}
+		if (packageManagerName === "pnpm") {
+			return [
+				"install",
+				...specs,
+				"--prefix",
+				installRoot,
+				"--config.auto-install-peers=false",
+				"--config.strict-peer-dependencies=false",
+				"--config.strict-dep-builds=false",
+			];
+		}
+		return ["install", ...specs, "--prefix", installRoot, "--legacy-peer-deps"];
+>>>>>>> upstream/main
 	}
 
 	private async installNpm(source: NpmSource, scope: SourceScope, temporary: boolean): Promise<void> {
@@ -1723,6 +1789,15 @@ export class DefaultPackageManager implements PackageManager {
 	private async installGit(source: GitSource, scope: SourceScope): Promise<void> {
 		const targetDir = this.getGitInstallPath(source, scope);
 		if (existsSync(targetDir)) {
+<<<<<<< HEAD
+=======
+			if (source.ref) {
+				await this.ensureGitRef(targetDir, ["fetch", "origin", source.ref], "FETCH_HEAD");
+				return;
+			}
+			const target = await this.getLocalGitUpdateTarget(targetDir);
+			await this.ensureGitRef(targetDir, target.fetchArgs, target.ref);
+>>>>>>> upstream/main
 			return;
 		}
 		const gitRoot = this.getGitInstallRoot(scope);
@@ -1748,28 +1823,56 @@ export class DefaultPackageManager implements PackageManager {
 			return;
 		}
 
+<<<<<<< HEAD
 		const target = await this.getLocalGitUpdateTarget(targetDir);
 
 		// Fetch only the ref we will reset to, avoiding unrelated branch/tag noise.
 		await this.runCommand("git", target.fetchArgs, { cwd: targetDir });
+=======
+		if (source.ref) {
+			await this.ensureGitRef(targetDir, ["fetch", "origin", source.ref], "FETCH_HEAD");
+			return;
+		}
+
+		const target = await this.getLocalGitUpdateTarget(targetDir);
+		await this.ensureGitRef(targetDir, target.fetchArgs, target.ref);
+	}
+
+	private async ensureGitRef(targetDir: string, fetchArgs: string[], ref: string): Promise<void> {
+		// Fetch only the ref we will reset to, avoiding unrelated branch/tag noise.
+		await this.runCommand("git", fetchArgs, { cwd: targetDir });
+>>>>>>> upstream/main
 
 		const localHead = await this.runCommandCapture("git", ["rev-parse", "HEAD"], {
 			cwd: targetDir,
 			timeoutMs: NETWORK_TIMEOUT_MS,
 		});
+<<<<<<< HEAD
 		const refreshedTargetHead = await this.runCommandCapture("git", ["rev-parse", target.ref], {
+=======
+		const commitRef = `${ref}^{commit}`;
+		const targetHead = await this.runCommandCapture("git", ["rev-parse", commitRef], {
+>>>>>>> upstream/main
 			cwd: targetDir,
 			timeoutMs: NETWORK_TIMEOUT_MS,
 		});
 		const packageJsonPath = join(targetDir, "package.json");
+<<<<<<< HEAD
 		if (localHead.trim() === refreshedTargetHead.trim()) {
+=======
+		if (localHead.trim() === targetHead.trim()) {
+>>>>>>> upstream/main
 			if (existsSync(packageJsonPath)) {
 				await this.runNpmCommand(this.getGitDependencyInstallArgs(), { cwd: targetDir });
 			}
 			return;
 		}
 
+<<<<<<< HEAD
 		await this.runCommand("git", ["reset", "--hard", target.ref], { cwd: targetDir });
+=======
+		await this.runCommand("git", ["reset", "--hard", commitRef], { cwd: targetDir });
+>>>>>>> upstream/main
 
 		// Clean untracked files (extensions should be pristine)
 		await this.runCommand("git", ["clean", "-fdx"], { cwd: targetDir });
@@ -1825,6 +1928,10 @@ export class DefaultPackageManager implements PackageManager {
 		if (!existsSync(installRoot)) {
 			mkdirSync(installRoot, { recursive: true });
 		}
+<<<<<<< HEAD
+=======
+		markPathIgnoredByCloudSync(installRoot);
+>>>>>>> upstream/main
 		this.ensureGitIgnore(installRoot);
 		const packageJsonPath = join(installRoot, "package.json");
 		if (!existsSync(packageJsonPath)) {
@@ -1949,6 +2056,7 @@ export class DefaultPackageManager implements PackageManager {
 	}
 
 	private resolvePath(input: string): string {
+<<<<<<< HEAD
 		const trimmed = input.trim();
 		if (trimmed === "~") return getHomeDir();
 		if (trimmed.startsWith("~/")) return join(getHomeDir(), trimmed.slice(2));
@@ -1962,6 +2070,13 @@ export class DefaultPackageManager implements PackageManager {
 		if (trimmed.startsWith("~/")) return join(getHomeDir(), trimmed.slice(2));
 		if (trimmed.startsWith("~")) return join(getHomeDir(), trimmed.slice(1));
 		return resolve(baseDir, trimmed);
+=======
+		return resolvePath(input, this.cwd, { homeDir: getHomeDir(), trim: true });
+	}
+
+	private resolvePathFromBase(input: string, baseDir: string): string {
+		return resolvePath(input, baseDir, { homeDir: getHomeDir(), trim: true });
+>>>>>>> upstream/main
 	}
 
 	private collectPackageResources(

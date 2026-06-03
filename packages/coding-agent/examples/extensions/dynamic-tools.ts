@@ -7,7 +7,11 @@
  * - Registers additional tools at runtime via /add-echo-tool <name>
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 import { Type } from "typebox";
 
 const ECHO_PARAMS = Type.Object({

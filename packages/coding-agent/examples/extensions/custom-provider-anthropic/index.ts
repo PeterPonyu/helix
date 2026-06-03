@@ -13,16 +13,27 @@
  *   cd packages/coding-agent/examples/extensions/custom-provider && npm install
  *
  *   # With OAuth (run /login custom-anthropic first)
+<<<<<<< HEAD
  *   helix -e ./packages/coding-agent/examples/extensions/custom-provider
  *
  *   # With API key
  *   CUSTOM_ANTHROPIC_API_KEY=sk-ant-... helix -e ./packages/coding-agent/examples/extensions/custom-provider
+=======
+ *   senpi -e ./packages/coding-agent/examples/extensions/custom-provider
+ *
+ *   # With API key
+ *   CUSTOM_ANTHROPIC_API_KEY=sk-ant-... senpi -e ./packages/coding-agent/examples/extensions/custom-provider
+>>>>>>> upstream/main
  *
  * Then use /model to select custom-anthropic/claude-sonnet-4-5
  */
 
 import Anthropic from "@anthropic-ai/sdk";
 import type { ContentBlockParam, MessageCreateParamsStreaming } from "@anthropic-ai/sdk/resources/messages.js";
+<<<<<<< HEAD
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 import {
 	type Api,
 	type AssistantMessage,
@@ -43,7 +54,10 @@ import {
 	type ToolCall,
 	type ToolResultMessage,
 } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+>>>>>>> upstream/main
 
 // =============================================================================
 // OAuth Implementation (copied from packages/ai/src/utils/oauth/anthropic.ts)
@@ -568,7 +582,11 @@ function streamCustomAnthropic(
 export default function (pi: ExtensionAPI) {
 	pi.registerProvider("custom-anthropic", {
 		baseUrl: "https://api.anthropic.com",
+<<<<<<< HEAD
 		apiKey: "CUSTOM_ANTHROPIC_API_KEY",
+=======
+		apiKey: "$CUSTOM_ANTHROPIC_API_KEY",
+>>>>>>> upstream/main
 		api: "custom-anthropic-api",
 
 		models: [

@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../../../src/index.js";
 import { createHarness, type Harness } from "../harness.js";
+=======
+import type { ExtensionAPI } from "../../../src/index.ts";
+import { createHarness, type Harness } from "../harness.ts";
+>>>>>>> upstream/main
 
 describe("regression #3686: session name changes emit an event", () => {
 	const harnesses: Harness[] = [];

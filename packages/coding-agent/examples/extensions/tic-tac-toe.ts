@@ -17,9 +17,15 @@
  * separate variables. Only the agent cursor is ever exposed to the agent.
  */
 
+<<<<<<< HEAD
 import { StringEnum } from "@earendil-works/pi-ai";
 import { type Component, matchesKey, Text, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 import type { ExtensionAPI, ExtensionContext, Theme, ToolExecutionMode } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, ExtensionContext, Theme, ToolExecutionMode } from "@code-yeongyu/senpi";
+import { StringEnum } from "@earendil-works/pi-ai";
+import { type Component, matchesKey, Text, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 import { Type } from "typebox";
 
 // Thrown from the tool on illegal actions. The agent runtime surfaces thrown
@@ -779,7 +785,11 @@ Decide the target cell first, then dump every action for the turn in one go.
 		description: "Play tic-tac-toe against the agent",
 
 		handler: async (_args, ctx) => {
+<<<<<<< HEAD
 			if (!ctx.hasUI) {
+=======
+			if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 				ctx.ui.notify("Tic-tac-toe requires interactive mode", "error");
 				return;
 			}

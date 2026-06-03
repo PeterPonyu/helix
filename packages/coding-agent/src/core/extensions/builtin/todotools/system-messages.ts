@@ -1,8 +1,15 @@
 import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../../types.js";
 
 export const HELIX_SYSTEM_PREFIX = "[system:helix]";
 export const HELIX_CONVERSATION_EVENT = "helix:conversation";
+=======
+import type { ExtensionAPI } from "../../types.ts";
+
+export const SENPI_SYSTEM_PREFIX = "[system:senpi]";
+export const SENPI_CONVERSATION_EVENT = "senpi:conversation";
+>>>>>>> upstream/main
 
 export type TodoSystemMessageRoute = "todotools.continuation";
 export type TodoConversationAction = "injected" | "failed";
@@ -15,7 +22,11 @@ export interface TodoConversationEvent {
 	sessionId?: string;
 	timestamp: number;
 	conversation: {
+<<<<<<< HEAD
 		prefix: typeof HELIX_SYSTEM_PREFIX;
+=======
+		prefix: typeof SENPI_SYSTEM_PREFIX;
+>>>>>>> upstream/main
 		kind: "user_message";
 		deliverAs?: "steer" | "followUp";
 	};
@@ -29,7 +40,11 @@ export interface TodoUserMessageOptions {
 }
 
 function prefixText(text: string): string {
+<<<<<<< HEAD
 	return text.startsWith(HELIX_SYSTEM_PREFIX) ? text : `${HELIX_SYSTEM_PREFIX}\n${text}`;
+=======
+	return text.startsWith(SENPI_SYSTEM_PREFIX) ? text : `${SENPI_SYSTEM_PREFIX}\n${text}`;
+>>>>>>> upstream/main
 }
 
 function prefixContent(content: string | (TextContent | ImageContent)[]): string | (TextContent | ImageContent)[] {
@@ -39,7 +54,11 @@ function prefixContent(content: string | (TextContent | ImageContent)[]): string
 
 	const firstTextIndex = content.findIndex((part) => part.type === "text");
 	if (firstTextIndex === -1) {
+<<<<<<< HEAD
 		return [{ type: "text", text: HELIX_SYSTEM_PREFIX }, ...content];
+=======
+		return [{ type: "text", text: SENPI_SYSTEM_PREFIX }, ...content];
+>>>>>>> upstream/main
 	}
 
 	return content.map((part, index) => {
@@ -66,7 +85,11 @@ function extractText(content: string | (TextContent | ImageContent)[]): string {
 }
 
 function emitTodoConversationEvent(pi: ExtensionAPI, event: TodoConversationEvent): void {
+<<<<<<< HEAD
 	pi.events.emit(HELIX_CONVERSATION_EVENT, event);
+=======
+	pi.events.emit(SENPI_CONVERSATION_EVENT, event);
+>>>>>>> upstream/main
 }
 
 function createBaseEvent(args: {
@@ -85,7 +108,11 @@ function createBaseEvent(args: {
 		sessionId: args.sessionId,
 		timestamp: Date.now(),
 		conversation: {
+<<<<<<< HEAD
 			prefix: HELIX_SYSTEM_PREFIX,
+=======
+			prefix: SENPI_SYSTEM_PREFIX,
+>>>>>>> upstream/main
 			kind: "user_message",
 			deliverAs: args.deliverAs,
 		},

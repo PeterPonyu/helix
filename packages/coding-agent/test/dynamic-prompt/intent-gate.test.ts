@@ -1,6 +1,11 @@
 import { describe, expect, test } from "vitest";
+<<<<<<< HEAD
 import { buildIntentGate } from "../../src/core/dynamic-prompt/intent-gate.js";
 import type { AvailableTool } from "../../src/core/dynamic-prompt/types.js";
+=======
+import { buildIntentGate } from "../../src/core/dynamic-prompt/intent-gate.ts";
+import type { AvailableTool } from "../../src/core/dynamic-prompt/types.ts";
+>>>>>>> upstream/main
 
 describe("buildIntentGate", () => {
 	test("includes intent verbalization table", () => {

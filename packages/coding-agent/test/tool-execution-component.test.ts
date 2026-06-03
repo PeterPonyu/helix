@@ -2,6 +2,7 @@ import { join, resolve } from "node:path";
 import { Text, type TUI } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import { beforeAll, describe, expect, test, vi } from "vitest";
+<<<<<<< HEAD
 import { getReadmePath } from "../src/config.js";
 import type { ToolDefinition } from "../src/core/extensions/types.js";
 import { type BashOperations, createBashToolDefinition } from "../src/core/tools/bash.js";
@@ -11,6 +12,17 @@ import { createWriteToolDefinition } from "../src/core/tools/write.js";
 import { ToolExecutionComponent } from "../src/modes/interactive/components/tool-execution.js";
 import { initTheme, theme } from "../src/modes/interactive/theme/theme.js";
 import { stripAnsi } from "../src/utils/ansi.js";
+=======
+import { getReadmePath } from "../src/config.ts";
+import type { ToolDefinition } from "../src/core/extensions/types.ts";
+import { type BashOperations, createBashToolDefinition } from "../src/core/tools/bash.ts";
+import { renderToolDiff } from "../src/core/tools/diff-render.ts";
+import { createReadTool, createReadToolDefinition } from "../src/core/tools/read.ts";
+import { createWriteToolDefinition } from "../src/core/tools/write.ts";
+import { ToolExecutionComponent } from "../src/modes/interactive/components/tool-execution.ts";
+import { initTheme, theme } from "../src/modes/interactive/theme/theme.ts";
+import { stripAnsi } from "../src/utils/ansi.ts";
+>>>>>>> upstream/main
 
 function createBaseToolDefinition(name = "custom_tool"): ToolDefinition {
 	return {
@@ -75,6 +87,40 @@ describe("ToolExecutionComponent parity", () => {
 		expect(rendered).toContain("custom result");
 	});
 
+<<<<<<< HEAD
+=======
+	test("self-rendered empty tool rows take no layout space", () => {
+		const toolDefinition: ToolDefinition = {
+			...createBaseToolDefinition(),
+			renderShell: "self",
+			renderCall: () => new Text("", 0, 0),
+			renderResult: () => new Text("", 0, 0),
+		};
+
+		const component = new ToolExecutionComponent(
+			"custom_tool",
+			"tool-empty-self-render",
+			{},
+			{},
+			toolDefinition,
+			createFakeTui(),
+			process.cwd(),
+		);
+		expect(component.render(120)).toEqual([]);
+
+		component.updateResult(
+			{
+				content: [],
+				details: {},
+				isError: false,
+			},
+			false,
+		);
+
+		expect(component.render(120)).toEqual([]);
+	});
+
+>>>>>>> upstream/main
 	test("uses built-in rendering for built-in overrides without custom renderers", () => {
 		const overrideDefinition: ToolDefinition = {
 			...createBaseToolDefinition("edit"),
@@ -184,6 +230,46 @@ describe("ToolExecutionComponent parity", () => {
 		}
 	});
 
+<<<<<<< HEAD
+=======
+	test("bash renderer does not duplicate final full output truncation details", async () => {
+		const operations: BashOperations = {
+			exec: async (_command, _cwd, { onData }) => {
+				for (let i = 1; i <= 4000; i++) {
+					onData(Buffer.from(`line-${String(i).padStart(4, "0")}\n`));
+				}
+				return { exitCode: 0 };
+			},
+		};
+		const tool = createBashToolDefinition(process.cwd(), { operations });
+		const result = await tool.execute(
+			"tool-bash-1b",
+			{ command: "generate output" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		const component = new ToolExecutionComponent(
+			"bash",
+			"tool-bash-1b",
+			{ command: "generate output" },
+			{},
+			tool,
+			createFakeTui(),
+			process.cwd(),
+		);
+		component.setExpanded(true);
+		component.updateResult({ ...result, isError: false }, false);
+
+		const rendered = stripAnsi(component.render(200).join("\n"));
+		expect(rendered.match(/Full output:/g)?.length ?? 0).toBe(1);
+		expect(rendered).toMatch(/line-4000[^\n]*\n[^\S\n]*\n \[Full output:/);
+		expect(rendered).not.toMatch(/line-4000[^\n]*\n[^\S\n]*\n[^\S\n]*\n \[Full output:/);
+		expect(rendered).toContain("Truncated: showing 2000 of 4000 lines");
+		expect(rendered).not.toContain("[Showing lines 2001-4000 of 4000. Full output:");
+	});
+
+>>>>>>> upstream/main
 	test("does not duplicate built-in headers when passed the active built-in definition", () => {
 		const component = new ToolExecutionComponent(
 			"read",
@@ -215,6 +301,10 @@ describe("ToolExecutionComponent parity", () => {
 			process.cwd(),
 		);
 		component.updateResult({ content: [{ type: "text", text: "hello" }], details: undefined, isError: false }, false);
+<<<<<<< HEAD
+=======
+		component.setExpanded(true);
+>>>>>>> upstream/main
 		const rendered = stripAnsi(component.render(120).join("\n"));
 		expect(rendered).toContain("override call");
 		expect(rendered).toContain("hello");
@@ -418,12 +508,44 @@ describe("ToolExecutionComponent parity", () => {
 			{ content: [{ type: "text", text: "one\ntwo\n" }], details: undefined, isError: false },
 			false,
 		);
+<<<<<<< HEAD
+=======
+		component.setExpanded(true);
+>>>>>>> upstream/main
 		const rendered = stripAnsi(component.render(120).join("\n"));
 		expect(rendered).toContain("one");
 		expect(rendered).toContain("two");
 		expect(rendered).not.toContain("two\n\n");
 	});
 
+<<<<<<< HEAD
+=======
+	test("collapses ordinary read results until expanded", () => {
+		const component = new ToolExecutionComponent(
+			"read",
+			"tool-ordinary-read-collapsed",
+			{ path: "notes.txt" },
+			{},
+			createReadToolDefinition(process.cwd()),
+			createFakeTui(),
+			process.cwd(),
+		);
+		component.updateResult(
+			{ content: [{ type: "text", text: "hidden content" }], details: undefined, isError: false },
+			false,
+		);
+
+		const collapsed = stripAnsi(component.render(120).join("\n"));
+		expect(collapsed).toContain("read");
+		expect(collapsed).toContain("notes.txt");
+		expect(collapsed).not.toContain("hidden content");
+
+		component.setExpanded(true);
+		const expanded = stripAnsi(component.render(120).join("\n"));
+		expect(expanded).toContain("hidden content");
+	});
+
+>>>>>>> upstream/main
 	for (const scenario of [
 		{
 			title: "SKILL.md",

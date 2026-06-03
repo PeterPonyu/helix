@@ -1,6 +1,10 @@
 import { appendFileSync } from "node:fs";
 import { join } from "node:path";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	const logFile = join(process.cwd(), ".pi", "provider-payload.log");

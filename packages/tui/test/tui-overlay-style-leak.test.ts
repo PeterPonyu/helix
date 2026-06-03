@@ -1,11 +1,23 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import type { Terminal as XtermTerminalType } from "@xterm/headless";
+<<<<<<< HEAD
 import { type Component, TUI } from "../src/tui.js";
 import { VirtualTerminal } from "./virtual-terminal.js";
 
 class StaticLines implements Component {
 	constructor(private readonly lines: string[]) {}
+=======
+import { type Component, TUI } from "../src/tui.ts";
+import { VirtualTerminal } from "./virtual-terminal.ts";
+
+class StaticLines implements Component {
+	private readonly lines: string[];
+
+	constructor(lines: string[]) {
+		this.lines = lines;
+	}
+>>>>>>> upstream/main
 
 	render(): string[] {
 		return this.lines;
@@ -15,7 +27,15 @@ class StaticLines implements Component {
 }
 
 class StaticOverlay implements Component {
+<<<<<<< HEAD
 	constructor(private readonly line: string) {}
+=======
+	private readonly line: string;
+
+	constructor(line: string) {
+		this.line = line;
+	}
+>>>>>>> upstream/main
 
 	render(): string[] {
 		return [this.line];

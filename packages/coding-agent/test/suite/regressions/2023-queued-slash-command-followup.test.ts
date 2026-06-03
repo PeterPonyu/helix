@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
 import type { ExtensionAPI } from "@helix-bio/helix";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
 import { createHarness, getAssistantTexts, getUserTexts, type Harness } from "../harness.js";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import type { AgentTool } from "@earendil-works/pi-agent-core";
+import { fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
+import { Type } from "typebox";
+import { afterEach, describe, expect, it } from "vitest";
+import { createHarness, getAssistantTexts, getUserTexts, type Harness } from "../harness.ts";
+>>>>>>> upstream/main
 
 describe("issue #2023 queued slash-command follow-up", () => {
 	const harnesses: Harness[] = [];

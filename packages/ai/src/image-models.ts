@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { IMAGE_MODELS } from "./image-models.generated.js";
 import type { ImagesApi, ImagesModel, KnownImagesProvider } from "./types.js";
+=======
+import { IMAGE_MODELS } from "./image-models.generated.ts";
+import type { ImagesApi, ImagesModel, KnownImagesProvider } from "./types.ts";
+>>>>>>> upstream/main
 
 const imageModelRegistry: Map<string, Map<string, ImagesModel<ImagesApi>>> = new Map();
 

@@ -1,5 +1,9 @@
 import hljs from "highlight.js/lib/index.js";
+<<<<<<< HEAD
 import { decodeHtmlEntityAt } from "./html.js";
+=======
+import { decodeHtmlEntityAt } from "./html.ts";
+>>>>>>> upstream/main
 
 export type HighlightFormatter = (text: string) => string;
 export type HighlightTheme = Partial<Record<string, HighlightFormatter>>;

@@ -1,4 +1,5 @@
 import { accessSync, constants } from "node:fs";
+<<<<<<< HEAD
 import * as os from "node:os";
 import { isAbsolute, resolve as resolvePath } from "node:path";
 
@@ -7,6 +8,12 @@ const NARROW_NO_BREAK_SPACE = "\u202F";
 function normalizeUnicodeSpaces(str: string): string {
 	return str.replace(UNICODE_SPACES, " ");
 }
+=======
+import { access } from "node:fs/promises";
+import { normalizePath, resolvePath } from "../../utils/paths.ts";
+
+const NARROW_NO_BREAK_SPACE = "\u202F";
+>>>>>>> upstream/main
 
 function tryMacOSScreenshotPath(filePath: string): string {
 	return filePath.replace(/ (AM|PM)\./gi, `${NARROW_NO_BREAK_SPACE}$1.`);
@@ -32,6 +39,7 @@ function fileExists(filePath: string): boolean {
 	}
 }
 
+<<<<<<< HEAD
 function normalizeAtPrefix(filePath: string): string {
 	return filePath.startsWith("@") ? filePath.slice(1) : filePath;
 }
@@ -45,6 +53,19 @@ export function expandPath(filePath: string): string {
 		return os.homedir() + normalized.slice(1);
 	}
 	return normalized;
+=======
+export async function pathExists(filePath: string): Promise<boolean> {
+	try {
+		await access(filePath, constants.F_OK);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+export function expandPath(filePath: string): string {
+	return normalizePath(filePath, { normalizeUnicodeSpaces: true, stripAtPrefix: true });
+>>>>>>> upstream/main
 }
 
 /**
@@ -52,11 +73,15 @@ export function expandPath(filePath: string): string {
  * Handles ~ expansion and absolute paths.
  */
 export function resolveToCwd(filePath: string, cwd: string): string {
+<<<<<<< HEAD
 	const expanded = expandPath(filePath);
 	if (isAbsolute(expanded)) {
 		return expanded;
 	}
 	return resolvePath(cwd, expanded);
+=======
+	return resolvePath(filePath, cwd, { normalizeUnicodeSpaces: true, stripAtPrefix: true });
+>>>>>>> upstream/main
 }
 
 export function resolveReadPath(filePath: string, cwd: string): string {
@@ -92,3 +117,40 @@ export function resolveReadPath(filePath: string, cwd: string): string {
 
 	return resolved;
 }
+<<<<<<< HEAD
+=======
+
+export async function resolveReadPathAsync(filePath: string, cwd: string): Promise<string> {
+	const resolved = resolveToCwd(filePath, cwd);
+
+	if (await pathExists(resolved)) {
+		return resolved;
+	}
+
+	// Try macOS AM/PM variant (narrow no-break space before AM/PM)
+	const amPmVariant = tryMacOSScreenshotPath(resolved);
+	if (amPmVariant !== resolved && (await pathExists(amPmVariant))) {
+		return amPmVariant;
+	}
+
+	// Try NFD variant (macOS stores filenames in NFD form)
+	const nfdVariant = tryNFDVariant(resolved);
+	if (nfdVariant !== resolved && (await pathExists(nfdVariant))) {
+		return nfdVariant;
+	}
+
+	// Try curly quote variant (macOS uses U+2019 in screenshot names)
+	const curlyVariant = tryCurlyQuoteVariant(resolved);
+	if (curlyVariant !== resolved && (await pathExists(curlyVariant))) {
+		return curlyVariant;
+	}
+
+	// Try combined NFD + curly quote (for French macOS screenshots like "Capture d'écran")
+	const nfdCurlyVariant = tryCurlyQuoteVariant(nfdVariant);
+	if (nfdCurlyVariant !== resolved && (await pathExists(nfdCurlyVariant))) {
+		return nfdCurlyVariant;
+	}
+
+	return resolved;
+}
+>>>>>>> upstream/main

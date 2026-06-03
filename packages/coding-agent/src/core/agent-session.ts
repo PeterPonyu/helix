@@ -15,7 +15,11 @@
 
 import { randomUUID } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+<<<<<<< HEAD
 import { basename, dirname, resolve } from "node:path";
+=======
+import { basename, dirname } from "node:path";
+>>>>>>> upstream/main
 import type {
 	Agent,
 	AgentEvent,
@@ -32,12 +36,21 @@ import {
 	resetApiProviders,
 	streamSimple,
 } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import { expandTildePath } from "../config.js";
 import { theme } from "../modes/interactive/theme/theme.js";
 import { stripFrontmatter } from "../utils/frontmatter.js";
 import { sleep } from "../utils/sleep.js";
 import { formatNoApiKeyFoundMessage, formatNoModelSelectedMessage } from "./auth-guidance.js";
 import { type BashResult, executeBashWithOperations } from "./bash-executor.js";
+=======
+import { theme } from "../modes/interactive/theme/theme.ts";
+import { stripFrontmatter } from "../utils/frontmatter.ts";
+import { resolvePath } from "../utils/paths.ts";
+import { sleep } from "../utils/sleep.ts";
+import { formatNoApiKeyFoundMessage, formatNoModelSelectedMessage } from "./auth-guidance.ts";
+import { type BashResult, executeBashWithOperations } from "./bash-executor.ts";
+>>>>>>> upstream/main
 import {
 	type CompactionResult,
 	calculateContextTokens,
@@ -48,16 +61,29 @@ import {
 	generateBranchSummary,
 	prepareCompaction,
 	shouldCompact,
+<<<<<<< HEAD
 } from "./compaction/index.js";
 import { DEFAULT_THINKING_LEVEL } from "./defaults.js";
 import { type BuildDynamicSystemPromptOptions, buildDynamicSystemPrompt } from "./dynamic-prompt/index.js";
 import { exportSessionToHtml, type ToolHtmlRenderer } from "./export-html/index.js";
 import { createToolHtmlRenderer } from "./export-html/tool-renderer.js";
 import type { ServiceTier } from "./extensions/builtin/service-tier.js";
+=======
+} from "./compaction/index.ts";
+import { DEFAULT_THINKING_LEVEL } from "./defaults.ts";
+import { type BuildDynamicSystemPromptOptions, buildDynamicSystemPrompt } from "./dynamic-prompt/index.ts";
+import { exportSessionToHtml, type ToolHtmlRenderer } from "./export-html/index.ts";
+import { createToolHtmlRenderer } from "./export-html/tool-renderer.ts";
+import type { ServiceTier } from "./extensions/builtin/service-tier.ts";
+>>>>>>> upstream/main
 import {
 	type ContextUsage,
 	type ExtensionCommandContextActions,
 	type ExtensionErrorListener,
+<<<<<<< HEAD
+=======
+	type ExtensionMode,
+>>>>>>> upstream/main
 	ExtensionRunner,
 	type ExtensionToolHookLifecycleEvent,
 	type ExtensionUIContext,
@@ -80,13 +106,19 @@ import {
 	type TurnEndEvent,
 	type TurnStartEvent,
 	wrapRegisteredTools,
+<<<<<<< HEAD
 } from "./extensions/index.js";
 import { emitSessionShutdownEvent } from "./extensions/runner.js";
+=======
+} from "./extensions/index.ts";
+import { emitSessionShutdownEvent } from "./extensions/runner.ts";
+>>>>>>> upstream/main
 import type {
 	ApplyCompactionOptions,
 	ApplyCompactionResult,
 	CompactionReason,
 	CompactionRejectionCause,
+<<<<<<< HEAD
 } from "./extensions/types.js";
 import { type BashExecutionMessage, type CustomMessage, filterContextExcludedMessages } from "./messages.js";
 import type { ModelRegistry } from "./model-registry.js";
@@ -94,11 +126,21 @@ import { getModelNarrowingPatterns, resolveModelScope } from "./model-resolver.j
 import { expandPromptTemplate, type PromptTemplate } from "./prompt-templates.js";
 import type { ResourceExtensionPaths, ResourceLoader } from "./resource-loader.js";
 import type { BranchSummaryEntry, CompactionEntry, SessionEntry, SessionManager } from "./session-manager.js";
+=======
+} from "./extensions/types.ts";
+import { type BashExecutionMessage, type CustomMessage, filterContextExcludedMessages } from "./messages.ts";
+import type { ModelRegistry } from "./model-registry.ts";
+import { getModelNarrowingPatterns, resolveModelScope } from "./model-resolver.ts";
+import { expandPromptTemplate, type PromptTemplate } from "./prompt-templates.ts";
+import type { ResourceExtensionPaths, ResourceLoader } from "./resource-loader.ts";
+import type { BranchSummaryEntry, CompactionEntry, SessionEntry, SessionManager } from "./session-manager.ts";
+>>>>>>> upstream/main
 import {
 	buildSessionContext,
 	CURRENT_SESSION_VERSION,
 	getLatestCompactionEntry,
 	type SessionHeader,
+<<<<<<< HEAD
 } from "./session-manager.js";
 import type { SettingsManager } from "./settings-manager.js";
 import type { SlashCommandInfo } from "./slash-commands.js";
@@ -107,6 +149,17 @@ import { getSupportedThinkingLevels, supportsMax, supportsXhigh } from "./thinki
 import { type BashOperations, createLocalBashOperations } from "./tools/bash.js";
 import { createAllToolDefinitions } from "./tools/index.js";
 import { createToolDefinitionFromAgentTool } from "./tools/tool-definition-wrapper.js";
+=======
+} from "./session-manager.ts";
+import { SessionWorkBarrier } from "./session-work-barrier.ts";
+import type { SettingsManager } from "./settings-manager.ts";
+import type { SlashCommandInfo } from "./slash-commands.ts";
+import { createSyntheticSourceInfo, type SourceInfo } from "./source-info.ts";
+import { getSupportedThinkingLevels, supportsMax, supportsXhigh } from "./thinking-levels.ts";
+import { type BashOperations, createLocalBashOperations } from "./tools/bash.ts";
+import { createAllToolDefinitions } from "./tools/index.ts";
+import { createToolDefinitionFromAgentTool } from "./tools/tool-definition-wrapper.ts";
+>>>>>>> upstream/main
 
 // ============================================================================
 // Skill Block Parsing
@@ -136,8 +189,16 @@ export function parseSkillBlock(text: string): ParsedSkillBlock | null {
 }
 
 /** Session-specific events that extend the core AgentEvent */
+<<<<<<< HEAD
 export type AgentSessionEvent =
 	| AgentEvent
+=======
+type AgentSessionAgentEndEvent = Extract<AgentEvent, { type: "agent_end" }> & { willRetry: boolean };
+
+export type AgentSessionEvent =
+	| Exclude<AgentEvent, { type: "agent_end" }>
+	| AgentSessionAgentEndEvent
+>>>>>>> upstream/main
 	| {
 			type: "queue_update";
 			steering: readonly string[];
@@ -189,6 +250,11 @@ export interface AgentSessionConfig {
 	initialActiveToolNames?: string[];
 	/** Optional allowlist of tool names. When provided, only these tool names are exposed. */
 	allowedToolNames?: string[];
+<<<<<<< HEAD
+=======
+	/** Optional denylist of tool names. When provided, these tool names are not exposed. */
+	excludedToolNames?: string[];
+>>>>>>> upstream/main
 	/**
 	 * Override base tools (useful for custom runtimes).
 	 *
@@ -228,15 +294,30 @@ type CompactionExecutionResult =
 	  };
 
 class CompactionRejectedError extends Error {
+<<<<<<< HEAD
 	constructor(readonly rejectionCause: CompactionRejectionCause) {
 		super(rejectionCause === "cancelled-by-extension" ? "Compaction cancelled" : "Compaction rejected");
 		this.name = "CompactionRejectedError";
+=======
+	readonly rejectionCause: CompactionRejectionCause;
+
+	constructor(rejectionCause: CompactionRejectionCause) {
+		super(rejectionCause === "cancelled-by-extension" ? "Compaction cancelled" : "Compaction rejected");
+		this.name = "CompactionRejectedError";
+		this.rejectionCause = rejectionCause;
+>>>>>>> upstream/main
 	}
 }
 
 export interface ExtensionBindings {
 	uiContext?: ExtensionUIContext;
+<<<<<<< HEAD
 	commandContextActions?: ExtensionCommandContextActions;
+=======
+	mode?: ExtensionMode;
+	commandContextActions?: ExtensionCommandContextActions;
+	abortHandler?: () => void;
+>>>>>>> upstream/main
 	shutdownHandler?: ShutdownHandler;
 	onError?: ExtensionErrorListener;
 }
@@ -324,6 +405,10 @@ export class AgentSession {
 	// Compaction state
 	private _compactionAbortController: AbortController | undefined = undefined;
 	private _autoCompactionAbortController: AbortController | undefined = undefined;
+<<<<<<< HEAD
+=======
+	private readonly _sessionWorkBarrier = new SessionWorkBarrier();
+>>>>>>> upstream/main
 	private _overflowRecoveryAttempted = false;
 	private _messageRevision = 0;
 
@@ -352,10 +437,20 @@ export class AgentSession {
 	private _extensionRunnerRef?: { current?: ExtensionRunner };
 	private _initialActiveToolNames?: string[];
 	private _allowedToolNames?: Set<string>;
+<<<<<<< HEAD
 	private _baseToolsOverride?: Record<string, AgentTool>;
 	private _sessionStartEvent: SessionStartEvent;
 	private _extensionUIContext?: ExtensionUIContext;
 	private _extensionCommandContextActions?: ExtensionCommandContextActions;
+=======
+	private _excludedToolNames?: Set<string>;
+	private _baseToolsOverride?: Record<string, AgentTool>;
+	private _sessionStartEvent: SessionStartEvent;
+	private _extensionUIContext?: ExtensionUIContext;
+	private _extensionMode: ExtensionMode = "print";
+	private _extensionCommandContextActions?: ExtensionCommandContextActions;
+	private _extensionAbortHandler?: () => void;
+>>>>>>> upstream/main
 	private _extensionShutdownHandler?: ShutdownHandler;
 	private _extensionErrorListener?: ExtensionErrorListener;
 	private _extensionErrorUnsubscriber?: () => void;
@@ -387,6 +482,10 @@ export class AgentSession {
 		this._extensionRunnerRef = config.extensionRunnerRef;
 		this._initialActiveToolNames = config.initialActiveToolNames;
 		this._allowedToolNames = config.allowedToolNames ? new Set(config.allowedToolNames) : undefined;
+<<<<<<< HEAD
+=======
+		this._excludedToolNames = config.excludedToolNames ? new Set(config.excludedToolNames) : undefined;
+>>>>>>> upstream/main
 		this._baseToolsOverride = config.baseToolsOverride;
 		this._sessionStartEvent = config.sessionStartEvent ?? { type: "session_start", reason: "startup" };
 
@@ -550,6 +649,24 @@ export class AgentSession {
 		return this._messageRevision;
 	}
 
+<<<<<<< HEAD
+=======
+	private async _waitForSettledSessionWork(): Promise<void> {
+		await this._sessionWorkBarrier.waitForSettled(() => this._agentEventQueue);
+	}
+
+	private _modelSelectionChangesContext(previousModel: Model<any> | undefined, nextModel: Model<any>): boolean {
+		if (!modelsAreEqual(previousModel, nextModel)) return true;
+		return previousModel?.contextWindow !== nextModel.contextWindow;
+	}
+
+	private _invalidateCompactionForModelSelection(): void {
+		this.abortCompaction();
+		this.abortBranchSummary();
+		this._incrementMessageRevision();
+	}
+
+>>>>>>> upstream/main
 	// Track last assistant message for auto-compaction check
 	private _lastAssistantMessage: AssistantMessage | undefined = undefined;
 
@@ -601,6 +718,33 @@ export class AgentSession {
 		return undefined;
 	}
 
+<<<<<<< HEAD
+=======
+	private _willRetryAfterAgentEnd(messages: AgentMessage[]): boolean {
+		const settings = this.settingsManager.getRetrySettings();
+		if (!settings.enabled) {
+			return false;
+		}
+
+		const lastAssistant = this._lastAssistantMessage ?? this._findLastAssistantInMessages(messages);
+		if (!lastAssistant || !this._isRetryableError(lastAssistant)) {
+			return false;
+		}
+
+		if (this._retryAttempt + 1 > settings.maxRetries) {
+			return false;
+		}
+
+		const errorMessage = lastAssistant.errorMessage || "Unknown error";
+		const providerDelayMs = this._getProviderRetryDelayMs(errorMessage);
+		if (providerDelayMs === undefined) {
+			return true;
+		}
+
+		return providerDelayMs <= this.settingsManager.getProviderRetrySettings().maxRetryDelayMs;
+	}
+
+>>>>>>> upstream/main
 	private async _processAgentEvent(event: AgentEvent): Promise<void> {
 		// When a user message starts, check if it's from either queue and remove it BEFORE emitting
 		// This ensures the UI sees the updated queue state
@@ -628,7 +772,13 @@ export class AgentSession {
 		await this._emitExtensionEvent(event);
 
 		// Notify all listeners
+<<<<<<< HEAD
 		this._emit(event);
+=======
+		this._emit(
+			event.type === "agent_end" ? { ...event, willRetry: this._willRetryAfterAgentEnd(event.messages) } : event,
+		);
+>>>>>>> upstream/main
 
 		// Handle session persistence
 		if (event.type === "message_end") {
@@ -689,6 +839,13 @@ export class AgentSession {
 			this._resolveRetry();
 			await this._checkCompaction(msg);
 		}
+<<<<<<< HEAD
+=======
+
+		if (event.type === "agent_end") {
+			this._flushPendingBashMessages();
+		}
+>>>>>>> upstream/main
 	}
 
 	/** Resolve the pending retry promise */
@@ -853,6 +1010,19 @@ export class AgentSession {
 	 * Call this when completely done with the session.
 	 */
 	dispose(): void {
+<<<<<<< HEAD
+=======
+		try {
+			this.abortRetry();
+			this.abortCompaction();
+			this.abortBranchSummary();
+			this.abortBash();
+			this.agent.abort();
+		} catch {
+			// Dispose must succeed even if an abort hook throws.
+		}
+
+>>>>>>> upstream/main
 		this._extensionRunner.invalidate(
 			"This extension ctx is stale after session replacement or reload. Do not use a captured pi or command ctx after ctx.newSession(), ctx.fork(), ctx.switchSession(), or ctx.reload(). For newSession, fork, and switchSession, move post-replacement work into withSession and use the ctx passed to withSession. For reload, do not use the old ctx after await ctx.reload().",
 		);
@@ -908,13 +1078,21 @@ export class AgentSession {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Get all configured tools with name, description, parameter schema, and source metadata.
+=======
+	 * Get all configured tools with name, description, parameter schema, prompt guidelines, and source metadata.
+>>>>>>> upstream/main
 	 */
 	getAllTools(): ToolInfo[] {
 		return Array.from(this._toolDefinitions.values()).map(({ definition, sourceInfo }) => ({
 			name: definition.name,
 			description: definition.description,
 			parameters: definition.parameters,
+<<<<<<< HEAD
+=======
+			promptGuidelines: definition.promptGuidelines,
+>>>>>>> upstream/main
 			sourceInfo,
 		}));
 	}
@@ -1102,10 +1280,13 @@ export class AgentSession {
 		return buildDynamicSystemPrompt(this._baseSystemPromptOptions);
 	}
 
+<<<<<<< HEAD
 	// =========================================================================
 	// Prompting
 	// =========================================================================
 
+=======
+>>>>>>> upstream/main
 	/**
 	 * Send a prompt to the agent.
 	 * - Handles extension commands (registered via pi.registerCommand) immediately, even during streaming
@@ -1120,6 +1301,16 @@ export class AgentSession {
 		if (userAbortPromise) {
 			await userAbortPromise;
 		}
+<<<<<<< HEAD
+=======
+		const shouldWaitForSessionWork = options?.source !== "extension";
+		if (
+			shouldWaitForSessionWork &&
+			(!this.isStreaming || this.isCompacting || this._sessionWorkBarrier.hasActiveWork)
+		) {
+			await this._waitForSettledSessionWork();
+		}
+>>>>>>> upstream/main
 
 		const expandPromptTemplates = options?.expandPromptTemplates ?? true;
 		const preflightResult = options?.preflightResult;
@@ -1145,6 +1336,10 @@ export class AgentSession {
 					currentText,
 					currentImages,
 					options?.source ?? "interactive",
+<<<<<<< HEAD
+=======
+					this.isStreaming ? options?.streamingBehavior : undefined,
+>>>>>>> upstream/main
 				);
 				if (inputResult.action === "handled") {
 					preflightResult?.(true);
@@ -1264,6 +1459,14 @@ export class AgentSession {
 		preflightResult?.(true);
 		await this.agent.prompt(messages);
 		await this.waitForRetry();
+<<<<<<< HEAD
+=======
+		if (shouldWaitForSessionWork) {
+			await this._waitForSettledSessionWork();
+		} else {
+			await this.agent.waitForIdle();
+		}
+>>>>>>> upstream/main
 	}
 
 	/**
@@ -1543,6 +1746,11 @@ export class AgentSession {
 	 */
 	async abort(): Promise<void> {
 		this.abortRetry();
+<<<<<<< HEAD
+=======
+		this.abortCompaction();
+		this.abortBranchSummary();
+>>>>>>> upstream/main
 		if (this._userAbortPromise) {
 			this.agent.abort();
 			await this._userAbortPromise;
@@ -1572,7 +1780,11 @@ export class AgentSession {
 		previousModel: Model<any> | undefined,
 		source: "set" | "cycle" | "restore",
 	): Promise<SystemPromptChangeEvent | undefined> {
+<<<<<<< HEAD
 		if (modelsAreEqual(previousModel, nextModel)) return undefined;
+=======
+		if (!this._modelSelectionChangesContext(previousModel, nextModel)) return undefined;
+>>>>>>> upstream/main
 		const result = await this._extensionRunner.emitModelSelect({
 			type: "model_select",
 			model: nextModel,
@@ -1619,6 +1831,13 @@ export class AgentSession {
 		}
 
 		const previousModel = this.model;
+<<<<<<< HEAD
+=======
+		const invalidatesCompaction = this._modelSelectionChangesContext(previousModel, model);
+		if (invalidatesCompaction) {
+			this._invalidateCompactionForModelSelection();
+		}
+>>>>>>> upstream/main
 		const thinkingLevel = this._getThinkingLevelForModelSwitch();
 		this.agent.state.model = model;
 		this.sessionManager.appendModelChange(model.provider, model.id);
@@ -1663,6 +1882,13 @@ export class AgentSession {
 			nextIndex = direction === "forward" ? (currentIndex + 1) % len : (currentIndex - 1 + len) % len;
 		}
 		const next = favoriteModels[nextIndex];
+<<<<<<< HEAD
+=======
+		const invalidatesCompaction = this._modelSelectionChangesContext(currentModel, next.model);
+		if (invalidatesCompaction) {
+			this._invalidateCompactionForModelSelection();
+		}
+>>>>>>> upstream/main
 		const thinkingLevel = this._getThinkingLevelForModelSwitch(next.thinkingLevel);
 
 		this.agent.state.model = next.model;
@@ -1938,6 +2164,7 @@ export class AgentSession {
 	}
 
 	private async _executeCompaction(request: CompactionExecutionRequest): Promise<CompactionExecutionResult> {
+<<<<<<< HEAD
 		if (!this.model) {
 			throw new Error(formatNoModelSelectedMessage());
 		}
@@ -2047,6 +2274,122 @@ export class AgentSession {
 		});
 
 		return { accepted: true, requestId, result: compactionResult, compactionEntry: savedEntry, fromExtension };
+=======
+		const finishCompactionWork = this._sessionWorkBarrier.begin();
+		try {
+			if (!this.model) {
+				throw new Error(formatNoModelSelectedMessage());
+			}
+
+			const requestId = randomUUID();
+			const pathEntries = this.sessionManager.getBranch();
+			const settings = this.settingsManager.getCompactionSettings();
+
+			const signal = this._compactionAbortController?.signal ?? this._autoCompactionAbortController?.signal;
+			if (!signal) {
+				throw new Error("Compaction abort controller unavailable");
+			}
+
+			let compactionResult = request.precomputed;
+			let fromExtension = request.precomputed !== undefined;
+
+			if (!compactionResult) {
+				const preparation = prepareCompaction(pathEntries, settings);
+
+				if (!preparation) {
+					const lastEntry = pathEntries[pathEntries.length - 1];
+					if (lastEntry?.type === "compaction") {
+						throw new Error("Already compacted");
+					}
+					throw new Error("Nothing to compact (session too small)");
+				}
+
+				if (this._extensionRunner.hasHandlers("session_before_compact")) {
+					const extensionResult = (await this._extensionRunner.emit({
+						type: "session_before_compact",
+						reason: request.reason,
+						willRetry: request.willRetry,
+						requestId,
+						preparation,
+						branchEntries: pathEntries,
+						customInstructions: request.customInstructions,
+						signal,
+					})) as SessionBeforeCompactResult | undefined;
+
+					if (extensionResult?.cancel) {
+						return await this._rejectCompaction(request, requestId, "cancelled-by-extension", true);
+					}
+
+					if (extensionResult?.compaction) {
+						compactionResult = extensionResult.compaction;
+						fromExtension = true;
+					}
+				}
+
+				if (!compactionResult) {
+					const { apiKey, headers, extraBody } = await this._getCompactionRequestAuth(this.model);
+					compactionResult = await compact(
+						preparation,
+						this.model,
+						apiKey,
+						headers,
+						request.customInstructions,
+						signal,
+						extraBody,
+						this.thinkingLevel,
+						this.agent.streamFn,
+					);
+				}
+			}
+
+			if (signal.aborted) {
+				throw new Error("Compaction cancelled");
+			}
+
+			if (this._wouldCompactionOverflow(pathEntries, compactionResult, fromExtension)) {
+				return await this._rejectCompaction(request, requestId, "would-overflow", false);
+			}
+
+			const compactionEntryId = this.sessionManager.appendCompaction(
+				compactionResult.summary,
+				compactionResult.firstKeptEntryId,
+				compactionResult.tokensBefore,
+				compactionResult.details,
+				fromExtension,
+			);
+			const savedEntry = this.sessionManager.getEntry(compactionEntryId);
+			if (!savedEntry || savedEntry.type !== "compaction") {
+				throw new Error("Compaction entry was not saved");
+			}
+
+			const sessionContext = this.sessionManager.buildSessionContext();
+			this.agent.state.messages = sessionContext.messages;
+			this._incrementMessageRevision();
+
+			await this._extensionRunner.emit({
+				type: "session_compact",
+				reason: request.reason,
+				requestId,
+				accepted: true,
+				compactionEntry: savedEntry,
+				fromExtension,
+			});
+
+			this._emit({
+				type: "compaction_end",
+				reason: request.reason,
+				result: compactionResult,
+				aborted: false,
+				willRetry: request.willRetry,
+				requestId,
+				accepted: true,
+			});
+
+			return { accepted: true, requestId, result: compactionResult, compactionEntry: savedEntry, fromExtension };
+		} finally {
+			finishCompactionWork();
+		}
+>>>>>>> upstream/main
 	}
 
 	private _wouldCompactionOverflow(
@@ -2264,10 +2607,31 @@ export class AgentSession {
 		}
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Internal: Run auto-compaction with events.
 	 */
 	private async _runAutoCompaction(reason: "overflow" | "threshold", willRetry: boolean): Promise<void> {
+=======
+	private async _continueAgentAfterCurrentRun(): Promise<boolean> {
+		await this.agent.waitForIdle();
+		try {
+			await this.agent.continue();
+			return true;
+		} catch (error) {
+			if (error instanceof Error) {
+				return false;
+			}
+			throw error;
+		}
+	}
+
+	/**
+	 * Internal: Run auto-compaction with events.
+	 */
+	private async _runAutoCompaction(reason: "overflow" | "threshold", willRetry: boolean): Promise<boolean> {
+		const finishCompactionWork = this._sessionWorkBarrier.begin();
+>>>>>>> upstream/main
 		this._emit({ type: "compaction_start", reason });
 		this._autoCompactionAbortController = new AbortController();
 
@@ -2281,7 +2645,11 @@ export class AgentSession {
 					aborted: false,
 					willRetry: false,
 				});
+<<<<<<< HEAD
 				return;
+=======
+				return false;
+>>>>>>> upstream/main
 			}
 
 			const authResult = await this._modelRegistry.getApiKeyAndHeaders(this.model);
@@ -2294,7 +2662,11 @@ export class AgentSession {
 					aborted: false,
 					willRetry: false,
 				});
+<<<<<<< HEAD
 				return;
+=======
+				return false;
+>>>>>>> upstream/main
 			}
 
 			const preparation = prepareCompaction(
@@ -2310,13 +2682,21 @@ export class AgentSession {
 					aborted: false,
 					willRetry: false,
 				});
+<<<<<<< HEAD
 				return;
+=======
+				return false;
+>>>>>>> upstream/main
 			}
 
 			const execution = await this._executeCompaction({ reason, willRetry });
 			if (!execution.accepted) {
 				if (reason === "overflow") this._overflowRecoveryAttempted = false;
+<<<<<<< HEAD
 				return;
+=======
+				return false;
+>>>>>>> upstream/main
 			}
 
 			if (willRetry) {
@@ -2327,6 +2707,7 @@ export class AgentSession {
 					this._incrementMessageRevision();
 				}
 
+<<<<<<< HEAD
 				setTimeout(() => {
 					this.agent.continue().catch(() => {});
 				}, 100);
@@ -2337,6 +2718,16 @@ export class AgentSession {
 					this.agent.continue().catch(() => {});
 				}, 100);
 			}
+=======
+				return await this._continueAgentAfterCurrentRun();
+			} else if (this.pendingMessageCount > 0) {
+				return await this._continueAgentAfterCurrentRun();
+			} else if (this.agent.hasQueuedMessages()) {
+				return await this._continueAgentAfterCurrentRun();
+			}
+
+			return false;
+>>>>>>> upstream/main
 		} catch (error) {
 			if (reason === "overflow") this._overflowRecoveryAttempted = false;
 			const errorMessage = error instanceof Error ? error.message : "compaction failed";
@@ -2354,8 +2745,15 @@ export class AgentSession {
 						? `Context overflow recovery failed: ${errorMessage}`
 						: `Auto-compaction failed: ${errorMessage}`,
 			});
+<<<<<<< HEAD
 		} finally {
 			this._autoCompactionAbortController = undefined;
+=======
+			return false;
+		} finally {
+			this._autoCompactionAbortController = undefined;
+			finishCompactionWork();
+>>>>>>> upstream/main
 		}
 	}
 
@@ -2375,9 +2773,21 @@ export class AgentSession {
 		if (bindings.uiContext !== undefined) {
 			this._extensionUIContext = bindings.uiContext;
 		}
+<<<<<<< HEAD
 		if (bindings.commandContextActions !== undefined) {
 			this._extensionCommandContextActions = bindings.commandContextActions;
 		}
+=======
+		if (bindings.mode !== undefined) {
+			this._extensionMode = bindings.mode;
+		}
+		if (bindings.commandContextActions !== undefined) {
+			this._extensionCommandContextActions = bindings.commandContextActions;
+		}
+		if (bindings.abortHandler !== undefined) {
+			this._extensionAbortHandler = bindings.abortHandler;
+		}
+>>>>>>> upstream/main
 		if (bindings.shutdownHandler !== undefined) {
 			this._extensionShutdownHandler = bindings.shutdownHandler;
 		}
@@ -2444,7 +2854,11 @@ export class AgentSession {
 	}
 
 	private _applyExtensionBindings(runner: ExtensionRunner): void {
+<<<<<<< HEAD
 		runner.setUIContext(this._extensionUIContext);
+=======
+		runner.setUIContext(this._extensionUIContext, this._extensionMode);
+>>>>>>> upstream/main
 		runner.setToolHookLifecycleObserver((event) => {
 			this._emit(event);
 		});
@@ -2546,7 +2960,17 @@ export class AgentSession {
 				getServiceTier: () => this.serviceTier,
 				isIdle: () => !this.isStreaming,
 				getSignal: () => this.agent.signal,
+<<<<<<< HEAD
 				abort: () => this.abort(),
+=======
+				abort: () => {
+					if (this._extensionAbortHandler) {
+						this._extensionAbortHandler();
+						return;
+					}
+					void this.abort();
+				},
+>>>>>>> upstream/main
 				hasPendingMessages: () => this.pendingMessageCount > 0,
 				shutdown: () => {
 					this._extensionShutdownHandler?.();
@@ -2597,6 +3021,10 @@ export class AgentSession {
 				getMessageRevision: () => this.getMessageRevision(),
 				applyCompaction: (precomputed, options) => this.applyCompaction(precomputed, options),
 				getSystemPrompt: () => this.systemPrompt,
+<<<<<<< HEAD
+=======
+				getSystemPromptOptions: () => this._baseSystemPromptOptions,
+>>>>>>> upstream/main
 			},
 			{
 				registerProvider: (name, config) => {
@@ -2615,7 +3043,13 @@ export class AgentSession {
 		const previousRegistryNames = new Set(this._toolRegistry.keys());
 		const previousActiveToolNames = this.getActiveToolNames();
 		const allowedToolNames = this._allowedToolNames;
+<<<<<<< HEAD
 		const isAllowedTool = (name: string): boolean => !allowedToolNames || allowedToolNames.has(name);
+=======
+		const excludedToolNames = this._excludedToolNames;
+		const isAllowedTool = (name: string): boolean =>
+			(!allowedToolNames || allowedToolNames.has(name)) && !excludedToolNames?.has(name);
+>>>>>>> upstream/main
 
 		const registeredTools = this._extensionRunner.getAllRegisteredTools();
 		const allCustomTools = [
@@ -2795,6 +3229,15 @@ export class AgentSession {
 	// Auto-Retry
 	// =========================================================================
 
+<<<<<<< HEAD
+=======
+	private _isNonRetryableProviderLimitError(errorMessage: string): boolean {
+		return /GoUsageLimitError|FreeUsageLimitError|Monthly usage limit reached|available balance|insufficient_quota|out of budget|quota exceeded|billing/i.test(
+			errorMessage,
+		);
+	}
+
+>>>>>>> upstream/main
 	/**
 	 * Check if an error is retryable (overloaded, rate limit, server errors).
 	 * Context overflow errors are NOT retryable (handled by compaction instead).
@@ -2812,6 +3255,10 @@ export class AgentSession {
 		}
 		if (message.stopReason !== "error") return false;
 
+<<<<<<< HEAD
+=======
+		if (this._isNonRetryableProviderLimitError(err)) return false;
+>>>>>>> upstream/main
 		// Match: overloaded_error, provider returned error, rate limit, 429, 500, 502, 503, 504, service unavailable, network/connection errors (including connection lost), WebSocket transport closes/errors, fetch failed, premature stream endings, HTTP/2 closed before response, terminated, retry delay exceeded
 		return /overloaded|provider.?returned.?error|rate.?limit|too many requests|429|500|502|503|504|service.?unavailable|server.?error|internal.?error|network.?error|connection.?error|connection.?refused|connection.?lost|websocket.?closed|websocket.?error|other side closed|fetch failed|upstream.?connect|reset before headers|socket hang up|ended without|stream ended before message_stop|http2 request did not get a response|timed? out|timeout|terminated|retry delay/i.test(
 			err,
@@ -3220,6 +3667,10 @@ export class AgentSession {
 					customInstructions,
 					replaceInstructions,
 					reserveTokens: branchSummarySettings.reserveTokens,
+<<<<<<< HEAD
+=======
+					streamFn: this.agent.streamFn,
+>>>>>>> upstream/main
 				});
 				if (result.aborted) {
 					return { cancelled: true, aborted: true };
@@ -3469,8 +3920,14 @@ export class AgentSession {
 	 * @returns The resolved output file path.
 	 */
 	exportToJsonl(outputPath?: string): string {
+<<<<<<< HEAD
 		const filePath = resolve(
 			expandTildePath(outputPath ?? `session-${new Date().toISOString().replace(/[:.]/g, "-")}.jsonl`),
+=======
+		const filePath = resolvePath(
+			outputPath ?? `session-${new Date().toISOString().replace(/[:.]/g, "-")}.jsonl`,
+			process.cwd(),
+>>>>>>> upstream/main
 		);
 		const dir = dirname(filePath);
 		if (!existsSync(dir)) {

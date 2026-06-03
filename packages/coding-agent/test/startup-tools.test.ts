@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { resolveStartupToolPaths } from "../src/modes/interactive/startup-tools.js";
+=======
+import { resolveStartupToolPaths } from "../src/modes/interactive/startup-tools.ts";
+>>>>>>> upstream/main
 
 describe("startup tool resolution", () => {
 	it("uses only already-available fd during interactive startup", () => {

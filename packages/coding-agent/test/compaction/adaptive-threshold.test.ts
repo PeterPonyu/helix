@@ -2,7 +2,11 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { registerFauxProvider } from "@earendil-works/pi-ai";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { DEFAULT_COMPACTION_SETTINGS } from "../../src/core/compaction/index.js";
+=======
+import { DEFAULT_COMPACTION_SETTINGS } from "../../src/core/compaction/index.ts";
+>>>>>>> upstream/main
 import {
 	computeAdaptiveThresholdRatio,
 	computeEffectiveKeepRecentTokens,
@@ -10,8 +14,13 @@ import {
 	isAtHardLimit,
 	SPECULATIVE_FRACTION,
 	shouldStartSpeculativeCompaction,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/compaction/policy.js";
 import { migrateSessionEntries, parseSessionEntries, type SessionEntry } from "../../src/core/session-manager.js";
+=======
+} from "../../src/core/extensions/builtin/compaction/policy.ts";
+import { migrateSessionEntries, parseSessionEntries, type SessionEntry } from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 const HIGH_YIELD_SAVED_TOKENS = 9000;
 const LOW_YIELD_SAVED_TOKENS = 500;

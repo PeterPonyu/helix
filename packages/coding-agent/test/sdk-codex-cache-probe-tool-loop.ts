@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env tsx
+=======
+#!/usr/bin/env node
+>>>>>>> upstream/main
 /**
  * Manual SDK probe for OpenAI Codex prompt caching through the tool loop.
  *
@@ -24,6 +28,7 @@ import {
 import {
 	getOpenAICodexWebSocketDebugStats,
 	streamSimpleOpenAICodexResponses,
+<<<<<<< HEAD
 } from "../../ai/src/providers/openai-codex-responses.js";
 import { AuthStorage } from "../src/core/auth-storage.js";
 import { createExtensionRuntime } from "../src/core/extensions/loader.js";
@@ -33,6 +38,17 @@ import type { ResourceLoader } from "../src/core/resource-loader.js";
 import { createAgentSession } from "../src/core/sdk.js";
 import { SessionManager } from "../src/core/session-manager.js";
 import { SettingsManager } from "../src/core/settings-manager.js";
+=======
+} from "../../ai/src/providers/openai-codex-responses.ts";
+import { AuthStorage } from "../src/core/auth-storage.ts";
+import { createExtensionRuntime } from "../src/core/extensions/loader.ts";
+import type { ToolDefinition } from "../src/core/extensions/types.ts";
+import { ModelRegistry } from "../src/core/model-registry.ts";
+import type { ResourceLoader } from "../src/core/resource-loader.ts";
+import { createAgentSession } from "../src/core/sdk.ts";
+import { SessionManager } from "../src/core/session-manager.ts";
+import { SettingsManager } from "../src/core/settings-manager.ts";
+>>>>>>> upstream/main
 
 type Transport = "sse" | "websocket" | "websocket-cached" | "auto";
 
@@ -123,7 +139,11 @@ function parseArgs(argv: string[]): Args {
 }
 
 function printHelp(): void {
+<<<<<<< HEAD
 	console.log(`Usage: npx tsx test/sdk-codex-cache-probe-tool-loop.ts [options]
+=======
+	console.log(`Usage: node test/sdk-codex-cache-probe-tool-loop.ts [options]
+>>>>>>> upstream/main
 
 Options:
   --turns <n>         Number of turns to run. Must be between ${MIN_TURNS} and ${MAX_TURNS}. Default: ${DEFAULT_TURNS}

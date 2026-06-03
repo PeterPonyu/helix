@@ -5,7 +5,11 @@ import {
 	BASH_MAX_TIMEOUT_SECONDS,
 	buildBashTimeoutPrompt,
 	resolveBashTimeoutDefaults,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/bash-timeout/timeout.js";
+=======
+} from "../../src/core/extensions/builtin/bash-timeout/timeout.ts";
+>>>>>>> upstream/main
 
 describe("resolveBashTimeoutDefaults", () => {
 	it("returns built-in defaults when env vars are absent", () => {

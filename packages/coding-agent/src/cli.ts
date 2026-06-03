@@ -5,6 +5,7 @@
  *
  * Test with: npx tsx src/cli-new.ts [args...]
  */
+<<<<<<< HEAD
 import * as undici from "undici";
 import { APP_NAME } from "./config.js";
 import { main } from "./main.js";
@@ -24,4 +25,18 @@ undici.setGlobalDispatcher(new undici.EnvHttpProxyAgent({ allowH2: false, bodyTi
 // dispatcher without decompressing them, causing response.json() failures.
 undici.install?.();
 
+=======
+import { APP_NAME } from "./config.ts";
+import { configureHttpDispatcher } from "./core/http-dispatcher.ts";
+import { main } from "./main.ts";
+
+process.title = APP_NAME;
+process.env.PI_CODING_AGENT = "true";
+process.emitWarning = (() => {}) as typeof process.emitWarning;
+
+// Configure undici's global dispatcher before provider SDKs issue requests.
+// Runtime settings are applied once SettingsManager has loaded global/project settings.
+configureHttpDispatcher();
+
+>>>>>>> upstream/main
 main(process.argv.slice(2));

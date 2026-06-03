@@ -1,8 +1,14 @@
 import { Container } from "@earendil-works/pi-tui";
 import { beforeAll, describe, expect, test, vi } from "vitest";
+<<<<<<< HEAD
 import { CompactionSummaryMessageComponent } from "../src/modes/interactive/components/compaction-summary-message.js";
 import { InteractiveMode } from "../src/modes/interactive/interactive-mode.js";
 import { initTheme } from "../src/modes/interactive/theme/theme.js";
+=======
+import { CompactionSummaryMessageComponent } from "../src/modes/interactive/components/compaction-summary-message.ts";
+import { InteractiveMode } from "../src/modes/interactive/interactive-mode.ts";
+import { initTheme } from "../src/modes/interactive/theme/theme.ts";
+>>>>>>> upstream/main
 
 function stripAnsi(value: string): string {
 	return value.replace(/\u001b\[[0-9;]*m/g, "");
@@ -154,7 +160,11 @@ describe("InteractiveMode compaction events", () => {
 			tokensBefore: 1234,
 			timestamp: Date.now(),
 			details: {
+<<<<<<< HEAD
 				schema: "helix.compaction.openai-remote.v1",
+=======
+				schema: "senpi.compaction.openai-remote.v1",
+>>>>>>> upstream/main
 				mode: "openai-remote",
 				provider: "openai",
 				api: "openai-responses",

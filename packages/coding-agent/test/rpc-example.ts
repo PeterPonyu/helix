@@ -1,7 +1,11 @@
 import { dirname, join } from "node:path";
 import * as readline from "node:readline";
 import { fileURLToPath } from "node:url";
+<<<<<<< HEAD
 import { RpcClient } from "../src/modes/rpc/rpc-client.js";
+=======
+import { RpcClient } from "../src/modes/rpc/rpc-client.ts";
+>>>>>>> upstream/main
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

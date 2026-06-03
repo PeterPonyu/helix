@@ -1,17 +1,32 @@
+<<<<<<< HEAD
 import type { Settings, SettingsManager } from "../../../settings-manager.js";
 import { fromConfig, merge } from "./config.js";
 import { loadApproved } from "./storage.js";
 import type { PermissionConfig, Ruleset } from "./types.js";
+=======
+import type { Settings, SettingsManager } from "../../../settings-manager.ts";
+import { fromConfig, merge } from "./config.ts";
+import { loadApproved } from "./storage.ts";
+import type { PermissionConfig, Ruleset } from "./types.ts";
+>>>>>>> upstream/main
 
 /**
  * Load permission settings from global and project settings.json files.
  *
  * Merge order (highest precedence last):
+<<<<<<< HEAD
  *   1. Global settings (~/.helix/agent/settings.json)
  *   2. Project settings (.helix/settings.json)
  *   3. CLI override (passed directly to this function)
  *
  * Runtime approvals are stored separately in .helix/permissions-approved.jsonl
+=======
+ *   1. Global settings (~/.senpi/agent/settings.json)
+ *   2. Project settings (.senpi/settings.json)
+ *   3. CLI override (passed directly to this function)
+ *
+ * Runtime approvals are stored separately in .senpi/permissions-approved.jsonl
+>>>>>>> upstream/main
  * and loaded via loadApproved() from storage.ts.
  */
 export function loadPermissionSettings(

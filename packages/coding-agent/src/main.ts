@@ -5,11 +5,15 @@
  * createAgentSession() options. The SDK does the heavy lifting.
  */
 
+<<<<<<< HEAD
 import { resolve } from "node:path";
+=======
+>>>>>>> upstream/main
 import { createInterface } from "node:readline";
 import { type ImageContent, modelsAreEqual } from "@earendil-works/pi-ai";
 import { ProcessTerminal, setKeybindings, TUI } from "@earendil-works/pi-tui";
 import chalk from "chalk";
+<<<<<<< HEAD
 import { type Args, type Mode, parseArgs, printHelp } from "./cli/args.js";
 import { processFileArguments } from "./cli/file-processor.js";
 import { buildInitialMessage } from "./cli/initial-message.js";
@@ -17,10 +21,20 @@ import { listModels } from "./cli/list-models.js";
 import { selectSession } from "./cli/session-picker.js";
 import { ENV_SESSION_DIR, expandTildePath, getAgentDir, getPackageDir, VERSION } from "./config.js";
 import { type CreateAgentSessionRuntimeFactory, createAgentSessionRuntime } from "./core/agent-session-runtime.js";
+=======
+import { type Args, type Mode, parseArgs, printHelp } from "./cli/args.ts";
+import { processFileArguments } from "./cli/file-processor.ts";
+import { buildInitialMessage } from "./cli/initial-message.ts";
+import { listModels } from "./cli/list-models.ts";
+import { selectSession } from "./cli/session-picker.ts";
+import { ENV_SESSION_DIR, expandTildePath, getAgentDir, getPackageDir, VERSION } from "./config.ts";
+import { type CreateAgentSessionRuntimeFactory, createAgentSessionRuntime } from "./core/agent-session-runtime.ts";
+>>>>>>> upstream/main
 import {
 	type AgentSessionRuntimeDiagnostic,
 	createAgentSessionFromServices,
 	createAgentSessionServices,
+<<<<<<< HEAD
 } from "./core/agent-session-services.js";
 import { formatNoModelsAvailableMessage } from "./core/auth-guidance.js";
 import { AuthStorage } from "./core/auth-storage.js";
@@ -28,19 +42,36 @@ import { exportFromFile } from "./core/export-html/index.js";
 import type { ExtensionFactory } from "./core/extensions/types.js";
 import { KeybindingsManager } from "./core/keybindings.js";
 import type { ModelRegistry } from "./core/model-registry.js";
+=======
+} from "./core/agent-session-services.ts";
+import { formatNoModelsAvailableMessage } from "./core/auth-guidance.ts";
+import { AuthStorage } from "./core/auth-storage.ts";
+import { exportFromFile } from "./core/export-html/index.ts";
+import type { ExtensionFactory } from "./core/extensions/types.ts";
+import { configureHttpDispatcher } from "./core/http-dispatcher.ts";
+import { KeybindingsManager } from "./core/keybindings.ts";
+import type { ModelRegistry } from "./core/model-registry.ts";
+>>>>>>> upstream/main
 import {
 	getModelNarrowingPatterns,
 	resolveCliModel,
 	resolveModelScope,
 	type ScopedModel,
+<<<<<<< HEAD
 } from "./core/model-resolver.js";
 import { restoreStdout, takeOverStdout } from "./core/output-guard.js";
 import type { CreateAgentSessionOptions } from "./core/sdk.js";
+=======
+} from "./core/model-resolver.ts";
+import { restoreStdout, takeOverStdout } from "./core/output-guard.ts";
+import type { CreateAgentSessionOptions } from "./core/sdk.ts";
+>>>>>>> upstream/main
 import {
 	formatMissingSessionCwdPrompt,
 	getMissingSessionCwdIssue,
 	MissingSessionCwdError,
 	type SessionCwdIssue,
+<<<<<<< HEAD
 } from "./core/session-cwd.js";
 import { SessionManager } from "./core/session-manager.js";
 import { SettingsManager } from "./core/settings-manager.js";
@@ -53,6 +84,19 @@ import { runNeoMode } from "./modes/neo-mode.js";
 import { handleConfigCommand, handlePackageCommand } from "./package-manager-cli.js";
 import { isLocalPath } from "./utils/paths.js";
 import { cleanupWindowsSelfUpdateQuarantine } from "./utils/windows-self-update.js";
+=======
+} from "./core/session-cwd.ts";
+import { assertValidSessionId, SessionManager } from "./core/session-manager.ts";
+import { SettingsManager } from "./core/settings-manager.ts";
+import { printTimings, resetTimings, time } from "./core/timings.ts";
+import { runMigrations, showDeprecationWarnings } from "./migrations.ts";
+import { InteractiveMode, runPrintMode, runRpcMode } from "./modes/index.ts";
+import { ExtensionSelectorComponent } from "./modes/interactive/components/extension-selector.ts";
+import { initTheme, stopThemeWatcher } from "./modes/interactive/theme/theme.ts";
+import { handleConfigCommand, handlePackageCommand } from "./package-manager-cli.ts";
+import { isLocalPath, normalizePath, resolvePath } from "./utils/paths.ts";
+import { cleanupWindowsSelfUpdateQuarantine } from "./utils/windows-self-update.ts";
+>>>>>>> upstream/main
 
 /**
  * Read all content from piped stdin.
@@ -151,6 +195,7 @@ type ResolvedSession =
  * Resolve a session argument to a file path.
  * If it looks like a path, use as-is. Otherwise try to match as session ID prefix.
  */
+<<<<<<< HEAD
 async function resolveSessionPath(sessionArg: string, cwd: string, sessionDir?: string): Promise<ResolvedSession> {
 	// If it looks like a file path, use as-is
 	if (sessionArg.includes("/") || sessionArg.includes("\\") || sessionArg.endsWith(".jsonl")) {
@@ -192,6 +237,68 @@ async function promptConfirm(message: string): Promise<boolean> {
 	});
 }
 
+=======
+async function findLocalSessionByExactId(
+	sessionId: string,
+	cwd: string,
+	sessionDir?: string,
+): Promise<{ type: "local"; path: string } | undefined> {
+	const localSessions = await SessionManager.list(cwd, sessionDir);
+	const localMatch = localSessions.find((s) => s.id === sessionId);
+	if (localMatch) {
+		return { type: "local", path: localMatch.path };
+	}
+	if (!sessionDir) {
+		return undefined;
+	}
+
+	const customDirMatch = (await SessionManager.listAll(sessionDir)).find((s) => s.id === sessionId);
+	return customDirMatch ? { type: "local", path: customDirMatch.path } : undefined;
+}
+
+async function resolveSessionPath(sessionArg: string, cwd: string, sessionDir?: string): Promise<ResolvedSession> {
+	// If it looks like a file path, resolve it before handing it to the session manager.
+	if (sessionArg.includes("/") || sessionArg.includes("\\") || sessionArg.endsWith(".jsonl")) {
+		return { type: "path", path: resolvePath(sessionArg, cwd) };
+	}
+
+	// Try to match as session ID in current project first
+	const localSessions = await SessionManager.list(cwd, sessionDir);
+	const localMatch =
+		localSessions.find((s) => s.id === sessionArg) ?? localSessions.find((s) => s.id.startsWith(sessionArg));
+
+	if (localMatch) {
+		return { type: "local", path: localMatch.path };
+	}
+
+	// Try global search across all projects
+	const allSessions = await SessionManager.listAll(sessionDir);
+	const globalMatch =
+		allSessions.find((s) => s.id === sessionArg) ?? allSessions.find((s) => s.id.startsWith(sessionArg));
+
+	if (globalMatch) {
+		return { type: "global", path: globalMatch.path, cwd: globalMatch.cwd };
+	}
+
+	// Not found anywhere
+	return { type: "not_found", arg: sessionArg };
+}
+
+/** Prompt user for yes/no confirmation */
+async function promptConfirm(message: string): Promise<boolean> {
+	return new Promise((resolve) => {
+		const rl = createInterface({
+			input: process.stdin,
+			output: process.stdout,
+		});
+		rl.question(`${message} [y/N] `, (answer) => {
+			rl.close();
+			resolve(answer.toLowerCase() === "y" || answer.toLowerCase() === "yes");
+		});
+	});
+}
+
+>>>>>>> upstream/main
 function validateForkFlags(parsed: Args): void {
 	if (!parsed.fork) return;
 
@@ -208,9 +315,29 @@ function validateForkFlags(parsed: Args): void {
 	}
 }
 
+<<<<<<< HEAD
 function forkSessionOrExit(sourcePath: string, cwd: string, sessionDir?: string): SessionManager {
 	try {
 		return SessionManager.forkFrom(sourcePath, cwd, sessionDir);
+=======
+function validateSessionIdFlags(parsed: Args): void {
+	if (parsed.sessionId === undefined) return;
+
+	const conflictingFlags = [
+		parsed.session ? "--session" : undefined,
+		parsed.continue ? "--continue" : undefined,
+		parsed.resume ? "--resume" : undefined,
+		parsed.noSession ? "--no-session" : undefined,
+	].filter((flag): flag is string => flag !== undefined);
+
+	if (conflictingFlags.length > 0) {
+		console.error(chalk.red(`Error: --session-id cannot be combined with ${conflictingFlags.join(", ")}`));
+		process.exit(1);
+	}
+
+	try {
+		assertValidSessionId(parsed.sessionId);
+>>>>>>> upstream/main
 	} catch (error: unknown) {
 		const message = error instanceof Error ? error.message : String(error);
 		console.error(chalk.red(`Error: ${message}`));
@@ -218,12 +345,26 @@ function forkSessionOrExit(sourcePath: string, cwd: string, sessionDir?: string)
 	}
 }
 
+<<<<<<< HEAD
+=======
+function forkSessionOrExit(sourcePath: string, cwd: string, sessionDir?: string, sessionId?: string): SessionManager {
+	try {
+		return SessionManager.forkFrom(sourcePath, cwd, sessionDir, { id: sessionId });
+	} catch (error: unknown) {
+		const message = error instanceof Error ? error.message : String(error);
+		console.error(chalk.red(`Error: ${message}`));
+		process.exit(1);
+	}
+}
+
+>>>>>>> upstream/main
 async function createSessionManager(
 	parsed: Args,
 	cwd: string,
 	sessionDir: string | undefined,
 	settingsManager: SettingsManager,
 ): Promise<SessionManager> {
+<<<<<<< HEAD
 	if (parsed.noSession) {
 		return SessionManager.inMemory();
 	}
@@ -240,9 +381,39 @@ async function createSessionManager(
 			case "not_found":
 				console.error(chalk.red(`No session found matching '${resolved.arg}'`));
 				process.exit(1);
+=======
+	if (parsed.noSession || parsed.help || parsed.listModels !== undefined) {
+		return SessionManager.inMemory(cwd);
+	}
+
+	if (parsed.fork) {
+		if (parsed.sessionId) {
+			const existingTarget = await findLocalSessionByExactId(parsed.sessionId, cwd, sessionDir);
+			if (existingTarget) {
+				console.error(chalk.red(`Session already exists with id '${parsed.sessionId}'`));
+				process.exit(1);
+			}
+>>>>>>> upstream/main
 		}
 	}
 
+<<<<<<< HEAD
+=======
+		const resolved = await resolveSessionPath(parsed.fork, cwd, sessionDir);
+
+		switch (resolved.type) {
+			case "path":
+			case "local":
+			case "global":
+				return forkSessionOrExit(resolved.path, cwd, sessionDir, parsed.sessionId);
+
+			case "not_found":
+				console.error(chalk.red(`No session found matching '${resolved.arg}'`));
+				process.exit(1);
+		}
+	}
+
+>>>>>>> upstream/main
 	if (parsed.session) {
 		const resolved = await resolveSessionPath(parsed.session, cwd, sessionDir);
 
@@ -272,7 +443,11 @@ async function createSessionManager(
 		try {
 			const selectedPath = await selectSession(
 				(onProgress) => SessionManager.list(cwd, sessionDir, onProgress),
+<<<<<<< HEAD
 				SessionManager.listAll,
+=======
+				(onProgress) => SessionManager.listAll(sessionDir, onProgress),
+>>>>>>> upstream/main
 			);
 			if (!selectedPath) {
 				console.log(chalk.dim("No session selected"));
@@ -288,6 +463,7 @@ async function createSessionManager(
 		return SessionManager.continueRecent(cwd, sessionDir);
 	}
 
+<<<<<<< HEAD
 	return SessionManager.create(cwd, sessionDir);
 }
 
@@ -339,6 +515,66 @@ function buildSessionOptions(
 		const savedModel = savedProvider && savedModelId ? modelRegistry.find(savedProvider, savedModelId) : undefined;
 		const savedInScope = savedModel ? scopedModels.find((sm) => modelsAreEqual(sm.model, savedModel)) : undefined;
 
+=======
+	if (parsed.sessionId) {
+		const existingSession = await findLocalSessionByExactId(parsed.sessionId, cwd, sessionDir);
+		if (existingSession) {
+			return SessionManager.open(existingSession.path, sessionDir);
+		}
+	}
+
+	return SessionManager.create(cwd, sessionDir, { id: parsed.sessionId });
+}
+
+function buildSessionOptions(
+	parsed: Args,
+	scopedModels: ScopedModel[],
+	hasExistingSession: boolean,
+	modelRegistry: ModelRegistry,
+	settingsManager: SettingsManager,
+): {
+	options: CreateAgentSessionOptions;
+	cliThinkingFromModel: boolean;
+	diagnostics: AgentSessionRuntimeDiagnostic[];
+} {
+	const options: CreateAgentSessionOptions = {};
+	const diagnostics: AgentSessionRuntimeDiagnostic[] = [];
+	let cliThinkingFromModel = false;
+
+	// Model from CLI
+	// - supports --provider <name> --model <pattern>
+	// - supports --model <provider>/<pattern>
+	if (parsed.model) {
+		const resolved = resolveCliModel({
+			cliProvider: parsed.provider,
+			cliModel: parsed.model,
+			modelRegistry,
+		});
+		if (resolved.warning) {
+			diagnostics.push({ type: "warning", message: resolved.warning });
+		}
+		if (resolved.error) {
+			diagnostics.push({ type: "error", message: resolved.error });
+		}
+		if (resolved.model) {
+			options.model = resolved.model;
+			// Allow "--model <pattern>:<thinking>" as a shorthand.
+			// Explicit --thinking still takes precedence (applied later).
+			if (!parsed.thinking && resolved.thinkingLevel) {
+				options.thinkingLevel = resolved.thinkingLevel;
+				cliThinkingFromModel = true;
+			}
+		}
+	}
+
+	if (!options.model && scopedModels.length > 0 && !hasExistingSession) {
+		// Check if saved default is in scoped models - use it if so, otherwise first scoped model
+		const savedProvider = settingsManager.getDefaultProvider();
+		const savedModelId = settingsManager.getDefaultModel();
+		const savedModel = savedProvider && savedModelId ? modelRegistry.find(savedProvider, savedModelId) : undefined;
+		const savedInScope = savedModel ? scopedModels.find((sm) => modelsAreEqual(sm.model, savedModel)) : undefined;
+
+>>>>>>> upstream/main
 		if (savedInScope) {
 			options.model = savedInScope.model;
 			// Use thinking level from scoped model config if explicitly set
@@ -382,12 +618,22 @@ function buildSessionOptions(
 	if (parsed.tools) {
 		options.tools = [...parsed.tools];
 	}
+<<<<<<< HEAD
+=======
+	if (parsed.excludeTools) {
+		options.excludeTools = [...parsed.excludeTools];
+	}
+>>>>>>> upstream/main
 
 	return { options, cliThinkingFromModel, diagnostics };
 }
 
 function resolveCliPaths(cwd: string, paths: string[] | undefined): string[] | undefined {
+<<<<<<< HEAD
 	return paths?.map((value) => (isLocalPath(value) ? resolve(cwd, value) : value));
+=======
+	return paths?.map((value) => (isLocalPath(value) ? resolvePath(value, cwd) : value));
+>>>>>>> upstream/main
 }
 
 async function promptForMissingSessionCwd(
@@ -465,13 +711,17 @@ export async function main(args: string[], options?: MainOptions) {
 		takeOverStdout();
 	}
 
+<<<<<<< HEAD
 	// `--version` always wins so `helix --neo --version` still prints the
 	// version and exits without launching the Rust binary.
+=======
+>>>>>>> upstream/main
 	if (parsed.version) {
 		console.log(VERSION);
 		process.exit(0);
 	}
 
+<<<<<<< HEAD
 	// --neo: hand the TTY off to the native Rust ratatui binary and exit
 	// with its status. We do this before runtime/session/auth setup so the
 	// binary boots fast and owns the terminal cleanly.
@@ -485,6 +735,8 @@ export async function main(args: string[], options?: MainOptions) {
 		process.exit(code);
 	}
 
+=======
+>>>>>>> upstream/main
 	if (parsed.export) {
 		let result: string;
 		try {
@@ -506,6 +758,10 @@ export async function main(args: string[], options?: MainOptions) {
 	}
 
 	validateForkFlags(parsed);
+<<<<<<< HEAD
+=======
+	validateSessionIdFlags(parsed);
+>>>>>>> upstream/main
 
 	// Run migrations (pass cwd for project-local migrations)
 	const { migratedAuthProviders: migratedProviders, deprecationWarnings } = runMigrations(process.cwd());
@@ -523,7 +779,11 @@ export async function main(args: string[], options?: MainOptions) {
 	// sessionDir lookup during session selection.
 	const envSessionDir = process.env[ENV_SESSION_DIR];
 	const sessionDir =
+<<<<<<< HEAD
 		parsed.sessionDir ??
+=======
+		(parsed.sessionDir ? normalizePath(parsed.sessionDir) : undefined) ??
+>>>>>>> upstream/main
 		(envSessionDir ? expandTildePath(envSessionDir) : undefined) ??
 		startupSettingsManager.getSessionDir();
 	let sessionManager = await createSessionManager(parsed, cwd, sessionDir, startupSettingsManager);
@@ -540,6 +800,17 @@ export async function main(args: string[], options?: MainOptions) {
 			process.exit(1);
 		}
 	}
+<<<<<<< HEAD
+=======
+	if (parsed.name !== undefined) {
+		const name = parsed.name.trim();
+		if (!name) {
+			console.error(chalk.red("Error: --name requires a non-empty value"));
+			process.exit(1);
+		}
+		sessionManager.appendSessionInfo(name);
+	}
+>>>>>>> upstream/main
 	time("createSessionManager");
 
 	const resolvedExtensionPaths = resolveCliPaths(cwd, parsed.extensions);
@@ -621,6 +892,10 @@ export async function main(args: string[], options?: MainOptions) {
 			scopedModels: sessionOptions.scopedModels,
 			favoriteModels,
 			tools: sessionOptions.tools,
+<<<<<<< HEAD
+=======
+			excludeTools: sessionOptions.excludeTools,
+>>>>>>> upstream/main
 			noTools: sessionOptions.noTools,
 			customTools: sessionOptions.customTools,
 		});
@@ -641,8 +916,15 @@ export async function main(args: string[], options?: MainOptions) {
 		agentDir,
 		sessionManager,
 	});
+<<<<<<< HEAD
 	const { services, session, modelFallbackMessage } = runtime;
 	const { settingsManager, modelRegistry, resourceLoader } = services;
+=======
+	time("createAgentSessionRuntime");
+	const { services, session, modelFallbackMessage } = runtime;
+	const { settingsManager, modelRegistry, resourceLoader } = services;
+	configureHttpDispatcher(settingsManager.getHttpIdleTimeoutMs());
+>>>>>>> upstream/main
 
 	if (parsed.help) {
 		const extensionFlags = resourceLoader

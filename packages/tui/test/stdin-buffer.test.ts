@@ -7,7 +7,11 @@
 
 import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
+<<<<<<< HEAD
 import { StdinBuffer } from "../src/stdin-buffer.js";
+=======
+import { StdinBuffer } from "../src/stdin-buffer.ts";
+>>>>>>> upstream/main
 
 describe("StdinBuffer", () => {
 	let buffer: StdinBuffer;

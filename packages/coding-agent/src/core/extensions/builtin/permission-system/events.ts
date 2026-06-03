@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../../types.js";
 import type { PermissionDecision, Request } from "./types.js";
+=======
+import type { ExtensionAPI } from "../../types.ts";
+import type { PermissionDecision, Request } from "./types.ts";
+>>>>>>> upstream/main
 
 /**
  * Event type for when a permission is asked.

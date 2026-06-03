@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { formatSkillsForSystemPrompt } from "../../src/harness/system-prompt.js";
+=======
+import { formatSkillsForSystemPrompt } from "../../src/harness/system-prompt.ts";
+>>>>>>> upstream/main
 
 const visibleSkill = {
 	name: "visible",

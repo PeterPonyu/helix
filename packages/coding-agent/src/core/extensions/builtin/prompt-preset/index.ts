@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import type { BuildDynamicSystemPromptOptions } from "../../../dynamic-prompt/build.js";
 import { SettingsManager } from "../../../settings-manager.js";
 import type { ExtensionAPI, ExtensionContext, ModelSelectEvent } from "../../types.js";
 import { resolvePreset, resolvePresetName } from "./presets.js";
 import { loadPromptPresetSettings } from "./settings.js";
+=======
+import type { BuildDynamicSystemPromptOptions } from "../../../dynamic-prompt/build.ts";
+import { SettingsManager } from "../../../settings-manager.ts";
+import type { ExtensionAPI, ExtensionContext, ModelSelectEvent } from "../../types.ts";
+import { resolvePreset, resolvePresetName } from "./presets.ts";
+import { loadPromptPresetSettings } from "./settings.ts";
+>>>>>>> upstream/main
 
 interface SystemPromptOptionsLike {
 	cwd?: string;
@@ -35,9 +43,15 @@ function getSettings(ctx: ExtensionContext): ReturnType<typeof loadPromptPresetS
 function getPresetName(ctx: ExtensionContext, event?: Pick<ModelSelectEvent, "model">): string {
 	const model = event?.model ?? ctx.model;
 	if (!model) {
+<<<<<<< HEAD
 		return "fallback (helix-current)";
 	}
 	return resolvePresetName(model, getSettings(ctx)) ?? "fallback (helix-current)";
+=======
+		return "fallback (senpi-current)";
+	}
+	return resolvePresetName(model, getSettings(ctx)) ?? "fallback (senpi-current)";
+>>>>>>> upstream/main
 }
 
 function refreshHeader(ctx: ExtensionContext, event?: Pick<ModelSelectEvent, "model">): void {
@@ -72,7 +86,11 @@ export default function promptPresetExtension(pi: ExtensionAPI): void {
 		const preset = resolvePreset(event.model, getSettings(ctx), eventOptionsToBuilderInput(event, ctx));
 		return {
 			systemPrompt: preset?.prompt ?? null,
+<<<<<<< HEAD
 			systemPromptName: preset?.name ?? "fallback (helix-current)",
+=======
+			systemPromptName: preset?.name ?? "fallback (senpi-current)",
+>>>>>>> upstream/main
 		};
 	});
 }

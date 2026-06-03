@@ -1,15 +1,26 @@
 import type { Model } from "@earendil-works/pi-ai";
 import { completeSimple } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { AgentMessage } from "../../types.js";
+=======
+import type { AgentMessage } from "../../types.ts";
+>>>>>>> upstream/main
 import {
 	convertToLlm,
 	createBranchSummaryMessage,
 	createCompactionSummaryMessage,
 	createCustomMessage,
+<<<<<<< HEAD
 } from "../messages.js";
 import type { BranchSummaryResult, Session, SessionTreeEntry } from "../types.js";
 import { BranchSummaryError, err, ok, type Result, SessionError } from "../types.js";
 import { estimateTokens, SUMMARIZATION_SYSTEM_PROMPT } from "./compaction.js";
+=======
+} from "../messages.ts";
+import type { BranchSummaryResult, Session, SessionTreeEntry } from "../types.ts";
+import { BranchSummaryError, err, ok, type Result, SessionError } from "../types.ts";
+import { estimateTokens, SUMMARIZATION_SYSTEM_PROMPT } from "./compaction.ts";
+>>>>>>> upstream/main
 import {
 	computeFileLists,
 	createFileOps,
@@ -17,7 +28,11 @@ import {
 	type FileOperations,
 	formatFileOperations,
 	serializeConversation,
+<<<<<<< HEAD
 } from "./utils.js";
+=======
+} from "./utils.ts";
+>>>>>>> upstream/main
 
 /** File-operation details stored on generated branch summary entries. */
 export interface BranchSummaryDetails {
@@ -27,7 +42,11 @@ export interface BranchSummaryDetails {
 	modifiedFiles: string[];
 }
 
+<<<<<<< HEAD
 export type { FileOperations } from "./utils.js";
+=======
+export type { FileOperations } from "./utils.ts";
+>>>>>>> upstream/main
 
 /** Prepared branch content for summarization. */
 export interface BranchPreparation {
@@ -112,6 +131,10 @@ function getMessageFromEntry(entry: SessionTreeEntry): AgentMessage | undefined 
 			return createCompactionSummaryMessage(entry.summary, entry.tokensBefore, entry.timestamp);
 		case "thinking_level_change":
 		case "model_change":
+<<<<<<< HEAD
+=======
+		case "active_tools_change":
+>>>>>>> upstream/main
 		case "custom":
 		case "label":
 		case "session_info":

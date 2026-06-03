@@ -7,13 +7,21 @@ import {
 	findTodoEntries,
 	restoreTodosIfMissing,
 	type TodoEntry,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/compaction/todo-bridge.js";
+=======
+} from "../../src/core/extensions/builtin/compaction/todo-bridge.ts";
+>>>>>>> upstream/main
 import {
 	type CustomEntry,
 	migrateSessionEntries,
 	parseSessionEntries,
 	type SessionEntry,
+<<<<<<< HEAD
 } from "../../src/core/session-manager.js";
+=======
+} from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 const TODO_SNAPSHOT_CUSTOM_TYPE = "compaction.todo-snapshot";
 

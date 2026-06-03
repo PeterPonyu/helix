@@ -1,7 +1,11 @@
 /**
  * DOOM Overlay Demo - Play DOOM as an overlay
  *
+<<<<<<< HEAD
  * Usage: helix --extension ./examples/extensions/doom-overlay
+=======
+ * Usage: senpi --extension ./examples/extensions/doom-overlay
+>>>>>>> upstream/main
  *
  * Commands:
  *   /doom-overlay - Play DOOM in an overlay (Q to pause/exit)
@@ -9,10 +13,17 @@
  * This demonstrates that overlays can handle real-time game rendering at 35 FPS.
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
 import { DoomOverlayComponent } from "./doom-component.js";
 import { DoomEngine } from "./doom-engine.js";
 import { ensureWadFile } from "./wad-finder.js";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { DoomOverlayComponent } from "./doom-component.ts";
+import { DoomEngine } from "./doom-engine.ts";
+import { ensureWadFile } from "./wad-finder.ts";
+>>>>>>> upstream/main
 
 // Persistent engine instance - survives between invocations
 let activeEngine: DoomEngine | null = null;
@@ -23,7 +34,11 @@ export default function (pi: ExtensionAPI) {
 		description: "Play DOOM as an overlay. Q to pause and exit.",
 
 		handler: async (args, ctx) => {
+<<<<<<< HEAD
 			if (!ctx.hasUI) {
+=======
+			if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 				ctx.ui.notify("DOOM requires interactive mode", "error");
 				return;
 			}

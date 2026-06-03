@@ -4,7 +4,11 @@ import { describe, expect, it } from "vitest";
 import {
 	APPLY_PATCH_FREEFORM_DESCRIPTION,
 	APPLY_PATCH_LARK_GRAMMAR,
+<<<<<<< HEAD
 } from "../../../src/core/extensions/builtin/gpt-apply-patch/index.js";
+=======
+} from "../../../src/core/extensions/builtin/gpt-apply-patch/index.ts";
+>>>>>>> upstream/main
 
 type CodexApplyPatchGolden = {
 	description: string;

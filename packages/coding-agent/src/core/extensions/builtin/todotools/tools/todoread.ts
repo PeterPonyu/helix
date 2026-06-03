@@ -1,7 +1,12 @@
 import { Text } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../../../types.js";
 import { getTodoResultLines, type TodoItem, type TodoWriteDetails } from "../state.js";
+=======
+import type { ExtensionAPI } from "../../../types.ts";
+import { getTodoResultLines, type TodoItem, type TodoWriteDetails } from "../state.ts";
+>>>>>>> upstream/main
 
 const TodoReadParams = Type.Object({});
 

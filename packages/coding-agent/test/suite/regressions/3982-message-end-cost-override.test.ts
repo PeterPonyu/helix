@@ -1,6 +1,10 @@
 import { fauxAssistantMessage } from "@earendil-works/pi-ai";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { createHarness, type Harness } from "../harness.js";
+=======
+import { createHarness, type Harness } from "../harness.ts";
+>>>>>>> upstream/main
 
 describe("regression #3982: message_end cost override", () => {
 	const harnesses: Harness[] = [];

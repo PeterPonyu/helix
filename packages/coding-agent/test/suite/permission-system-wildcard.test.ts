@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { Wildcard } from "../../src/core/extensions/builtin/permission-system/wildcard.js";
+=======
+import { Wildcard } from "../../src/core/extensions/builtin/permission-system/wildcard.ts";
+>>>>>>> upstream/main
 
 describe("permission-system wildcard matching", () => {
 	it("matches exact strings", () => {

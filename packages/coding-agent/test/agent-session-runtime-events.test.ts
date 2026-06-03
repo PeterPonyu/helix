@@ -8,16 +8,26 @@ import {
 	createAgentSessionFromServices,
 	createAgentSessionRuntime,
 	createAgentSessionServices,
+<<<<<<< HEAD
 } from "../src/core/agent-session-runtime.js";
 import { AuthStorage } from "../src/core/auth-storage.js";
 import { SessionManager } from "../src/core/session-manager.js";
+=======
+} from "../src/core/agent-session-runtime.ts";
+import { AuthStorage } from "../src/core/auth-storage.ts";
+import { SessionManager } from "../src/core/session-manager.ts";
+>>>>>>> upstream/main
 import type {
 	ExtensionFactory,
 	SessionBeforeForkEvent,
 	SessionBeforeSwitchEvent,
 	SessionShutdownEvent,
 	SessionStartEvent,
+<<<<<<< HEAD
 } from "../src/index.js";
+=======
+} from "../src/index.ts";
+>>>>>>> upstream/main
 
 type RecordedSessionEvent =
 	| SessionBeforeSwitchEvent

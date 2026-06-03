@@ -11,7 +11,11 @@ import {
 	getAgentDir,
 	type PromptTemplate,
 	SessionManager,
+<<<<<<< HEAD
 } from "@helix-bio/helix";
+=======
+} from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 // Define custom templates
 const deployTemplate: PromptTemplate = {
@@ -36,7 +40,11 @@ const loader = new DefaultResourceLoader({
 });
 await loader.reload();
 
+<<<<<<< HEAD
 // Discover templates from cwd/.helix/prompts/ and ~/.helix/agent/prompts/
+=======
+// Discover templates from cwd/.senpi/prompts/ and ~/.senpi/agent/prompts/
+>>>>>>> upstream/main
 const discovered = loader.getPrompts().prompts;
 console.log("Discovered prompt templates:");
 for (const template of discovered) {

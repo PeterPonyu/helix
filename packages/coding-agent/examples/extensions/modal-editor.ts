@@ -1,7 +1,11 @@
 /**
  * Modal Editor - vim-like modal editing example
  *
+<<<<<<< HEAD
  * Usage: helix --extension ./examples/extensions/modal-editor.ts
+=======
+ * Usage: senpi --extension ./examples/extensions/modal-editor.ts
+>>>>>>> upstream/main
  *
  * - Escape: insert → normal mode (in normal mode, aborts agent)
  * - i: normal → insert mode
@@ -9,8 +13,13 @@
  * - ctrl+c, ctrl+d, etc. work in both modes
  */
 
+<<<<<<< HEAD
 import { matchesKey, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 import { CustomEditor, type ExtensionAPI } from "@helix-bio/helix";
+=======
+import { CustomEditor, type ExtensionAPI } from "@code-yeongyu/senpi";
+import { matchesKey, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 
 // Normal mode key mappings: key -> escape sequence (or null for mode switch)
 const NORMAL_KEYS: Record<string, string | null> = {

@@ -19,7 +19,7 @@ Use `/login` in interactive mode, then select a provider:
 - Claude Pro/Max
 - GitHub Copilot
 
-Use `/logout` to clear credentials. Tokens are stored in `~/.helix/agent/auth.json` and auto-refresh when expired.
+Use `/logout` to clear credentials. Tokens are stored in `~/.senpi/agent/auth.json` and auto-refresh when expired.
 
 ### OpenAI Codex
 
@@ -52,6 +52,7 @@ pi
 | Azure OpenAI Responses | `AZURE_OPENAI_API_KEY` | `azure-openai-responses` |
 | OpenAI | `OPENAI_API_KEY` | `openai` |
 | DeepSeek | `DEEPSEEK_API_KEY` | `deepseek` |
+| NVIDIA NIM | `NVIDIA_API_KEY` | `nvidia` |
 | Google Gemini | `GEMINI_API_KEY` | `google` |
 | Mistral | `MISTRAL_API_KEY` | `mistral` |
 | Groq | `GROQ_API_KEY` | `groq` |
@@ -79,13 +80,14 @@ Reference for environment variables and `auth.json` keys: [`const envMap`](https
 
 #### Auth File
 
-Store credentials in `~/.helix/agent/auth.json`:
+Store credentials in `~/.senpi/agent/auth.json`:
 
 ```json
 {
   "anthropic": { "type": "api_key", "key": "sk-ant-..." },
   "openai": { "type": "api_key", "key": "sk-..." },
   "deepseek": { "type": "api_key", "key": "sk-..." },
+  "nvidia": { "type": "api_key", "key": "nvapi-..." },
   "google": { "type": "api_key", "key": "..." },
   "opencode": { "type": "api_key", "key": "..." },
   "opencode-go": { "type": "api_key", "key": "..." },
@@ -101,23 +103,31 @@ The file is created with `0600` permissions (user read/write only). Auth file cr
 
 ### Key Resolution
 
-The `key` field supports three formats:
+The `key` field supports command execution, environment interpolation, and literals:
 
-- **Shell command:** `"!command"` executes and uses stdout (cached for process lifetime)
+- **Shell command:** `"!command"` at the start executes the whole value as a command and uses stdout (cached for process lifetime)
   ```json
   { "type": "api_key", "key": "!security find-generic-password -ws 'anthropic'" }
   { "type": "api_key", "key": "!op read 'op://vault/item/credential'" }
   ```
-- **Environment variable:** Uses the value of the named variable
+- **Environment interpolation:** `"$ENV_VAR"` or `"${ENV_VAR}"` uses the value of the named variable. Interpolation works inside larger literals.
   ```json
-  { "type": "api_key", "key": "MY_ANTHROPIC_KEY" }
+  { "type": "api_key", "key": "$MY_ANTHROPIC_KEY" }
+  { "type": "api_key", "key": "${KEY_PREFIX}_${KEY_SUFFIX}" }
+  ```
+  `$FOO_BAR` is the variable `FOO_BAR`; use `${FOO}_BAR` when `BAR` is literal text. Missing environment variables make the value unresolved.
+- **Escapes:** `"$$"` emits a literal `"$"`; `"$!"` emits a literal `"!"` without triggering command execution.
+  ```json
+  { "type": "api_key", "key": "$$literal-dollar-prefix" }
+  { "type": "api_key", "key": "$!literal-bang-prefix" }
   ```
 - **Literal value:** Used directly
   ```json
   { "type": "api_key", "key": "sk-ant-..." }
+  { "type": "api_key", "key": "public" }
   ```
 
-OAuth credentials are also stored here after `/login` and managed automatically.
+Legacy uppercase env-var-like values such as `MY_API_KEY` are migrated to `$MY_API_KEY` on startup. OAuth credentials are also stored here after `/login` and managed automatically.
 
 ## Cloud Providers
 

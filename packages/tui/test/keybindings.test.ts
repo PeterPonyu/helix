@@ -1,6 +1,10 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
+<<<<<<< HEAD
 import { KeybindingsManager, TUI_KEYBINDINGS } from "../src/keybindings.js";
+=======
+import { KeybindingsManager, TUI_KEYBINDINGS } from "../src/keybindings.ts";
+>>>>>>> upstream/main
 
 describe("KeybindingsManager", () => {
 	it("does not evict selector confirm when input submit is rebound", () => {

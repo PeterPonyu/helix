@@ -1,9 +1,17 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "fs";
+<<<<<<< HEAD
 import { homedir } from "os";
 import { basename, dirname, isAbsolute, join, resolve, sep } from "path";
 import { CONFIG_DIR_NAME } from "../config.js";
 import { parseFrontmatter } from "../utils/frontmatter.js";
 import { createSyntheticSourceInfo, type SourceInfo } from "./source-info.js";
+=======
+import { basename, dirname, join, resolve, sep } from "path";
+import { CONFIG_DIR_NAME } from "../config.ts";
+import { parseFrontmatter } from "../utils/frontmatter.ts";
+import { resolvePath } from "../utils/paths.ts";
+import { createSyntheticSourceInfo, type SourceInfo } from "./source-info.ts";
+>>>>>>> upstream/main
 
 /**
  * Represents a prompt template loaded from a markdown file
@@ -185,6 +193,7 @@ export interface LoadPromptTemplatesOptions {
 	includeDefaults: boolean;
 }
 
+<<<<<<< HEAD
 function normalizePath(input: string): string {
 	const trimmed = input.trim();
 	if (trimmed === "~") return homedir();
@@ -198,6 +207,8 @@ function resolvePromptPath(p: string, cwd: string): string {
 	return isAbsolute(normalized) ? normalized : resolve(cwd, normalized);
 }
 
+=======
+>>>>>>> upstream/main
 /**
  * Load all prompt templates from:
  * 1. Global: agentDir/prompts/
@@ -205,14 +216,23 @@ function resolvePromptPath(p: string, cwd: string): string {
  * 3. Explicit prompt paths
  */
 export function loadPromptTemplates(options: LoadPromptTemplatesOptions): PromptTemplate[] {
+<<<<<<< HEAD
 	const resolvedCwd = options.cwd;
 	const resolvedAgentDir = options.agentDir;
+=======
+	const resolvedCwd = resolvePath(options.cwd);
+	const resolvedAgentDir = resolvePath(options.agentDir);
+>>>>>>> upstream/main
 	const promptPaths = options.promptPaths;
 	const includeDefaults = options.includeDefaults;
 
 	const templates: PromptTemplate[] = [];
 
+<<<<<<< HEAD
 	const globalPromptsDir = options.agentDir ? join(options.agentDir, "prompts") : resolvedAgentDir;
+=======
+	const globalPromptsDir = join(resolvedAgentDir, "prompts");
+>>>>>>> upstream/main
 	const projectPromptsDir = resolve(resolvedCwd, CONFIG_DIR_NAME, "prompts");
 
 	const isUnderPath = (target: string, root: string): boolean => {
@@ -252,7 +272,11 @@ export function loadPromptTemplates(options: LoadPromptTemplatesOptions): Prompt
 
 	// 3. Load explicit prompt paths
 	for (const rawPath of promptPaths) {
+<<<<<<< HEAD
 		const resolvedPath = resolvePromptPath(rawPath, resolvedCwd);
+=======
+		const resolvedPath = resolvePath(rawPath, resolvedCwd, { trim: true });
+>>>>>>> upstream/main
 		if (!existsSync(resolvedPath)) {
 			continue;
 		}

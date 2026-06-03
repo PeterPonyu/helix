@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { ImageContent, TextContent, Tool } from "../types.js";
+=======
+import type { ImageContent, TextContent, Tool } from "../types.ts";
+>>>>>>> upstream/main
 
 /**
  * Supported tool call formats for models that don't natively support tool calling.

@@ -2,7 +2,11 @@ import { spawn } from "child_process";
 import { readdirSync, statSync } from "fs";
 import { homedir } from "os";
 import { basename, dirname, join } from "path";
+<<<<<<< HEAD
 import { fuzzyFilter } from "./fuzzy.js";
+=======
+import { getSlashCommandSuggestions } from "./slash-command-autocomplete.ts";
+>>>>>>> upstream/main
 
 const PATH_DELIMITERS = new Set([" ", "\t", '"', "'", "="]);
 
@@ -307,6 +311,7 @@ export class CombinedAutocompleteProvider implements AutocompleteProvider {
 
 			if (spaceIndex === -1) {
 				const prefix = textBeforeCursor.slice(1);
+<<<<<<< HEAD
 				const commandItems = this.commands.map((cmd) => {
 					const name = "name" in cmd ? cmd.name : cmd.value;
 					const hint = "argumentHint" in cmd && cmd.argumentHint ? cmd.argumentHint : undefined;
@@ -324,6 +329,9 @@ export class CombinedAutocompleteProvider implements AutocompleteProvider {
 					label: item.label,
 					...(item.description && { description: item.description }),
 				}));
+=======
+				const filtered = getSlashCommandSuggestions(this.commands, prefix);
+>>>>>>> upstream/main
 
 				if (filtered.length === 0) return null;
 

@@ -1,5 +1,9 @@
 import fs from "fs";
+<<<<<<< HEAD
 import { initTheme, theme } from "../src/modes/interactive/theme/theme.js";
+=======
+import { initTheme, theme } from "../src/modes/interactive/theme/theme.ts";
+>>>>>>> upstream/main
 
 // --- Color utilities ---
 

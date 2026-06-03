@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { type BedrockOptions, streamBedrock } from "../src/providers/amazon-bedrock.js";
 import type { AssistantMessage, Context, Model } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { type BedrockOptions, streamBedrock } from "../src/providers/amazon-bedrock.ts";
+import type { AssistantMessage, Context, Model } from "../src/types.ts";
+import { hasBedrockCredentials } from "./bedrock-utils.ts";
+>>>>>>> upstream/main
 
 interface BedrockThinkingPayload {
 	messages?: Array<{ role?: string; content?: Array<Record<string, unknown>> }>;
@@ -71,12 +78,21 @@ async function capturePayload(
 }
 
 describe("Bedrock thinking payload", () => {
+<<<<<<< HEAD
 	it("uses adaptive thinking for Claude Opus 4.7 when reasoning is enabled", async () => {
 		const baseModel = getModel("amazon-bedrock", "global.anthropic.claude-opus-4-6-v1");
 		const model: Model<"bedrock-converse-stream"> = {
 			...baseModel,
 			id: "global.anthropic.claude-opus-4-7-v1",
 			name: "Claude Opus 4.7 (Global)",
+=======
+	it("uses adaptive thinking for Claude Opus 4.8 when reasoning is enabled", async () => {
+		const baseModel = getModel("amazon-bedrock", "global.anthropic.claude-opus-4-6-v1");
+		const model: Model<"bedrock-converse-stream"> = {
+			...baseModel,
+			id: "global.anthropic.claude-opus-4-8-v1",
+			name: "Claude Opus 4.8 (Global)",
+>>>>>>> upstream/main
 		};
 
 		const payload = await capturePayload(model);
@@ -86,12 +102,21 @@ describe("Bedrock thinking payload", () => {
 		expect(payload.additionalModelRequestFields?.anthropic_beta).toBeUndefined();
 	});
 
+<<<<<<< HEAD
 	it("maps xhigh reasoning to effort=xhigh for Claude Opus 4.7", async () => {
 		const baseModel = getModel("amazon-bedrock", "global.anthropic.claude-opus-4-6-v1");
 		const model: Model<"bedrock-converse-stream"> = {
 			...baseModel,
 			id: "global.anthropic.claude-opus-4-7-v1",
 			name: "Claude Opus 4.7 (Global)",
+=======
+	it("maps xhigh reasoning to effort=xhigh for Claude Opus 4.8", async () => {
+		const baseModel = getModel("amazon-bedrock", "global.anthropic.claude-opus-4-6-v1");
+		const model: Model<"bedrock-converse-stream"> = {
+			...baseModel,
+			id: "global.anthropic.claude-opus-4-8-v1",
+			name: "Claude Opus 4.8 (Global)",
+>>>>>>> upstream/main
 		};
 
 		const payload = await capturePayload(model, { reasoning: "xhigh" });
@@ -119,8 +144,13 @@ describe("Bedrock thinking payload", () => {
 		const baseModel = getModel("amazon-bedrock", "global.anthropic.claude-opus-4-6-v1");
 		const model: Model<"bedrock-converse-stream"> = {
 			...baseModel,
+<<<<<<< HEAD
 			id: "global.anthropic.claude-opus-4-7-v1",
 			name: "Claude Opus 4.7 (Global)",
+=======
+			id: "global.anthropic.claude-opus-4-8-v1",
+			name: "Claude Opus 4.8 (Global)",
+>>>>>>> upstream/main
 		};
 
 		const payload = await capturePayload(model, { region: "us-gov-west-1" });
@@ -169,6 +199,42 @@ describe("Bedrock thinking payload", () => {
 	});
 });
 
+<<<<<<< HEAD
+=======
+describe.skipIf(!hasBedrockCredentials())("Bedrock Claude max tokens E2E", () => {
+	it(
+		"uses the model maxTokens cap instead of Bedrock's 4096-token default for adaptive Claude models",
+		{ retry: 2, timeout: 180000 },
+		async () => {
+			const baseModel = getModel("amazon-bedrock", "global.anthropic.claude-sonnet-4-6");
+			const model: Model<"bedrock-converse-stream"> = {
+				...baseModel,
+				maxTokens: 6000,
+			};
+
+			const response = await streamBedrock(
+				model,
+				{
+					systemPrompt: "You are a deterministic text generator. Follow the requested output format exactly.",
+					messages: [
+						{
+							role: "user",
+							content:
+								"Output exactly 5200 repetitions of the token alpha, separated by single spaces. Do not number them. Do not use markdown. Do not add any other text.",
+							timestamp: Date.now(),
+						},
+					],
+				},
+				{ reasoning: "low" },
+			).result();
+
+			expect(response.stopReason, response.errorMessage).not.toBe("error");
+			expect(response.usage.output).toBeGreaterThan(4096);
+		},
+	);
+});
+
+>>>>>>> upstream/main
 describe("Application inference profile support", () => {
 	it("uses adaptive thinking when model.name contains the model name but ARN does not", async () => {
 		const baseModel = getModel("amazon-bedrock", "global.anthropic.claude-opus-4-6-v1");

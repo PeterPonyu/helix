@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { truncateHead, truncateTail } from "../../src/harness/utils/truncate.js";
+=======
+import { truncateHead, truncateTail } from "../../src/harness/utils/truncate.ts";
+>>>>>>> upstream/main
 
 const encoder = new TextEncoder();
 

@@ -136,7 +136,11 @@ async function main() {
 	// Root shim refresh lives in a separate script.
 	const wrapperResult = spawnSync(
 		process.execPath,
+<<<<<<< HEAD
 		[join(root, "scripts/create-root-helix-wrapper.mjs")],
+=======
+		[join(root, "scripts/create-root-senpi-wrapper.mjs")],
+>>>>>>> upstream/main
 		{ cwd: root, stdio: "inherit", env: cleanEnv(), shell: false },
 	);
 	if (wrapperResult.status !== 0) process.exit(wrapperResult.status ?? 1);

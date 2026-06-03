@@ -5,7 +5,11 @@ import {
 	MERGED_COMPACTION_PROMPT_TURN_PREFIX,
 	MERGED_COMPACTION_PROMPT_UPDATE,
 	MERGED_COMPACTION_PROMPT_USER,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/compaction/prompts.js";
+=======
+} from "../../src/core/extensions/builtin/compaction/prompts.ts";
+>>>>>>> upstream/main
 
 // ============================================================================
 // Per-section presence

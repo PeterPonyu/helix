@@ -5,7 +5,11 @@
  * When forking, offers to restore code to that point in history.
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	const checkpoints = new Map<string, string>();

@@ -5,12 +5,20 @@
  * that lists all available slash commands in the current session.
  *
  * Usage:
+<<<<<<< HEAD
  * 1. Copy this file to ~/.helix/agent/extensions/ or your project's .helix/extensions/
+=======
+ * 1. Copy this file to ~/.senpi/agent/extensions/ or your project's .senpi/extensions/
+>>>>>>> upstream/main
  * 2. Use /commands to see available commands
  * 3. Use /commands extensions to filter by source
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI, SlashCommandInfo } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, SlashCommandInfo } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function commandsExtension(pi: ExtensionAPI) {
 	pi.registerCommand("commands", {

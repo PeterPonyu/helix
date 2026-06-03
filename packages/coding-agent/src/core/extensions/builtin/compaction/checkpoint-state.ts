@@ -1,8 +1,15 @@
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
+<<<<<<< HEAD
 import type { ExtensionAPI, ExtensionContext } from "../../types.js";
 
 const CHECKPOINT_CUSTOM_TYPE = "compaction.agent-checkpoint";
 const CHECKPOINT_SCHEMA = "helix.compaction.agent-checkpoint.v1";
+=======
+import type { ExtensionAPI, ExtensionContext } from "../../types.ts";
+
+const CHECKPOINT_CUSTOM_TYPE = "compaction.agent-checkpoint";
+const CHECKPOINT_SCHEMA = "senpi.compaction.agent-checkpoint.v1";
+>>>>>>> upstream/main
 const RESTORATION_DIRECTIVE = "[restore checkpointed session agent configuration after compaction]";
 
 export interface AgentCheckpoint {

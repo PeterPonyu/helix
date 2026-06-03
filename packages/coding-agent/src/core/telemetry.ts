@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { SettingsManager } from "./settings-manager.js";
+=======
+import type { SettingsManager } from "./settings-manager.ts";
+>>>>>>> upstream/main
 
 function isTruthyEnvFlag(value: string | undefined): boolean {
 	if (!value) return false;

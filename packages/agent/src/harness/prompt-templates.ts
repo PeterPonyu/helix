@@ -1,5 +1,9 @@
 import { parse } from "yaml";
+<<<<<<< HEAD
 import { type ExecutionEnv, type FileInfo, type PromptTemplate, type Result, toError } from "./types.js";
+=======
+import { type ExecutionEnv, type FileInfo, type PromptTemplate, type Result, toError } from "./types.ts";
+>>>>>>> upstream/main
 
 export type PromptTemplateDiagnosticCode = "file_info_failed" | "list_failed" | "read_failed" | "parse_failed";
 

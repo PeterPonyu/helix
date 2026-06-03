@@ -1,9 +1,15 @@
 import assert from "node:assert";
 import { describe, it, test } from "node:test";
 import type { Terminal as XtermTerminalType } from "@xterm/headless";
+<<<<<<< HEAD
 import { deleteKittyImage, encodeKitty } from "../src/terminal-image.js";
 import { type Component, TUI } from "../src/tui.js";
 import { VirtualTerminal } from "./virtual-terminal.js";
+=======
+import { deleteKittyImage, encodeKitty } from "../src/terminal-image.ts";
+import { type Component, TUI } from "../src/tui.ts";
+import { VirtualTerminal } from "./virtual-terminal.ts";
+>>>>>>> upstream/main
 
 class TestComponent implements Component {
 	lines: string[] = [];

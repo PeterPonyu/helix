@@ -5,7 +5,11 @@ import {
 	createRestorationTrackerState,
 	preparePendingPayload,
 	trackToolCall,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/compaction/restoration-tracker.js";
+=======
+} from "../../src/core/extensions/builtin/compaction/restoration-tracker.ts";
+>>>>>>> upstream/main
 
 describe("post-compact restoration tracker", () => {
 	describe("Given file and skill tool calls were observed before compaction", () => {

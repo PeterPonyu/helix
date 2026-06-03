@@ -1,6 +1,7 @@
 import { Compile } from "typebox/compile";
 import type { TLocalizedValidationError } from "typebox/error";
 import { Value } from "typebox/value";
+<<<<<<< HEAD
 import type { Tool, ToolCall } from "../types.js";
 
 const validatorCache = new WeakMap<object, ReturnType<typeof Compile>>();
@@ -20,6 +21,27 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === "object" && value !== null;
 }
 
+=======
+import type { Tool, ToolCall } from "../types.ts";
+
+const validatorCache = new WeakMap<object, ReturnType<typeof Compile>>();
+const TYPEBOX_KIND = Symbol.for("TypeBox.Kind");
+
+interface JsonSchemaObject {
+	type?: string | string[];
+	properties?: Record<string, JsonSchemaObject>;
+	items?: JsonSchemaObject | JsonSchemaObject[];
+	additionalProperties?: boolean | JsonSchemaObject;
+	allOf?: JsonSchemaObject[];
+	anyOf?: JsonSchemaObject[];
+	oneOf?: JsonSchemaObject[];
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== null;
+}
+
+>>>>>>> upstream/main
 function isJsonSchemaObject(value: unknown): value is JsonSchemaObject {
 	return isRecord(value);
 }

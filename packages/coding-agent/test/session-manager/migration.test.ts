@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { type FileEntry, migrateSessionEntries } from "../../src/core/session-manager.js";
+=======
+import { type FileEntry, migrateSessionEntries } from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 describe("migrateSessionEntries", () => {
 	it("should add id/parentId to v1 entries", () => {

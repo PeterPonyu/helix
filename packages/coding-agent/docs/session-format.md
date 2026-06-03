@@ -5,16 +5,16 @@ Sessions are stored as JSONL (JSON Lines) files. Each line is a JSON object with
 ## File Location
 
 ```
-~/.helix/agent/sessions/--<path>--/<timestamp>_<uuid>.jsonl
+~/.senpi/agent/sessions/--<path>--/<timestamp>_<uuid>.jsonl
 ```
 
 Where `<path>` is the working directory with `/` replaced by `-`.
 
 ## Deleting Sessions
 
-Sessions can be removed by deleting their `.jsonl` files under `~/.helix/agent/sessions/`.
+Sessions can be removed by deleting their `.jsonl` files under `~/.senpi/agent/sessions/`.
 
-Pi also supports deleting sessions interactively from `/resume` (select a session and press `Ctrl+D`, then confirm). When available, helix uses the `trash` CLI to avoid permanent deletion.
+Pi also supports deleting sessions interactively from `/resume` (select a session and press `Ctrl+D`, then confirm). When available, senpi uses the `trash` CLI to avoid permanent deletion.
 
 ## Session Version
 
@@ -34,7 +34,7 @@ Source on GitHub ([pi-mono](https://github.com/earendil-works/pi-mono)):
 - [`packages/ai/src/types.ts`](https://github.com/earendil-works/pi-mono/blob/main/packages/ai/src/types.ts) - Base message types (UserMessage, AssistantMessage, ToolResultMessage)
 - [`packages/agent/src/types.ts`](https://github.com/earendil-works/pi-mono/blob/main/packages/agent/src/types.ts) - AgentMessage union type
 
-For TypeScript definitions in your project, inspect `node_modules/@helix-bio/helix/dist/` and `node_modules/@earendil-works/pi-ai/dist/`.
+For TypeScript definitions in your project, inspect `node_modules/@code-yeongyu/senpi/dist/` and `node_modules/@earendil-works/pi-ai/dist/`.
 
 ## Message Types
 
@@ -282,7 +282,7 @@ Set `label` to `undefined` to clear a label.
 
 ### SessionInfoEntry
 
-Session metadata (e.g., user-defined display name). Set via `/name` command or `pi.setSessionName()` in extensions.
+Session metadata (e.g., user-defined display name). Set via `/name`, `--name` / `-n`, or `pi.setSessionName()` in extensions.
 
 ```json
 {"type":"session_info","id":"k1l2m3n4","parentId":"j0k1l2m3","timestamp":"2024-12-03T14:35:00.000Z","name":"Refactor auth module"}

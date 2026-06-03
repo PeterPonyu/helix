@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../types.js";
+=======
+import type { ExtensionAPI } from "../types.ts";
+>>>>>>> upstream/main
 
 type AssistantMessageLike = {
 	role: "assistant";

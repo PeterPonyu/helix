@@ -3,7 +3,11 @@ import {
 	buildTestDisciplineSection,
 	buildVerificationSection,
 	TEST_DISCIPLINE_RULES,
+<<<<<<< HEAD
 } from "../../src/core/dynamic-prompt/verification.js";
+=======
+} from "../../src/core/dynamic-prompt/verification.ts";
+>>>>>>> upstream/main
 
 describe("prompt verification discipline", () => {
 	it("models requested test guidance as semantic rules instead of raw prompt snapshots", () => {

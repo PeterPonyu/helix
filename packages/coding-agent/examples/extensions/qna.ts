@@ -7,9 +7,15 @@
  * 3. Loads the result into the editor for user to fill in answers
  */
 
+<<<<<<< HEAD
 import { complete, type UserMessage } from "@earendil-works/pi-ai";
 import type { ExtensionAPI } from "@helix-bio/helix";
 import { BorderedLoader } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { BorderedLoader } from "@code-yeongyu/senpi";
+import { complete, type UserMessage } from "@earendil-works/pi-ai";
+>>>>>>> upstream/main
 
 const SYSTEM_PROMPT = `You are a question extractor. Given text from a conversation, extract any questions that need answering and format them for the user to fill in.
 
@@ -31,7 +37,11 @@ export default function (pi: ExtensionAPI) {
 	pi.registerCommand("qna", {
 		description: "Extract questions from last assistant message into editor",
 		handler: async (_args, ctx) => {
+<<<<<<< HEAD
 			if (!ctx.hasUI) {
+=======
+			if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 				ctx.ui.notify("qna requires interactive mode", "error");
 				return;
 			}

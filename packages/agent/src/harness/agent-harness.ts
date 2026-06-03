@@ -5,7 +5,11 @@ import {
 	streamSimple,
 	type UserMessage,
 } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import { runAgentLoop } from "../agent-loop.js";
+=======
+import { runAgentLoop } from "../agent-loop.ts";
+>>>>>>> upstream/main
 import type {
 	AgentContext,
 	AgentEvent,
@@ -15,12 +19,21 @@ import type {
 	QueueMode,
 	StreamFn,
 	ThinkingLevel,
+<<<<<<< HEAD
 } from "../types.js";
 import { collectEntriesForBranchSummary, generateBranchSummary } from "./compaction/branch-summarization.js";
 import { compact, DEFAULT_COMPACTION_SETTINGS, prepareCompaction } from "./compaction/compaction.js";
 import { convertToLlm } from "./messages.js";
 import { formatPromptTemplateInvocation } from "./prompt-templates.js";
 import { formatSkillInvocation } from "./skills.js";
+=======
+} from "../types.ts";
+import { collectEntriesForBranchSummary, generateBranchSummary } from "./compaction/branch-summarization.ts";
+import { compact, DEFAULT_COMPACTION_SETTINGS, prepareCompaction } from "./compaction/compaction.ts";
+import { convertToLlm } from "./messages.ts";
+import { formatPromptTemplateInvocation } from "./prompt-templates.ts";
+import { formatSkillInvocation } from "./skills.ts";
+>>>>>>> upstream/main
 import type {
 	AbortResult,
 	AgentHarnessEvent,
@@ -37,8 +50,13 @@ import type {
 	PromptTemplate,
 	Session,
 	Skill,
+<<<<<<< HEAD
 } from "./types.js";
 import { AgentHarnessError, BranchSummaryError, CompactionError, SessionError, toError } from "./types.js";
+=======
+} from "./types.ts";
+import { AgentHarnessError, BranchSummaryError, CompactionError, SessionError, toError } from "./types.ts";
+>>>>>>> upstream/main
 
 function createUserMessage(text: string, images?: ImageContent[]): UserMessage {
 	const content: Array<{ type: "text"; text: string } | ImageContent> = [{ type: "text", text }];
@@ -92,6 +110,19 @@ function hasOwn(object: object, key: PropertyKey): boolean {
 	return objectHasOwnProperty.call(object, key);
 }
 
+<<<<<<< HEAD
+=======
+function findDuplicateNames(names: string[]): string[] {
+	const seen = new Set<string>();
+	const duplicates = new Set<string>();
+	for (const name of names) {
+		if (seen.has(name)) duplicates.add(name);
+		seen.add(name);
+	}
+	return [...duplicates];
+}
+
+>>>>>>> upstream/main
 function applyStreamOptionsPatch(
 	base: AgentHarnessStreamOptions,
 	patch?: AgentHarnessStreamOptionsPatch,
@@ -200,12 +231,27 @@ export class AgentHarness<
 		this.streamOptions = cloneStreamOptions(options.streamOptions);
 		this.systemPrompt = options.systemPrompt;
 		this.getApiKeyAndHeaders = options.getApiKeyAndHeaders;
+<<<<<<< HEAD
+=======
+		this.validateUniqueNames(
+			(options.tools ?? []).map((tool) => tool.name),
+			"Duplicate tool name(s)",
+		);
+>>>>>>> upstream/main
 		for (const tool of options.tools ?? []) {
 			this.tools.set(tool.name, tool);
 		}
 		this.model = options.model;
 		this.thinkingLevel = options.thinkingLevel ?? "off";
+<<<<<<< HEAD
 		this.activeToolNames = options.activeToolNames ?? (options.tools ?? []).map((tool) => tool.name);
+=======
+		this.activeToolNames = options.activeToolNames
+			? [...options.activeToolNames]
+			: (options.tools ?? []).map((tool) => tool.name);
+		this.validateUniqueNames(this.activeToolNames, "Duplicate active tool name(s)");
+		this.validateToolNames(this.activeToolNames);
+>>>>>>> upstream/main
 		this.steeringQueueMode = options.steeringMode ?? "one-at-a-time";
 		this.followUpQueueMode = options.followUpMode ?? "one-at-a-time";
 	}
@@ -457,7 +503,18 @@ export class AgentHarness<
 		};
 	}
 
+<<<<<<< HEAD
 	private validateToolNames(toolNames: string[], tools: Map<string, TTool> = this.tools): void {
+=======
+	private validateUniqueNames(names: string[], message: string): void {
+		const duplicates = findDuplicateNames(names);
+		if (duplicates.length > 0)
+			throw new AgentHarnessError("invalid_argument", `${message}: ${duplicates.join(", ")}`);
+	}
+
+	private validateToolNames(toolNames: string[], tools: Map<string, TTool> = this.tools): void {
+		this.validateUniqueNames(toolNames, "Duplicate active tool name(s)");
+>>>>>>> upstream/main
 		const missing = toolNames.filter((name) => !tools.has(name));
 		if (missing.length > 0) throw new AgentHarnessError("invalid_argument", `Unknown tool(s): ${missing.join(", ")}`);
 	}
@@ -471,6 +528,11 @@ export class AgentHarness<
 				await this.session.appendModelChange(write.provider, write.modelId);
 			} else if (write.type === "thinking_level_change") {
 				await this.session.appendThinkingLevelChange(write.thinkingLevel);
+<<<<<<< HEAD
+=======
+			} else if (write.type === "active_tools_change") {
+				await this.session.appendActiveToolsChange(write.activeToolNames);
+>>>>>>> upstream/main
 			} else if (write.type === "custom") {
 				await this.session.appendCustomEntry(write.customType, write.data);
 			} else if (write.type === "custom_message") {
@@ -844,10 +906,13 @@ export class AgentHarness<
 		return this.model;
 	}
 
+<<<<<<< HEAD
 	getThinkingLevel(): ThinkingLevel {
 		return this.thinkingLevel;
 	}
 
+=======
+>>>>>>> upstream/main
 	async setModel(model: Model<any>): Promise<void> {
 		try {
 			const previousModel = this.model;
@@ -857,12 +922,23 @@ export class AgentHarness<
 				this.pendingSessionWrites.push({ type: "model_change", provider: model.provider, modelId: model.id });
 			}
 			this.model = model;
+<<<<<<< HEAD
 			await this.emitOwn({ type: "model_select", model, previousModel, source: "set" });
+=======
+			await this.emitOwn({ type: "model_update", model, previousModel, source: "set" });
+>>>>>>> upstream/main
 		} catch (error) {
 			throw normalizeHarnessError(error, "session");
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	getThinkingLevel(): ThinkingLevel {
+		return this.thinkingLevel;
+	}
+
+>>>>>>> upstream/main
 	async setThinkingLevel(level: ThinkingLevel): Promise<void> {
 		try {
 			const previousLevel = this.thinkingLevel;
@@ -872,16 +948,81 @@ export class AgentHarness<
 				this.pendingSessionWrites.push({ type: "thinking_level_change", thinkingLevel: level });
 			}
 			this.thinkingLevel = level;
+<<<<<<< HEAD
 			await this.emitOwn({ type: "thinking_level_select", level, previousLevel });
+=======
+			await this.emitOwn({ type: "thinking_level_update", level, previousLevel });
+>>>>>>> upstream/main
 		} catch (error) {
 			throw normalizeHarnessError(error, "session");
 		}
 	}
 
+<<<<<<< HEAD
 	async setActiveTools(toolNames: string[]): Promise<void> {
 		try {
 			this.validateToolNames(toolNames);
 			this.activeToolNames = [...toolNames];
+=======
+	getTools(): TTool[] {
+		return [...this.tools.values()];
+	}
+
+	async setTools(tools: TTool[], activeToolNames?: string[]): Promise<void> {
+		try {
+			this.validateUniqueNames(
+				tools.map((tool) => tool.name),
+				"Duplicate tool name(s)",
+			);
+			const nextTools = new Map(tools.map((tool) => [tool.name, tool]));
+			const nextActiveToolNames = activeToolNames ? [...activeToolNames] : this.activeToolNames;
+			this.validateToolNames(nextActiveToolNames, nextTools);
+			const previousToolNames = [...this.tools.keys()];
+			const previousActiveToolNames = [...this.activeToolNames];
+			if (this.phase === "idle") {
+				await this.session.appendActiveToolsChange(nextActiveToolNames);
+			} else {
+				this.pendingSessionWrites.push({ type: "active_tools_change", activeToolNames: [...nextActiveToolNames] });
+			}
+			this.tools = nextTools;
+			this.activeToolNames = [...nextActiveToolNames];
+			await this.emitOwn({
+				type: "tools_update",
+				toolNames: [...this.tools.keys()],
+				previousToolNames,
+				activeToolNames: [...this.activeToolNames],
+				previousActiveToolNames,
+				source: "set",
+			});
+		} catch (error) {
+			throw normalizeHarnessError(error, "invalid_argument");
+		}
+	}
+
+	getActiveTools(): TTool[] {
+		return this.activeToolNames.map((name) => this.tools.get(name)!);
+	}
+
+	async setActiveTools(toolNames: string[]): Promise<void> {
+		try {
+			this.validateToolNames(toolNames);
+			const previousToolNames = [...this.tools.keys()];
+			const previousActiveToolNames = [...this.activeToolNames];
+			if (this.phase === "idle") {
+				await this.session.appendActiveToolsChange(toolNames);
+			} else {
+				this.pendingSessionWrites.push({ type: "active_tools_change", activeToolNames: [...toolNames] });
+			}
+			this.activeToolNames = [...toolNames];
+			await this.emitOwn({
+				type: "tools_update",
+				toolNames: [...this.tools.keys()],
+				previousToolNames,
+				activeToolNames: [...this.activeToolNames],
+				previousActiveToolNames,
+				source: "set",
+			});
+>>>>>>> upstream/main
 		} catch (error) {
 			throw normalizeHarnessError(error, "invalid_argument");
 		}
@@ -927,6 +1068,7 @@ export class AgentHarness<
 		this.streamOptions = cloneStreamOptions(streamOptions);
 	}
 
+<<<<<<< HEAD
 	async setTools(tools: TTool[], activeToolNames?: string[]): Promise<void> {
 		try {
 			const nextTools = new Map(tools.map((tool) => [tool.name, tool]));
@@ -939,6 +1081,8 @@ export class AgentHarness<
 		}
 	}
 
+=======
+>>>>>>> upstream/main
 	async abort(): Promise<AbortResult> {
 		const clearedSteer = [...this.steerQueue];
 		const clearedFollowUp = [...this.followUpQueue];

@@ -1,13 +1,24 @@
 /**
+<<<<<<< HEAD
  * Syncs helix theme with macOS system appearance (dark/light mode).
  *
  * Usage:
  *   helix -e examples/extensions/mac-system-theme.ts
+=======
+ * Syncs senpi theme with macOS system appearance (dark/light mode).
+ *
+ * Usage:
+ *   senpi -e examples/extensions/mac-system-theme.ts
+>>>>>>> upstream/main
  */
 
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 const execAsync = promisify(exec);
 

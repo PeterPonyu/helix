@@ -4,7 +4,11 @@ import {
 	isLiveApiTestEnabled,
 	LOCAL_LLM_LIVE_TEST_FLAG,
 	OPENROUTER_LIVE_TEST_FLAG,
+<<<<<<< HEAD
 } from "./live-api-gates.js";
+=======
+} from "./live-api-gates.ts";
+>>>>>>> upstream/main
 
 describe("live API test gates", () => {
 	afterEach(() => {

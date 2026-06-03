@@ -1,8 +1,16 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import { Chalk } from "chalk";
+<<<<<<< HEAD
 import { TruncatedText } from "../src/components/truncated-text.js";
 import { visibleWidth } from "../src/utils.js";
+=======
+import { TruncatedText } from "../src/components/truncated-text.ts";
+import { visibleWidth } from "../src/utils.ts";
+
+// Force full color in CI so ANSI assertions are deterministic
+const chalk = new Chalk({ level: 3 });
+>>>>>>> upstream/main
 
 // Force full color in CI so ANSI assertions are deterministic
 const chalk = new Chalk({ level: 3 });

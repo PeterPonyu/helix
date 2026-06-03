@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { applyExifOrientation } from "./exif-orientation.js";
 import { loadPhoton } from "./photon.js";
+=======
+import { applyExifOrientation } from "./exif-orientation.ts";
+import { loadPhoton } from "./photon.ts";
+>>>>>>> upstream/main
 
 /**
  * Convert image to PNG format for terminal display.

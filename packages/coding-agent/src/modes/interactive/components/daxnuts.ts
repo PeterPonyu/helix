@@ -5,7 +5,11 @@
  */
 
 import type { Component, TUI } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { theme } from "../theme/theme.js";
+=======
+import { theme } from "../theme/theme.ts";
+>>>>>>> upstream/main
 
 // 32x32 RGB image of dax, hex encoded (3 bytes per pixel)
 const DAX_HEX =

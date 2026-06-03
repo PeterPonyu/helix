@@ -6,18 +6,33 @@ import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import { type Api, type KnownProvider, type Model, modelsAreEqual } from "@earendil-works/pi-ai";
 import chalk from "chalk";
 import { minimatch } from "minimatch";
+<<<<<<< HEAD
 import { isValidThinkingLevel } from "../cli/args.js";
 import { DEFAULT_THINKING_LEVEL } from "./defaults.js";
 import type { ServiceTier } from "./extensions/builtin/service-tier.js";
 import type { ModelRegistry } from "./model-registry.js";
+=======
+import { isValidThinkingLevel } from "../cli/args.ts";
+import { DEFAULT_THINKING_LEVEL } from "./defaults.ts";
+import type { ServiceTier } from "./extensions/builtin/service-tier.ts";
+import type { ModelRegistry } from "./model-registry.ts";
+>>>>>>> upstream/main
 
 /** Default model IDs for each known provider */
 export const defaultModelPerProvider: Record<KnownProvider, string> = {
 	"amazon-bedrock": "us.anthropic.claude-opus-4-6-v1",
+<<<<<<< HEAD
 	anthropic: "claude-opus-4-7",
 	openai: "gpt-5.4",
 	"azure-openai-responses": "gpt-5.4",
 	"openai-codex": "gpt-5.5",
+=======
+	anthropic: "claude-opus-4-8",
+	openai: "gpt-5.4",
+	"azure-openai-responses": "gpt-5.4",
+	"openai-codex": "gpt-5.5",
+	nvidia: "nvidia/nemotron-3-super-120b-a12b",
+>>>>>>> upstream/main
 	deepseek: "deepseek-v4-pro",
 	google: "gemini-3.1-pro-preview",
 	"google-vertex": "gemini-3.1-pro-preview",

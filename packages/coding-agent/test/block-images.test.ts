@@ -2,9 +2,15 @@ import { mkdirSync, rmSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { processFileArguments } from "../src/cli/file-processor.js";
 import { SettingsManager } from "../src/core/settings-manager.js";
 import { createReadTool } from "../src/core/tools/read.js";
+=======
+import { processFileArguments } from "../src/cli/file-processor.ts";
+import { SettingsManager } from "../src/core/settings-manager.ts";
+import { createReadTool } from "../src/core/tools/read.ts";
+>>>>>>> upstream/main
 
 // 1x1 red PNG image as base64 (smallest valid PNG)
 const TINY_PNG_BASE64 =

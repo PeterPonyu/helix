@@ -1,6 +1,10 @@
 import ignore from "ignore";
 import { parse } from "yaml";
+<<<<<<< HEAD
 import { type ExecutionEnv, type FileInfo, type Result, type Skill, toError } from "./types.js";
+=======
+import { type ExecutionEnv, type FileInfo, type Result, type Skill, toError } from "./types.ts";
+>>>>>>> upstream/main
 
 const MAX_NAME_LENGTH = 64;
 const MAX_DESCRIPTION_LENGTH = 1024;

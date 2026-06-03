@@ -4,7 +4,11 @@
  * Shows how to replace or modify the default system prompt.
  */
 
+<<<<<<< HEAD
 import { createAgentSession, DefaultResourceLoader, getAgentDir, SessionManager } from "@helix-bio/helix";
+=======
+import { createAgentSession, DefaultResourceLoader, getAgentDir, SessionManager } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 const cwd = process.cwd();
 const agentDir = getAgentDir();

@@ -8,11 +8,19 @@
  * are currently active, respecting whatever the user has configured.
  *
  * Usage:
+<<<<<<< HEAD
  * 1. Copy this file to ~/.helix/agent/extensions/ or your project's .helix/extensions/
  * 2. Use the extension — it automatically adapts to your active tools and skills
  */
 
 import type { BuildSystemPromptOptions, ExtensionAPI } from "@helix-bio/helix";
+=======
+ * 1. Copy this file to ~/.senpi/agent/extensions/ or your project's .senpi/extensions/
+ * 2. Use the extension — it automatically adapts to your active tools and skills
+ */
+
+import type { BuildSystemPromptOptions, ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 /**
  * Adds tool-specific guidance that adapts to the active tool set.

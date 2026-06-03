@@ -4,7 +4,11 @@
 
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
 import type { Message } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import { extractPatchedPaths } from "../extensions/builtin/gpt-apply-patch/index.js";
+=======
+import { extractPatchedPaths } from "../extensions/builtin/gpt-apply-patch/index.ts";
+>>>>>>> upstream/main
 
 // ============================================================================
 // File Operation Tracking

@@ -6,7 +6,10 @@ import type {
 	ChatCompletionContentPartText,
 	ChatCompletionCreateParamsNonStreaming,
 } from "openai/resources/chat/completions.js";
+<<<<<<< HEAD
 import { getEnvApiKey } from "../../env-api-keys.js";
+=======
+>>>>>>> upstream/main
 import type {
 	AssistantImages,
 	ImageContent,
@@ -15,9 +18,15 @@ import type {
 	ImagesModel,
 	ImagesOptions,
 	TextContent,
+<<<<<<< HEAD
 } from "../../types.js";
 import { headersToRecord } from "../../utils/headers.js";
 import { sanitizeSurrogates } from "../../utils/sanitize-unicode.js";
+=======
+} from "../../types.ts";
+import { headersToRecord } from "../../utils/headers.ts";
+import { sanitizeSurrogates } from "../../utils/sanitize-unicode.ts";
+>>>>>>> upstream/main
 
 interface OpenRouterGeneratedImage {
 	image_url?: string | { url?: string };
@@ -50,9 +59,15 @@ export const generateImagesOpenRouter: ImagesFunction<"openrouter-images", Image
 	};
 
 	try {
+<<<<<<< HEAD
 		const apiKey = options?.apiKey || getEnvApiKey(model.provider);
 		if (!apiKey) {
 			throw new Error(`No API key available for provider: ${model.provider}`);
+=======
+		const apiKey = options?.apiKey;
+		if (!apiKey) {
+			throw new Error(`No API key for provider: ${model.provider}`);
+>>>>>>> upstream/main
 		}
 		const client = createClient(model, apiKey, options?.headers);
 		let params = buildParams(model, context);
@@ -63,7 +78,11 @@ export const generateImagesOpenRouter: ImagesFunction<"openrouter-images", Image
 		const requestOptions = {
 			...(options?.signal ? { signal: options.signal } : {}),
 			...(options?.timeoutMs !== undefined ? { timeout: options.timeoutMs } : {}),
+<<<<<<< HEAD
 			...(options?.maxRetries !== undefined ? { maxRetries: options.maxRetries } : {}),
+=======
+			maxRetries: options?.maxRetries ?? 0,
+>>>>>>> upstream/main
 		};
 		const { data: response, response: rawResponse } = await client.chat.completions
 			.create(params as unknown as ChatCompletionCreateParamsNonStreaming, requestOptions)

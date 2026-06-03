@@ -15,6 +15,7 @@ import {
 	estimateTokens,
 	prepareCompaction,
 	serializeConversation,
+<<<<<<< HEAD
 } from "../../../compaction/index.js";
 import { convertToLlm } from "../../../messages.js";
 import type { ModelRegistry } from "../../../model-registry.js";
@@ -23,12 +24,26 @@ import type { ApplyCompactionResult, ContextUsage } from "../../types.js";
 import { computeEffectiveKeepRecentTokens, computeEffectiveThreshold } from "./policy.js";
 import { buildPrompt, type MergedCompactionPromptVariant } from "./prompts.js";
 import * as truncation from "./tool-truncation.js";
+=======
+} from "../../../compaction/index.ts";
+import { convertToLlm } from "../../../messages.ts";
+import type { ModelRegistry } from "../../../model-registry.ts";
+import type { ReadonlySessionManager } from "../../../session-manager.ts";
+import type { ApplyCompactionResult, ContextUsage } from "../../types.ts";
+import { computeEffectiveKeepRecentTokens, computeEffectiveThreshold } from "./policy.ts";
+import { buildPrompt, type MergedCompactionPromptVariant } from "./prompts.ts";
+import * as truncation from "./tool-truncation.ts";
+>>>>>>> upstream/main
 
 const DEFAULT_CONTEXT_WINDOW = 200_000;
 const COMPACTION_BUDGET_RATIO = 0.6;
 const EMERGENCY_CONTEXT_TARGET_RATIO = 0.95;
 const MAX_SUMMARY_TOKENS = 8192;
+<<<<<<< HEAD
 const SUMMARY_SCHEMA = "helix.compaction.summary.v1";
+=======
+const SUMMARY_SCHEMA = "senpi.compaction.summary.v1";
+>>>>>>> upstream/main
 type CompactionProgressCallback = (delta: string) => void;
 
 export interface SpeculativeCompactionContext {

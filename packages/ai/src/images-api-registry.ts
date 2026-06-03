@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { AssistantImages, ImagesApi, ImagesContext, ImagesFunction, ImagesModel, ImagesOptions } from "./types.js";
+=======
+import type { AssistantImages, ImagesApi, ImagesContext, ImagesFunction, ImagesModel, ImagesOptions } from "./types.ts";
+>>>>>>> upstream/main
 
 export type ImagesApiFunction = (
 	model: ImagesModel<ImagesApi>,

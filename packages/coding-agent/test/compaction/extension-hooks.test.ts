@@ -4,8 +4,13 @@ import { join } from "node:path";
 import { Agent } from "@earendil-works/pi-agent-core";
 import { registerFauxProvider } from "@earendil-works/pi-ai";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { AgentSession } from "../../src/core/agent-session.js";
 import { AuthStorage } from "../../src/core/auth-storage.js";
+=======
+import { AgentSession } from "../../src/core/agent-session.ts";
+import { AuthStorage } from "../../src/core/auth-storage.ts";
+>>>>>>> upstream/main
 import {
 	type ContextUsage,
 	createExtensionRuntime,
@@ -14,12 +19,21 @@ import {
 	type SessionBeforeCompactEvent,
 	type SessionBeforeCompactResult,
 	type SessionCompactEvent,
+<<<<<<< HEAD
 } from "../../src/core/extensions/index.js";
 import { ModelRegistry } from "../../src/core/model-registry.js";
 import { SessionManager } from "../../src/core/session-manager.js";
 import { SettingsManager } from "../../src/core/settings-manager.js";
 import { createSyntheticSourceInfo } from "../../src/core/source-info.js";
 import { assistantMsg, createTestResourceLoader, userMsg } from "../utilities.js";
+=======
+} from "../../src/core/extensions/index.ts";
+import { ModelRegistry } from "../../src/core/model-registry.ts";
+import { SessionManager } from "../../src/core/session-manager.ts";
+import { SettingsManager } from "../../src/core/settings-manager.ts";
+import { createSyntheticSourceInfo } from "../../src/core/source-info.ts";
+import { assistantMsg, createTestResourceLoader, userMsg } from "../utilities.ts";
+>>>>>>> upstream/main
 
 type Registration = ReturnType<typeof registerFauxProvider>;
 type TestHandler = (...args: unknown[]) => Promise<unknown>;

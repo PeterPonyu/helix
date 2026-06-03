@@ -1,11 +1,17 @@
 import { spawnSync } from "node:child_process";
+<<<<<<< HEAD
 import { createRequire } from "node:module";
+=======
+>>>>>>> upstream/main
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
+<<<<<<< HEAD
 const require = createRequire(import.meta.url);
 const tsxLoader = require.resolve("tsx/esm");
+=======
+>>>>>>> upstream/main
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const aiEntryUrl = new URL("../src/index.ts", import.meta.url).href;
 
@@ -42,7 +48,11 @@ function runProbe(action: string): ProbeResult {
 		console.log(JSON.stringify({ loadedSpecifiers: [...new Set(loaded)] }));
 	`;
 
+<<<<<<< HEAD
 	const result = spawnSync(process.execPath, ["--import", tsxLoader, "--input-type=module", "--eval", script], {
+=======
+	const result = spawnSync(process.execPath, ["--input-type=module", "--eval", script], {
+>>>>>>> upstream/main
 		cwd: packageRoot,
 		encoding: "utf8",
 	});

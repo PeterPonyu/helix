@@ -14,7 +14,11 @@
 //     dir on failure for inspection (prints path)
 
 import { spawn } from "node:child_process";
+<<<<<<< HEAD
 import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+=======
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
+>>>>>>> upstream/main
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -74,6 +78,7 @@ async function snapshotRepo(dest) {
 	if (status !== 0) throw new Error(`rsync failed (exit ${status})`);
 }
 
+<<<<<<< HEAD
 
 const DEP_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
 
@@ -125,6 +130,8 @@ function pinPnpmWorkspaceDeps(root) {
 	visit(join(root, "packages"));
 }
 
+=======
+>>>>>>> upstream/main
 function runAsync(command, args, cwd = ROOT, env = process.env) {
 	return new Promise((resolve) => {
 		const child = spawn(command, args, {
@@ -157,12 +164,15 @@ async function verify(pm, parentTmp) {
 		if (existsSync(lock)) rmSync(lock, { force: true });
 	}
 
+<<<<<<< HEAD
 	// pnpm does not always prefer local workspaces for semver ranges when the
 	// same private package name exists on the public registry. Force internal
 	// workspace edges to the workspace protocol in the disposable snapshot only,
 	// leaving publish-facing package.json files compatible with npm and bun.
 	if (pm === "pnpm") pinPnpmWorkspaceDeps(tmp);
 
+=======
+>>>>>>> upstream/main
 	header(`[${pm}] install`);
 	const installArgs = pm === "pnpm" ? ["install", "--ignore-scripts"] : ["install"];
 	const inst = await runPM(pm, installArgs, tmp);

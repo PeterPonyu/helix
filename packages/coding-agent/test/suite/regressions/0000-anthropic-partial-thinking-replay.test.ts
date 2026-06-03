@@ -1,6 +1,10 @@
 import { fauxAssistantMessage } from "@earendil-works/pi-ai";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { createHarness, type Harness } from "../harness.js";
+=======
+import { createHarness, type Harness } from "../harness.ts";
+>>>>>>> upstream/main
 
 describe("Anthropic partial thinking replay regression", () => {
 	const harnesses: Harness[] = [];

@@ -7,6 +7,7 @@ import type { TUI } from "@earendil-works/pi-tui";
 export class CountdownTimer {
 	private intervalId: ReturnType<typeof setInterval> | undefined;
 	private remainingSeconds: number;
+<<<<<<< HEAD
 
 	constructor(
 		timeoutMs: number,
@@ -14,6 +15,16 @@ export class CountdownTimer {
 		private onTick: (seconds: number) => void,
 		private onExpire: () => void,
 	) {
+=======
+	private tui: TUI | undefined;
+	private onTick: (seconds: number) => void;
+	private onExpire: () => void;
+
+	constructor(timeoutMs: number, tui: TUI | undefined, onTick: (seconds: number) => void, onExpire: () => void) {
+		this.tui = tui;
+		this.onTick = onTick;
+		this.onExpire = onExpire;
+>>>>>>> upstream/main
 		this.remainingSeconds = Math.ceil(timeoutMs / 1000);
 		this.onTick(this.remainingSeconds);
 

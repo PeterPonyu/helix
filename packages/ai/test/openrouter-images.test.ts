@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { generateImages } from "../src/images.js";
 import type { ImagesContext, ImagesModel } from "../src/types.js";
+=======
+import { generateImages } from "../src/images.ts";
+import type { ImagesContext, ImagesModel } from "../src/types.ts";
+>>>>>>> upstream/main
 
 const mockState = vi.hoisted(() => ({
 	lastParams: undefined as unknown,

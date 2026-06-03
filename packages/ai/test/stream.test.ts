@@ -4,6 +4,7 @@ import { dirname, join } from "path";
 import { Type } from "typebox";
 import { fileURLToPath } from "url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { complete, stream } from "../src/stream.js";
 import type { Api, Context, ImageContent, Model, StreamOptions, Tool, ToolResultMessage } from "../src/types.js";
@@ -16,6 +17,20 @@ import { hasBedrockCredentials } from "./bedrock-utils.js";
 import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } from "./cloudflare-utils.js";
 import { getLiveEnvApiKey, OPENROUTER_LIVE_TEST_FLAG } from "./live-api-gates.js";
 import { resolveApiKey } from "./oauth.js";
+=======
+import { getModel } from "../src/models.ts";
+import { complete, stream } from "../src/stream.ts";
+import type { Api, Context, ImageContent, Model, StreamOptions, Tool, ToolResultMessage } from "../src/types.ts";
+
+type StreamOptionsWithExtras = StreamOptions & Record<string, unknown>;
+
+import { StringEnum } from "../src/utils/typebox-helpers.ts";
+import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.ts";
+import { hasBedrockCredentials } from "./bedrock-utils.ts";
+import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } from "./cloudflare-utils.ts";
+import { getLiveEnvApiKey, OPENROUTER_LIVE_TEST_FLAG } from "./live-api-gates.ts";
+import { resolveApiKey } from "./oauth.ts";
+>>>>>>> upstream/main
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -789,6 +804,33 @@ describe("Generate E2E Tests", () => {
 		});
 	});
 
+<<<<<<< HEAD
+=======
+	describe.skipIf(!process.env.NVIDIA_API_KEY)("NVIDIA NIM Provider (Nemotron 3 Super via OpenAI Completions)", () => {
+		const llm = getModel("nvidia", "nvidia/nemotron-3-super-120b-a12b");
+
+		it("should complete basic text generation", { retry: 3 }, async () => {
+			await basicTextGeneration(llm);
+		});
+
+		it("should handle tool calling", { retry: 3 }, async () => {
+			await handleToolCall(llm);
+		});
+
+		it("should handle streaming", { retry: 3 }, async () => {
+			await handleStreaming(llm);
+		});
+
+		it("should handle thinking mode", { retry: 3 }, async () => {
+			await handleThinking(llm, { reasoningEffort: "high" });
+		});
+
+		it("should handle multi-turn with thinking and tools", { retry: 3 }, async () => {
+			await multiTurn(llm, { reasoningEffort: "high" });
+		});
+	});
+
+>>>>>>> upstream/main
 	describe.skipIf(!openRouterApiKey)("OpenRouter Provider (glm-4.5v via OpenAI Completions)", () => {
 		const llm = getModel("openrouter", "z-ai/glm-4.5v");
 

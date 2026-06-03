@@ -6,9 +6,15 @@
  */
 
 import type { AgentTool } from "@earendil-works/pi-agent-core";
+<<<<<<< HEAD
 import { wrapToolDefinition, wrapToolDefinitions } from "../tools/tool-definition-wrapper.js";
 import type { ExtensionRunner } from "./runner.js";
 import type { RegisteredTool } from "./types.js";
+=======
+import { wrapToolDefinition, wrapToolDefinitions } from "../tools/tool-definition-wrapper.ts";
+import type { ExtensionRunner } from "./runner.ts";
+import type { RegisteredTool } from "./types.ts";
+>>>>>>> upstream/main
 
 /**
  * Wrap a RegisteredTool into an AgentTool.

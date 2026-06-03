@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { type BuildDynamicSystemPromptOptions, buildDynamicSystemPrompt } from "../../../dynamic-prompt/build.js";
+=======
+import { type BuildDynamicSystemPromptOptions, buildDynamicSystemPrompt } from "../../../dynamic-prompt/build.ts";
+>>>>>>> upstream/main
 
 function buildClaudeOpus47Tuning(): string {
 	return `When an instruction names a scope like "every", "all", or "for each", apply it to the full set rather than the first item. When told "do X then Y", follow that exact sequence.

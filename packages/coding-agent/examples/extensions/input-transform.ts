@@ -1,15 +1,24 @@
 /**
  * Input Transform Example - demonstrates the `input` event for intercepting user input.
  *
+<<<<<<< HEAD
  * Start helix with this extension:
  *   helix -e ./examples/extensions/input-transform.ts
+=======
+ * Start senpi with this extension:
+ *   senpi -e ./examples/extensions/input-transform.ts
+>>>>>>> upstream/main
  *
  * Then type these inside pi:
  *   ?quick What is TypeScript?  → "Respond briefly: What is TypeScript?"
  *   ping                        → "pong" (instant, no LLM)
  *   time                        → current time (instant, no LLM)
  */
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	pi.on("input", async (event, ctx) => {

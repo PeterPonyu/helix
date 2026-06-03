@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { RpcClient } from "../src/modes/rpc/rpc-client.js";
+=======
+import { RpcClient } from "../src/modes/rpc/rpc-client.ts";
+>>>>>>> upstream/main
 
 type RpcClientPrivate = {
 	send: (command: { type: string }) => Promise<unknown>;

@@ -1,8 +1,19 @@
 #!/usr/bin/env node
 import assert from "node:assert/strict";
+<<<<<<< HEAD
 import { describe, it } from "node:test";
 import { BUILD_PHASES, cleanEnv, detectPackageManager, parseArgs } from "./build-all.mjs";
 
+=======
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
+import { BUILD_PHASES, cleanEnv, detectPackageManager, parseArgs } from "./build-all.mjs";
+
+const root = dirname(dirname(fileURLToPath(import.meta.url)));
+
+>>>>>>> upstream/main
 describe("build-all", () => {
 	it("uses an explicit package manager override", () => {
 		// Given
@@ -49,4 +60,24 @@ describe("build-all", () => {
 		assert.equal(cleaned.npm_config_node_linker, undefined);
 		assert.equal(cleaned.npm_config_registry, "https://registry.npmjs.org/");
 	});
+<<<<<<< HEAD
+=======
+
+	it("keeps generated model catalog updates out of ordinary ai builds", () => {
+		// Given
+		const packageJson = JSON.parse(readFileSync(join(root, "packages/ai/package.json"), "utf8"));
+		const scripts = packageJson.scripts;
+
+		// When
+		const buildScript = scripts.build;
+		const prepublishScript = scripts.prepublishOnly;
+
+		// Then
+		assert.equal(scripts.prebuild, undefined);
+		assert.equal(buildScript, "tsgo -p tsconfig.build.json");
+		assert.equal(buildScript.includes("generate-models"), false);
+		assert.match(prepublishScript, /generate-models\.ts/);
+		assert.match(prepublishScript, /generate-image-models\.ts/);
+	});
+>>>>>>> upstream/main
 });

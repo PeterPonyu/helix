@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import type { Api, Context, Model, Tool, ToolResultMessage } from "../src/index.js";
 import { complete, getModel } from "../src/index.js";
 import type { StreamOptions } from "../src/types.js";
@@ -12,6 +13,18 @@ import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-u
 import { hasBedrockCredentials } from "./bedrock-utils.js";
 import { getLiveEnvApiKey, OPENROUTER_LIVE_TEST_FLAG } from "./live-api-gates.js";
 import { resolveApiKey } from "./oauth.js";
+=======
+import type { Api, Context, Model, Tool, ToolResultMessage } from "../src/index.ts";
+import { complete, getModel } from "../src/index.ts";
+import type { StreamOptions } from "../src/types.ts";
+
+type StreamOptionsWithExtras = StreamOptions & Record<string, unknown>;
+
+import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.ts";
+import { hasBedrockCredentials } from "./bedrock-utils.ts";
+import { getLiveEnvApiKey, OPENROUTER_LIVE_TEST_FLAG } from "./live-api-gates.ts";
+import { resolveApiKey } from "./oauth.ts";
+>>>>>>> upstream/main
 
 // Resolve OAuth tokens at module level (async, runs before tests)
 const oauthTokens = await Promise.all([
@@ -445,19 +458,33 @@ describe("Tool Results with Images", () => {
 
 	describe("GitHub Copilot Provider", () => {
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should handle tool result with only image",
 			{ retry: 3, timeout: 30000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should handle tool result with only image",
+			{ retry: 3, timeout: 30000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 				await handleToolWithImageResult(llm, { apiKey: githubCopilotToken });
 			},
 		);
 
 		it.skipIf(!githubCopilotToken)(
+<<<<<<< HEAD
 			"gpt-4o - should handle tool result with text and image",
 			{ retry: 3, timeout: 30000 },
 			async () => {
 				const llm = getModel("github-copilot", "gpt-4o");
+=======
+			"claude-haiku-4.5 - should handle tool result with text and image",
+			{ retry: 3, timeout: 30000 },
+			async () => {
+				const llm = getModel("github-copilot", "claude-haiku-4.5");
+>>>>>>> upstream/main
 				await handleToolWithTextAndImageResult(llm, { apiKey: githubCopilotToken });
 			},
 		);

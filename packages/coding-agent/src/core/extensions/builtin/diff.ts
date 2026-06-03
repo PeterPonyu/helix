@@ -6,8 +6,13 @@
  */
 
 import { Container, Key, matchesKey, type SelectItem, SelectList, Text } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { DynamicBorder } from "../../../modes/interactive/components/dynamic-border.js";
 import type { ExtensionAPI } from "../types.js";
+=======
+import { DynamicBorder } from "../../../modes/interactive/components/dynamic-border.ts";
+import type { ExtensionAPI } from "../types.ts";
+>>>>>>> upstream/main
 
 interface FileInfo {
 	status: string;

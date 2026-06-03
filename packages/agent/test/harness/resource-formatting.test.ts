@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { formatPromptTemplateInvocation } from "../../src/harness/prompt-templates.js";
 import { formatSkillInvocation } from "../../src/harness/skills.js";
+=======
+import { formatPromptTemplateInvocation } from "../../src/harness/prompt-templates.ts";
+import { formatSkillInvocation } from "../../src/harness/skills.ts";
+>>>>>>> upstream/main
 
 describe("resource formatting helpers", () => {
 	it("formats skill invocations with additional instructions", () => {

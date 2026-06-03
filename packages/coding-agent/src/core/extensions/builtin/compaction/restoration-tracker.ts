@@ -1,4 +1,5 @@
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
+<<<<<<< HEAD
 import { estimateTokens } from "../../../compaction/index.js";
 import type { BeforeAgentStartEventResult, CompactionReason } from "../../types.js";
 import { extractPatchedPaths } from "../gpt-apply-patch/index.js";
@@ -6,6 +7,15 @@ import { extractPatchedPaths } from "../gpt-apply-patch/index.js";
 export const POST_COMPACT_RESTORATION_CUSTOM_TYPE = "compaction.post-compact-restoration";
 
 const POST_COMPACT_RESTORATION_SCHEMA = "helix.compaction.post-compact-restoration.v1";
+=======
+import { estimateTokens } from "../../../compaction/index.ts";
+import type { BeforeAgentStartEventResult, CompactionReason } from "../../types.ts";
+import { extractPatchedPaths } from "../gpt-apply-patch/index.ts";
+
+export const POST_COMPACT_RESTORATION_CUSTOM_TYPE = "compaction.post-compact-restoration";
+
+const POST_COMPACT_RESTORATION_SCHEMA = "senpi.compaction.post-compact-restoration.v1";
+>>>>>>> upstream/main
 const DEFAULT_RESTORATION_MAX_ITEMS = 10;
 const DEFAULT_RESTORATION_MAX_TOKENS_PER_ITEM = 5000;
 const DEFAULT_RESTORATION_MAX_TOTAL_TOKENS = 50_000;

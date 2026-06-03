@@ -1,7 +1,13 @@
 import type { TSchema } from "typebox";
+<<<<<<< HEAD
 import type { ImageContent, TextContent, Tool } from "../../types.js";
 import type { ParsedToolCall, ParserOptions, StreamParser } from "../types.js";
 import { createJsonMixStreamParser, formatJsonMixToolCall, parseJsonMixGeneratedText } from "./json-mix.js";
+=======
+import type { ImageContent, TextContent, Tool } from "../../types.ts";
+import type { ParsedToolCall, ParserOptions, StreamParser } from "../types.ts";
+import { createJsonMixStreamParser, formatJsonMixToolCall, parseJsonMixGeneratedText } from "./json-mix.ts";
+>>>>>>> upstream/main
 
 const TOOL_CALL_START = "<tool_call>";
 const TOOL_CALL_END = "</tool_call>";

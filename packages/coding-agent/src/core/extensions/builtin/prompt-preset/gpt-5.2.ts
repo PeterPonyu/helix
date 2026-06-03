@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { type BuildDynamicSystemPromptOptions, buildDynamicSystemPrompt } from "../../../dynamic-prompt/build.js";
 import { buildFileOperationsTuning } from "./file-operations.js";
+=======
+import { type BuildDynamicSystemPromptOptions, buildDynamicSystemPrompt } from "../../../dynamic-prompt/build.ts";
+import { buildFileOperationsTuning } from "./file-operations.ts";
+>>>>>>> upstream/main
 
 function buildGpt52Tuning(): string {
 	return `Constrain verbosity explicitly: "3-6 sentences", "max 5 bullets", "no preamble". Do not over-explain simple tasks.

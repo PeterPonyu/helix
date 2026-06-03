@@ -2,10 +2,17 @@
  * Minimal SDK Usage
  *
  * Uses all defaults: discovers skills, extensions, tools, context files
+<<<<<<< HEAD
  * from cwd and ~/.helix/agent. Model chosen from settings or first available.
  */
 
 import { createAgentSession } from "@helix-bio/helix";
+=======
+ * from cwd and ~/.senpi/agent. Model chosen from settings or first available.
+ */
+
+import { createAgentSession } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 const { session } = await createAgentSession();
 

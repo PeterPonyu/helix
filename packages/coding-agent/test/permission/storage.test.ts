@@ -2,14 +2,23 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { CONFIG_DIR_NAME } from "../../src/config.js";
+=======
+import { CONFIG_DIR_NAME } from "../../src/config.ts";
+>>>>>>> upstream/main
 import {
 	appendApproved,
 	clearApproved,
 	compactApproved,
 	loadApproved,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/permission-system/storage.js";
 import type { Rule } from "../../src/core/extensions/builtin/permission-system/types.js";
+=======
+} from "../../src/core/extensions/builtin/permission-system/storage.ts";
+import type { Rule } from "../../src/core/extensions/builtin/permission-system/types.ts";
+>>>>>>> upstream/main
 
 describe("permission storage", () => {
 	let tempDir: string;

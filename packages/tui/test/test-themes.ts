@@ -3,7 +3,13 @@
  */
 
 import { Chalk } from "chalk";
+<<<<<<< HEAD
 import type { EditorTheme, MarkdownTheme, SelectListTheme } from "../src/index.js";
+=======
+import type { EditorTheme, MarkdownTheme, SelectListTheme } from "../src/index.ts";
+
+const chalk = new Chalk({ level: 3 });
+>>>>>>> upstream/main
 
 const chalk = new Chalk({ level: 3 });
 

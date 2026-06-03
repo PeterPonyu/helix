@@ -1,7 +1,11 @@
 {
 	"name": "pi-extension-sandbox",
 	"private": true,
+<<<<<<< HEAD
 	"version": "1.5.3",
+=======
+	"version": "1.8.0",
+>>>>>>> upstream/main
 	"type": "module",
 	"scripts": {
 		"clean": "echo 'nothing to clean'",
@@ -14,6 +18,10 @@
 		]
 	},
 	"dependencies": {
+<<<<<<< HEAD
 		"@anthropic-ai/sandbox-runtime": "^0.0.26"
+=======
+		"@anthropic-ai/sandbox-runtime": "0.0.26"
+>>>>>>> upstream/main
 	}
 }

@@ -4,10 +4,17 @@
  * Demonstrates the `model_select` hook which fires when the model changes
  * via /model command, Ctrl+P cycling, or session restore.
  *
+<<<<<<< HEAD
  * Usage: helix -e ./model-status.ts
  */
 
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+ * Usage: senpi -e ./model-status.ts
+ */
+
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	pi.on("model_select", async (event, ctx) => {

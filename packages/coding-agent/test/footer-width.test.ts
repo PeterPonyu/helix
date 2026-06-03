@@ -1,9 +1,16 @@
 import { visibleWidth } from "@earendil-works/pi-tui";
 import { beforeAll, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import type { AgentSession } from "../src/core/agent-session.js";
 import type { ReadonlyFooterDataProvider } from "../src/core/footer-data-provider.js";
 import { FooterComponent } from "../src/modes/interactive/components/footer.js";
 import { initTheme } from "../src/modes/interactive/theme/theme.js";
+=======
+import type { AgentSession } from "../src/core/agent-session.ts";
+import type { ReadonlyFooterDataProvider } from "../src/core/footer-data-provider.ts";
+import { FooterComponent, formatCwdForFooter } from "../src/modes/interactive/components/footer.ts";
+import { initTheme } from "../src/modes/interactive/theme/theme.ts";
+>>>>>>> upstream/main
 
 type AssistantUsage = {
 	input: number;
@@ -73,6 +80,20 @@ function createFooterData(providerCount: number): ReadonlyFooterDataProvider {
 	return provider;
 }
 
+<<<<<<< HEAD
+=======
+describe("formatCwdForFooter", () => {
+	it("does not abbreviate sibling paths that share the home prefix", () => {
+		expect(formatCwdForFooter("/home/user2", "/home/user")).toBe("/home/user2");
+	});
+
+	it("abbreviates the home directory and descendants", () => {
+		expect(formatCwdForFooter("/home/user", "/home/user")).toBe("~");
+		expect(formatCwdForFooter("/home/user/project", "/home/user")).toBe("~/project");
+	});
+});
+
+>>>>>>> upstream/main
 describe("FooterComponent width handling", () => {
 	beforeAll(() => {
 		initTheme(undefined, false);

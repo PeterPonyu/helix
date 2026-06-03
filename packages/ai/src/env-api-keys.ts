@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // NEVER convert to top-level imports - breaks browser/Vite builds (web-ui)
+=======
+// NEVER convert to top-level imports - breaks browser/Vite builds
+>>>>>>> upstream/main
 let _existsSync: typeof import("node:fs").existsSync | null = null;
 let _homedir: typeof import("node:os").homedir | null = null;
 let _join: typeof import("node:path").join | null = null;
@@ -23,7 +27,11 @@ if (typeof process !== "undefined" && (process.versions?.node || process.version
 	});
 }
 
+<<<<<<< HEAD
 import type { KnownProvider } from "./types.js";
+=======
+import type { KnownProvider } from "./types.ts";
+>>>>>>> upstream/main
 
 let _procEnvCache: Map<string, string> | null = null;
 
@@ -101,6 +109,10 @@ function getApiKeyEnvVars(provider: string): readonly string[] | undefined {
 	const envMap: Record<string, string> = {
 		openai: "OPENAI_API_KEY",
 		"azure-openai-responses": "AZURE_OPENAI_API_KEY",
+<<<<<<< HEAD
+=======
+		nvidia: "NVIDIA_API_KEY",
+>>>>>>> upstream/main
 		deepseek: "DEEPSEEK_API_KEY",
 		google: "GEMINI_API_KEY",
 		"google-vertex": "GOOGLE_CLOUD_API_KEY",

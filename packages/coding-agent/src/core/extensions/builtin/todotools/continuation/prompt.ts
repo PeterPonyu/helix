@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { isIncompleteTodo, sanitizeTodoText, type TodoItem } from "../state.js";
+=======
+import { isIncompleteTodo, sanitizeTodoText, type TodoItem } from "../state.ts";
+>>>>>>> upstream/main
 
 export const CONTINUATION_DIRECTIVE = `[SYSTEM DIRECTIVE: SENPI - TODO CONTINUATION]
 

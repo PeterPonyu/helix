@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { parseFrontmatter, stripFrontmatter } from "../src/utils/frontmatter.js";
+=======
+import { parseFrontmatter, stripFrontmatter } from "../src/utils/frontmatter.ts";
+>>>>>>> upstream/main
 
 describe("parseFrontmatter", () => {
 	it("parses keys, strips quotes, and returns body", () => {

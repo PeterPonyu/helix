@@ -7,13 +7,21 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
 	repairOrphanedToolResults,
 	TOOL_RESULT_PLACEHOLDER,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/compaction/repair-tool-pairs.js";
+=======
+} from "../../src/core/extensions/builtin/compaction/repair-tool-pairs.ts";
+>>>>>>> upstream/main
 import {
 	type FileEntry,
 	migrateSessionEntries,
 	parseSessionEntries,
 	type SessionMessageEntry,
+<<<<<<< HEAD
 } from "../../src/core/session-manager.js";
+=======
+} from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 const TEST_DIR = dirname(fileURLToPath(import.meta.url));
 

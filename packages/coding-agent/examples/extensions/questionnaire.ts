@@ -5,8 +5,13 @@
  * Multiple questions: tab bar navigation between questions
  */
 
+<<<<<<< HEAD
 import { Editor, type EditorTheme, Key, matchesKey, Text, truncateToWidth } from "@earendil-works/pi-tui";
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { Editor, type EditorTheme, Key, matchesKey, Text, truncateToWidth } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 import { Type } from "typebox";
 
 // Types
@@ -82,7 +87,11 @@ export default function questionnaire(pi: ExtensionAPI) {
 		parameters: QuestionnaireParams,
 
 		async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+<<<<<<< HEAD
 			if (!ctx.hasUI) {
+=======
+			if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 				return errorResult("Error: UI not available (running in non-interactive mode)");
 			}
 			if (params.questions.length === 0) {

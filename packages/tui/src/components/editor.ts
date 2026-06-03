@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { AutocompleteProvider, AutocompleteSuggestions } from "../autocomplete.js";
 import { getKeybindings } from "../keybindings.js";
 import { decodePrintableKey, matchesKey } from "../keys.js";
@@ -8,6 +9,20 @@ import { getSegmenter, isPunctuationChar, isWhitespaceChar, truncateToWidth, vis
 import { SelectList, type SelectListLayoutOptions, type SelectListTheme } from "./select-list.js";
 
 const baseSegmenter = getSegmenter();
+=======
+import type { AutocompleteProvider, AutocompleteSuggestions } from "../autocomplete.ts";
+import { getKeybindings } from "../keybindings.ts";
+import { decodePrintableKey, matchesKey } from "../keys.ts";
+import { KillRing } from "../kill-ring.ts";
+import { type Component, CURSOR_MARKER, type Focusable, type TUI } from "../tui.ts";
+import { UndoStack } from "../undo-stack.ts";
+import { getGraphemeSegmenter, getWordSegmenter, isWhitespaceChar, truncateToWidth, visibleWidth } from "../utils.ts";
+import { findWordBackward, findWordForward } from "../word-navigation.ts";
+import { SelectList, type SelectListLayoutOptions, type SelectListTheme } from "./select-list.ts";
+
+const graphemeSegmenter = getGraphemeSegmenter();
+const wordSegmenter = getWordSegmenter();
+>>>>>>> upstream/main
 
 /** Regex matching paste markers like `[paste #1 +123 lines]` or `[paste #2 1234 chars]`. */
 const PASTE_MARKER_REGEX = /\[paste #(\d+)( (\+\d+ lines|\d+ chars))?\]/g;
@@ -27,7 +42,15 @@ function isPasteMarker(segment: string): boolean {
  *
  * Only markers whose numeric ID exists in `validIds` are merged.
  */
+<<<<<<< HEAD
 function segmentWithMarkers(text: string, validIds: Set<number>): Iterable<Intl.SegmentData> {
+=======
+function segmentWithMarkers(
+	text: string,
+	baseSegmenter: Intl.Segmenter,
+	validIds: Set<number>,
+): Iterable<Intl.SegmentData> {
+>>>>>>> upstream/main
 	// Fast path: no paste markers in the text or no valid IDs.
 	if (validIds.size === 0 || !text.includes("[paste #")) {
 		return baseSegmenter.segment(text);
@@ -109,7 +132,11 @@ export function wordWrapLine(line: string, maxWidth: number, preSegmented?: Intl
 	}
 
 	const chunks: TextChunk[] = [];
+<<<<<<< HEAD
 	const segments = preSegmented ?? [...baseSegmenter.segment(line)];
+=======
+	const segments = preSegmented ?? [...graphemeSegmenter.segment(line)];
+>>>>>>> upstream/main
 
 	let currentWidth = 0;
 	let chunkStart = 0;
@@ -301,8 +328,13 @@ export class Editor implements Component, Focusable {
 	}
 
 	/** Segment text with paste-marker awareness, only merging markers with valid IDs. */
+<<<<<<< HEAD
 	private segment(text: string): Iterable<Intl.SegmentData> {
 		return segmentWithMarkers(text, this.validPasteIds());
+=======
+	private segment(text: string, mode: "word" | "grapheme"): Iterable<Intl.SegmentData> {
+		return segmentWithMarkers(text, mode === "word" ? wordSegmenter : graphemeSegmenter, this.validPasteIds());
+>>>>>>> upstream/main
 	}
 
 	getPaddingX(): number {
@@ -482,7 +514,11 @@ export class Editor implements Component, Focusable {
 				if (after.length > 0) {
 					// Cursor is on a character (grapheme) - replace it with highlighted version
 					// Get the first grapheme from 'after'
+<<<<<<< HEAD
 					const afterGraphemes = [...this.segment(after)];
+=======
+					const afterGraphemes = [...this.segment(after, "grapheme")];
+>>>>>>> upstream/main
 					const firstGrapheme = afterGraphemes[0]?.segment || "";
 					const restAfter = after.slice(firstGrapheme.length);
 					const cursor = `\x1b[7m${firstGrapheme}\x1b[0m`;
@@ -855,7 +891,11 @@ export class Editor implements Component, Focusable {
 				}
 			} else {
 				// Line needs wrapping - use word-aware wrapping
+<<<<<<< HEAD
 				const chunks = wordWrapLine(line, contentWidth, [...this.segment(line)]);
+=======
+				const chunks = wordWrapLine(line, contentWidth, [...this.segment(line, "grapheme")]);
+>>>>>>> upstream/main
 
 				for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
 					const chunk = chunks[chunkIndex];
@@ -1213,7 +1253,11 @@ export class Editor implements Component, Focusable {
 			const beforeCursor = line.slice(0, this.state.cursorCol);
 
 			// Find the last grapheme in the text before cursor
+<<<<<<< HEAD
 			const graphemes = [...this.segment(beforeCursor)];
+=======
+			const graphemes = [...this.segment(beforeCursor, "grapheme")];
+>>>>>>> upstream/main
 			const lastGrapheme = graphemes[graphemes.length - 1];
 			const graphemeLength = lastGrapheme ? lastGrapheme.segment.length : 1;
 
@@ -1314,7 +1358,11 @@ export class Editor implements Component, Focusable {
 		// Snap cursor to atomic segment boundary (e.g. paste markers)
 		// so the cursor never lands in the middle of a multi-grapheme unit.
 		// Single-grapheme segments don't need snapping.
+<<<<<<< HEAD
 		const segments = [...this.segment(logicalLine)];
+=======
+		const segments = [...this.segment(logicalLine, "grapheme")];
+>>>>>>> upstream/main
 		for (const seg of segments) {
 			if (seg.index > this.state.cursorCol) break;
 			if (seg.segment.length <= 1) continue;
@@ -1585,7 +1633,11 @@ export class Editor implements Component, Focusable {
 			const afterCursor = currentLine.slice(this.state.cursorCol);
 
 			// Find the first grapheme at cursor
+<<<<<<< HEAD
 			const graphemes = [...this.segment(afterCursor)];
+=======
+			const graphemes = [...this.segment(afterCursor, "grapheme")];
+>>>>>>> upstream/main
 			const firstGrapheme = graphemes[0];
 			const graphemeLength = firstGrapheme ? firstGrapheme.segment.length : 1;
 
@@ -1642,7 +1694,11 @@ export class Editor implements Component, Focusable {
 				visualLines.push({ logicalLine: i, startCol: 0, length: line.length });
 			} else {
 				// Line needs wrapping - use word-aware wrapping
+<<<<<<< HEAD
 				const chunks = wordWrapLine(line, width, [...this.segment(line)]);
+=======
+				const chunks = wordWrapLine(line, width, [...this.segment(line, "grapheme")]);
+>>>>>>> upstream/main
 				for (const chunk of chunks) {
 					visualLines.push({
 						logicalLine: i,
@@ -1707,7 +1763,11 @@ export class Editor implements Component, Focusable {
 				// Moving right - move by one grapheme (handles emojis, combining characters, etc.)
 				if (this.state.cursorCol < currentLine.length) {
 					const afterCursor = currentLine.slice(this.state.cursorCol);
+<<<<<<< HEAD
 					const graphemes = [...this.segment(afterCursor)];
+=======
+					const graphemes = [...this.segment(afterCursor, "grapheme")];
+>>>>>>> upstream/main
 					const firstGrapheme = graphemes[0];
 					this.setCursorCol(this.state.cursorCol + (firstGrapheme ? firstGrapheme.segment.length : 1));
 				} else if (this.state.cursorLine < this.state.lines.length - 1) {
@@ -1725,7 +1785,11 @@ export class Editor implements Component, Focusable {
 				// Moving left - move by one grapheme (handles emojis, combining characters, etc.)
 				if (this.state.cursorCol > 0) {
 					const beforeCursor = currentLine.slice(0, this.state.cursorCol);
+<<<<<<< HEAD
 					const graphemes = [...this.segment(beforeCursor)];
+=======
+					const graphemes = [...this.segment(beforeCursor, "grapheme")];
+>>>>>>> upstream/main
 					const lastGrapheme = graphemes[graphemes.length - 1];
 					this.setCursorCol(this.state.cursorCol - (lastGrapheme ? lastGrapheme.segment.length : 1));
 				} else if (this.state.cursorLine > 0) {
@@ -1768,6 +1832,7 @@ export class Editor implements Component, Focusable {
 			return;
 		}
 
+<<<<<<< HEAD
 		const textBeforeCursor = currentLine.slice(0, this.state.cursorCol);
 		const graphemes = [...this.segment(textBeforeCursor)];
 		let newCol = this.state.cursorCol;
@@ -1809,6 +1874,14 @@ export class Editor implements Component, Focusable {
 		}
 
 		this.setCursorCol(newCol);
+=======
+		this.setCursorCol(
+			findWordBackward(currentLine, this.state.cursorCol, {
+				segment: (text) => this.segment(text, "word"),
+				isAtomicSegment: isPasteMarker,
+			}),
+		);
+>>>>>>> upstream/main
 	}
 
 	/**
@@ -1995,6 +2068,7 @@ export class Editor implements Component, Focusable {
 			return;
 		}
 
+<<<<<<< HEAD
 		const textAfterCursor = currentLine.slice(this.state.cursorCol);
 		const segments = this.segment(textAfterCursor);
 		const iterator = segments[Symbol.iterator]();
@@ -2033,6 +2107,14 @@ export class Editor implements Component, Focusable {
 		}
 
 		this.setCursorCol(newCol);
+=======
+		this.setCursorCol(
+			findWordForward(currentLine, this.state.cursorCol, {
+				segment: (text) => this.segment(text, "word"),
+				isAtomicSegment: isPasteMarker,
+			}),
+		);
+>>>>>>> upstream/main
 	}
 
 	// Slash menu only allowed on the first line of the editor

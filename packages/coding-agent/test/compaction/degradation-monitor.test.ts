@@ -5,8 +5,13 @@ import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import {
 	createDegradationMonitorState,
 	handleMessageEnd,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/compaction/degradation-monitor.js";
 import { migrateSessionEntries, parseSessionEntries, type SessionEntry } from "../../src/core/session-manager.js";
+=======
+} from "../../src/core/extensions/builtin/compaction/degradation-monitor.ts";
+import { migrateSessionEntries, parseSessionEntries, type SessionEntry } from "../../src/core/session-manager.ts";
+>>>>>>> upstream/main
 
 const POST_COMPACTION_MONITOR_COUNT = 5;
 const POST_COMPACTION_NO_TEXT_THRESHOLD = 3;

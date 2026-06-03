@@ -44,9 +44,15 @@ vi.mock("@aws-sdk/client-bedrock-runtime", () => {
 	};
 });
 
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { streamBedrock } from "../src/providers/amazon-bedrock.js";
 import type { Context, Model } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { streamBedrock } from "../src/providers/amazon-bedrock.ts";
+import type { Context, Model } from "../src/types.ts";
+>>>>>>> upstream/main
 
 const context: Context = {
 	messages: [{ role: "user", content: "hello", timestamp: Date.now() }],
@@ -98,7 +104,11 @@ describe("bedrock endpoint resolution", () => {
 
 	it("does not pin standard AWS endpoints when AWS_REGION is configured", async () => {
 		process.env.AWS_REGION = "us-east-2";
+<<<<<<< HEAD
 		const model = getModel("amazon-bedrock", "us.anthropic.claude-opus-4-7");
+=======
+		const model = getModel("amazon-bedrock", "us.anthropic.claude-opus-4-8");
+>>>>>>> upstream/main
 
 		const config = await captureClientConfig(model);
 
@@ -117,7 +127,11 @@ describe("bedrock endpoint resolution", () => {
 
 	it("still passes custom Bedrock endpoints through to the SDK client", async () => {
 		process.env.AWS_REGION = "us-west-2";
+<<<<<<< HEAD
 		const baseModel = getModel("amazon-bedrock", "us.anthropic.claude-opus-4-7");
+=======
+		const baseModel = getModel("amazon-bedrock", "us.anthropic.claude-opus-4-8");
+>>>>>>> upstream/main
 		const model: Model<"bedrock-converse-stream"> = {
 			...baseModel,
 			baseUrl: "https://bedrock-vpc.example.com",

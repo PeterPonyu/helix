@@ -1,6 +1,10 @@
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 const baseDir = dirname(fileURLToPath(import.meta.url));
 

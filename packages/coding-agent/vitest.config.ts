@@ -17,6 +17,7 @@ export default defineConfig({
 				external: [/@silvia-odwyer\/photon-node/],
 			},
 		},
+<<<<<<< HEAD
 		// vitest's `exclude` REPLACES rather than merges, so vitest's defaults are
 		// reproduced inline below before the helix quarantines. Keep this list in
 		// sync with vitest defaults when upgrading.
@@ -55,6 +56,8 @@ export default defineConfig({
 			"test/suite/regressions/3302-find-path-glob.test.ts",
 			"test/suite/regressions/3303-find-nested-gitignore.test.ts",
 		],
+=======
+>>>>>>> upstream/main
 	},
 	resolve: {
 		alias: [

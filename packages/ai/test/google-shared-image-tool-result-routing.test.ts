@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { convertMessages } from "../src/providers/google-shared.js";
 import type { Context, Model } from "../src/types.js";
+=======
+import { convertMessages } from "../src/providers/google-shared.ts";
+import type { Context, Model } from "../src/types.ts";
+>>>>>>> upstream/main
 
 function makeModel<TApi extends "google-generative-ai">(
 	api: TApi,

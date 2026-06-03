@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { complete, stream } from "../src/stream.js";
 import type { Api, Context, Model, StreamOptions } from "../src/types.js";
@@ -8,6 +9,17 @@ type StreamOptionsWithExtras = StreamOptions & Record<string, unknown>;
 import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.js";
 import { hasBedrockCredentials } from "./bedrock-utils.js";
 import { resolveApiKey } from "./oauth.js";
+=======
+import { getModel } from "../src/models.ts";
+import { complete, stream } from "../src/stream.ts";
+import type { Api, Context, Model, StreamOptions } from "../src/types.ts";
+
+type StreamOptionsWithExtras = StreamOptions & Record<string, unknown>;
+
+import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.ts";
+import { hasBedrockCredentials } from "./bedrock-utils.ts";
+import { resolveApiKey } from "./oauth.ts";
+>>>>>>> upstream/main
 
 // Resolve OAuth tokens at module level (async, runs before tests)
 const [openaiCodexToken] = await Promise.all([resolveApiKey("openai-codex")]);

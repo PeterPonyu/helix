@@ -1,6 +1,10 @@
 import type { Message } from "@earendil-works/pi-ai";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { serializeConversation } from "../src/core/compaction/utils.js";
+=======
+import { serializeConversation } from "../src/core/compaction/utils.ts";
+>>>>>>> upstream/main
 
 describe("serializeConversation", () => {
 	it("should truncate long tool results", () => {

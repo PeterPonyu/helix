@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import type { AssistantMessage, ProviderNativeContent } from "../src/types.js";
+=======
+import type { AssistantMessage, ProviderNativeContent } from "../src/types.ts";
+>>>>>>> upstream/main
 
 describe("ProviderNativeContent typing", () => {
 	it("allows provider-native blocks in AssistantMessage.content", () => {

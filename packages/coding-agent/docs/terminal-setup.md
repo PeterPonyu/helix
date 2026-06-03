@@ -6,6 +6,12 @@ Pi uses the [Kitty keyboard protocol](https://sw.kovidgoyal.net/kitty/keyboard-p
 
 Work out of the box.
 
+## Apple Terminal
+
+Pi enables enhanced key reporting when available. If Terminal.app still sends plain Return for `Shift+Enter`, pi uses a local macOS modifier fallback to treat that Return as `Shift+Enter`.
+
+This fallback only works when pi runs on the same Mac as Terminal.app. It cannot detect the local keyboard over remote SSH.
+
 ## Ghostty
 
 Add to your Ghostty config (`~/Library/Application Support/com.mitchellh.ghostty/config` on macOS, `~/.config/ghostty/config` on Linux):
@@ -24,7 +30,7 @@ That mapping sends a raw linefeed byte. Inside pi, that is indistinguishable fro
 
 If Claude Code 2.x or newer is the only reason you added that mapping, you can remove it, unless you want to use Claude Code in tmux, where it still requires that Ghostty mapping.
 
-If you want `Shift+Enter` to keep working in tmux via that remap, add `ctrl+j` to your helix `newLine` keybinding in `~/.helix/agent/keybindings.json`:
+If you want `Shift+Enter` to keep working in tmux via that remap, add `ctrl+j` to your senpi `newLine` keybinding in `~/.senpi/agent/keybindings.json`:
 
 ```json
 {
@@ -42,6 +48,8 @@ local config = wezterm.config_builder()
 config.enable_kitty_keyboard = true
 return config
 ```
+
+On WSL, WezTerm may require a visible hardware cursor for IME candidate window positioning. If CJK IME candidates do not follow the text cursor, set `PI_HARDWARE_CURSOR=1` before running pi or set `showHardwareCursor` to `true` in settings.
 
 ## VS Code (Integrated Terminal)
 

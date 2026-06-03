@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 /**
+<<<<<<< HEAD
  * Release script for the helix monorepo (CalVer).
+=======
+ * Release script for the senpi monorepo (CalVer).
+>>>>>>> upstream/main
  *
  * Usage:
  *   node scripts/release.mjs               # compute next version via calver.mjs, run release
@@ -15,6 +19,7 @@
  *   3. Write `version` into all 5 workspace package.json files directly (TAB indent,
  *      trailing newline). `npm version` is intentionally NOT used; the `-N` suffix on
  *      same-day re-releases looks like a prerelease tag to npm.
+<<<<<<< HEAD
  *   4. Run `scripts/sync-versions.js` to propagate the new version to inter-package deps.
  *   5. For each `packages/*\/CHANGELOG.md`, replace `## [Unreleased]` with
  *      `## [<version>] - <YYYY-MM-DD>`, remembering its subsection structure
@@ -53,11 +58,36 @@ const PUBLIC_PACKAGE_DEPENDENCY_PINS = [
 	"@earendil-works/pi-tui",
 ];
 
+=======
+ *   4. Run `scripts/sync-versions.js` to propagate the new version to source
+ *      inter-package deps.
+ *   5. Regenerate AI model artifacts and `packages/coding-agent/npm-shrinkwrap.json`.
+ *   6. For each `packages/*\/CHANGELOG.md`, replace `## [Unreleased]` with
+ *      `## [<version>] - <YYYY-MM-DD>`, remembering its subsection structure
+ *      (`### Added`, `### Fixed`, ...) for re-insertion in step 8.
+ *   7. Run `npm run check`.
+ *   8. Commit the release, tag it, re-insert a fresh `## [Unreleased]` block,
+ *      commit the next-cycle changelog update, then push `main` and the new tag.
+ *      GitHub Actions builds binaries and publishes from the pushed tag.
+ */
+
+import { execFileSync } from "node:child_process";
+import { computeNextVersion } from "./calver.mjs";
+import { reAddUnreleasedSections, stampChangelogs } from "./release-changelog.mjs";
+import { applyWorkspaceVersions, runSyncVersions } from "./release-packages.mjs";
+
+const VERSION_RE = /^\d{4}\.\d{1,2}\.\d{1,2}(-\d+)?$/;
+
+>>>>>>> upstream/main
 function printUsage() {
 	const text = [
 		"Usage: node scripts/release.mjs [options]",
 		"",
+<<<<<<< HEAD
 		"Releases the helix monorepo using CalVer (YYYY.M.D or YYYY.M.D-N).",
+=======
+		"Releases the senpi monorepo using CalVer (YYYY.M.D or YYYY.M.D-N).",
+>>>>>>> upstream/main
 		"",
 		"Options:",
 		"  --version <v>   Explicit CalVer version. Must match",
@@ -176,6 +206,7 @@ function todayISO() {
 	return new Date().toISOString().slice(0, 10);
 }
 
+<<<<<<< HEAD
 function writeWorkspaceVersion(file, version, dryRun) {
 	const raw = readFileSync(file, "utf-8");
 	const pkg = JSON.parse(raw);
@@ -337,6 +368,23 @@ function gitAddAll(dryRun) {
 	}
 	log("git add -A");
 	runCommand("git", ["add", "-A"]);
+=======
+const capturedChangelogSubsections = new Map();
+
+function stageChangedFiles(dryRun) {
+	if (dryRun) {
+		dryRunLog("git add -- <changed files>");
+		return;
+	}
+	const output = captureCommand("git", ["ls-files", "-m", "-o", "-d", "--exclude-standard"]);
+	const paths = [...new Set(output.split("\n").map((line) => line.trim()).filter(Boolean))];
+	if (paths.length === 0) {
+		log("no changed files to stage");
+		return;
+	}
+	log(`git add ${paths.length} changed file(s)`);
+	runCommand("git", ["add", "--", ...paths]);
+>>>>>>> upstream/main
 }
 
 function gitCommit(message, dryRun) {
@@ -367,6 +415,7 @@ function gitPush(refspec, dryRun) {
 	runCommand("git", ["push", "origin", refspec]);
 }
 
+<<<<<<< HEAD
 function runPublish(dryRun) {
 	if (dryRun) {
 		dryRunLog("npm run publish");
@@ -374,6 +423,42 @@ function runPublish(dryRun) {
 	}
 	log("npm run publish");
 	runCommand("npm", ["run", "publish"]);
+=======
+function runGenerateModels(dryRun) {
+	if (dryRun) {
+		dryRunLog("npm --prefix packages/ai run generate-models");
+		return;
+	}
+	log("npm --prefix packages/ai run generate-models");
+	runCommand("npm", ["--prefix", "packages/ai", "run", "generate-models"]);
+}
+
+function runGenerateImageModels(dryRun) {
+	if (dryRun) {
+		dryRunLog("npm --prefix packages/ai run generate-image-models");
+		return;
+	}
+	log("npm --prefix packages/ai run generate-image-models");
+	runCommand("npm", ["--prefix", "packages/ai", "run", "generate-image-models"]);
+}
+
+function runShrinkwrap(dryRun) {
+	if (dryRun) {
+		dryRunLog("node scripts/generate-coding-agent-shrinkwrap.mjs");
+		return;
+	}
+	log("node scripts/generate-coding-agent-shrinkwrap.mjs");
+	runCommand("node", ["scripts/generate-coding-agent-shrinkwrap.mjs"]);
+}
+
+function runCheck(dryRun) {
+	if (dryRun) {
+		dryRunLog("npm run check");
+		return;
+	}
+	log("npm run check");
+	runCommand("npm", ["run", "check"]);
+>>>>>>> upstream/main
 }
 
 function main() {
@@ -393,6 +478,7 @@ function main() {
 		dryRunLog("preview mode; no files, commits, tags, or npm state will be modified");
 	}
 
+<<<<<<< HEAD
 	applyWorkspaceVersions(version, args.dryRun);
 	runSyncVersions(args.dryRun);
 	pinPublicPackageDependencies(args.dryRun);
@@ -406,15 +492,37 @@ function main() {
 
 	reAddUnreleasedSections(version, date, args.dryRun);
 	gitAddAll(args.dryRun);
+=======
+	applyWorkspaceVersions(version, args.dryRun, log, dryRunLog);
+	runSyncVersions(args.dryRun, runCommand, log, dryRunLog);
+	runGenerateModels(args.dryRun);
+	runGenerateImageModels(args.dryRun);
+	runShrinkwrap(args.dryRun);
+	stampChangelogs(version, date, args.dryRun, capturedChangelogSubsections, log, dryRunLog);
+	runCheck(args.dryRun);
+
+	stageChangedFiles(args.dryRun);
+	gitCommit(`release: v${version}`, args.dryRun);
+	gitTag(version, args.dryRun);
+
+	reAddUnreleasedSections(version, date, args.dryRun, capturedChangelogSubsections, log, dryRunLog);
+	stageChangedFiles(args.dryRun);
+>>>>>>> upstream/main
 	gitCommit("Add [Unreleased] section for next cycle", args.dryRun);
 
 	gitPush("main", args.dryRun);
 	gitPush(`v${version}`, args.dryRun);
 
 	if (args.dryRun) {
+<<<<<<< HEAD
 		log(`dry-run complete; would have published v${version}`);
 	} else {
 		log(`published v${version}`);
+=======
+		log(`dry-run complete; would have prepared v${version}`);
+	} else {
+		log(`prepared v${version}; CI publishing starts after the tag push`);
+>>>>>>> upstream/main
 	}
 }
 

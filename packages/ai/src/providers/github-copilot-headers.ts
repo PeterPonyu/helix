@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { Message } from "../types.js";
+=======
+import type { Message } from "../types.ts";
+>>>>>>> upstream/main
 
 // Copilot expects X-Initiator to indicate whether the request is user-initiated
 // or agent-initiated (e.g. follow-up after assistant/tool messages).

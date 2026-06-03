@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { uuidv7 } from "../../src/harness/session/uuid.js";
+=======
+import { uuidv7 } from "../../src/harness/session/uuid.ts";
+>>>>>>> upstream/main
 
 const UUID_V7_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const TIMESTAMP = 0x0123456789ab;

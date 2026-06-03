@@ -54,20 +54,38 @@ export class RejectedError extends Error {
 /** Error thrown when user rejects with feedback for correction */
 export class CorrectedError extends Error {
 	readonly _tag = "PermissionCorrectedError";
+<<<<<<< HEAD
 
 	constructor(public readonly feedback: string) {
 		super(`The user rejected permission to use this specific tool call with the following feedback: ${feedback}`);
 		this.name = "CorrectedError";
+=======
+	readonly feedback: string;
+
+	constructor(feedback: string) {
+		super(`The user rejected permission to use this specific tool call with the following feedback: ${feedback}`);
+		this.name = "CorrectedError";
+		this.feedback = feedback;
+>>>>>>> upstream/main
 	}
 }
 
 /** Error thrown when a rule denies the permission */
 export class DeniedError extends Error {
 	readonly _tag = "PermissionDeniedError";
+<<<<<<< HEAD
 
 	constructor(public readonly patterns: string[]) {
 		super(`The user has specified a rule which prevents you from using this specific tool call.`);
 		this.name = "DeniedError";
+=======
+	readonly patterns: string[];
+
+	constructor(patterns: string[]) {
+		super(`The user has specified a rule which prevents you from using this specific tool call.`);
+		this.name = "DeniedError";
+		this.patterns = patterns;
+>>>>>>> upstream/main
 	}
 }
 

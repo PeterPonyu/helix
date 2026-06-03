@@ -1,6 +1,11 @@
 import { Container, Text } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { DynamicBorder } from "../../../modes/interactive/components/dynamic-border.js";
 import type { ExtensionAPI, ExtensionContext } from "../types.js";
+=======
+import { DynamicBorder } from "../../../modes/interactive/components/dynamic-border.ts";
+import type { ExtensionAPI, ExtensionContext } from "../types.ts";
+>>>>>>> upstream/main
 
 const PR_PROMPT_PATTERN = /^\s*You are given one or more GitHub PR URLs:\s*(\S+)/im;
 const ISSUE_PROMPT_PATTERN = /^\s*Analyze GitHub issue\(s\):\s*(\S+)/im;

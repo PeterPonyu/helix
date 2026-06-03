@@ -4,8 +4,13 @@ import { readFileSync, unlinkSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 
+<<<<<<< HEAD
 import { clipboard } from "./clipboard-native.js";
 import { loadPhoton } from "./photon.js";
+=======
+import { clipboard } from "./clipboard-native.ts";
+import { loadPhoton } from "./photon.ts";
+>>>>>>> upstream/main
 
 export type ClipboardImage = {
 	bytes: Uint8Array;

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { normalizePatchText, stripHeredoc } from "./text.js";
 import type { ParsedPatch, PatchChunk } from "./types.js";
+=======
+import { normalizePatchText, stripHeredoc } from "./text.ts";
+import type { ParsedPatch, PatchChunk } from "./types.ts";
+>>>>>>> upstream/main
 
 const BEGIN = "*** Begin Patch";
 const END = "*** End Patch";

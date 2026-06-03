@@ -1,11 +1,21 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { streamAnthropic } from "../src/providers/anthropic.js";
 import type { Context } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { streamAnthropic } from "../src/providers/anthropic.ts";
+import type { Context } from "../src/types.ts";
+>>>>>>> upstream/main
 
 const mockState = vi.hoisted(() => ({
 	createParams: undefined as Record<string, unknown> | undefined,
 	requestOptions: undefined as Record<string, unknown> | undefined,
+<<<<<<< HEAD
+=======
+	constructorOptions: undefined as { defaultHeaders?: Record<string, string | null> } | undefined,
+>>>>>>> upstream/main
 }));
 const unsupportedNativeComputerToolModels = [["claude-opus-4-6"], ["claude-opus-4-7"]] as const;
 const cloudflareAnthropicModel = {
@@ -39,6 +49,13 @@ vi.mock("@anthropic-ai/sdk", () => {
 	}
 
 	class FakeAnthropic {
+<<<<<<< HEAD
+=======
+		constructor(options: { defaultHeaders?: Record<string, string | null> }) {
+			mockState.constructorOptions = options;
+		}
+
+>>>>>>> upstream/main
 		messages = {
 			create: (params: Record<string, unknown>, requestOptions: Record<string, unknown>) => {
 				mockState.createParams = params;
@@ -61,6 +78,10 @@ describe("Anthropic onPayload request metadata", () => {
 	beforeEach(() => {
 		mockState.createParams = undefined;
 		mockState.requestOptions = undefined;
+<<<<<<< HEAD
+=======
+		mockState.constructorOptions = undefined;
+>>>>>>> upstream/main
 	});
 
 	it("forwards hook-added headers to SDK request options without leaking metadata into the body", async () => {
@@ -118,6 +139,84 @@ describe("Anthropic onPayload request metadata", () => {
 		},
 	);
 
+<<<<<<< HEAD
+=======
+	it("normalizes hook-returned legacy thinking for Claude Opus 4.6 before SDK request", async () => {
+		const model = getModel("anthropic", "claude-opus-4-6");
+
+		const stream = streamAnthropic(model, context, {
+			apiKey: "fake-key",
+			thinkingEnabled: true,
+			effort: "high",
+			onPayload: (payload) => ({
+				...(payload as Record<string, unknown>),
+				thinking: { type: "enabled", budget_tokens: 4096, display: "summarized" },
+			}),
+		});
+
+		await stream.result();
+
+		expect(mockState.createParams?.thinking).toEqual({ type: "adaptive", display: "summarized" });
+		expect(mockState.createParams?.output_config).toEqual({ effort: "high" });
+		expect(JSON.stringify(mockState.createParams)).not.toContain('"type":"enabled"');
+	});
+
+	it("preserves hook-returned legacy thinking for non-adaptive models", async () => {
+		const model = getModel("anthropic", "claude-sonnet-4-5");
+
+		const stream = streamAnthropic(model, context, {
+			apiKey: "fake-key",
+			thinkingEnabled: true,
+			thinkingBudgetTokens: 4096,
+			onPayload: (payload) => ({
+				...(payload as Record<string, unknown>),
+				thinking: { type: "enabled", budget_tokens: 4096, display: "summarized" },
+			}),
+		});
+
+		await stream.result();
+
+		expect(mockState.createParams?.thinking).toEqual({
+			type: "enabled",
+			budget_tokens: 4096,
+			display: "summarized",
+		});
+		expect(mockState.createParams?.output_config).toBeUndefined();
+	});
+
+	it("strips caller-supplied interleaved thinking beta for adaptive models", async () => {
+		const model = {
+			...getModel("anthropic", "claude-opus-4-6"),
+			headers: {
+				"anthropic-beta": "interleaved-thinking-2025-05-14, fine-grained-tool-streaming-2025-05-14",
+			},
+		};
+
+		const stream = streamAnthropic(model, context, {
+			apiKey: "fake-key",
+			interleavedThinking: true,
+			headers: {
+				"anthropic-beta": "interleaved-thinking-2025-05-14, fine-grained-tool-streaming-2025-05-14",
+			},
+			onPayload: (payload) => ({
+				...(payload as Record<string, unknown>),
+				headers: {
+					"anthropic-beta": "interleaved-thinking-2025-05-14, fine-grained-tool-streaming-2025-05-14",
+				},
+			}),
+		});
+
+		await stream.result();
+
+		expect(mockState.constructorOptions?.defaultHeaders?.["anthropic-beta"]).toBe(
+			"fine-grained-tool-streaming-2025-05-14",
+		);
+		expect(mockState.requestOptions?.headers).toEqual({
+			"anthropic-beta": "fine-grained-tool-streaming-2025-05-14",
+		});
+	});
+
+>>>>>>> upstream/main
 	it("strips native computer-use tools from Cloudflare Anthropic routes after payload hooks run", async () => {
 		const stream = streamAnthropic(cloudflareAnthropicModel, context, {
 			apiKey: "fake-key",

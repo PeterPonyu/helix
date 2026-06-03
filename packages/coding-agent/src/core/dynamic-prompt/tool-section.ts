@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { AvailableTool } from "./types.js";
+=======
+import type { AvailableTool } from "./types.ts";
+>>>>>>> upstream/main
 
 const CATEGORY_ORDER = ["search", "other", "session", "command"] as const;
 

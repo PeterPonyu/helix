@@ -12,17 +12,34 @@
  */
 
 import * as crypto from "node:crypto";
+<<<<<<< HEAD
 import type { AgentSessionRuntime } from "../../core/agent-session-runtime.js";
+=======
+import type { AgentSessionRuntime } from "../../core/agent-session-runtime.ts";
+>>>>>>> upstream/main
 import type {
 	ExtensionUIContext,
 	ExtensionUIDialogOptions,
 	ExtensionWidgetOptions,
 	WorkingIndicatorOptions,
+<<<<<<< HEAD
 } from "../../core/extensions/index.js";
 import { takeOverStdout, writeRawStdout } from "../../core/output-guard.js";
 import { killTrackedDetachedChildren } from "../../utils/shell.js";
 import { type Theme, theme } from "../interactive/theme/theme.js";
 import { attachJsonlLineReader, serializeJsonLine } from "./jsonl.js";
+=======
+} from "../../core/extensions/index.ts";
+import {
+	flushRawStdout,
+	takeOverStdout,
+	waitForRawStdoutBackpressure,
+	writeRawStdout,
+} from "../../core/output-guard.ts";
+import { killTrackedDetachedChildren } from "../../utils/shell.ts";
+import { type Theme, theme } from "../interactive/theme/theme.ts";
+import { attachJsonlLineReader, serializeJsonLine } from "./jsonl.ts";
+>>>>>>> upstream/main
 import type {
 	RpcCommand,
 	RpcExtensionUIRequest,
@@ -30,7 +47,11 @@ import type {
 	RpcResponse,
 	RpcSessionState,
 	RpcSlashCommand,
+<<<<<<< HEAD
 } from "./rpc-types.js";
+=======
+} from "./rpc-types.ts";
+>>>>>>> upstream/main
 
 // Re-export types for consumers
 export type {
@@ -39,7 +60,11 @@ export type {
 	RpcExtensionUIResponse,
 	RpcResponse,
 	RpcSessionState,
+<<<<<<< HEAD
 } from "./rpc-types.js";
+=======
+} from "./rpc-types.ts";
+>>>>>>> upstream/main
 
 /**
  * Run in RPC mode.
@@ -49,6 +74,10 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 	takeOverStdout();
 	let session = runtimeHost.session;
 	let unsubscribe: (() => void) | undefined;
+<<<<<<< HEAD
+=======
+	let unsubscribeBackpressure: (() => void) | undefined;
+>>>>>>> upstream/main
 
 	const output = (obj: RpcResponse | RpcExtensionUIRequest | object) => {
 		writeRawStdout(serializeJsonLine(obj));
@@ -311,6 +340,10 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 		session = runtimeHost.session;
 		await session.bindExtensions({
 			uiContext: createExtensionUIContext(),
+<<<<<<< HEAD
+=======
+			mode: "rpc",
+>>>>>>> upstream/main
 			commandContextActions: {
 				waitForIdle: () => session.agent.waitForIdle(),
 				newSession: async (options) => runtimeHost.newSession(options),
@@ -343,9 +376,19 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 		});
 
 		unsubscribe?.();
+<<<<<<< HEAD
 		unsubscribe = session.subscribe((event) => {
 			output(event);
 		});
+=======
+		unsubscribeBackpressure?.();
+		unsubscribe = session.subscribe((event) => {
+			output(event);
+		});
+		unsubscribeBackpressure = session.agent.subscribe(async () => {
+			await waitForRawStdoutBackpressure();
+		});
+>>>>>>> upstream/main
 	};
 
 	const registerSignalHandlers = (): void => {
@@ -357,7 +400,11 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 		for (const signal of signals) {
 			const handler = () => {
 				killTrackedDetachedChildren();
+<<<<<<< HEAD
 				void shutdown(signal === "SIGHUP" ? 129 : 143);
+=======
+				void shutdown(signal === "SIGHUP" ? 129 : 143, signal);
+>>>>>>> upstream/main
 			};
 			process.on(signal, handler);
 			signalCleanupHandlers.push(() => process.off(signal, handler));
@@ -537,7 +584,13 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 			// =================================================================
 
 			case "bash": {
+<<<<<<< HEAD
 				const result = await session.executeBash(command.command);
+=======
+				const result = await session.executeBash(command.command, undefined, {
+					excludeFromContext: command.excludeFromContext,
+				});
+>>>>>>> upstream/main
 				return success(id, "bash", result);
 			}
 
@@ -665,7 +718,11 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 	 */
 	let detachInput = () => {};
 
+<<<<<<< HEAD
 	async function shutdown(exitCode = 0): Promise<never> {
+=======
+	async function shutdown(exitCode = 0, signal?: NodeJS.Signals): Promise<never> {
+>>>>>>> upstream/main
 		if (shuttingDown) {
 			process.exit(exitCode);
 		}
@@ -674,9 +731,19 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 			cleanup();
 		}
 		unsubscribe?.();
+<<<<<<< HEAD
 		await runtimeHost.dispose();
 		detachInput();
 		process.stdin.pause();
+=======
+		unsubscribeBackpressure?.();
+		await runtimeHost.dispose();
+		detachInput();
+		process.stdin.pause();
+		if (signal !== "SIGTERM") {
+			await flushRawStdout();
+		}
+>>>>>>> upstream/main
 		process.exit(exitCode);
 	}
 
@@ -697,6 +764,10 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 					`Failed to parse command: ${parseError instanceof Error ? parseError.message : String(parseError)}`,
 				),
 			);
+<<<<<<< HEAD
+=======
+			await waitForRawStdoutBackpressure();
+>>>>>>> upstream/main
 			return;
 		}
 
@@ -721,6 +792,10 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 			const response = await handleCommand(command);
 			if (response) {
 				output(response);
+<<<<<<< HEAD
+=======
+				await waitForRawStdoutBackpressure();
+>>>>>>> upstream/main
 			}
 			await checkShutdownRequested();
 		} catch (commandError: unknown) {
@@ -731,6 +806,10 @@ export async function runRpcMode(runtimeHost: AgentSessionRuntime): Promise<neve
 					commandError instanceof Error ? commandError.message : String(commandError),
 				),
 			);
+<<<<<<< HEAD
+=======
+			await waitForRawStdoutBackpressure();
+>>>>>>> upstream/main
 		}
 	};
 

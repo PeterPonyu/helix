@@ -3,8 +3,14 @@ import { Box, Container, Spacer, Text } from "@earendil-works/pi-tui";
 import { constants } from "fs";
 import { access as fsAccess, readFile as fsReadFile, writeFile as fsWriteFile } from "fs/promises";
 import { type Static, Type } from "typebox";
+<<<<<<< HEAD
 import type { ToolDefinition } from "../extensions/types.js";
 import { renderToolDiff } from "./diff-render.js";
+=======
+import type { Theme } from "../../modes/interactive/theme/theme.ts";
+import type { ToolDefinition } from "../extensions/types.ts";
+import { renderToolDiff } from "./diff-render.ts";
+>>>>>>> upstream/main
 import {
 	applyEditsToNormalizedContent,
 	computeEditsDiff,
@@ -13,6 +19,7 @@ import {
 	type EditDiffError,
 	type EditDiffResult,
 	generateDiffString,
+<<<<<<< HEAD
 	normalizeToLF,
 	restoreLineEndings,
 	stripBom,
@@ -21,6 +28,17 @@ import { withFileMutationQueue } from "./file-mutation-queue.js";
 import { resolveToCwd } from "./path-utils.js";
 import { invalidArgText, shortenPath, str } from "./render-utils.js";
 import { wrapToolDefinition } from "./tool-definition-wrapper.js";
+=======
+	generateUnifiedPatch,
+	normalizeToLF,
+	restoreLineEndings,
+	stripBom,
+} from "./edit-diff.ts";
+import { withFileMutationQueue } from "./file-mutation-queue.ts";
+import { resolveToCwd } from "./path-utils.ts";
+import { renderToolPath, str } from "./render-utils.ts";
+import { wrapToolDefinition } from "./tool-definition-wrapper.ts";
+>>>>>>> upstream/main
 
 type EditPreview = EditDiffResult | EditDiffError;
 
@@ -57,8 +75,15 @@ type LegacyEditToolInput = EditToolInput & {
 };
 
 export interface EditToolDetails {
+<<<<<<< HEAD
 	/** Unified diff of the changes made */
 	diff: string;
+=======
+	/** Display-oriented diff of the changes made */
+	diff: string;
+	/** Standard unified patch of the changes made */
+	patch: string;
+>>>>>>> upstream/main
 	/** Line number of the first change in the new file (for editor navigation) */
 	firstChangedLine?: number;
 }
@@ -188,6 +213,7 @@ function getRenderablePreviewInput(args: RenderableEditArgs | undefined): { path
 	return null;
 }
 
+<<<<<<< HEAD
 function formatEditCall(
 	args: RenderableEditArgs | undefined,
 	theme: typeof import("../../modes/interactive/theme/theme.js").theme,
@@ -196,6 +222,10 @@ function formatEditCall(
 	const rawPath = str(args?.file_path ?? args?.path);
 	const path = rawPath !== null ? shortenPath(rawPath) : null;
 	const pathDisplay = path === null ? invalidArg : path ? theme.fg("accent", path) : theme.fg("toolOutput", "...");
+=======
+function formatEditCall(args: RenderableEditArgs | undefined, theme: Theme, cwd: string): string {
+	const pathDisplay = renderToolPath(str(args?.file_path ?? args?.path), theme, cwd);
+>>>>>>> upstream/main
 	return `${theme.fg("toolTitle", theme.bold("edit"))} ${pathDisplay}`;
 }
 
@@ -203,7 +233,11 @@ function formatEditResult(
 	args: RenderableEditArgs | undefined,
 	preview: EditPreview | undefined,
 	result: EditToolResultLike,
+<<<<<<< HEAD
 	theme: typeof import("../../modes/interactive/theme/theme.js").theme,
+=======
+	theme: Theme,
+>>>>>>> upstream/main
 	isError: boolean,
 ): string | undefined {
 	const rawPath = str(args?.file_path ?? args?.path);
@@ -231,7 +265,11 @@ function formatEditResult(
 function getEditHeaderBg(
 	preview: EditPreview | undefined,
 	settledError: boolean | undefined,
+<<<<<<< HEAD
 	theme: typeof import("../../modes/interactive/theme/theme.js").theme,
+=======
+	theme: Theme,
+>>>>>>> upstream/main
 ): (text: string) => string {
 	if (preview) {
 		if ("error" in preview) {
@@ -248,11 +286,20 @@ function getEditHeaderBg(
 function buildEditCallComponent(
 	component: EditCallRenderComponent,
 	args: RenderableEditArgs | undefined,
+<<<<<<< HEAD
 	theme: typeof import("../../modes/interactive/theme/theme.js").theme,
 ): EditCallRenderComponent {
 	component.setBgFn(getEditHeaderBg(component.preview, component.settledError, theme));
 	component.clear();
 	component.addChild(new Text(formatEditCall(args, theme), 0, 0));
+=======
+	theme: Theme,
+	cwd: string,
+): EditCallRenderComponent {
+	component.setBgFn(getEditHeaderBg(component.preview, component.settledError, theme));
+	component.clear();
+	component.addChild(new Text(formatEditCall(args, theme, cwd), 0, 0));
+>>>>>>> upstream/main
 
 	if (!component.preview) {
 		return component;
@@ -315,6 +362,7 @@ export function createEditToolDefinition(
 			const { path, edits } = validateEditInput(input);
 			const absolutePath = resolveToCwd(path, cwd);
 
+<<<<<<< HEAD
 			return withFileMutationQueue(
 				absolutePath,
 				() =>
@@ -421,6 +469,58 @@ export function createEditToolDefinition(
 						})();
 					}),
 			);
+=======
+			return withFileMutationQueue(absolutePath, async () => {
+				// Do not reject from an abort event listener here: that would release the
+				// mutation queue while an in-flight filesystem operation may still finish.
+				// Checking signal.aborted after each await observes the same aborts while
+				// keeping the queue locked until the current operation has settled.
+				const throwIfAborted = (): void => {
+					if (signal?.aborted) throw new Error("Operation aborted");
+				};
+
+				throwIfAborted();
+
+				// Check if file exists.
+				try {
+					await ops.access(absolutePath);
+				} catch (error: unknown) {
+					throwIfAborted();
+					const errorMessage =
+						error instanceof Error && "code" in error ? `Error code: ${error.code}` : String(error);
+					throw new Error(`Could not edit file: ${path}. ${errorMessage}.`);
+				}
+				throwIfAborted();
+
+				// Read the file.
+				const buffer = await ops.readFile(absolutePath);
+				const rawContent = buffer.toString("utf-8");
+				throwIfAborted();
+
+				// Strip BOM before matching. The model will not include an invisible BOM in oldText.
+				const { bom, text: content } = stripBom(rawContent);
+				const originalEnding = detectLineEnding(content);
+				const normalizedContent = normalizeToLF(content);
+				const { baseContent, newContent } = applyEditsToNormalizedContent(normalizedContent, edits, path);
+				throwIfAborted();
+
+				const finalContent = bom + restoreLineEndings(newContent, originalEnding);
+				await ops.writeFile(absolutePath, finalContent);
+				throwIfAborted();
+
+				const diffResult = generateDiffString(baseContent, newContent);
+				const patch = generateUnifiedPatch(path, baseContent, newContent);
+				return {
+					content: [
+						{
+							type: "text",
+							text: `Successfully replaced ${edits.length} block(s) in ${path}.`,
+						},
+					],
+					details: { diff: diffResult.diff, patch, firstChangedLine: diffResult.firstChangedLine },
+				};
+			});
+>>>>>>> upstream/main
 		},
 		renderCall(args, theme, context) {
 			const component = getEditCallRenderComponent(context.state, context.lastComponent);
@@ -447,7 +547,11 @@ export function createEditToolDefinition(
 				});
 			}
 
+<<<<<<< HEAD
 			return buildEditCallComponent(component, args, theme);
+=======
+			return buildEditCallComponent(component, args, theme, context.cwd);
+>>>>>>> upstream/main
 		},
 		renderResult(result, _options, theme, context) {
 			const callComponent = context.state.callComponent;
@@ -472,7 +576,16 @@ export function createEditToolDefinition(
 					changed = true;
 				}
 				if (changed) {
+<<<<<<< HEAD
 					buildEditCallComponent(callComponent, context.args as RenderableEditArgs | undefined, theme);
+=======
+					buildEditCallComponent(
+						callComponent,
+						context.args as RenderableEditArgs | undefined,
+						theme,
+						context.cwd,
+					);
+>>>>>>> upstream/main
 				}
 			}
 

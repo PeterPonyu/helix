@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { complete, getModel } from "@earendil-works/pi-ai";
 import { Container, Markdown, matchesKey, Text } from "@earendil-works/pi-tui";
 import type { ExtensionAPI, ExtensionCommandContext } from "@helix-bio/helix";
 import { DynamicBorder, getMarkdownTheme } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, ExtensionCommandContext } from "@code-yeongyu/senpi";
+import { DynamicBorder, getMarkdownTheme } from "@code-yeongyu/senpi";
+import { complete, getModel } from "@earendil-works/pi-ai";
+import { Container, Markdown, matchesKey, Text } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 
 type ContentBlock = {
 	type?: string;
@@ -115,7 +122,11 @@ const buildSummaryPrompt = (conversationText: string): string =>
 	].join("\n");
 
 const showSummaryUi = async (summary: string, ctx: ExtensionCommandContext) => {
+<<<<<<< HEAD
 	if (!ctx.hasUI) {
+=======
+	if (ctx.mode !== "tui") {
+>>>>>>> upstream/main
 		return;
 	}
 

@@ -1,7 +1,37 @@
 import { Marked, type Token, Tokenizer, type Tokens } from "marked";
+<<<<<<< HEAD
 import { getCapabilities, hyperlink, isImageLine } from "../terminal-image.js";
 import type { Component } from "../tui.js";
 import { applyBackgroundToLine, visibleWidth, wrapTextWithAnsi } from "../utils.js";
+=======
+import { getCapabilities, hyperlink, isImageLine } from "../terminal-image.ts";
+import type { Component } from "../tui.ts";
+import { applyBackgroundToLine, visibleWidth, wrapTextWithAnsi } from "../utils.ts";
+
+const STRICT_STRIKETHROUGH_REGEX = /^(~~)(?=[^\s~])((?:\\.|[^\\])*?(?:\\.|[^\s~\\]))\1(?=[^~]|$)/;
+
+class StrictStrikethroughTokenizer extends Tokenizer {
+	override del(src: string): Tokens.Del | undefined {
+		const match = STRICT_STRIKETHROUGH_REGEX.exec(src);
+		if (!match) {
+			return undefined;
+		}
+
+		const text = match[2];
+		return {
+			type: "del",
+			raw: match[0],
+			text,
+			tokens: this.lexer.inlineTokens(text),
+		};
+	}
+}
+
+const markdownParser = new Marked();
+markdownParser.setOptions({
+	tokenizer: new StrictStrikethroughTokenizer(),
+});
+>>>>>>> upstream/main
 
 const STRICT_STRIKETHROUGH_REGEX = /^(~~)(?=[^\s~])((?:\\.|[^\\])*?(?:\\.|[^\s~\\]))\1(?=[^~]|$)/;
 
@@ -70,6 +100,14 @@ export interface MarkdownTheme {
 	codeBlockIndent?: string;
 }
 
+<<<<<<< HEAD
+=======
+export interface MarkdownOptions {
+	/** Preserve source ordered-list markers instead of normalizing them from the list start. */
+	preserveOrderedListMarkers?: boolean;
+}
+
+>>>>>>> upstream/main
 interface InlineStyleContext {
 	applyText: (text: string) => string;
 	stylePrefix: string;
@@ -81,6 +119,10 @@ export class Markdown implements Component {
 	private paddingY: number; // Top/bottom padding
 	private defaultTextStyle?: DefaultTextStyle;
 	private theme: MarkdownTheme;
+<<<<<<< HEAD
+=======
+	private options: MarkdownOptions;
+>>>>>>> upstream/main
 	private defaultStylePrefix?: string;
 
 	// Cache for rendered output
@@ -94,12 +136,14 @@ export class Markdown implements Component {
 		paddingY: number,
 		theme: MarkdownTheme,
 		defaultTextStyle?: DefaultTextStyle,
+		options?: MarkdownOptions,
 	) {
 		this.text = text;
 		this.paddingX = paddingX;
 		this.paddingY = paddingY;
 		this.theme = theme;
 		this.defaultTextStyle = defaultTextStyle;
+		this.options = options ? { ...options } : {};
 	}
 
 	setText(text: string): void {
@@ -548,6 +592,11 @@ export class Markdown implements Component {
 		return result;
 	}
 
+	private getOrderedListMarker(item: Tokens.ListItem): string | undefined {
+		const match = /^(?: {0,3})(\d{1,9}[.)])[ \t]+/.exec(item.raw);
+		return match ? `${match[1]} ` : undefined;
+	}
+
 	/**
 	 * Render a list with proper nesting support
 	 */
@@ -559,7 +608,15 @@ export class Markdown implements Component {
 
 		for (let i = 0; i < token.items.length; i++) {
 			const item = token.items[i];
+<<<<<<< HEAD
 			const bullet = token.ordered ? `${startNumber + i}. ` : "- ";
+=======
+			const bullet = token.ordered
+				? this.options.preserveOrderedListMarkers
+					? (this.getOrderedListMarker(item) ?? `${startNumber + i}. `)
+					: `${startNumber + i}. `
+				: "- ";
+>>>>>>> upstream/main
 			const taskMarker = item.task ? `[${item.checked ? "x" : " "}] ` : "";
 			const marker = bullet + taskMarker;
 			const firstPrefix = indent + this.theme.listBullet(marker);

@@ -4,8 +4,13 @@
 
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import chalk from "chalk";
+<<<<<<< HEAD
 import { APP_NAME, CONFIG_DIR_NAME, ENV_AGENT_DIR, ENV_SESSION_DIR } from "../config.js";
 import type { ExtensionFlag } from "../core/extensions/types.js";
+=======
+import { APP_NAME, CONFIG_DIR_NAME, ENV_AGENT_DIR, ENV_SESSION_DIR } from "../config.ts";
+import type { ExtensionFlag } from "../core/extensions/types.ts";
+>>>>>>> upstream/main
 
 export type Mode = "text" | "json" | "rpc";
 
@@ -21,12 +26,23 @@ export interface Args {
 	help?: boolean;
 	version?: boolean;
 	mode?: Mode;
+<<<<<<< HEAD
 	noSession?: boolean;
 	session?: string;
+=======
+	name?: string;
+	noSession?: boolean;
+	session?: string;
+	sessionId?: string;
+>>>>>>> upstream/main
 	fork?: string;
 	sessionDir?: string;
 	models?: string[];
 	tools?: string[];
+<<<<<<< HEAD
+=======
+	excludeTools?: string[];
+>>>>>>> upstream/main
 	noTools?: boolean;
 	noBuiltinTools?: boolean;
 	extensions?: string[];
@@ -43,12 +59,15 @@ export interface Args {
 	listModels?: string | true;
 	offline?: boolean;
 	verbose?: boolean;
+<<<<<<< HEAD
 	/**
 	 * Launch the experimental native Rust + ratatui TUI (`helix-neo-tui`)
 	 * instead of the default interactive TUI. Only honored when the app
 	 * mode resolves to `interactive`.
 	 */
 	neo?: boolean;
+=======
+>>>>>>> upstream/main
 	messages: string[];
 	fileArgs: string[];
 	/** Unknown flags (potentially extension flags) - map of flag name to value */
@@ -97,10 +116,24 @@ export function parseArgs(args: string[]): Args {
 		} else if (arg === "--append-system-prompt" && i + 1 < args.length) {
 			result.appendSystemPrompt = result.appendSystemPrompt ?? [];
 			result.appendSystemPrompt.push(args[++i]);
+<<<<<<< HEAD
+=======
+		} else if (arg === "--name" || arg === "-n") {
+			if (i + 1 < args.length) {
+				result.name = args[++i];
+			} else {
+				result.diagnostics.push({ type: "error", message: "--name requires a value" });
+			}
+>>>>>>> upstream/main
 		} else if (arg === "--no-session") {
 			result.noSession = true;
 		} else if (arg === "--session" && i + 1 < args.length) {
 			result.session = args[++i];
+<<<<<<< HEAD
+=======
+		} else if (arg === "--session-id" && i + 1 < args.length) {
+			result.sessionId = args[++i];
+>>>>>>> upstream/main
 		} else if (arg === "--fork" && i + 1 < args.length) {
 			result.fork = args[++i];
 		} else if (arg === "--session-dir" && i + 1 < args.length) {
@@ -116,6 +149,14 @@ export function parseArgs(args: string[]): Args {
 				.split(",")
 				.map((s) => s.trim())
 				.filter((name) => name.length > 0);
+<<<<<<< HEAD
+=======
+		} else if ((arg === "--exclude-tools" || arg === "-xt") && i + 1 < args.length) {
+			result.excludeTools = args[++i]
+				.split(",")
+				.map((s) => s.trim())
+				.filter((name) => name.length > 0);
+>>>>>>> upstream/main
 		} else if (arg === "--thinking" && i + 1 < args.length) {
 			const level = args[++i];
 			if (isValidThinkingLevel(level)) {
@@ -169,7 +210,11 @@ export function parseArgs(args: string[]): Args {
 		} else if (arg === "--offline") {
 			result.offline = true;
 		} else if (arg === "--neo") {
+<<<<<<< HEAD
 			result.neo = true;
+=======
+			result.diagnostics.push({ type: "error", message: "Unknown option: --neo" });
+>>>>>>> upstream/main
 		} else if (arg.startsWith("@")) {
 			result.fileArgs.push(arg.slice(1)); // Remove @ prefix
 		} else if (arg.startsWith("--")) {
@@ -232,15 +277,28 @@ ${chalk.bold("Options:")}
   --continue, -c                 Continue previous session
   --resume, -r                   Select a session to resume
   --session <path|id>            Use specific session file or partial UUID
+<<<<<<< HEAD
   --fork <path|id>               Fork specific session file or partial UUID into a new session
   --session-dir <dir>            Directory for session storage and lookup
   --no-session                   Don't save session (ephemeral)
+=======
+  --session-id <id>              Use exact project session ID, creating it if missing
+  --fork <path|id>               Fork specific session file or partial UUID into a new session
+  --session-dir <dir>            Directory for session storage and lookup
+  --no-session                   Don't save session (ephemeral)
+  --name, -n <name>              Set session display name
+>>>>>>> upstream/main
   --models <patterns>            Comma-separated patterns that narrow the global model catalog
                                  Supports globs (anthropic/*, *sonnet*) and fuzzy matching
   --no-tools, -nt                Disable all tools by default (built-in and extension)
   --no-builtin-tools, -nbt       Disable built-in tools by default but keep extension/custom tools enabled
   --tools, -t <tools>            Comma-separated allowlist of tool names to enable
                                  Applies to built-in, extension, and custom tools
+<<<<<<< HEAD
+=======
+  --exclude-tools, -xt <tools>   Comma-separated denylist of tool names to disable
+                                 Applies to built-in, extension, and custom tools
+>>>>>>> upstream/main
   --thinking <level>             Set thinking level: off, minimal, low, medium, high, xhigh, max
                                  (xhigh/max are Anthropic-native tiers; xhigh also covers GPT-5.x)
   --extension, -e <path>         Load an extension file (can be used multiple times)
@@ -256,7 +314,10 @@ ${chalk.bold("Options:")}
   --list-models [search]         List available models (with optional fuzzy search)
   --verbose                      Force verbose startup (overrides quietStartup setting)
   --offline                      Disable startup network operations (same as PI_OFFLINE=1)
+<<<<<<< HEAD
   --neo                          Launch experimental Rust + ratatui TUI (helix-neo-tui) instead of the default TUI
+=======
+>>>>>>> upstream/main
   --help, -h                     Show this help
   --version, -v                  Show version number
 
@@ -281,6 +342,12 @@ ${chalk.bold("Examples:")}
   # Continue previous session
   ${APP_NAME} --continue "What did we discuss?"
 
+<<<<<<< HEAD
+=======
+  # Start a named session
+  ${APP_NAME} --name "Refactor auth module"
+
+>>>>>>> upstream/main
   # Use different model
   ${APP_NAME} --provider openai --model gpt-4o-mini "Help me refactor this code"
 
@@ -305,6 +372,12 @@ ${chalk.bold("Examples:")}
   # Read-only mode (no file modifications possible)
   ${APP_NAME} --tools read,grep,find,ls -p "Review the code in src/"
 
+<<<<<<< HEAD
+=======
+  # Disable one tool while keeping the rest available
+  ${APP_NAME} --exclude-tools ask_question
+
+>>>>>>> upstream/main
   # Export a session file to HTML
   ${APP_NAME} --export ~/${CONFIG_DIR_NAME}/agent/sessions/--path--/session.jsonl
   ${APP_NAME} --export session.jsonl output.html
@@ -319,6 +392,10 @@ ${chalk.bold("Environment Variables:")}
   AZURE_OPENAI_API_VERSION         - Azure OpenAI API version (default: v1)
   AZURE_OPENAI_DEPLOYMENT_NAME_MAP - Azure OpenAI model=deployment map (comma-separated)
   DEEPSEEK_API_KEY                 - DeepSeek API key
+<<<<<<< HEAD
+=======
+  NVIDIA_API_KEY                   - NVIDIA NIM API key
+>>>>>>> upstream/main
   GEMINI_API_KEY                   - Google Gemini API key
   GROQ_API_KEY                     - Groq API key
   CEREBRAS_API_KEY                 - Cerebras API key

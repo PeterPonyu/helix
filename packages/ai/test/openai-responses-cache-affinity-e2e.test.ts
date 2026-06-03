@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { getModel } from "../src/models.js";
 import { complete } from "../src/stream.js";
 import type { Context } from "../src/types.js";
+=======
+import { getModel } from "../src/models.ts";
+import { complete } from "../src/stream.ts";
+import type { Context } from "../src/types.ts";
+>>>>>>> upstream/main
 
 describe.skipIf(!process.env.OPENAI_API_KEY)("openai responses cache affinity e2e", () => {
 	it("handles direct OpenAI Responses requests with aligned cache-affinity identifiers", { retry: 2 }, async () => {

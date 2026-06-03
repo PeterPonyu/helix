@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { CODEX_APPLY_PATCH_DESCRIPTION } from "../../src/core/extensions/builtin/gpt-apply-patch/index.js";
+=======
+import { CODEX_APPLY_PATCH_DESCRIPTION } from "../../src/core/extensions/builtin/gpt-apply-patch/index.ts";
+>>>>>>> upstream/main
 
 describe("gpt apply_patch codex JSON description", () => {
 	it("contains codex context rules and grammar markers", () => {

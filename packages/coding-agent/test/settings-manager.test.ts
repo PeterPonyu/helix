@@ -2,8 +2,13 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { homedir } from "os";
 import { join } from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { CONFIG_DIR_NAME } from "../src/config.js";
 import { SettingsManager } from "../src/core/settings-manager.js";
+=======
+import { CONFIG_DIR_NAME } from "../src/config.ts";
+import { SettingsManager } from "../src/core/settings-manager.ts";
+>>>>>>> upstream/main
 
 describe("SettingsManager", () => {
 	const testDir = join(process.cwd(), "test-settings-tmp");
@@ -226,14 +231,22 @@ describe("SettingsManager", () => {
 	});
 
 	describe("retry", () => {
+<<<<<<< HEAD
 		it("should default provider timeout to five minutes", () => {
+=======
+		it("should leave provider timeout unset by default", () => {
+>>>>>>> upstream/main
 			const givenSettingsPath = join(agentDir, "settings.json");
 			writeFileSync(givenSettingsPath, JSON.stringify({ theme: "dark" }));
 
 			const whenManager = SettingsManager.create(projectDir, agentDir);
 			const thenRetrySettings = whenManager.getProviderRetrySettings();
 
+<<<<<<< HEAD
 			expect(thenRetrySettings.timeoutMs).toBe(300_000);
+=======
+			expect(thenRetrySettings.timeoutMs).toBeUndefined();
+>>>>>>> upstream/main
 		});
 
 		it("should preserve explicit provider timeout", () => {

@@ -8,7 +8,11 @@ export {
 	createBashTool,
 	createBashToolDefinition,
 	createLocalBashOperations,
+<<<<<<< HEAD
 } from "./bash.js";
+=======
+} from "./bash.ts";
+>>>>>>> upstream/main
 export {
 	createEditTool,
 	createEditToolDefinition,
@@ -16,8 +20,13 @@ export {
 	type EditToolDetails,
 	type EditToolInput,
 	type EditToolOptions,
+<<<<<<< HEAD
 } from "./edit.js";
 export { withFileMutationQueue } from "./file-mutation-queue.js";
+=======
+} from "./edit.ts";
+export { withFileMutationQueue } from "./file-mutation-queue.ts";
+>>>>>>> upstream/main
 export {
 	createFindTool,
 	createFindToolDefinition,
@@ -25,7 +34,11 @@ export {
 	type FindToolDetails,
 	type FindToolInput,
 	type FindToolOptions,
+<<<<<<< HEAD
 } from "./find.js";
+=======
+} from "./find.ts";
+>>>>>>> upstream/main
 export {
 	createGrepTool,
 	createGrepToolDefinition,
@@ -33,7 +46,11 @@ export {
 	type GrepToolDetails,
 	type GrepToolInput,
 	type GrepToolOptions,
+<<<<<<< HEAD
 } from "./grep.js";
+=======
+} from "./grep.ts";
+>>>>>>> upstream/main
 export {
 	createLsTool,
 	createLsToolDefinition,
@@ -41,7 +58,11 @@ export {
 	type LsToolDetails,
 	type LsToolInput,
 	type LsToolOptions,
+<<<<<<< HEAD
 } from "./ls.js";
+=======
+} from "./ls.ts";
+>>>>>>> upstream/main
 export {
 	createReadTool,
 	createReadToolDefinition,
@@ -49,7 +70,11 @@ export {
 	type ReadToolDetails,
 	type ReadToolInput,
 	type ReadToolOptions,
+<<<<<<< HEAD
 } from "./read.js";
+=======
+} from "./read.ts";
+>>>>>>> upstream/main
 export {
 	DEFAULT_MAX_BYTES,
 	DEFAULT_MAX_LINES,
@@ -59,13 +84,18 @@ export {
 	truncateHead,
 	truncateLine,
 	truncateTail,
+<<<<<<< HEAD
 } from "./truncate.js";
+=======
+} from "./truncate.ts";
+>>>>>>> upstream/main
 export {
 	createWriteTool,
 	createWriteToolDefinition,
 	type WriteOperations,
 	type WriteToolInput,
 	type WriteToolOptions,
+<<<<<<< HEAD
 } from "./write.js";
 
 import type { AgentTool } from "@earendil-works/pi-agent-core";
@@ -77,6 +107,19 @@ import { createGrepTool, createGrepToolDefinition, type GrepToolOptions } from "
 import { createLsTool, createLsToolDefinition, type LsToolOptions } from "./ls.js";
 import { createReadTool, createReadToolDefinition, type ReadToolOptions } from "./read.js";
 import { createWriteTool, createWriteToolDefinition, type WriteToolOptions } from "./write.js";
+=======
+} from "./write.ts";
+
+import type { AgentTool } from "@earendil-works/pi-agent-core";
+import type { ToolDefinition } from "../extensions/types.ts";
+import { type BashToolOptions, createBashTool, createBashToolDefinition } from "./bash.ts";
+import { createEditTool, createEditToolDefinition, type EditToolOptions } from "./edit.ts";
+import { createFindTool, createFindToolDefinition, type FindToolOptions } from "./find.ts";
+import { createGrepTool, createGrepToolDefinition, type GrepToolOptions } from "./grep.ts";
+import { createLsTool, createLsToolDefinition, type LsToolOptions } from "./ls.ts";
+import { createReadTool, createReadToolDefinition, type ReadToolOptions } from "./read.ts";
+import { createWriteTool, createWriteToolDefinition, type WriteToolOptions } from "./write.ts";
+>>>>>>> upstream/main
 
 export type Tool = AgentTool<any>;
 export type ToolDef = ToolDefinition<any, any>;

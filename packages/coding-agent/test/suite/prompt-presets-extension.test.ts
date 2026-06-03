@@ -1,11 +1,19 @@
 import { type Api, getModels, getProviders, type Model } from "@earendil-works/pi-ai";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { buildDynamicSystemPrompt } from "../../src/core/dynamic-prompt/build.js";
+=======
+import { buildDynamicSystemPrompt } from "../../src/core/dynamic-prompt/build.ts";
+>>>>>>> upstream/main
 import {
 	type PromptPresetSettings,
 	resolvePreset,
 	resolvePresetName,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/prompt-preset/presets.js";
+=======
+} from "../../src/core/extensions/builtin/prompt-preset/presets.ts";
+>>>>>>> upstream/main
 
 function createModel(id: string, provider: string, api: Api = "openai-responses"): Model<Api> {
 	return {
@@ -65,7 +73,11 @@ describe("prompt preset resolver", () => {
 
 		// then
 		expect(preset?.name).toBe(expectedName);
+<<<<<<< HEAD
 		expect(preset?.prompt).toContain("You are helix");
+=======
+		expect(preset?.prompt).toContain("You are senpi");
+>>>>>>> upstream/main
 		expect(preset?.prompt).toContain("reasoning effort");
 		expect(preset?.prompt).toContain("## Intent Gate");
 		expect(preset?.prompt).toContain("I read this as");
@@ -93,7 +105,11 @@ describe("prompt preset resolver", () => {
 
 		// then
 		expect(preset?.name).toBe("gpt-5.5");
+<<<<<<< HEAD
 		expect(preset?.prompt).toContain("You are helix");
+=======
+		expect(preset?.prompt).toContain("You are senpi");
+>>>>>>> upstream/main
 		expect(preset?.prompt).toContain("Reason efficiently");
 		expect(preset?.prompt).toContain("outcome-first");
 		expect(preset?.prompt).toContain("Preamble");
@@ -135,7 +151,11 @@ describe("prompt preset resolver", () => {
 
 		// then
 		expect(preset?.name).toBe(expectedName);
+<<<<<<< HEAD
 		expect(preset?.prompt).toContain("You are helix");
+=======
+		expect(preset?.prompt).toContain("You are senpi");
+>>>>>>> upstream/main
 		expect(preset?.prompt).toContain("## Intent Gate");
 		expect(preset?.prompt).toContain("I read this as");
 		expect(preset?.prompt.length).toBeGreaterThan(2_000);
@@ -154,7 +174,11 @@ describe("prompt preset resolver", () => {
 
 		// then
 		expect(preset?.name).toBe("kimi-k2-6");
+<<<<<<< HEAD
 		expect(preset?.prompt).toContain("You are helix");
+=======
+		expect(preset?.prompt).toContain("You are senpi");
+>>>>>>> upstream/main
 		expect(preset?.prompt).toContain("filler verification language");
 		expect(preset?.prompt).toContain("## Intent Gate");
 		expect(preset?.prompt.length).toBeGreaterThan(2_000);
@@ -196,7 +220,11 @@ describe("prompt preset resolver", () => {
 
 	it("fallback prompt contains all expected structural sections", () => {
 		const activePrompt = fallbackPrompt();
+<<<<<<< HEAD
 		expect(activePrompt).toContain("You are helix");
+=======
+		expect(activePrompt).toContain("You are senpi");
+>>>>>>> upstream/main
 		expect(activePrompt).toContain("## Intent Gate");
 		expect(activePrompt).toContain("## Parallel Tool Calls");
 		expect(activePrompt).toContain("## Exploration");
@@ -357,7 +385,11 @@ describe("prompt preset resolver", () => {
 
 	// Codex-style File operations guard. Every GPT-5.x preset must teach the model to
 	// route file edits through `apply_patch`, file reads through `read`, and never to
+<<<<<<< HEAD
 	// substitute inline python (or sed/awk/heredoc) through bash. This is the helix
+=======
+	// substitute inline python (or sed/awk/heredoc) through bash. This is the senpi
+>>>>>>> upstream/main
 	// equivalent of codex's `core/gpt_5_2_prompt.md` Task execution + Shell commands
 	// + apply_patch sections collapsed into a single tuning paragraph.
 	it.each([
@@ -391,7 +423,11 @@ describe("prompt preset resolver", () => {
 		expect(prompt.toLowerCase()).toMatch(/python/);
 		// Negative guard: codex's "do not waste tokens re-reading after apply_patch".
 		expect(prompt.toLowerCase()).toMatch(/re-?read|do not.*read/);
+<<<<<<< HEAD
 		// Positive routing: prefer the helix `grep` tool over invoking grep/rg through bash.
+=======
+		// Positive routing: prefer the senpi `grep` tool over invoking grep/rg through bash.
+>>>>>>> upstream/main
 		expect(prompt.toLowerCase()).toMatch(/\brg\b|ripgrep/);
 	});
 });

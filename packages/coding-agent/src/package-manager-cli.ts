@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 import chalk from "chalk";
 import { selectConfig } from "./cli/config-selector.js";
+=======
+import { Markdown, type MarkdownTheme } from "@earendil-works/pi-tui";
+import chalk from "chalk";
+import { selectConfig } from "./cli/config-selector.ts";
+>>>>>>> upstream/main
 import {
 	APP_NAME,
 	detectInstallMethod,
@@ -10,6 +16,7 @@ import {
 	PACKAGE_NAME,
 	type SelfUpdateCommand,
 	VERSION,
+<<<<<<< HEAD
 } from "./config.js";
 import { DefaultPackageManager } from "./core/package-manager.js";
 import { SettingsManager } from "./core/settings-manager.js";
@@ -19,11 +26,42 @@ import {
 	cleanupWindowsSelfUpdateQuarantine,
 	quarantineWindowsNativeDependencies,
 } from "./utils/windows-self-update.js";
+=======
+} from "./config.ts";
+import { DefaultPackageManager } from "./core/package-manager.ts";
+import { SettingsManager } from "./core/settings-manager.ts";
+import { spawnProcess } from "./utils/child-process.ts";
+import { getLatestPiRelease, isNewerPackageVersion } from "./utils/version-check.ts";
+import {
+	cleanupWindowsSelfUpdateQuarantine,
+	quarantineWindowsNativeDependencies,
+} from "./utils/windows-self-update.ts";
+>>>>>>> upstream/main
 
 export type PackageCommand = "install" | "remove" | "update" | "list";
 
 type UpdateTarget = { type: "all" } | { type: "self" } | { type: "extensions"; source?: string };
 
+<<<<<<< HEAD
+=======
+const SELF_UPDATE_NOTE_MARKDOWN_THEME: MarkdownTheme = {
+	heading: (text) => chalk.bold(chalk.yellow(text)),
+	link: (text) => chalk.cyan(text),
+	linkUrl: (text) => chalk.dim(text),
+	code: (text) => chalk.yellow(text),
+	codeBlock: (text) => chalk.dim(text),
+	codeBlockBorder: (text) => chalk.dim(text),
+	quote: (text) => chalk.dim(text),
+	quoteBorder: (text) => chalk.dim(text),
+	hr: (text) => chalk.dim(text),
+	listBullet: (text) => chalk.yellow(text),
+	bold: (text) => chalk.bold(text),
+	italic: (text) => chalk.italic(text),
+	strikethrough: (text) => chalk.strikethrough(text),
+	underline: (text) => chalk.underline(text),
+};
+
+>>>>>>> upstream/main
 interface PackageCommandOptions {
 	command: PackageCommand;
 	source?: string;
@@ -69,7 +107,11 @@ function printPackageCommandHelp(command: PackageCommand): void {
 Install a package and add it to settings.
 
 Options:
+<<<<<<< HEAD
 -l, --local    Install project-locally (.helix/settings.json)
+=======
+-l, --local    Install project-locally (.senpi/settings.json)
+>>>>>>> upstream/main
 
 Examples:
   ${APP_NAME} install npm:@foo/bar
@@ -89,7 +131,11 @@ Remove a package and its source from settings.
 Alias: ${APP_NAME} uninstall <source> [-l]
 
 Options:
+<<<<<<< HEAD
 -l, --local    Remove from project settings (.helix/settings.json)
+=======
+-l, --local    Remove from project settings (.senpi/settings.json)
+>>>>>>> upstream/main
 
 Examples:
   ${APP_NAME} remove npm:@foo/bar
@@ -293,9 +339,36 @@ function printSelfUpdateFallback(command: SelfUpdateCommand): void {
 	console.error(chalk.dim(`If this keeps failing, run this command yourself: ${command.display}`));
 }
 
+<<<<<<< HEAD
 interface SelfUpdatePlan {
 	packageName: string;
 	shouldRun: boolean;
+=======
+function printSelfUpdateNote(note: string): void {
+	const trimmedNote = note.trim();
+	if (!trimmedNote) {
+		return;
+	}
+
+	console.log();
+	console.log(chalk.bold(chalk.yellow("Update note")));
+	try {
+		const width = Math.max(20, process.stdout.columns ?? 80);
+		const renderedLines = new Markdown(trimmedNote, 0, 0, SELF_UPDATE_NOTE_MARKDOWN_THEME)
+			.render(width)
+			.map((line) => line.trimEnd());
+		console.log(renderedLines.join("\n"));
+	} catch {
+		console.log(trimmedNote);
+	}
+	console.log();
+}
+
+interface SelfUpdatePlan {
+	packageName: string;
+	shouldRun: boolean;
+	note?: string;
+>>>>>>> upstream/main
 }
 
 async function getSelfUpdatePlan(force: boolean): Promise<SelfUpdatePlan> {
@@ -307,7 +380,11 @@ async function getSelfUpdatePlan(force: boolean): Promise<SelfUpdatePlan> {
 		const latestRelease = await getLatestPiRelease(VERSION);
 		const packageName = latestRelease?.packageName ?? PACKAGE_NAME;
 		if (!latestRelease || packageName !== PACKAGE_NAME || isNewerPackageVersion(latestRelease.version, VERSION)) {
+<<<<<<< HEAD
 			return { packageName, shouldRun: true };
+=======
+			return { packageName, shouldRun: true, ...(latestRelease?.note ? { note: latestRelease.note } : {}) };
+>>>>>>> upstream/main
 		}
 	} catch {
 		return { packageName: PACKAGE_NAME, shouldRun: true };
@@ -522,6 +599,12 @@ export async function handlePackageCommand(args: string[]): Promise<boolean> {
 						process.exitCode = 1;
 						return true;
 					}
+<<<<<<< HEAD
+=======
+					if (selfUpdatePlan.note) {
+						printSelfUpdateNote(selfUpdatePlan.note);
+					}
+>>>>>>> upstream/main
 					try {
 						if (installMethod === "npm") {
 							prepareWindowsNpmSelfUpdate();

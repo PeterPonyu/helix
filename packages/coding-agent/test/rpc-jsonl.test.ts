@@ -1,6 +1,10 @@
 import { Readable } from "node:stream";
 import { describe, expect, test } from "vitest";
+<<<<<<< HEAD
 import { attachJsonlLineReader, serializeJsonLine } from "../src/modes/rpc/jsonl.js";
+=======
+import { attachJsonlLineReader, serializeJsonLine } from "../src/modes/rpc/jsonl.ts";
+>>>>>>> upstream/main
 
 describe("RPC JSONL framing", () => {
 	test("serializes strict JSONL records without escaping Unicode separators", () => {

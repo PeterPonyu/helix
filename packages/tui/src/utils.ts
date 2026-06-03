@@ -1,13 +1,31 @@
 import { eastAsianWidth } from "get-east-asian-width";
 
+<<<<<<< HEAD
 // Grapheme segmenter (shared instance)
 const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+=======
+// segmenters (shared instance)
+const graphemeSegmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+const wordSegmenter = new Intl.Segmenter(undefined, { granularity: "word" });
+>>>>>>> upstream/main
 
 /**
  * Get the shared grapheme segmenter instance.
  */
+<<<<<<< HEAD
 export function getSegmenter(): Intl.Segmenter {
 	return segmenter;
+=======
+export function getGraphemeSegmenter(): Intl.Segmenter {
+	return graphemeSegmenter;
+}
+
+/**
+ * Get the shared word segmenter instance.
+ */
+export function getWordSegmenter(): Intl.Segmenter {
+	return wordSegmenter;
+>>>>>>> upstream/main
 }
 
 /**
@@ -62,7 +80,11 @@ function truncateFragmentToWidth(text: string, maxWidth: number): { text: string
 	if (!hasAnsi && !hasTabs) {
 		let result = "";
 		let width = 0;
+<<<<<<< HEAD
 		for (const { segment } of segmenter.segment(text)) {
+=======
+		for (const { segment } of graphemeSegmenter.segment(text)) {
+>>>>>>> upstream/main
 			const w = graphemeWidth(segment);
 			if (width + w > maxWidth) {
 				break;
@@ -109,7 +131,11 @@ function truncateFragmentToWidth(text: string, maxWidth: number): { text: string
 			end++;
 		}
 
+<<<<<<< HEAD
 		for (const { segment } of segmenter.segment(text.slice(i, end))) {
+=======
+		for (const { segment } of graphemeSegmenter.segment(text.slice(i, end))) {
+>>>>>>> upstream/main
 			const w = graphemeWidth(segment);
 			if (width + w > maxWidth) {
 				return { text: result, width };
@@ -154,6 +180,13 @@ function finalizeTruncatedResult(
  * check to avoid running the RGI_Emoji regex unnecessarily.
  */
 function graphemeWidth(segment: string): number {
+<<<<<<< HEAD
+=======
+	if (segment === "\t") {
+		return 3;
+	}
+
+>>>>>>> upstream/main
 	// Zero-width clusters
 	if (zeroWidthRegex.test(segment)) {
 		return 0;
@@ -239,7 +272,11 @@ export function visibleWidth(str: string): number {
 
 	// Calculate width
 	let width = 0;
+<<<<<<< HEAD
 	for (const { segment } of segmenter.segment(clean)) {
+=======
+	for (const { segment } of graphemeSegmenter.segment(clean)) {
+>>>>>>> upstream/main
 		width += graphemeWidth(segment);
 	}
 
@@ -662,7 +699,14 @@ export function wrapTextWithAnsi(text: string, width: number): string[] {
 	for (const inputLine of inputLines) {
 		// Prepend active ANSI codes from previous lines (except for first line)
 		const prefix = result.length > 0 ? tracker.getActiveCodes() : "";
+<<<<<<< HEAD
 		result.push(...wrapSingleLine(prefix + inputLine, width));
+=======
+		const wrappedLines = wrapSingleLine(prefix + inputLine, width);
+		for (const wrappedLine of wrappedLines) {
+			result.push(wrappedLine);
+		}
+>>>>>>> upstream/main
 		// Update tracker with codes from this line for next iteration
 		updateTrackerFromText(inputLine, tracker);
 	}
@@ -706,7 +750,13 @@ function wrapSingleLine(line: string, width: number): string[] {
 
 			// Break long token - breakLongWord handles its own resets
 			const broken = breakLongWord(token, width, tracker);
+<<<<<<< HEAD
 			wrapped.push(...broken.slice(0, -1));
+=======
+			for (let i = 0; i < broken.length - 1; i++) {
+				wrapped.push(broken[i]!);
+			}
+>>>>>>> upstream/main
 			currentLine = broken[broken.length - 1];
 			currentVisibleLength = visibleWidth(currentLine);
 			continue;
@@ -749,7 +799,11 @@ function wrapSingleLine(line: string, width: number): string[] {
 	return wrapped.length > 0 ? wrapped.map((line) => line.trimEnd()) : [""];
 }
 
+<<<<<<< HEAD
 const PUNCTUATION_REGEX = /[(){}[\]<>.,;:'"!?+\-=*/\\|&%^$#@~`]/;
+=======
+export const PUNCTUATION_REGEX = /[(){}[\]<>.,;:'"!?+\-=*/\\|&%^$#@~`]/;
+>>>>>>> upstream/main
 
 /**
  * Check if a character is whitespace.
@@ -790,7 +844,7 @@ function breakLongWord(word: string, width: number, tracker: AnsiCodeTracker): s
 			}
 			// Segment this non-ANSI portion into graphemes
 			const textPortion = word.slice(i, end);
-			for (const seg of segmenter.segment(textPortion)) {
+			for (const seg of graphemeSegmenter.segment(textPortion)) {
 				segments.push({ type: "grapheme", value: seg.segment });
 			}
 			i = end;
@@ -834,6 +888,48 @@ function breakLongWord(word: string, width: number, tracker: AnsiCodeTracker): s
 	return lines.length > 0 ? lines : [""];
 }
 
+function sgrLeavesDefaultBackground(params: string): boolean {
+	if (params === "") {
+		return true;
+	}
+
+	const parts = params.split(";");
+	let backgroundIsDefault = false;
+	let index = 0;
+	while (index < parts.length) {
+		const part = parts[index] ?? "";
+		const code = part === "" ? 0 : Number.parseInt(part, 10);
+		if (Number.isNaN(code)) {
+			index++;
+			continue;
+		}
+		if (code === 0 || code === 49) {
+			backgroundIsDefault = true;
+			index++;
+			continue;
+		}
+		if ((code === 38 || code === 48) && parts[index + 1] === "5" && parts[index + 2] !== undefined) {
+			if (code === 48) {
+				backgroundIsDefault = false;
+			}
+			index += 3;
+			continue;
+		}
+		if ((code === 38 || code === 48) && parts[index + 1] === "2" && parts[index + 4] !== undefined) {
+			if (code === 48) {
+				backgroundIsDefault = false;
+			}
+			index += 5;
+			continue;
+		}
+		if ((code >= 40 && code <= 47) || (code >= 100 && code <= 107)) {
+			backgroundIsDefault = false;
+		}
+		index++;
+	}
+	return backgroundIsDefault;
+}
+
 /**
  * Apply background color to a line, padding to full width.
  *
@@ -859,12 +955,26 @@ export function applyBackgroundToLine(line: string, width: number, bgFn: (text: 
 
 	const bgStart = wrappedMarker.slice(0, markerIndex);
 	const bgEnd = wrappedMarker.slice(markerIndex + marker.length);
+<<<<<<< HEAD
 	const restored = withPadding.replace(/\x1b\[([0-9;]*)m/g, (sequence: string, params: string) => {
 		if (params === "" || params.split(";").some((param) => param === "0" || param === "49")) {
+=======
+	const restoredLine = line.replace(/\x1b\[([0-9;]*)m/g, (sequence: string, params: string) => {
+		if (sgrLeavesDefaultBackground(params)) {
+>>>>>>> upstream/main
 			return `${sequence}${bgStart}`;
 		}
 		return sequence;
 	});
+<<<<<<< HEAD
+=======
+	const tracker = new AnsiCodeTracker();
+	updateTrackerFromText(line, tracker);
+	const restored =
+		paddingNeeded > 0 && tracker.hasActiveCodes()
+			? `${restoredLine}\x1b[0m${tracker.getLineEndReset()}${bgStart}${padding}`
+			: restoredLine + padding;
+>>>>>>> upstream/main
 	return `${bgStart}${restored}${bgEnd}`;
 }
 
@@ -927,7 +1037,11 @@ export function truncateToWidth(
 	const hasTabs = text.includes("\t");
 
 	if (!hasAnsi && !hasTabs) {
+<<<<<<< HEAD
 		for (const { segment } of segmenter.segment(text)) {
+=======
+		for (const { segment } of graphemeSegmenter.segment(text)) {
+>>>>>>> upstream/main
 			const width = graphemeWidth(segment);
 			if (keepContiguousPrefix && keptWidth + width <= targetWidth) {
 				result += segment;
@@ -982,7 +1096,11 @@ export function truncateToWidth(
 				end++;
 			}
 
+<<<<<<< HEAD
 			for (const { segment } of segmenter.segment(text.slice(i, end))) {
+=======
+			for (const { segment } of graphemeSegmenter.segment(text.slice(i, end))) {
+>>>>>>> upstream/main
 				const width = graphemeWidth(segment);
 				if (keepContiguousPrefix && keptWidth + width <= targetWidth) {
 					if (pendingAnsi) {
@@ -1052,7 +1170,11 @@ export function sliceWithWidth(
 		let textEnd = i;
 		while (textEnd < line.length && !extractAnsiCode(line, textEnd)) textEnd++;
 
+<<<<<<< HEAD
 		for (const { segment } of segmenter.segment(line.slice(i, textEnd))) {
+=======
+		for (const { segment } of graphemeSegmenter.segment(line.slice(i, textEnd))) {
+>>>>>>> upstream/main
 			const w = graphemeWidth(segment);
 			const inRange = currentCol >= startCol && currentCol < endCol;
 			const fits = !strict || currentCol + w <= endCol;
@@ -1120,7 +1242,11 @@ export function extractSegments(
 		let textEnd = i;
 		while (textEnd < line.length && !extractAnsiCode(line, textEnd)) textEnd++;
 
+<<<<<<< HEAD
 		for (const { segment } of segmenter.segment(line.slice(i, textEnd))) {
+=======
+		for (const { segment } of graphemeSegmenter.segment(line.slice(i, textEnd))) {
+>>>>>>> upstream/main
 			const w = graphemeWidth(segment);
 
 			if (currentCol < beforeEnd) {

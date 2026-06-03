@@ -11,13 +11,21 @@
  * - Minimal: Shows only tool call, no output (this extension's collapsed mode)
  *
  * Usage:
+<<<<<<< HEAD
  *   helix -e ./minimal-mode.ts
+=======
+ *   senpi -e ./minimal-mode.ts
+>>>>>>> upstream/main
  *
  * Then use ctrl+o to toggle between minimal (collapsed) and full (expanded) views.
  */
 
+<<<<<<< HEAD
 import { Text } from "@earendil-works/pi-tui";
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 import {
 	createBashTool,
 	createEditTool,
@@ -26,7 +34,12 @@ import {
 	createLsTool,
 	createReadTool,
 	createWriteTool,
+<<<<<<< HEAD
 } from "@helix-bio/helix";
+=======
+} from "@code-yeongyu/senpi";
+import { Text } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 import { homedir } from "os";
 
 /**

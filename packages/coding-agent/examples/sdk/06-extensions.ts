@@ -5,15 +5,24 @@
  * They provide a unified system for extensions, custom tools, commands, and more.
  *
  * By default, extension files are discovered from:
+<<<<<<< HEAD
  * - ~/.helix/agent/extensions/
  * - <cwd>/.helix/extensions/
+=======
+ * - ~/.senpi/agent/extensions/
+ * - <cwd>/.senpi/extensions/
+>>>>>>> upstream/main
  * - Paths specified in settings.json "extensions" array
  *
  * An extension is a TypeScript file that exports a default function:
  *   export default function (pi: ExtensionAPI) { ... }
  */
 
+<<<<<<< HEAD
 import { createAgentSession, DefaultResourceLoader, getAgentDir, SessionManager } from "@helix-bio/helix";
+=======
+import { createAgentSession, DefaultResourceLoader, getAgentDir, SessionManager } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 // Extensions are discovered automatically from standard locations.
 // You can also add paths via settings.json or DefaultResourceLoader options.
@@ -52,7 +61,11 @@ try {
 
 // Example extension file (./my-logging-extension.ts):
 /*
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	pi.on("agent_start", async () => {

@@ -3,6 +3,7 @@ import { Container, Text } from "@earendil-works/pi-tui";
 import { mkdir as fsMkdir, writeFile as fsWriteFile } from "fs/promises";
 import { dirname } from "path";
 import { type Static, Type } from "typebox";
+<<<<<<< HEAD
 import { keyHint } from "../../modes/interactive/components/keybinding-hints.js";
 import { getLanguageFromPath, highlightCode } from "../../modes/interactive/theme/theme.js";
 import type { ToolDefinition, ToolRenderResultOptions } from "../extensions/types.js";
@@ -11,6 +12,16 @@ import { withFileMutationQueue } from "./file-mutation-queue.js";
 import { resolveToCwd } from "./path-utils.js";
 import { invalidArgText, normalizeDisplayText, replaceTabs, shortenPath, str } from "./render-utils.js";
 import { wrapToolDefinition } from "./tool-definition-wrapper.js";
+=======
+import { keyHint } from "../../modes/interactive/components/keybinding-hints.ts";
+import { getLanguageFromPath, highlightCode, type Theme } from "../../modes/interactive/theme/theme.ts";
+import type { ToolDefinition, ToolRenderResultOptions } from "../extensions/types.ts";
+import { renderToolDiff } from "./diff-render.ts";
+import { withFileMutationQueue } from "./file-mutation-queue.ts";
+import { resolveToCwd } from "./path-utils.ts";
+import { normalizeDisplayText, renderToolPath, replaceTabs, str } from "./render-utils.ts";
+import { wrapToolDefinition } from "./tool-definition-wrapper.ts";
+>>>>>>> upstream/main
 
 const writeSchema = Type.Object({
 	path: Type.String({ description: "Path to the file to write (relative or absolute)" }),
@@ -147,6 +158,7 @@ function generateAddedContentDiff(content: string, visibleLineCount: number): st
 function formatWriteCall(
 	args: { path?: string; file_path?: string; content?: string } | undefined,
 	options: WriteCallRenderOptions,
+<<<<<<< HEAD
 	theme: typeof import("../../modes/interactive/theme/theme.js").theme,
 	cache: WriteHighlightCache | undefined,
 ): string {
@@ -155,6 +167,16 @@ function formatWriteCall(
 	const path = rawPath !== null ? shortenPath(rawPath) : null;
 	const invalidArg = invalidArgText(theme);
 	let text = `${theme.fg("toolTitle", theme.bold("write"))} ${path === null ? invalidArg : path ? theme.fg("accent", path) : theme.fg("toolOutput", "...")}`;
+=======
+	theme: Theme,
+	cache: WriteHighlightCache | undefined,
+	cwd: string,
+): string {
+	const rawPath = str(args?.file_path ?? args?.path);
+	const fileContent = str(args?.content);
+	const pathDisplay = renderToolPath(rawPath, theme, cwd);
+	let text = `${theme.fg("toolTitle", theme.bold("write"))} ${pathDisplay}`;
+>>>>>>> upstream/main
 
 	if (fileContent === null) {
 		text += `\n\n${theme.fg("error", "[invalid content arg - expected string]")}`;
@@ -187,7 +209,11 @@ function formatWriteCall(
 
 function formatWriteResult(
 	result: { content: Array<{ type: string; text?: string; data?: string; mimeType?: string }>; isError?: boolean },
+<<<<<<< HEAD
 	theme: typeof import("../../modes/interactive/theme/theme.js").theme,
+=======
+	theme: Theme,
+>>>>>>> upstream/main
 ): string | undefined {
 	if (!result.isError) {
 		return undefined;
@@ -224,6 +250,7 @@ export function createWriteToolDefinition(
 		) {
 			const absolutePath = resolveToCwd(path, cwd);
 			const dir = dirname(absolutePath);
+<<<<<<< HEAD
 			return withFileMutationQueue(
 				absolutePath,
 				() =>
@@ -262,6 +289,31 @@ export function createWriteToolDefinition(
 						},
 					),
 			);
+=======
+			return withFileMutationQueue(absolutePath, async () => {
+				// Do not reject from an abort event listener here: that would release the
+				// mutation queue while an in-flight filesystem operation may still finish.
+				// Checking signal.aborted after each await observes the same aborts while
+				// keeping the queue locked until the current operation has settled.
+				const throwIfAborted = (): void => {
+					if (signal?.aborted) throw new Error("Operation aborted");
+				};
+
+				throwIfAborted();
+				// Create parent directories if needed.
+				await ops.mkdir(dir);
+				throwIfAborted();
+
+				// Write the file contents.
+				await ops.writeFile(absolutePath, content);
+				throwIfAborted();
+
+				return {
+					content: [{ type: "text", text: `Successfully wrote ${content.length} bytes to ${path}` }],
+					details: undefined,
+				};
+			});
+>>>>>>> upstream/main
 		},
 		renderCall(args, theme, context) {
 			const renderArgs = args as { path?: string; file_path?: string; content?: string } | undefined;
@@ -282,6 +334,10 @@ export function createWriteToolDefinition(
 					{ argsComplete: context.argsComplete, expanded: context.expanded, isPartial: context.isPartial },
 					theme,
 					component.cache,
+<<<<<<< HEAD
+=======
+					context.cwd,
+>>>>>>> upstream/main
 				),
 			);
 			return component;

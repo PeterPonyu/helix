@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { SettingsManager } from "../../../settings-manager.js";
 import type { ExtensionAPI } from "../../types.js";
 import { extractPatchedPaths } from "../gpt-apply-patch/index.js";
@@ -11,6 +12,21 @@ import { PermissionService } from "./service.js";
 import { loadPermissionSettings } from "./settings.js";
 import { appendApproved } from "./storage.js";
 import { CorrectedError, DeniedError, RejectedError, type Request, type Ruleset } from "./types.js";
+=======
+import { SettingsManager } from "../../../settings-manager.ts";
+import type { ExtensionAPI } from "../../types.ts";
+import { extractPatchedPaths } from "../gpt-apply-patch/index.ts";
+import { parsePermissionFlag } from "./cli.ts";
+import { disabled } from "./config.ts";
+import { createEventEmitter } from "./events.ts";
+import { handleNoUI } from "./non-interactive.ts";
+import { createBuiltinParserRegistry, type ParserRegistry } from "./parsers.ts";
+import { showPermissionPrompt } from "./prompt.ts";
+import { PermissionService } from "./service.ts";
+import { loadPermissionSettings } from "./settings.ts";
+import { appendApproved } from "./storage.ts";
+import { CorrectedError, DeniedError, RejectedError, type Request, type Ruleset } from "./types.ts";
+>>>>>>> upstream/main
 
 function createRequestIDFactory(): () => string {
 	let counter = 0;

@@ -12,11 +12,19 @@
  * - Progress tracking widget during execution
  */
 
+<<<<<<< HEAD
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
 import type { AssistantMessage, TextContent } from "@earendil-works/pi-ai";
 import { Key } from "@earendil-works/pi-tui";
 import type { ExtensionAPI, ExtensionContext } from "@helix-bio/helix";
 import { extractTodoItems, isSafeCommand, markCompletedSteps, type TodoItem } from "./utils.js";
+=======
+import type { ExtensionAPI, ExtensionContext } from "@code-yeongyu/senpi";
+import type { AgentMessage } from "@earendil-works/pi-agent-core";
+import type { AssistantMessage, TextContent } from "@earendil-works/pi-ai";
+import { Key } from "@earendil-works/pi-tui";
+import { extractTodoItems, isSafeCommand, markCompletedSteps, type TodoItem } from "./utils.ts";
+>>>>>>> upstream/main
 
 // Tools
 const PLAN_MODE_TOOLS = ["read", "bash", "grep", "find", "ls", "questionnaire"];

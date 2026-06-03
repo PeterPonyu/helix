@@ -5,24 +5,40 @@ import { fileURLToPath } from "node:url";
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { type FauxResponseStep, fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
 import { afterEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { CONFIG_DIR_NAME, ENV_AGENT_DIR } from "../../src/config.js";
 import { resolveContinuationConfig } from "../../src/core/extensions/builtin/todotools/continuation/config.js";
 import { CONTINUATION_DIRECTIVE } from "../../src/core/extensions/builtin/todotools/continuation/prompt.js";
+=======
+import { CONFIG_DIR_NAME, ENV_AGENT_DIR } from "../../src/config.ts";
+import { resolveContinuationConfig } from "../../src/core/extensions/builtin/todotools/continuation/config.ts";
+import { CONTINUATION_DIRECTIVE } from "../../src/core/extensions/builtin/todotools/continuation/prompt.ts";
+>>>>>>> upstream/main
 import todotoolsExtension, {
 	getTodoResultLines,
 	getTodoWidgetLines,
 	TODO_STATE_ENTRY_TYPE,
 	type TodoItem,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/todotools/index.js";
+=======
+} from "../../src/core/extensions/builtin/todotools/index.ts";
+>>>>>>> upstream/main
 import type {
 	Extension,
 	ExtensionContext,
 	ExtensionFactory,
 	ExtensionRuntime,
 	ExtensionUIContext,
+<<<<<<< HEAD
 } from "../../src/core/extensions/types.js";
 import { assistantMsg, createTestExtensionsResult, createTestResourceLoader, userMsg } from "../utilities.js";
 import { createHarness, type Harness } from "./harness.js";
+=======
+} from "../../src/core/extensions/types.ts";
+import { assistantMsg, createTestExtensionsResult, createTestResourceLoader, userMsg } from "../utilities.ts";
+import { createHarness, type Harness } from "./harness.ts";
+>>>>>>> upstream/main
 
 const REPO_ROOT = fileURLToPath(new URL("../../../../", import.meta.url));
 
@@ -208,6 +224,10 @@ function createExtensionContext(harness: Harness, uiContext: ExtensionUIContext)
 	return {
 		cwd: harness.tempDir,
 		hasUI: true,
+<<<<<<< HEAD
+=======
+		mode: "tui",
+>>>>>>> upstream/main
 		sessionManager: harness.sessionManager,
 		modelRegistry: undefined as never,
 		model: undefined,
@@ -296,7 +316,11 @@ describe("todotools continuation compatibility", () => {
 			{ content: "Queued task", status: "pending", priority: "medium" },
 		];
 
+<<<<<<< HEAD
 		expect(TODO_STATE_ENTRY_TYPE).toBe("helix.todo-state");
+=======
+		expect(TODO_STATE_ENTRY_TYPE).toBe("senpi.todo-state");
+>>>>>>> upstream/main
 		expect(getTodoWidgetLines(todos)).toEqual(["Todo", "[•] Active task", "[✓] Done task", "[ ] Queued task"]);
 		expect(getTodoResultLines(todos)).toEqual(["2 todos", "[•] Active task", "[✓] Done task", "[ ] Queued task"]);
 	});

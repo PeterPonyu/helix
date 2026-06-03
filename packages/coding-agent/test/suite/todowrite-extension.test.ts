@@ -1,11 +1,19 @@
 import { fileURLToPath } from "node:url";
 import { fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { discoverAndLoadExtensions } from "../../src/core/extensions/loader.js";
 import type { ExtensionAPI, ToolDefinition } from "../../src/core/extensions/types.js";
 import { SessionManager } from "../../src/core/session-manager.js";
 import { assistantMsg, createTestResourceLoader, userMsg } from "../utilities.js";
 import { createHarness, getAssistantTexts, type Harness } from "./harness.js";
+=======
+import { discoverAndLoadExtensions } from "../../src/core/extensions/loader.ts";
+import type { ExtensionAPI, ToolDefinition } from "../../src/core/extensions/types.ts";
+import { SessionManager } from "../../src/core/session-manager.ts";
+import { assistantMsg, createTestResourceLoader, userMsg } from "../utilities.ts";
+import { createHarness, getAssistantTexts, type Harness } from "./harness.ts";
+>>>>>>> upstream/main
 
 const TODOWRITE_EXTENSION_PATH = fileURLToPath(
 	new URL("../../src/core/extensions/builtin/todotools/index.ts", import.meta.url),
@@ -22,7 +30,11 @@ async function loadTodoExtensionModule() {
 }
 
 async function captureTodoWriteToolDefinition() {
+<<<<<<< HEAD
 	const { registerTodoWriteTool } = await import("../../src/core/extensions/builtin/todotools/tools/todowrite.js");
+=======
+	const { registerTodoWriteTool } = await import("../../src/core/extensions/builtin/todotools/tools/todowrite.ts");
+>>>>>>> upstream/main
 	let capturedTool: ToolDefinition | undefined;
 
 	const mockPi = {

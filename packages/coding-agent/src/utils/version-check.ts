@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { PACKAGE_NAME } from "../config.js";
 import { getPiUserAgent } from "./pi-user-agent.js";
+=======
+import { PACKAGE_NAME } from "../config.ts";
+import { getPiUserAgent } from "./pi-user-agent.ts";
+>>>>>>> upstream/main
 
 const LATEST_VERSION_URL = `https://registry.npmjs.org/${encodeURIComponent(PACKAGE_NAME)}/latest`;
 const DEFAULT_VERSION_CHECK_TIMEOUT_MS = 10000;
@@ -7,6 +12,10 @@ const DEFAULT_VERSION_CHECK_TIMEOUT_MS = 10000;
 export interface LatestPiRelease {
 	version: string;
 	packageName?: string;
+<<<<<<< HEAD
+=======
+	note?: string;
+>>>>>>> upstream/main
 }
 
 interface ParsedVersion {
@@ -68,13 +77,22 @@ export async function getLatestPiRelease(
 	});
 	if (!response.ok) return undefined;
 
+<<<<<<< HEAD
 	const data = (await response.json()) as { packageName?: unknown; version?: unknown };
+=======
+	const data = (await response.json()) as { packageName?: unknown; version?: unknown; note?: unknown };
+>>>>>>> upstream/main
 	if (typeof data.version !== "string" || !data.version.trim()) {
 		return undefined;
 	}
 	const packageName =
 		typeof data.packageName === "string" && data.packageName.trim() ? data.packageName.trim() : undefined;
+<<<<<<< HEAD
 	return { version: data.version.trim(), packageName };
+=======
+	const note = typeof data.note === "string" && data.note.trim() ? data.note.trim() : undefined;
+	return { version: data.version.trim(), packageName, note };
+>>>>>>> upstream/main
 }
 
 export async function getLatestPiVersion(
@@ -84,11 +102,19 @@ export async function getLatestPiVersion(
 	return (await getLatestPiRelease(currentVersion, options))?.version;
 }
 
+<<<<<<< HEAD
 export async function checkForNewPiVersion(currentVersion: string): Promise<string | undefined> {
 	try {
 		const latestVersion = await getLatestPiVersion(currentVersion);
 		if (latestVersion && isNewerPackageVersion(latestVersion, currentVersion)) {
 			return latestVersion;
+=======
+export async function checkForNewPiVersion(currentVersion: string): Promise<LatestPiRelease | undefined> {
+	try {
+		const latestRelease = await getLatestPiRelease(currentVersion);
+		if (latestRelease && isNewerPackageVersion(latestRelease.version, currentVersion)) {
+			return latestRelease;
+>>>>>>> upstream/main
 		}
 		return undefined;
 	} catch {

@@ -1,5 +1,21 @@
-import type { TUI } from "../tui.js";
-import { Text } from "./text.js";
+import type { TUI } from "../tui.ts";
+import { Text } from "./text.ts";
+
+export type LoaderMessageFormatter = (message: string, animationElapsedMs: number) => string;
+
+export interface LoaderIndicatorOptions {
+	/** Animation frames. Use an empty array to hide the indicator. */
+	frames?: string[];
+	/** Frame interval in milliseconds for animated indicators. */
+	intervalMs?: number;
+	/** Optional message formatter called on each message animation frame. */
+	messageFormatter?: LoaderMessageFormatter;
+	/** Frame interval in milliseconds for message animation. Defaults to intervalMs. */
+	messageIntervalMs?: number;
+}
+
+const DEFAULT_FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
+const DEFAULT_INTERVAL_MS = 80;
 
 export type LoaderMessageFormatter = (message: string, animationElapsedMs: number) => string;
 
@@ -31,16 +47,34 @@ export class Loader extends Text {
 	private messageAnimationStartedAt = 0;
 	private ui: TUI | null = null;
 	private renderIndicatorVerbatim = false;
+<<<<<<< HEAD
 
 	constructor(
 		ui: TUI,
 		private spinnerColorFn: (str: string) => string,
 		private messageColorFn: (str: string) => string,
 		private message: string = "Loading...",
+=======
+	private spinnerColorFn: (str: string) => string;
+	private messageColorFn: (str: string) => string;
+	private message: string = "Loading...";
+
+	constructor(
+		ui: TUI,
+		spinnerColorFn: (str: string) => string,
+		messageColorFn: (str: string) => string,
+		message: string = "Loading...",
+>>>>>>> upstream/main
 		indicator?: LoaderIndicatorOptions,
 	) {
 		super("", 1, 0);
 		this.ui = ui;
+<<<<<<< HEAD
+=======
+		this.spinnerColorFn = spinnerColorFn;
+		this.messageColorFn = messageColorFn;
+		this.message = message;
+>>>>>>> upstream/main
 		this.setIndicator(indicator);
 	}
 

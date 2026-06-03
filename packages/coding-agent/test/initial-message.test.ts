@@ -1,6 +1,11 @@
 import { describe, expect, test } from "vitest";
+<<<<<<< HEAD
 import type { Args } from "../src/cli/args.js";
 import { buildInitialMessage } from "../src/cli/initial-message.js";
+=======
+import type { Args } from "../src/cli/args.ts";
+import { buildInitialMessage } from "../src/cli/initial-message.ts";
+>>>>>>> upstream/main
 
 function createArgs(messages: string[] = []): Args {
 	return {

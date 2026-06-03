@@ -1,9 +1,17 @@
 import { Box, Container, Spacer, Text } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { normalizeApplyPatchArguments } from "./params.js";
 import { renderPatchLine } from "./preview-format.js";
 import { StreamingPatchParser } from "./streaming-parser.js";
 import { extractPatchedPaths } from "./text.js";
 import type { ApplyPatchParams, ApplyPatchRenderState, ApplyPatchTheme, ParsedPatch } from "./types.js";
+=======
+import { normalizeApplyPatchArguments } from "./params.ts";
+import { renderPatchLine } from "./preview-format.ts";
+import { StreamingPatchParser } from "./streaming-parser.ts";
+import { extractPatchedPaths } from "./text.ts";
+import type { ApplyPatchParams, ApplyPatchRenderState, ApplyPatchTheme, ParsedPatch } from "./types.ts";
+>>>>>>> upstream/main
 
 function hunkOperation(hunk: ParsedPatch): string {
 	if (hunk.type === "add") return "Added";
@@ -80,8 +88,16 @@ export function renderStreamingPatchCall(
 	const input = normalizeApplyPatchArguments(args).input;
 	if (!input) return undefined;
 	const hunks = updateStreamingState(input, state);
+<<<<<<< HEAD
 	if (hunks.length > 0) return renderBox("Streaming patch", formatStreamingHunks(hunks), theme);
 	const paths = extractPatchedPaths(input);
 	if (paths.length === 0) return undefined;
 	return renderBox("Streaming patch", paths.map((filePath) => `• ${filePath}`).join("\n"), theme);
+=======
+	if (state.streamingError) return renderBox("Invalid patch stream", state.streamingError, theme);
+	if (hunks.length > 0) return renderBox("Applying patch", formatStreamingHunks(hunks), theme);
+	const paths = extractPatchedPaths(input);
+	if (paths.length === 0) return undefined;
+	return renderBox("Applying patch", paths.map((filePath) => `• ${filePath}`).join("\n"), theme);
+>>>>>>> upstream/main
 }

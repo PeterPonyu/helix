@@ -1,6 +1,7 @@
 import { join } from "node:path";
 import { Agent, type AgentMessage, type ThinkingLevel } from "@earendil-works/pi-agent-core";
 import { type Api, type Message, type Model, streamSimple } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import { APP_NAME, getAgentDir } from "../config.js";
 import { AgentSession } from "./agent-session.js";
 import { formatNoModelsAvailableMessage } from "./auth-guidance.js";
@@ -18,6 +19,26 @@ import { SettingsManager } from "./settings-manager.js";
 import { isInstallTelemetryEnabled } from "./telemetry.js";
 import { getSupportedThinkingLevels } from "./thinking-levels.js";
 import { time } from "./timings.js";
+=======
+import { getAgentDir } from "../config.ts";
+import { resolvePath } from "../utils/paths.ts";
+import { AgentSession } from "./agent-session.ts";
+import { formatNoModelsAvailableMessage } from "./auth-guidance.ts";
+import { AuthStorage } from "./auth-storage.ts";
+import { DEFAULT_THINKING_LEVEL } from "./defaults.ts";
+import type { ServiceTier } from "./extensions/builtin/service-tier.ts";
+import type { ExtensionRunner, LoadExtensionsResult, SessionStartEvent, ToolDefinition } from "./extensions/index.ts";
+import { convertToLlm } from "./messages.ts";
+import { ModelRegistry } from "./model-registry.ts";
+import { findInitialModel, getModelNarrowingPatterns, resolveModelScope } from "./model-resolver.ts";
+import { mergeProviderAttributionHeaders } from "./provider-attribution.ts";
+import type { ResourceLoader } from "./resource-loader.ts";
+import { DefaultResourceLoader } from "./resource-loader.ts";
+import { getDefaultSessionDir, SessionManager } from "./session-manager.ts";
+import { SettingsManager } from "./settings-manager.ts";
+import { getSupportedThinkingLevels } from "./thinking-levels.ts";
+import { time } from "./timings.ts";
+>>>>>>> upstream/main
 import {
 	createBashTool,
 	createCodingTools,
@@ -30,12 +51,20 @@ import {
 	createWriteTool,
 	type ToolName,
 	withFileMutationQueue,
+<<<<<<< HEAD
 } from "./tools/index.js";
+=======
+} from "./tools/index.ts";
+>>>>>>> upstream/main
 
 export interface CreateAgentSessionOptions {
 	/** Working directory for project-local discovery. Default: process.cwd() */
 	cwd?: string;
+<<<<<<< HEAD
 	/** Global config directory. Default: ~/.helix/agent */
+=======
+	/** Global config directory. Default: ~/.senpi/agent */
+>>>>>>> upstream/main
 	agentDir?: string;
 
 	/** Auth storage for credentials. Default: AuthStorage.create(agentDir/auth.json) */
@@ -68,6 +97,11 @@ export interface CreateAgentSessionOptions {
 	 * When provided, only the listed tool names are enabled.
 	 */
 	tools?: string[];
+<<<<<<< HEAD
+=======
+	/** Optional denylist of tool names to disable. Applies after `tools` when both are provided. */
+	excludeTools?: string[];
+>>>>>>> upstream/main
 	/** Custom tools to register (in addition to built-in tools). */
 	customTools?: ToolDefinition[];
 
@@ -95,7 +129,11 @@ export interface CreateAgentSessionResult {
 
 // Re-exports
 
+<<<<<<< HEAD
 export * from "./agent-session-runtime.js";
+=======
+export * from "./agent-session-runtime.ts";
+>>>>>>> upstream/main
 export type {
 	ExtensionAPI,
 	ExtensionCommandContext,
@@ -104,10 +142,17 @@ export type {
 	SlashCommandInfo,
 	SlashCommandSource,
 	ToolDefinition,
+<<<<<<< HEAD
 } from "./extensions/index.js";
 export type { PromptTemplate } from "./prompt-templates.js";
 export type { Skill } from "./skills.js";
 export type { Tool } from "./tools/index.js";
+=======
+} from "./extensions/index.ts";
+export type { PromptTemplate } from "./prompt-templates.ts";
+export type { Skill } from "./skills.ts";
+export type { Tool } from "./tools/index.ts";
+>>>>>>> upstream/main
 
 export {
 	// Tool factories (for custom cwd)
@@ -129,6 +174,7 @@ function getDefaultAgentDir(): string {
 	return getAgentDir();
 }
 
+<<<<<<< HEAD
 function getAttributionHeaders(
 	model: Model<any>,
 	settingsManager: SettingsManager,
@@ -159,6 +205,8 @@ function getAttributionHeaders(
 	return undefined;
 }
 
+=======
+>>>>>>> upstream/main
 /**
  * Create an AgentSession with the specified options.
  *
@@ -195,8 +243,13 @@ function getAttributionHeaders(
  * ```
  */
 export async function createAgentSession(options: CreateAgentSessionOptions = {}): Promise<CreateAgentSessionResult> {
+<<<<<<< HEAD
 	const cwd = options.cwd ?? options.sessionManager?.getCwd() ?? process.cwd();
 	const agentDir = options.agentDir ?? getDefaultAgentDir();
+=======
+	const cwd = resolvePath(options.cwd ?? options.sessionManager?.getCwd() ?? process.cwd());
+	const agentDir = options.agentDir ? resolvePath(options.agentDir) : getDefaultAgentDir();
+>>>>>>> upstream/main
 	let resourceLoader = options.resourceLoader;
 
 	// Use provided or create AuthStorage and ModelRegistry
@@ -280,11 +333,19 @@ export async function createAgentSession(options: CreateAgentSessionOptions = {}
 
 	const defaultActiveToolNames: ToolName[] = ["read", "bash", "edit", "write"];
 	const allowedToolNames = options.tools ?? (options.noTools === "all" ? [] : undefined);
+<<<<<<< HEAD
 	const initialActiveToolNames: string[] = options.tools
 		? [...options.tools]
 		: options.noTools
 			? []
 			: defaultActiveToolNames;
+=======
+	const excludedToolNames = options.excludeTools;
+	const excludedToolNameSet = excludedToolNames ? new Set(excludedToolNames) : undefined;
+	const initialActiveToolNames: string[] = (
+		options.tools ? [...options.tools] : options.noTools ? [] : defaultActiveToolNames
+	).filter((name) => !excludedToolNameSet?.has(name));
+>>>>>>> upstream/main
 
 	let agent: Agent;
 
@@ -342,12 +403,24 @@ export async function createAgentSession(options: CreateAgentSessionOptions = {}
 				throw new Error(auth.error);
 			}
 			const requestModel = auth.upstreamModelId ? { ...model, id: auth.upstreamModelId } : model;
+<<<<<<< HEAD
 			const requestRetrySettings = settingsManager.getProviderRetrySettings();
 			const attributionHeaders = getAttributionHeaders(model, settingsManager);
+=======
+			const providerRetrySettings = settingsManager.getProviderRetrySettings();
+			const httpIdleTimeoutMs = settingsManager.getHttpIdleTimeoutMs();
+			// SDKs treat timeout=0 as 0ms (immediate timeout), not "no timeout".
+			// Use max int32 to effectively disable the timeout.
+			const effectiveTimeoutMs = httpIdleTimeoutMs === 0 ? 2147483647 : httpIdleTimeoutMs;
+			const timeoutMs = options?.timeoutMs ?? providerRetrySettings.timeoutMs ?? effectiveTimeoutMs;
+			const websocketConnectTimeoutMs =
+				options?.websocketConnectTimeoutMs ?? settingsManager.getWebSocketConnectTimeoutMs();
+>>>>>>> upstream/main
 			const streamOptions = {
 				...options,
 				apiKey: auth.apiKey,
 				serviceTier: auth.serviceTier,
+<<<<<<< HEAD
 				timeoutMs: options?.timeoutMs ?? requestRetrySettings.timeoutMs,
 				maxRetries: options?.maxRetries ?? requestRetrySettings.maxRetries,
 				maxRetryDelayMs: options?.maxRetryDelayMs ?? requestRetrySettings.maxRetryDelayMs,
@@ -355,6 +428,19 @@ export async function createAgentSession(options: CreateAgentSessionOptions = {}
 					attributionHeaders || auth.headers || options?.headers
 						? { ...attributionHeaders, ...auth.headers, ...options?.headers }
 						: undefined,
+=======
+				timeoutMs,
+				websocketConnectTimeoutMs,
+				maxRetries: options?.maxRetries ?? providerRetrySettings.maxRetries,
+				maxRetryDelayMs: options?.maxRetryDelayMs ?? providerRetrySettings.maxRetryDelayMs,
+				headers: mergeProviderAttributionHeaders(
+					model,
+					settingsManager,
+					options?.sessionId,
+					auth.headers,
+					options?.headers,
+				),
+>>>>>>> upstream/main
 				extraBody: auth.extraBody || options?.extraBody ? { ...auth.extraBody, ...options?.extraBody } : undefined,
 			};
 			return streamSimple(requestModel, context, streamOptions);
@@ -417,6 +503,10 @@ export async function createAgentSession(options: CreateAgentSessionOptions = {}
 		modelRegistry,
 		initialActiveToolNames,
 		allowedToolNames,
+<<<<<<< HEAD
+=======
+		excludedToolNames,
+>>>>>>> upstream/main
 		extensionRunnerRef,
 		sessionStartEvent: options.sessionStartEvent,
 	});

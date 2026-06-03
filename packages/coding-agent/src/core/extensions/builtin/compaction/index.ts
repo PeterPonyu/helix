@@ -1,22 +1,36 @@
 import { randomUUID } from "node:crypto";
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
+<<<<<<< HEAD
 import { type CompactionResult, DEFAULT_COMPACTION_SETTINGS } from "../../../compaction/index.js";
 import { convertToLlm } from "../../../messages.js";
 import type { CompactionEntry } from "../../../session-manager.js";
 import type { ContextUsage, ExtensionAPI, ExtensionContext, SessionBeforeCompactEvent } from "../../types.js";
 import * as checkpointState from "./checkpoint-state.js";
 import * as breaker from "./circuit-breaker.js";
+=======
+import { type CompactionResult, DEFAULT_COMPACTION_SETTINGS } from "../../../compaction/index.ts";
+import { convertToLlm } from "../../../messages.ts";
+import type { CompactionEntry } from "../../../session-manager.ts";
+import type { ContextUsage, ExtensionAPI, ExtensionContext, SessionBeforeCompactEvent } from "../../types.ts";
+import * as checkpointState from "./checkpoint-state.ts";
+import * as breaker from "./circuit-breaker.ts";
+>>>>>>> upstream/main
 import {
 	BUILTIN_CONTEXT_REDUCTION_OPTIONS,
 	reduceContextMessages,
 	shouldApplyContextReduction,
+<<<<<<< HEAD
 } from "./context-reduction.js";
+=======
+} from "./context-reduction.ts";
+>>>>>>> upstream/main
 import {
 	createDegradationMonitorState,
 	handleMessageEnd,
 	handleTurnEnd,
 	RECOVERY_INSTRUCTIONS,
 	resetOnSessionCompact,
+<<<<<<< HEAD
 } from "./degradation-monitor.js";
 import {
 	HELIX_COMPACTION_EVENT,
@@ -27,6 +41,18 @@ import * as cap from "./per-turn-cap.js";
 import * as policy from "./policy.js";
 import { repairOrphanedToolResults } from "./repair-tool-pairs.js";
 import * as restoration from "./restoration-tracker.js";
+=======
+} from "./degradation-monitor.ts";
+import {
+	rewriteOpenAiPayloadWithRemoteCompaction,
+	runOpenAiRemoteCompaction,
+	SENPI_COMPACTION_EVENT,
+} from "./openai-remote.ts";
+import * as cap from "./per-turn-cap.ts";
+import * as policy from "./policy.ts";
+import { repairOrphanedToolResults } from "./repair-tool-pairs.ts";
+import * as restoration from "./restoration-tracker.ts";
+>>>>>>> upstream/main
 import {
 	applyGeneratedCompaction,
 	createSpeculativeCompactionSnapshot,
@@ -35,10 +61,17 @@ import {
 	runExtensionCompaction,
 	type SpeculativeCompactionResult,
 	type SpeculativeCompactionSnapshot,
+<<<<<<< HEAD
 } from "./speculative.js";
 import { type CompactionExtensionState, createInitialState, resetTurnCounter } from "./state.js";
 import * as todoBridge from "./todo-bridge.js";
 import * as truncation from "./tool-truncation.js";
+=======
+} from "./speculative.ts";
+import { type CompactionExtensionState, createInitialState, resetTurnCounter } from "./state.ts";
+import * as todoBridge from "./todo-bridge.ts";
+import * as truncation from "./tool-truncation.ts";
+>>>>>>> upstream/main
 
 const DEFAULT_CONTEXT_WINDOW = 200_000;
 const EMERGENCY_COMPACTION_INSTRUCTIONS =
@@ -80,6 +113,13 @@ function isMonitorableMessageEvent(event: { message: AgentMessage }): event is {
 	return "content" in event.message && Array.isArray(event.message.content);
 }
 
+<<<<<<< HEAD
+=======
+function isAbortedAssistantMessage(event: { message: AgentMessage }): boolean {
+	return event.message.role === "assistant" && "stopReason" in event.message && event.message.stopReason === "aborted";
+}
+
+>>>>>>> upstream/main
 function updateLastYield(state: CompactionExtensionState, entry: CompactionEntry): CompactionExtensionState {
 	const savedTokens = Math.max(0, entry.tokensBefore - approxTokens(entry.summary));
 	return { ...state, lastYield: { savedTokens, tokensBefore: entry.tokensBefore } };
@@ -204,7 +244,11 @@ export default function compactionExtension(pi: ExtensionAPI): void {
 					const remoteCompaction = await runOpenAiRemoteCompaction(
 						ctx,
 						createBlockingRemoteCompactionEvent(ctx, remoteSnapshot, customInstructions, remoteSignal),
+<<<<<<< HEAD
 						(data) => pi.events.emit(HELIX_COMPACTION_EVENT, data),
+=======
+						(data) => pi.events.emit(SENPI_COMPACTION_EVENT, data),
+>>>>>>> upstream/main
 					);
 					if (remoteCompaction) {
 						if (speculativeGeneration !== remoteGeneration - 1) {
@@ -288,7 +332,11 @@ export default function compactionExtension(pi: ExtensionAPI): void {
 		const model = ctx.model;
 		if (!model) return undefined;
 		const remoteCompaction = await runOpenAiRemoteCompaction(ctx, event, (data) =>
+<<<<<<< HEAD
 			pi.events.emit(HELIX_COMPACTION_EVENT, data),
+=======
+			pi.events.emit(SENPI_COMPACTION_EVENT, data),
+>>>>>>> upstream/main
 		);
 		if (remoteCompaction) {
 			return { compaction: remoteCompaction };
@@ -316,6 +364,13 @@ export default function compactionExtension(pi: ExtensionAPI): void {
 		};
 	});
 
+<<<<<<< HEAD
+=======
+	pi.on("model_select", () => {
+		invalidateSpeculativeCompaction();
+	});
+
+>>>>>>> upstream/main
 	pi.on("session_compact", async (event, ctx) => {
 		invalidateSpeculativeCompaction();
 		if (event.accepted) {
@@ -402,7 +457,11 @@ export default function compactionExtension(pi: ExtensionAPI): void {
 		return rewriteOpenAiPayloadWithRemoteCompaction(
 			event.payload,
 			{ model: ctx.model, branchEntries: ctx.sessionManager.getBranch() },
+<<<<<<< HEAD
 			(data) => pi.events.emit(HELIX_COMPACTION_EVENT, data),
+=======
+			(data) => pi.events.emit(SENPI_COMPACTION_EVENT, data),
+>>>>>>> upstream/main
 		);
 	});
 
@@ -419,6 +478,12 @@ export default function compactionExtension(pi: ExtensionAPI): void {
 	});
 
 	pi.on("message_end", async (event, ctx) => {
+<<<<<<< HEAD
+=======
+		if (isAbortedAssistantMessage(event)) {
+			invalidateSpeculativeCompaction();
+		}
+>>>>>>> upstream/main
 		if (isMonitorableMessageEvent(event)) {
 			await handleMessageEnd(degradationState, event, {
 				applyCompaction: async (options) => {

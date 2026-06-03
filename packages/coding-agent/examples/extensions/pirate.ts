@@ -5,12 +5,20 @@
  * change agent behavior based on extension state.
  *
  * Usage:
+<<<<<<< HEAD
  * 1. Copy this file to ~/.helix/agent/extensions/ or your project's .helix/extensions/
+=======
+ * 1. Copy this file to ~/.senpi/agent/extensions/ or your project's .senpi/extensions/
+>>>>>>> upstream/main
  * 2. Use /pirate to toggle pirate mode
  * 3. When enabled, the agent will respond like a pirate
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function pirateExtension(pi: ExtensionAPI) {
 	let pirateMode = false;

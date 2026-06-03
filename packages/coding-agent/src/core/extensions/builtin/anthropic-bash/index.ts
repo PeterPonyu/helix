@@ -1,5 +1,9 @@
 import type { Api } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../../types.js";
+=======
+import type { ExtensionAPI } from "../../types.ts";
+>>>>>>> upstream/main
 
 type ToolDefinition = Record<string, unknown>;
 
@@ -74,7 +78,11 @@ export const ANTHROPIC_BASH_SECTION = `
 The native bash tool is available in this session. The model has direct
 shell access via the bash_20250124 tool. The session is stateless — each
 command runs independently. The 'restart' parameter is accepted but has
+<<<<<<< HEAD
 no effect (no persistent shell session). Standard helix safety
+=======
+no effect (no persistent shell session). Standard senpi safety
+>>>>>>> upstream/main
 guardrails still apply.
 `;
 

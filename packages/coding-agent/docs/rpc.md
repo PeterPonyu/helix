@@ -2,7 +2,7 @@
 
 RPC mode enables headless operation of the coding agent via a JSON protocol over stdin/stdout. This is useful for embedding the agent in other applications, IDEs, or custom UIs.
 
-**Note for Node.js/TypeScript users**: If you're building a Node.js application, consider using `AgentSession` directly from `@helix-bio/helix` instead of spawning a subprocess. See [`src/core/agent-session.ts`](../src/core/agent-session.ts) for the API. For a subprocess-based TypeScript client, see [`src/modes/rpc/rpc-client.ts`](../src/modes/rpc/rpc-client.ts).
+**Note for Node.js/TypeScript users**: If you're building a Node.js application, consider using `AgentSession` directly from `@code-yeongyu/senpi` instead of spawning a subprocess. See [`src/core/agent-session.ts`](../src/core/agent-session.ts) for the API. For a subprocess-based TypeScript client, see [`src/modes/rpc/rpc-client.ts`](../src/modes/rpc/rpc-client.ts).
 
 ## Starting RPC Mode
 
@@ -13,6 +13,7 @@ pi --mode rpc [options]
 Common options:
 - `--provider <name>`: Set the LLM provider (anthropic, openai, google, etc.)
 - `--model <pattern>`: Model pattern or ID (supports `provider/id` and optional `:<thinking>`)
+- `--name <name>` / `-n <name>`: Set the session display name at startup
 - `--no-session`: Disable session persistence
 - `--session-dir <path>`: Custom session storage directory
 
@@ -694,7 +695,7 @@ Response:
 }
 ```
 
-The current session name is available via `get_state` in the `sessionName` field.
+The current session name is available via `get_state` in the `sessionName` field. To set the initial name when starting RPC mode, pass `--name <name>` or `-n <name>` to the `pi --mode rpc` process.
 
 ### Commands
 
@@ -714,9 +715,9 @@ Response:
   "success": true,
   "data": {
     "commands": [
-      {"name": "session-name", "description": "Set or clear session name", "source": "extension", "path": "/home/user/.helix/agent/extensions/session.ts"},
-      {"name": "fix-tests", "description": "Fix failing tests", "source": "prompt", "location": "project", "path": "/home/user/myproject/.helix/agent/prompts/fix-tests.md"},
-      {"name": "skill:brave-search", "description": "Web search via Brave API", "source": "skill", "location": "user", "path": "/home/user/.helix/agent/skills/brave-search/SKILL.md"}
+      {"name": "session-name", "description": "Set or clear session name", "source": "extension", "path": "/home/user/.senpi/agent/extensions/session.ts"},
+      {"name": "fix-tests", "description": "Fix failing tests", "source": "prompt", "location": "project", "path": "/home/user/myproject/.senpi/agent/prompts/fix-tests.md"},
+      {"name": "skill:brave-search", "description": "Web search via Brave API", "source": "skill", "location": "user", "path": "/home/user/.senpi/agent/skills/brave-search/SKILL.md"}
     ]
   }
 }
@@ -730,8 +731,8 @@ Each command has:
   - `"prompt"`: Loaded from a prompt template `.md` file
   - `"skill"`: Loaded from a skill directory (name is prefixed with `skill:`)
 - `location`: Where it was loaded from (optional, not present for extensions):
-  - `"user"`: User-level (`~/.helix/agent/`)
-  - `"project"`: Project-level (`./.helix/agent/`)
+  - `"user"`: User-level (`~/.senpi/agent/`)
+  - `"project"`: Project-level (`./.senpi/agent/`)
   - `"path"`: Explicit path via CLI or settings
 - `path`: Absolute file path to the command source (optional)
 
@@ -1002,7 +1003,7 @@ Some `ExtensionUIContext` methods are not supported or degraded in RPC mode beca
 - `getTheme()` returns `undefined`
 - `setTheme()` returns `{ success: false, error: "..." }`
 
-Note: `ctx.hasUI` is `true` in RPC mode because the dialog and fire-and-forget methods are functional via the extension UI sub-protocol.
+Note: `ctx.mode` is `"rpc"` and `ctx.hasUI` is `true` in RPC mode because the dialog and fire-and-forget methods are functional via the extension UI sub-protocol. Use `ctx.mode === "tui"` to guard TUI-specific features like `custom()` that require a real terminal.
 
 ### Extension UI Requests (stdout)
 

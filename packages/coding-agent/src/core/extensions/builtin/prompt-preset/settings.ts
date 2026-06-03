@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { Settings, SettingsManager } from "../../../settings-manager.js";
+=======
+import type { Settings, SettingsManager } from "../../../settings-manager.ts";
+>>>>>>> upstream/main
 
 export type PromptPresetName =
 	| "auto"

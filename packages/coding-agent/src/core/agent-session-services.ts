@@ -1,6 +1,7 @@
 import { join } from "node:path";
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import type { Model } from "@earendil-works/pi-ai";
+<<<<<<< HEAD
 import { getAgentDir } from "../config.js";
 import { AuthStorage } from "./auth-storage.js";
 import type { ServiceTier } from "./extensions/builtin/service-tier.js";
@@ -10,6 +11,18 @@ import { DefaultResourceLoader, type DefaultResourceLoaderOptions, type Resource
 import { type CreateAgentSessionOptions, type CreateAgentSessionResult, createAgentSession } from "./sdk.js";
 import type { SessionManager } from "./session-manager.js";
 import { SettingsManager } from "./settings-manager.js";
+=======
+import { getAgentDir } from "../config.ts";
+import { resolvePath } from "../utils/paths.ts";
+import { AuthStorage } from "./auth-storage.ts";
+import type { ServiceTier } from "./extensions/builtin/service-tier.ts";
+import type { SessionStartEvent, ToolDefinition } from "./extensions/index.ts";
+import { ModelRegistry } from "./model-registry.ts";
+import { DefaultResourceLoader, type DefaultResourceLoaderOptions, type ResourceLoader } from "./resource-loader.ts";
+import { type CreateAgentSessionOptions, type CreateAgentSessionResult, createAgentSession } from "./sdk.ts";
+import type { SessionManager } from "./session-manager.ts";
+import { SettingsManager } from "./settings-manager.ts";
+>>>>>>> upstream/main
 
 /**
  * Non-fatal issues collected while creating services or sessions.
@@ -55,6 +68,10 @@ export interface CreateAgentSessionFromServicesOptions {
 	scopedModels?: Array<{ model: Model<any>; thinkingLevel?: ThinkingLevel; serviceTier?: ServiceTier }>;
 	favoriteModels?: Array<{ model: Model<any>; thinkingLevel?: ThinkingLevel; serviceTier?: ServiceTier }>;
 	tools?: string[];
+<<<<<<< HEAD
+=======
+	excludeTools?: CreateAgentSessionOptions["excludeTools"];
+>>>>>>> upstream/main
 	noTools?: CreateAgentSessionOptions["noTools"];
 	customTools?: ToolDefinition[];
 }
@@ -133,8 +150,13 @@ function applyExtensionFlagValues(
 export async function createAgentSessionServices(
 	options: CreateAgentSessionServicesOptions,
 ): Promise<AgentSessionServices> {
+<<<<<<< HEAD
 	const cwd = options.cwd;
 	const agentDir = options.agentDir ?? getAgentDir();
+=======
+	const cwd = resolvePath(options.cwd);
+	const agentDir = options.agentDir ? resolvePath(options.agentDir) : getAgentDir();
+>>>>>>> upstream/main
 	const authStorage = options.authStorage ?? AuthStorage.create(join(agentDir, "auth.json"));
 	const settingsManager = options.settingsManager ?? SettingsManager.create(cwd, agentDir);
 	const modelRegistry = options.modelRegistry ?? ModelRegistry.create(authStorage, join(agentDir, "models.json"));
@@ -196,6 +218,10 @@ export async function createAgentSessionFromServices(
 		scopedModels: options.scopedModels,
 		favoriteModels: options.favoriteModels,
 		tools: options.tools,
+<<<<<<< HEAD
+=======
+		excludeTools: options.excludeTools,
+>>>>>>> upstream/main
 		noTools: options.noTools,
 		customTools: options.customTools,
 		sessionStartEvent: options.sessionStartEvent,

@@ -17,11 +17,19 @@
  * is used automatically (syntax highlighting, line numbers, truncation warnings).
  *
  * Usage:
+<<<<<<< HEAD
  *   helix -e ./tool-override.ts
  */
 
 import type { TextContent } from "@earendil-works/pi-ai";
 import { type ExtensionAPI, getAgentDir, withFileMutationQueue } from "@helix-bio/helix";
+=======
+ *   senpi -e ./tool-override.ts
+ */
+
+import { type ExtensionAPI, getAgentDir, withFileMutationQueue } from "@code-yeongyu/senpi";
+import type { TextContent } from "@earendil-works/pi-ai";
+>>>>>>> upstream/main
 import { constants, readFileSync } from "fs";
 import { access, appendFile, readFile } from "fs/promises";
 import { join, resolve } from "path";

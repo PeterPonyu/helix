@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import type { AutocompleteProvider } from "./autocomplete.js";
 import type { Component } from "./tui.js";
+=======
+import type { AutocompleteProvider } from "./autocomplete.ts";
+import type { Component } from "./tui.ts";
+>>>>>>> upstream/main
 
 /**
  * Interface for custom editor components.

@@ -1,7 +1,13 @@
 import { Box, Markdown, type MarkdownTheme, Spacer, Text } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import type { CompactionSummaryMessage } from "../../../core/messages.js";
 import { getMarkdownTheme, theme } from "../theme/theme.js";
 import { keyText } from "./keybinding-hints.js";
+=======
+import type { CompactionSummaryMessage } from "../../../core/messages.ts";
+import { getMarkdownTheme, theme } from "../theme/theme.ts";
+import { keyText } from "./keybinding-hints.ts";
+>>>>>>> upstream/main
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -9,7 +15,11 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function formatCompactionDetails(details: unknown): string | undefined {
 	if (!isRecord(details)) return undefined;
+<<<<<<< HEAD
 	if (details.schema !== "helix.compaction.openai-remote.v1") return undefined;
+=======
+	if (details.schema !== "senpi.compaction.openai-remote.v1") return undefined;
+>>>>>>> upstream/main
 	const retained = typeof details.retainedInputItemCount === "number" ? details.retainedInputItemCount : undefined;
 	const requested = typeof details.requestInputItemCount === "number" ? details.requestInputItemCount : undefined;
 	const retainedText = retained === undefined ? "native replay active" : `${retained.toLocaleString()} retained items`;

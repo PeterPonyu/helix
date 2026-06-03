@@ -2,7 +2,11 @@ import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxThinking, fauxToolCall } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { createHarness, type Harness } from "./harness.js";
+=======
+import { createHarness, type Harness } from "./harness.ts";
+>>>>>>> upstream/main
 
 function normalizeEventOrder(events: Harness["events"]): string[] {
 	const normalized: string[] = [];
@@ -47,6 +51,10 @@ describe("AgentSession retry and event characterization", () => {
 		await harness.session.prompt("test");
 
 		expect(retryEvents).toEqual(["start:1", "end:true"]);
+<<<<<<< HEAD
+=======
+		expect(harness.eventsOfType("agent_end").map((event) => event.willRetry)).toEqual([true, false]);
+>>>>>>> upstream/main
 		expect(harness.faux.state.callCount).toBe(2);
 		expect(harness.session.isRetrying).toBe(false);
 	});
@@ -194,6 +202,10 @@ describe("AgentSession retry and event characterization", () => {
 		await harness.session.prompt("test");
 
 		expect(retryEvents).toEqual(["start:1", "start:2", "end:false"]);
+<<<<<<< HEAD
+=======
+		expect(harness.eventsOfType("agent_end").map((event) => event.willRetry)).toEqual([true, true, false]);
+>>>>>>> upstream/main
 		expect(harness.faux.state.callCount).toBe(3);
 		expect(harness.session.isRetrying).toBe(false);
 	});

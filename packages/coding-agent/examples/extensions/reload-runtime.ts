@@ -5,7 +5,11 @@
  * tool that queues a follow-up command to trigger reload.
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 import { Type } from "typebox";
 
 export default function (pi: ExtensionAPI) {

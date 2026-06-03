@@ -22,8 +22,13 @@ import {
 	prepareCompaction,
 	serializeConversation,
 	shouldCompact,
+<<<<<<< HEAD
 } from "../../src/harness/compaction/compaction.js";
 import { buildSessionContext } from "../../src/harness/session/session.js";
+=======
+} from "../../src/harness/compaction/compaction.ts";
+import { buildSessionContext } from "../../src/harness/session/session.ts";
+>>>>>>> upstream/main
 import type {
 	BranchSummaryEntry,
 	CompactionEntry,
@@ -33,9 +38,15 @@ import type {
 	ModelChangeEntry,
 	SessionTreeEntry,
 	ThinkingLevelChangeEntry,
+<<<<<<< HEAD
 } from "../../src/harness/types.js";
 import { getOrThrow } from "../../src/harness/types.js";
 import type { AgentMessage } from "../../src/types.js";
+=======
+} from "../../src/harness/types.ts";
+import { getOrThrow } from "../../src/harness/types.ts";
+import type { AgentMessage } from "../../src/types.ts";
+>>>>>>> upstream/main
 
 let nextId = 0;
 function createId(): string {

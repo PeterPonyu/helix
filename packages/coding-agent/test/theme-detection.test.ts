@@ -5,7 +5,11 @@ import {
 	getThemeByName,
 	getThemeForRgbColor,
 	parseOsc11BackgroundColor,
+<<<<<<< HEAD
 } from "../src/modes/interactive/theme/theme.js";
+=======
+} from "../src/modes/interactive/theme/theme.ts";
+>>>>>>> upstream/main
 
 afterEach(() => {
 	resetCapabilitiesCache();

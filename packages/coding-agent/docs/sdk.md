@@ -1,8 +1,8 @@
-> helix can help you use the SDK. Ask it to build an integration for your use case.
+> senpi can help you use the SDK. Ask it to build an integration for your use case.
 
 # SDK
 
-The SDK provides programmatic access to pi's agent capabilities. Use it to embed helix in other applications, build custom interfaces, or integrate with automated workflows.
+The SDK provides programmatic access to pi's agent capabilities. Use it to embed senpi in other applications, build custom interfaces, or integrate with automated workflows.
 
 **Example use cases:**
 - Build a custom UI (web, desktop, mobile)
@@ -15,7 +15,7 @@ See [examples/sdk/](../examples/sdk/) for working examples from minimal to full 
 ## Quick Start
 
 ```typescript
-import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "@helix-bio/helix";
+import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "@code-yeongyu/senpi";
 
 // Set up credential storage and model registry
 const authStorage = AuthStorage.create();
@@ -39,7 +39,7 @@ await session.prompt("What files are in the current directory?");
 ## Installation
 
 ```bash
-npm install @helix-bio/helix
+npm install @code-yeongyu/senpi
 ```
 
 The SDK is included in the main package. No separate installation needed.
@@ -53,7 +53,7 @@ The main factory function for a single `AgentSession`.
 `createAgentSession()` uses a `ResourceLoader` to supply extensions, skills, prompt templates, themes, and context files. If you do not provide one, it uses `DefaultResourceLoader` with standard discovery.
 
 ```typescript
-import { createAgentSession, SessionManager } from "@helix-bio/helix";
+import { createAgentSession, SessionManager } from "@code-yeongyu/senpi";
 
 // Minimal: defaults with DefaultResourceLoader
 const { session } = await createAgentSession();
@@ -131,7 +131,7 @@ import {
   createAgentSessionServices,
   getAgentDir,
   SessionManager,
-} from "@helix-bio/helix";
+} from "@code-yeongyu/senpi";
 
 const createRuntime: CreateAgentSessionRuntimeFactory = async ({ cwd, sessionManager, sessionStartEvent }) => {
   const services = await createAgentSessionServices({ cwd });
@@ -337,23 +337,23 @@ const { session } = await createAgentSession({
   cwd: process.cwd(), // default
   
   // Global config directory
-  agentDir: "~/.helix/agent", // default (expands ~)
+  agentDir: "~/.senpi/agent", // default (expands ~)
 });
 ```
 
 `cwd` is used by `DefaultResourceLoader` for:
-- Project extensions (`.helix/extensions/`)
+- Project extensions (`.senpi/extensions/`)
 - Project skills:
-  - `.helix/skills/`
+  - `.senpi/skills/`
   - `.agents/skills/` in `cwd` and ancestor directories (up to git repo root, or filesystem root when not in a repo)
-- Project prompts (`.helix/prompts/`)
+- Project prompts (`.senpi/prompts/`)
 - Context files (`AGENTS.md` walking up from cwd)
 - Session directory naming
 
 `agentDir` is used by `DefaultResourceLoader` for:
 - Global extensions (`extensions/`)
 - Global skills:
-  - `skills/` under `agentDir` (for example `~/.helix/agent/skills/`)
+  - `skills/` under `agentDir` (for example `~/.senpi/agent/skills/`)
   - `~/.agents/skills/`
 - Global prompts (`prompts/`)
 - Global context file (`AGENTS.md`)
@@ -368,7 +368,7 @@ When you pass a custom `ResourceLoader`, `cwd` and `agentDir` no longer control 
 
 ```typescript
 import { getModel } from "@earendil-works/pi-ai";
-import { AuthStorage, ModelRegistry } from "@helix-bio/helix";
+import { AuthStorage, ModelRegistry } from "@code-yeongyu/senpi";
 
 const authStorage = AuthStorage.create();
 const modelRegistry = ModelRegistry.create(authStorage);
@@ -415,9 +415,9 @@ API key resolution priority (handled by AuthStorage):
 4. Fallback resolver (for custom provider keys from `models.json`)
 
 ```typescript
-import { AuthStorage, ModelRegistry } from "@helix-bio/helix";
+import { AuthStorage, ModelRegistry } from "@code-yeongyu/senpi";
 
-// Default: uses ~/.helix/agent/auth.json and ~/.helix/agent/models.json
+// Default: uses ~/.senpi/agent/auth.json and ~/.senpi/agent/models.json
 const authStorage = AuthStorage.create();
 const modelRegistry = ModelRegistry.create(authStorage);
 
@@ -451,7 +451,7 @@ const simpleRegistry = ModelRegistry.inMemory(authStorage);
 Use a `ResourceLoader` to override the system prompt:
 
 ```typescript
-import { createAgentSession, DefaultResourceLoader } from "@helix-bio/helix";
+import { createAgentSession, DefaultResourceLoader } from "@code-yeongyu/senpi";
 
 const loader = new DefaultResourceLoader({
   systemPromptOverride: () => "You are a helpful assistant.",
@@ -471,9 +471,12 @@ Specify which built-in tools to enable:
 - Default built-ins: `read`, `bash`, `edit`, `write`
 - `noTools: "all"` disables all tools
 - `noTools: "builtin"` disables default built-ins while keeping extension and custom tools enabled
+- `excludeTools` disables specific built-in, extension, or custom tool names after any `tools` allowlist is applied
+
+The `edit` tool returns `details.diff` for Pi's TUI display and `details.patch` as a standard unified patch for SDK consumers.
 
 ```typescript
-import { createAgentSession } from "@helix-bio/helix";
+import { createAgentSession } from "@code-yeongyu/senpi";
 
 // Read-only mode
 const { session } = await createAgentSession({
@@ -484,6 +487,11 @@ const { session } = await createAgentSession({
 const { session } = await createAgentSession({
   tools: ["read", "bash", "grep"],
 });
+
+// Disable one tool while keeping the rest available
+const { session } = await createAgentSession({
+  excludeTools: ["ask_question"],
+});
 ```
 
 #### Tools with Custom cwd
@@ -491,7 +499,7 @@ const { session } = await createAgentSession({
 When you pass a custom `cwd`, `createAgentSession()` builds selected built-in tools for that cwd.
 
 ```typescript
-import { createAgentSession, SessionManager } from "@helix-bio/helix";
+import { createAgentSession, SessionManager } from "@code-yeongyu/senpi";
 
 const cwd = "/path/to/project";
 
@@ -517,7 +525,7 @@ const { session } = await createAgentSession({
 
 ```typescript
 import { Type } from "typebox";
-import { createAgentSession, defineTool } from "@helix-bio/helix";
+import { createAgentSession, defineTool } from "@code-yeongyu/senpi";
 
 // Inline custom tool
 const myTool = defineTool({
@@ -549,10 +557,10 @@ If you pass `tools`, include each custom or extension tool name you want enabled
 
 ### Extensions
 
-Extensions are loaded by the `ResourceLoader`. `DefaultResourceLoader` discovers extensions from `~/.helix/agent/extensions/`, `.helix/extensions/`, and settings.json extension sources.
+Extensions are loaded by the `ResourceLoader`. `DefaultResourceLoader` discovers extensions from `~/.senpi/agent/extensions/`, `.senpi/extensions/`, and settings.json extension sources.
 
 ```typescript
-import { createAgentSession, DefaultResourceLoader } from "@helix-bio/helix";
+import { createAgentSession, DefaultResourceLoader } from "@code-yeongyu/senpi";
 
 const loader = new DefaultResourceLoader({
   additionalExtensionPaths: ["/path/to/my-extension.ts"],
@@ -574,7 +582,7 @@ Extensions can register tools, subscribe to events, add commands, and more. See 
 **Event Bus:** Extensions can communicate via `pi.events`. Pass a shared `eventBus` to `DefaultResourceLoader` if you need to emit or listen from outside:
 
 ```typescript
-import { createEventBus, DefaultResourceLoader } from "@helix-bio/helix";
+import { createEventBus, DefaultResourceLoader } from "@code-yeongyu/senpi";
 
 const eventBus = createEventBus();
 const loader = new DefaultResourceLoader({
@@ -594,7 +602,7 @@ import {
   createAgentSession,
   DefaultResourceLoader,
   type Skill,
-} from "@helix-bio/helix";
+} from "@code-yeongyu/senpi";
 
 const customSkill: Skill = {
   name: "my-skill",
@@ -620,7 +628,7 @@ const { session } = await createAgentSession({ resourceLoader: loader });
 ### Context Files
 
 ```typescript
-import { createAgentSession, DefaultResourceLoader } from "@helix-bio/helix";
+import { createAgentSession, DefaultResourceLoader } from "@code-yeongyu/senpi";
 
 const loader = new DefaultResourceLoader({
   agentsFilesOverride: (current) => ({
@@ -644,7 +652,7 @@ import {
   createAgentSession,
   DefaultResourceLoader,
   type PromptTemplate,
-} from "@helix-bio/helix";
+} from "@code-yeongyu/senpi";
 
 const customCommand: PromptTemplate = {
   name: "deploy",
@@ -679,7 +687,7 @@ import {
   createAgentSessionServices,
   getAgentDir,
   SessionManager,
-} from "@helix-bio/helix";
+} from "@code-yeongyu/senpi";
 
 // In-memory (no persistence)
 const { session } = await createAgentSession({
@@ -773,7 +781,7 @@ sm.createBranchedSession(leafId);       // Extract path to new file
 ### Settings Management
 
 ```typescript
-import { createAgentSession, SettingsManager, SessionManager } from "@helix-bio/helix";
+import { createAgentSession, SettingsManager, SessionManager } from "@code-yeongyu/senpi";
 
 // Default: loads from files (global + project merged)
 const { session } = await createAgentSession({
@@ -807,8 +815,8 @@ const { session } = await createAgentSession({
 **Project-specific settings:**
 
 Settings load from two locations and merge:
-1. Global: `~/.helix/agent/settings.json`
-2. Project: `<cwd>/.helix/settings.json`
+1. Global: `~/.senpi/agent/settings.json`
+2. Project: `<cwd>/.senpi/settings.json`
 
 Project overrides global. Nested objects merge keys. Setters modify global settings by default.
 
@@ -829,7 +837,7 @@ Use `DefaultResourceLoader` to discover extensions, skills, prompts, themes, and
 import {
   DefaultResourceLoader,
   getAgentDir,
-} from "@helix-bio/helix";
+} from "@code-yeongyu/senpi";
 
 const loader = new DefaultResourceLoader({
   cwd,
@@ -880,7 +888,7 @@ import {
   ModelRegistry,
   SessionManager,
   SettingsManager,
-} from "@helix-bio/helix";
+} from "@code-yeongyu/senpi";
 
 // Set up auth storage (custom location)
 const authStorage = AuthStorage.create("/custom/agent/auth.json");
@@ -965,7 +973,7 @@ import {
   getAgentDir,
   InteractiveMode,
   SessionManager,
-} from "@helix-bio/helix";
+} from "@code-yeongyu/senpi";
 
 const createRuntime: CreateAgentSessionRuntimeFactory = async ({ cwd, sessionManager, sessionStartEvent }) => {
   const services = await createAgentSessionServices({ cwd });
@@ -1005,7 +1013,7 @@ import {
   getAgentDir,
   runPrintMode,
   SessionManager,
-} from "@helix-bio/helix";
+} from "@code-yeongyu/senpi";
 
 const createRuntime: CreateAgentSessionRuntimeFactory = async ({ cwd, sessionManager, sessionStartEvent }) => {
   const services = await createAgentSessionServices({ cwd });
@@ -1042,7 +1050,7 @@ import {
   getAgentDir,
   runRpcMode,
   SessionManager,
-} from "@helix-bio/helix";
+} from "@code-yeongyu/senpi";
 
 const createRuntime: CreateAgentSessionRuntimeFactory = async ({ cwd, sessionManager, sessionStartEvent }) => {
   const services = await createAgentSessionServices({ cwd });

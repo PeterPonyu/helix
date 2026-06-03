@@ -5,7 +5,11 @@
  * Requires: npm install in this directory
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 import ms from "ms";
 import { Type } from "typebox";
 

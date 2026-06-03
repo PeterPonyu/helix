@@ -1,6 +1,10 @@
 import { getModel } from "@earendil-works/pi-ai";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { clampThinkingLevelToModel } from "../../src/core/sdk.js";
+=======
+import { clampThinkingLevelToModel } from "../../src/core/sdk.ts";
+>>>>>>> upstream/main
 
 describe("clampThinkingLevelToModel", () => {
 	it("clamps max to high on Anthropic models that do not expose xhigh/max", () => {
@@ -23,6 +27,19 @@ describe("clampThinkingLevelToModel", () => {
 		expect(clampThinkingLevelToModel("xhigh", model)).toBe("xhigh");
 	});
 
+<<<<<<< HEAD
+=======
+	it("Given Opus 4.8 when max is selected then preserves max", () => {
+		const model = getModel("anthropic", "claude-opus-4-8");
+		expect(clampThinkingLevelToModel("max", model)).toBe("max");
+	});
+
+	it("Given Opus 4.8 when xhigh is selected then preserves xhigh", () => {
+		const model = getModel("anthropic", "claude-opus-4-8");
+		expect(clampThinkingLevelToModel("xhigh", model)).toBe("xhigh");
+	});
+
+>>>>>>> upstream/main
 	it("preserves max on Opus 4.6 (legacy max tier)", () => {
 		const model = getModel("anthropic", "claude-opus-4-6");
 		expect(clampThinkingLevelToModel("max", model)).toBe("max");

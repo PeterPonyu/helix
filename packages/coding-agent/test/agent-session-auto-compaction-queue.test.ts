@@ -4,12 +4,21 @@ import { join } from "node:path";
 import { Agent } from "@earendil-works/pi-agent-core";
 import { type AssistantMessage, getModel } from "@earendil-works/pi-ai";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { AgentSession } from "../src/core/agent-session.js";
 import { AuthStorage } from "../src/core/auth-storage.js";
 import { ModelRegistry } from "../src/core/model-registry.js";
 import { SessionManager } from "../src/core/session-manager.js";
 import { SettingsManager } from "../src/core/settings-manager.js";
 import { createTestResourceLoader } from "./utilities.js";
+=======
+import { AgentSession } from "../src/core/agent-session.ts";
+import { AuthStorage } from "../src/core/auth-storage.ts";
+import { ModelRegistry } from "../src/core/model-registry.ts";
+import { SessionManager } from "../src/core/session-manager.ts";
+import { SettingsManager } from "../src/core/settings-manager.ts";
+import { createTestResourceLoader } from "./utilities.ts";
+>>>>>>> upstream/main
 
 vi.mock("../src/core/compaction/index.js", () => ({
 	calculateContextTokens: (usage: {
@@ -113,12 +122,20 @@ describe("AgentSession auto-compaction queue resume", () => {
 
 		const runAutoCompaction = (
 			session as unknown as {
+<<<<<<< HEAD
 				_runAutoCompaction: (reason: "overflow" | "threshold", willRetry: boolean) => Promise<void>;
 			}
 		)._runAutoCompaction.bind(session);
 
 		await runAutoCompaction("threshold", false);
 		await vi.advanceTimersByTimeAsync(100);
+=======
+				_runAutoCompaction: (reason: "overflow" | "threshold", willRetry: boolean) => Promise<boolean>;
+			}
+		)._runAutoCompaction.bind(session);
+
+		await expect(runAutoCompaction("threshold", false)).resolves.toBe(true);
+>>>>>>> upstream/main
 
 		expect(continueSpy).toHaveBeenCalledTimes(1);
 	});

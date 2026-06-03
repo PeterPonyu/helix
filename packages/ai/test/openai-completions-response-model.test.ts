@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { complete } from "../src/stream.js";
 import type { Model } from "../src/types.js";
+=======
+import { complete } from "../src/stream.ts";
+import type { Model } from "../src/types.ts";
+>>>>>>> upstream/main
 
 // Router/virtual ids (e.g. OpenRouter `auto`) keep `model` pinned to the
 // requested id and surface the routed concrete id on `responseModel`.
@@ -60,10 +65,17 @@ describe("openai-completions responseModel", () => {
 
 	it("surfaces routed chunk.model on responseModel without changing model", async () => {
 		mockState.chunks = [
+<<<<<<< HEAD
 			{ id: "chatcmpl-1", model: "anthropic/claude-opus-4.7", choices: [{ index: 0, delta: { content: "hi" } }] },
 			{
 				id: "chatcmpl-1",
 				model: "anthropic/claude-opus-4.7",
+=======
+			{ id: "chatcmpl-1", model: "anthropic/claude-opus-4.8", choices: [{ index: 0, delta: { content: "hi" } }] },
+			{
+				id: "chatcmpl-1",
+				model: "anthropic/claude-opus-4.8",
+>>>>>>> upstream/main
 				choices: [{ index: 0, delta: {}, finish_reason: "stop" }],
 				usage: {
 					prompt_tokens: 10,
@@ -81,7 +93,11 @@ describe("openai-completions responseModel", () => {
 		);
 
 		expect(message.model).toBe("openrouter/auto");
+<<<<<<< HEAD
 		expect(message.responseModel).toBe("anthropic/claude-opus-4.7");
+=======
+		expect(message.responseModel).toBe("anthropic/claude-opus-4.8");
+>>>>>>> upstream/main
 		expect(message.provider).toBe("openrouter");
 		expect(message.stopReason).toBe("stop");
 	});

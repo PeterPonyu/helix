@@ -1,14 +1,24 @@
 import path from "node:path";
+<<<<<<< HEAD
 import { renderToolDiff } from "../../../tools/diff-render.js";
 import { parsePatch } from "./parser.js";
 import { extractPatchedPaths } from "./text.js";
+=======
+import { renderToolDiff } from "../../../tools/diff-render.ts";
+import { parsePatch } from "./parser.ts";
+import { extractPatchedPaths } from "./text.ts";
+>>>>>>> upstream/main
 import type {
 	ApplyPatchOperation,
 	ApplyPatchPreview,
 	ApplyPatchPreviewFile,
 	ApplyPatchRenderState,
 	ApplyPatchTheme,
+<<<<<<< HEAD
 } from "./types.js";
+=======
+} from "./types.ts";
+>>>>>>> upstream/main
 
 export const PATCH_PREVIEW_MAX_LINES = 16;
 export const PATCH_PREVIEW_MAX_CHARS = 4000;

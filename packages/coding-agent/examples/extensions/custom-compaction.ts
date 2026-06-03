@@ -10,12 +10,21 @@
  * which can be cheaper/faster than the main conversation model.
  *
  * Usage:
+<<<<<<< HEAD
  *   helix --extension examples/extensions/custom-compaction.ts
  */
 
 import { complete } from "@earendil-works/pi-ai";
 import type { ExtensionAPI } from "@helix-bio/helix";
 import { convertToLlm, serializeConversation } from "@helix-bio/helix";
+=======
+ *   senpi --extension examples/extensions/custom-compaction.ts
+ */
+
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+import { convertToLlm, serializeConversation } from "@code-yeongyu/senpi";
+import { complete } from "@earendil-works/pi-ai";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	pi.on("session_before_compact", async (event, ctx) => {

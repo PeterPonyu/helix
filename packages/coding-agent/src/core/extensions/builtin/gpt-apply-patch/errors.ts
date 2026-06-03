@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { ApplyPatchFailure, ApplyPatchResult } from "./types.js";
+=======
+import type { ApplyPatchFailure, ApplyPatchResult } from "./types.ts";
+>>>>>>> upstream/main
 
 export class ApplyPatchError extends Error {
 	public readonly failures: ApplyPatchFailure[];

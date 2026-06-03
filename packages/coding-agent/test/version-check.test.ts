@@ -5,7 +5,11 @@ import {
 	getLatestPiRelease,
 	getLatestPiVersion,
 	isNewerPackageVersion,
+<<<<<<< HEAD
 } from "../src/utils/version-check.js";
+=======
+} from "../src/utils/version-check.ts";
+>>>>>>> upstream/main
 
 const originalSkipVersionCheck = process.env.PI_SKIP_VERSION_CHECK;
 const originalOffline = process.env.PI_OFFLINE;
@@ -38,30 +42,67 @@ describe("version checks", () => {
 		vi.stubGlobal("fetch", fetchMock);
 
 		await expect(checkForNewPiVersion("1.2.3")).resolves.toBeUndefined();
+<<<<<<< HEAD
 		await expect(checkForNewPiVersion("1.2.2")).resolves.toBe("1.2.3");
 	});
 
 	it("uses the helix npm package metadata with a helix user agent", async () => {
+=======
+		await expect(checkForNewPiVersion("1.2.2")).resolves.toEqual({ version: "1.2.3" });
+	});
+
+	it("uses the senpi npm package metadata with a senpi user agent", async () => {
+>>>>>>> upstream/main
 		const fetchMock = vi.fn(async () => Response.json({ version: "1.2.4" }));
 		vi.stubGlobal("fetch", fetchMock);
 
 		await expect(getLatestPiVersion("1.2.3")).resolves.toBe("1.2.4");
 		expect(fetchMock).toHaveBeenCalledWith(
+<<<<<<< HEAD
 			"https://registry.npmjs.org/%40peterponyu%2Fhelix/latest",
 			expect.objectContaining({
 				headers: expect.objectContaining({
 					"User-Agent": expect.stringMatching(/^helix\/1\.2\.3 /),
+=======
+			"https://registry.npmjs.org/%40code-yeongyu%2Fsenpi/latest",
+			expect.objectContaining({
+				headers: expect.objectContaining({
+					"User-Agent": expect.stringMatching(/^senpi\/1\.2\.3 /),
+>>>>>>> upstream/main
 					accept: "application/json",
 				}),
 			}),
 		);
 	});
 
+<<<<<<< HEAD
 	it("returns the active package name from the version check api", async () => {
 		const fetchMock = vi.fn(async () => Response.json({ packageName: "@new-scope/pi", version: "1.2.4" }));
 		vi.stubGlobal("fetch", fetchMock);
 
 		await expect(getLatestPiRelease("1.2.3")).resolves.toEqual({ packageName: "@new-scope/pi", version: "1.2.4" });
+=======
+	it("returns the active package metadata from the version check api", async () => {
+		const fetchMock = vi.fn(async () =>
+			Response.json({
+				packageName: "@new-scope/pi",
+				version: "1.2.4",
+			}),
+		);
+		vi.stubGlobal("fetch", fetchMock);
+
+		await expect(getLatestPiRelease("1.2.3")).resolves.toEqual({
+			packageName: "@new-scope/pi",
+			version: "1.2.4",
+		});
+	});
+
+	it("returns update notes from the version check api", async () => {
+		const fetchMock = vi.fn(async () => Response.json({ note: " **Read this** ", version: "1.2.4" }));
+		vi.stubGlobal("fetch", fetchMock);
+
+		await expect(getLatestPiRelease("1.2.3")).resolves.toEqual({ note: "**Read this**", version: "1.2.4" });
+>>>>>>> upstream/main
 	});
 
 	it("skips api calls when version checks are disabled", async () => {

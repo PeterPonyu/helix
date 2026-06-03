@@ -15,12 +15,21 @@ import {
 	truncateToWidth,
 	visibleWidth,
 } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { CONFIG_DIR_NAME } from "../../../config.js";
 import type { PathMetadata, ResolvedPaths, ResolvedResource } from "../../../core/package-manager.js";
 import type { PackageSource, SettingsManager } from "../../../core/settings-manager.js";
 import { theme } from "../theme/theme.js";
 import { DynamicBorder } from "./dynamic-border.js";
 import { rawKeyHint } from "./keybinding-hints.js";
+=======
+import { CONFIG_DIR_NAME } from "../../../config.ts";
+import type { PathMetadata, ResolvedPaths, ResolvedResource } from "../../../core/package-manager.ts";
+import type { PackageSource, SettingsManager } from "../../../core/settings-manager.ts";
+import { theme } from "../theme/theme.ts";
+import { DynamicBorder } from "./dynamic-border.ts";
+import { rawKeyHint } from "./keybinding-hints.ts";
+>>>>>>> upstream/main
 
 type ResourceType = "extensions" | "skills" | "prompts" | "themes";
 
@@ -84,7 +93,11 @@ function getGroupLabel(metadata: PathMetadata): string {
 				? `User (${formatBaseDir(metadata.baseDir)})`
 				: `Project (${formatBaseDir(metadata.baseDir)})`;
 		}
+<<<<<<< HEAD
 		return metadata.scope === "user" ? "User (~/.helix/agent/)" : "Project (.helix/)";
+=======
+		return metadata.scope === "user" ? "User (~/.senpi/agent/)" : "Project (.senpi/)";
+>>>>>>> upstream/main
 	}
 	return metadata.scope === "user" ? "User settings" : "Project settings";
 }
@@ -567,7 +580,11 @@ class ResourceList implements Component, Focusable {
 
 	private getResourcePattern(item: ResourceItem): string {
 		const scope = item.metadata.scope as "user" | "project";
+<<<<<<< HEAD
 		const baseDir = this.getTopLevelBaseDir(scope);
+=======
+		const baseDir = item.metadata.baseDir ?? this.getTopLevelBaseDir(scope);
+>>>>>>> upstream/main
 		return relative(baseDir, item.path);
 	}
 

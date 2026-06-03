@@ -1,8 +1,18 @@
 import * as os from "node:os";
+<<<<<<< HEAD
 import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
 import { getCapabilities, getImageDimensions, imageFallback } from "@earendil-works/pi-tui";
 import { stripAnsi } from "../../utils/ansi.js";
 import { sanitizeBinaryOutput } from "../../utils/shell.js";
+=======
+import { pathToFileURL } from "node:url";
+import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
+import { getCapabilities, getImageDimensions, hyperlink, imageFallback } from "@earendil-works/pi-tui";
+import type { Theme } from "../../modes/interactive/theme/theme.ts";
+import { stripAnsi } from "../../utils/ansi.ts";
+import { resolvePath } from "../../utils/paths.ts";
+import { sanitizeBinaryOutput } from "../../utils/shell.ts";
+>>>>>>> upstream/main
 
 export function shortenPath(path: unknown): string {
 	if (typeof path !== "string") return "";
@@ -13,6 +23,15 @@ export function shortenPath(path: unknown): string {
 	return path;
 }
 
+<<<<<<< HEAD
+=======
+export function linkPath(styledText: string, rawPath: string, cwd: string): string {
+	if (!getCapabilities().hyperlinks) return styledText;
+	const absolutePath = resolvePath(rawPath, cwd);
+	return hyperlink(styledText, pathToFileURL(absolutePath).href);
+}
+
+>>>>>>> upstream/main
 export function str(value: unknown): string | null {
 	if (typeof value === "string") return value;
 	if (value == null) return "";
@@ -59,6 +78,24 @@ export type ToolRenderResultLike<TDetails> = {
 	details: TDetails;
 };
 
+<<<<<<< HEAD
 export function invalidArgText(theme: { fg: (name: any, text: string) => string }): string {
 	return theme.fg("error", "[invalid arg]");
 }
+=======
+export function invalidArgText(theme: Theme): string {
+	return theme.fg("error", "[invalid arg]");
+}
+
+export function renderToolPath(
+	rawPath: string | null,
+	theme: Theme,
+	cwd: string,
+	options?: { emptyFallback?: string },
+): string {
+	if (rawPath === null) return invalidArgText(theme);
+	const value = rawPath || options?.emptyFallback;
+	if (!value) return theme.fg("toolOutput", "...");
+	return linkPath(theme.fg("accent", shortenPath(value)), value, cwd);
+}
+>>>>>>> upstream/main

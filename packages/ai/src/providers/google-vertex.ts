@@ -7,7 +7,11 @@ import {
 	type ThinkingConfig,
 	ThinkingLevel,
 } from "@google/genai";
+<<<<<<< HEAD
 import { calculateCost, clampThinkingLevel } from "../models.js";
+=======
+import { calculateCost, clampThinkingLevel } from "../models.ts";
+>>>>>>> upstream/main
 import type {
 	Api,
 	AssistantMessage,
@@ -21,10 +25,17 @@ import type {
 	ThinkingBudgets,
 	ThinkingContent,
 	ToolCall,
+<<<<<<< HEAD
 } from "../types.js";
 import { AssistantMessageEventStream } from "../utils/event-stream.js";
 import { sanitizeSurrogates } from "../utils/sanitize-unicode.js";
 import type { GoogleThinkingLevel } from "./google-shared.js";
+=======
+} from "../types.ts";
+import { AssistantMessageEventStream } from "../utils/event-stream.ts";
+import { sanitizeSurrogates } from "../utils/sanitize-unicode.ts";
+import type { GoogleThinkingLevel } from "./google-shared.ts";
+>>>>>>> upstream/main
 import {
 	convertMessages,
 	convertTools,
@@ -33,8 +44,13 @@ import {
 	mapToolChoice,
 	retainThoughtSignature,
 	toProviderNativeContent,
+<<<<<<< HEAD
 } from "./google-shared.js";
 import { applyExtraBody, buildBaseOptions, GOOGLE_RESERVED_BODY_KEYS } from "./simple-options.js";
+=======
+} from "./google-shared.ts";
+import { applyExtraBody, buildBaseOptions, GOOGLE_RESERVED_BODY_KEYS } from "./simple-options.ts";
+>>>>>>> upstream/main
 
 export interface GoogleVertexOptions extends StreamOptions {
 	toolChoice?: "auto" | "none" | "any";
@@ -422,7 +438,11 @@ function baseUrlIncludesApiVersion(baseUrl: string): boolean {
 }
 
 function resolveApiKey(options?: GoogleVertexOptions): string | undefined {
+<<<<<<< HEAD
 	const apiKey = options?.apiKey?.trim() || process.env.GOOGLE_CLOUD_API_KEY?.trim();
+=======
+	const apiKey = options?.apiKey?.trim();
+>>>>>>> upstream/main
 	if (!apiKey || apiKey === GCP_VERTEX_CREDENTIALS_MARKER || isPlaceholderApiKey(apiKey)) {
 		return undefined;
 	}

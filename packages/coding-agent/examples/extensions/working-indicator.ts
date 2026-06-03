@@ -2,10 +2,17 @@
  * Working Indicator Extension
  *
  * Demonstrates `ctx.ui.setWorkingIndicator()` for customizing the inline
+<<<<<<< HEAD
  * working indicator shown while helix is streaming a response.
  *
  * Usage:
  *   helix --extension examples/extensions/working-indicator.ts
+=======
+ * working indicator shown while senpi is streaming a response.
+ *
+ * Usage:
+ *   senpi --extension examples/extensions/working-indicator.ts
+>>>>>>> upstream/main
  *
  * Commands:
  *   /working-indicator           Show current mode
@@ -16,7 +23,11 @@
  *   /working-indicator reset     Restore pi's default spinner
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI, ExtensionContext, WorkingIndicatorOptions } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI, ExtensionContext, WorkingIndicatorOptions } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 type WorkingIndicatorMode = "dot" | "none" | "pulse" | "spinner" | "default";
 

@@ -12,7 +12,11 @@ import type {
 	ResponseReasoningItem,
 	ResponseStreamEvent,
 } from "openai/resources/responses/responses.js";
+<<<<<<< HEAD
 import { calculateCost } from "../models.js";
+=======
+import { calculateCost } from "../models.ts";
+>>>>>>> upstream/main
 import type {
 	Api,
 	AssistantMessage,
@@ -27,12 +31,21 @@ import type {
 	Tool,
 	ToolCall,
 	Usage,
+<<<<<<< HEAD
 } from "../types.js";
 import type { AssistantMessageEventStream } from "../utils/event-stream.js";
 import { shortHash } from "../utils/hash.js";
 import { parseStreamingJson } from "../utils/json-parse.js";
 import { sanitizeSurrogates } from "../utils/sanitize-unicode.js";
 import { transformMessages } from "./transform-messages.js";
+=======
+} from "../types.ts";
+import type { AssistantMessageEventStream } from "../utils/event-stream.ts";
+import { shortHash } from "../utils/hash.ts";
+import { parseStreamingJson } from "../utils/json-parse.ts";
+import { sanitizeSurrogates } from "../utils/sanitize-unicode.ts";
+import { transformMessages } from "./transform-messages.ts";
+>>>>>>> upstream/main
 
 // =============================================================================
 // Utilities
@@ -79,6 +92,10 @@ export interface OpenAIResponsesStreamOptions {
 export interface ConvertResponsesMessagesOptions {
 	includeSystemPrompt?: boolean;
 	preserveThinking?: boolean;
+<<<<<<< HEAD
+=======
+	preserveTextSignatures?: boolean;
+>>>>>>> upstream/main
 }
 
 export interface ConvertResponsesToolsOptions {
@@ -158,6 +175,10 @@ export function convertResponsesMessages<TApi extends Api>(
 
 	const transformedMessages = transformMessages(context.messages, model, normalizeToolCallId, {
 		preserveThinking: options?.preserveThinking,
+<<<<<<< HEAD
+=======
+		preserveTextSignatures: options?.preserveTextSignatures,
+>>>>>>> upstream/main
 	});
 
 	const includeSystemPrompt = options?.includeSystemPrompt ?? true;
@@ -204,6 +225,10 @@ export function convertResponsesMessages<TApi extends Api>(
 				assistantMsg.model !== model.id &&
 				assistantMsg.provider === model.provider &&
 				assistantMsg.api === model.api;
+<<<<<<< HEAD
+=======
+			let textBlockIndex = 0;
+>>>>>>> upstream/main
 
 			for (const block of msg.content) {
 				if (block.type === "thinking") {
@@ -215,10 +240,20 @@ export function convertResponsesMessages<TApi extends Api>(
 				} else if (block.type === "text") {
 					const textBlock = block as TextContent;
 					const parsedSignature = parseTextSignature(textBlock.textSignature);
+<<<<<<< HEAD
 					// OpenAI requires id to be max 64 characters
 					let msgId = parsedSignature?.id;
 					if (!msgId) {
 						msgId = `msg_${msgIndex}`;
+=======
+					const fallbackMessageId =
+						textBlockIndex === 0 ? `msg_pi_${msgIndex}` : `msg_pi_${msgIndex}_${textBlockIndex}`;
+					textBlockIndex++;
+					// OpenAI requires id to be max 64 characters
+					let msgId = parsedSignature?.id;
+					if (!msgId) {
+						msgId = fallbackMessageId;
+>>>>>>> upstream/main
 					} else if (msgId.length > 64) {
 						msgId = `msg_${shortHash(msgId)}`;
 					}

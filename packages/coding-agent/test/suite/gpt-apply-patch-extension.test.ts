@@ -1,13 +1,18 @@
 import { readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { convertResponsesTools } from "../../../ai/src/providers/openai-responses-shared.js";
+=======
+import { convertResponsesTools } from "../../../ai/src/providers/openai-responses-shared.ts";
+>>>>>>> upstream/main
 import gptApplyPatchExtension, {
 	APPLY_PATCH_FREEFORM_DESCRIPTION,
 	APPLY_PATCH_LARK_GRAMMAR,
 	applyPatchDetailed,
 	createApplyPatchTool,
 	isOpenAIGptModel,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/gpt-apply-patch/index.js";
 import { createBuiltinParserRegistry } from "../../src/core/extensions/builtin/permission-system/parsers.js";
 import type { ToolDefinition, ToolRenderContext } from "../../src/core/extensions/types.js";
@@ -15,6 +20,15 @@ import { initTheme, theme } from "../../src/modes/interactive/theme/theme.js";
 import { stripAnsi } from "../../src/utils/ansi.js";
 import type { Harness } from "./harness.js";
 import { createHarness } from "./harness.js";
+=======
+} from "../../src/core/extensions/builtin/gpt-apply-patch/index.ts";
+import { createBuiltinParserRegistry } from "../../src/core/extensions/builtin/permission-system/parsers.ts";
+import type { ToolDefinition, ToolRenderContext } from "../../src/core/extensions/types.ts";
+import { initTheme, theme } from "../../src/modes/interactive/theme/theme.ts";
+import { stripAnsi } from "../../src/utils/ansi.ts";
+import type { Harness } from "./harness.ts";
+import { createHarness } from "./harness.ts";
+>>>>>>> upstream/main
 
 type ApplyPatchTool = ReturnType<typeof createApplyPatchTool>;
 type ApplyPatchUpdate = Parameters<NonNullable<Parameters<ApplyPatchTool["execute"]>[3]>>[0];

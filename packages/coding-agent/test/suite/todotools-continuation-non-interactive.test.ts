@@ -1,9 +1,16 @@
 import { type FauxResponseStep, fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import todotoolsExtension from "../../src/core/extensions/builtin/todotools/index.js";
 import type { TodoItem } from "../../src/core/extensions/builtin/todotools/state.js";
 import { createTestExtensionsResult, createTestResourceLoader } from "../utilities.js";
 import { createHarness, getAssistantTexts, getUserTexts, type Harness } from "./harness.js";
+=======
+import todotoolsExtension from "../../src/core/extensions/builtin/todotools/index.ts";
+import type { TodoItem } from "../../src/core/extensions/builtin/todotools/state.ts";
+import { createTestExtensionsResult, createTestResourceLoader } from "../utilities.ts";
+import { createHarness, getAssistantTexts, getUserTexts, type Harness } from "./harness.ts";
+>>>>>>> upstream/main
 
 const harnesses: Harness[] = [];
 

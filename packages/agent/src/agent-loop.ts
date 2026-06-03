@@ -21,7 +21,11 @@ import type {
 	AgentToolCall,
 	AgentToolResult,
 	StreamFn,
+<<<<<<< HEAD
 } from "./types.js";
+=======
+} from "./types.ts";
+>>>>>>> upstream/main
 
 export type AgentEventSink = (event: AgentEvent) => Promise<void> | void;
 
@@ -574,6 +578,13 @@ async function executeToolCallsSequential(
 		await emitToolResultMessage(toolResultMessage, emit);
 		finalizedCalls.push(finalized);
 		messages.push(toolResultMessage);
+<<<<<<< HEAD
+=======
+
+		if (signal?.aborted) {
+			break;
+		}
+>>>>>>> upstream/main
 	}
 
 	return {
@@ -609,6 +620,12 @@ async function executeToolCallsParallel(
 			} satisfies FinalizedToolCallOutcome;
 			await emitToolExecutionEnd(finalized, emit);
 			finalizedCalls.push(finalized);
+<<<<<<< HEAD
+=======
+			if (signal?.aborted) {
+				break;
+			}
+>>>>>>> upstream/main
 			continue;
 		}
 
@@ -625,6 +642,12 @@ async function executeToolCallsParallel(
 			await emitToolExecutionEnd(finalized, emit);
 			return finalized;
 		});
+<<<<<<< HEAD
+=======
+		if (signal?.aborted) {
+			break;
+		}
+>>>>>>> upstream/main
 	}
 
 	const orderedFinalizedCalls = await Promise.all(
@@ -716,6 +739,16 @@ async function prepareToolCall(
 				},
 				signal,
 			);
+<<<<<<< HEAD
+=======
+			if (signal?.aborted) {
+				return {
+					kind: "immediate",
+					result: createErrorToolResult("Operation aborted"),
+					isError: true,
+				};
+			}
+>>>>>>> upstream/main
 			if (beforeResult?.block) {
 				return {
 					kind: "immediate",
@@ -724,6 +757,16 @@ async function prepareToolCall(
 				};
 			}
 		}
+<<<<<<< HEAD
+=======
+		if (signal?.aborted) {
+			return {
+				kind: "immediate",
+				result: createErrorToolResult("Operation aborted"),
+				isError: true,
+			};
+		}
+>>>>>>> upstream/main
 		return {
 			kind: "prepared",
 			toolCall,

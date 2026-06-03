@@ -1,6 +1,7 @@
 import { streamSimple, type ToolResultMessage, type Usage } from "@earendil-works/pi-ai";
 import { html, LitElement } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+<<<<<<< HEAD
 import { ModelSelector } from "../dialogs/ModelSelector.js";
 import type { MessageEditor } from "./MessageEditor.js";
 import "./MessageEditor.js";
@@ -15,6 +16,22 @@ import { i18n } from "../utils/i18n.js";
 import { createStreamFn } from "../utils/proxy-utils.js";
 import type { UserMessageWithAttachments } from "./Messages.js";
 import type { StreamingMessageContainer } from "./StreamingMessageContainer.js";
+=======
+import { ModelSelector } from "../dialogs/ModelSelector.ts";
+import type { MessageEditor } from "./MessageEditor.ts";
+import "./MessageEditor.ts";
+import "./MessageList.ts";
+import "./Messages.ts"; // Import for side effects to register the custom elements
+import { getAppStorage } from "../storage/app-storage.ts";
+import "./StreamingMessageContainer.ts";
+import type { Agent, AgentEvent } from "@earendil-works/pi-agent-core";
+import type { Attachment } from "../utils/attachment-utils.ts";
+import { formatUsage } from "../utils/format.ts";
+import { i18n } from "../utils/i18n.ts";
+import { createStreamFn } from "../utils/proxy-utils.ts";
+import type { UserMessageWithAttachments } from "./Messages.ts";
+import type { StreamingMessageContainer } from "./StreamingMessageContainer.ts";
+>>>>>>> upstream/main
 
 @customElement("agent-interface")
 export class AgentInterface extends LitElement {

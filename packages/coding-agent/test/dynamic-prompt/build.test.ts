@@ -1,5 +1,9 @@
 import { describe, expect, test } from "vitest";
+<<<<<<< HEAD
 import { buildDynamicSystemPrompt } from "../../src/core/dynamic-prompt/build.js";
+=======
+import { buildDynamicSystemPrompt } from "../../src/core/dynamic-prompt/build.ts";
+>>>>>>> upstream/main
 
 describe("buildDynamicSystemPrompt", () => {
 	const baseOptions = {
@@ -16,10 +20,17 @@ describe("buildDynamicSystemPrompt", () => {
 		skills: [],
 	};
 
+<<<<<<< HEAD
 	test("includes helix identity", () => {
 		const prompt = buildDynamicSystemPrompt(baseOptions);
 
 		expect(prompt).toContain("You are helix");
+=======
+	test("includes senpi identity", () => {
+		const prompt = buildDynamicSystemPrompt(baseOptions);
+
+		expect(prompt).toContain("You are senpi");
+>>>>>>> upstream/main
 	});
 
 	test("includes intent gate section with mandatory verbalization", () => {

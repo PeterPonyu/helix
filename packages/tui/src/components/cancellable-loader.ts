@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { getKeybindings } from "../keybindings.js";
 import { Loader } from "./loader.js";
+=======
+import { getKeybindings } from "../keybindings.ts";
+import { Loader } from "./loader.ts";
+>>>>>>> upstream/main
 
 /**
  * Loader that can be cancelled with Escape.

@@ -2,8 +2,13 @@ import type { AgentTool, ThinkingLevel } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxToolCall, type Model } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import type { ExtensionAPI } from "../../src/index.js";
 import { createHarness, getAssistantTexts, type Harness } from "./harness.js";
+=======
+import type { BuildSystemPromptOptions, ExtensionAPI } from "../../src/index.ts";
+import { createHarness, getAssistantTexts, type Harness } from "./harness.ts";
+>>>>>>> upstream/main
 
 describe("AgentSession model and extension characterization", () => {
 	const harnesses: Harness[] = [];
@@ -44,6 +49,34 @@ describe("AgentSession model and extension characterization", () => {
 		).toEqual([`${nextModel.provider}/${nextModel.id}`]);
 	});
 
+<<<<<<< HEAD
+=======
+	it("emits model_select when a same-id model changes context window", async () => {
+		// given
+		const modelEvents: string[] = [];
+		const harness = await createHarness({
+			models: [{ id: "faux-1", name: "One", contextWindow: 32_000 }],
+			extensionFactories: [
+				(pi) => {
+					pi.on("model_select", async (event) => {
+						modelEvents.push(`${event.previousModel?.contextWindow ?? 0}->${event.model.contextWindow}`);
+					});
+				},
+			],
+		});
+		harnesses.push(harness);
+		const initialRevision = harness.session.getMessageRevision();
+		const expandedModel = { ...harness.getModel(), contextWindow: 800_000 };
+
+		// when
+		await harness.session.setModel(expandedModel);
+
+		// then
+		expect(modelEvents).toEqual(["32000->800000"]);
+		expect(harness.session.getMessageRevision()).toBeGreaterThan(initialRevision);
+	});
+
+>>>>>>> upstream/main
 	it("uses a newly selected model for queued steering after the active turn finishes", async () => {
 		// given
 		let releaseToolExecution!: () => void;
@@ -370,6 +403,37 @@ describe("AgentSession model and extension characterization", () => {
 		expect(extensionApi).toBeDefined();
 	});
 
+<<<<<<< HEAD
+=======
+	it("allows extension commands to inspect live system prompt options", async () => {
+		const seenOptions: BuildSystemPromptOptions[] = [];
+		const harness = await createHarness({
+			extensionFactories: [
+				(pi) => {
+					pi.registerCommand("inspect-options", {
+						description: "Inspect system prompt options",
+						handler: async (_args, ctx) => {
+							const options = ctx.getSystemPromptOptions();
+							seenOptions.push(options);
+							options.selectedTools?.push("mutated_tool");
+						},
+					});
+				},
+			],
+		});
+		harnesses.push(harness);
+
+		await harness.session.prompt("/inspect-options");
+		await harness.session.prompt("/inspect-options");
+
+		expect(seenOptions).toHaveLength(2);
+		expect(seenOptions[0]).toBe(seenOptions[1]);
+		expect(seenOptions[0]?.cwd).toBe(harness.tempDir);
+		expect(seenOptions[0]?.selectedTools).toContain("read");
+		expect(seenOptions[1]?.selectedTools).toContain("mutated_tool");
+	});
+
+>>>>>>> upstream/main
 	it("allows before_agent_start handlers to inject custom messages and modify the system prompt", async () => {
 		const harness = await createHarness({
 			extensionFactories: [

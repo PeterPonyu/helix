@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { sanitizeOpenAIChatCompletionsPayload } from "../../src/core/extensions/builtin/tool-pair-guard/sanitize-openai-chat-completions-payload.js";
+=======
+import { sanitizeOpenAIChatCompletionsPayload } from "../../src/core/extensions/builtin/tool-pair-guard/sanitize-openai-chat-completions-payload.ts";
+>>>>>>> upstream/main
 
 describe("sanitizeOpenAIChatCompletionsPayload", () => {
 	it("returns same reference for payload without messages", () => {

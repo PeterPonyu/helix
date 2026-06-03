@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { Skill } from "../skills.js";
 import { formatSkillsForPrompt } from "../skills.js";
 import { buildExplorationSection } from "./exploration.js";
@@ -9,6 +10,19 @@ import { buildStyleSection } from "./style.js";
 import { categorizeTools } from "./tool-categorization.js";
 import { buildToolSection } from "./tool-section.js";
 import { buildVerificationSection } from "./verification.js";
+=======
+import type { Skill } from "../skills.ts";
+import { formatSkillsForPrompt } from "../skills.ts";
+import { buildExplorationSection } from "./exploration.ts";
+import { buildIdentitySection } from "./identity.ts";
+import { buildIntentGate } from "./intent-gate.ts";
+import { buildParallelToolsSection } from "./parallel-tools.ts";
+import { buildPoliciesSection } from "./policies.ts";
+import { buildStyleSection } from "./style.ts";
+import { categorizeTools } from "./tool-categorization.ts";
+import { buildToolSection } from "./tool-section.ts";
+import { buildVerificationSection } from "./verification.ts";
+>>>>>>> upstream/main
 
 export interface BuildDynamicSystemPromptOptions {
 	cwd: string;

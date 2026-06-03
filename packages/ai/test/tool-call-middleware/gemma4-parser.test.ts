@@ -1,7 +1,12 @@
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+<<<<<<< HEAD
 import { gemma4CreateStreamParser, gemma4ParseGeneratedText } from "../../src/tool-call-middleware/protocols/gemma4.js";
 import type { Tool } from "../../src/types.js";
+=======
+import { gemma4CreateStreamParser, gemma4ParseGeneratedText } from "../../src/tool-call-middleware/protocols/gemma4.ts";
+import type { Tool } from "../../src/types.ts";
+>>>>>>> upstream/main
 
 const weatherTool: Tool = {
 	name: "get_weather",

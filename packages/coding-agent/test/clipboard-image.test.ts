@@ -70,7 +70,11 @@ describe("readClipboardImage", () => {
 			throw new Error(`Unexpected spawnSync call: ${command} ${args.join(" ")}`);
 		});
 
+<<<<<<< HEAD
 		const { readClipboardImage } = await import("../src/utils/clipboard-image.js");
+=======
+		const { readClipboardImage } = await import("../src/utils/clipboard-image.ts");
+>>>>>>> upstream/main
 		const result = await readClipboardImage({ platform: "linux", env: { WAYLAND_DISPLAY: "1" } });
 		expect(result).not.toBeNull();
 		expect(result?.mimeType).toBe("image/png");
@@ -101,7 +105,11 @@ describe("readClipboardImage", () => {
 			return spawnOk(Buffer.alloc(0));
 		});
 
+<<<<<<< HEAD
 		const { readClipboardImage } = await import("../src/utils/clipboard-image.js");
+=======
+		const { readClipboardImage } = await import("../src/utils/clipboard-image.ts");
+>>>>>>> upstream/main
 		const result = await readClipboardImage({ platform: "linux", env: { XDG_SESSION_TYPE: "wayland" } });
 		expect(result).not.toBeNull();
 		expect(result?.mimeType).toBe("image/png");
@@ -138,7 +146,11 @@ describe("readClipboardImage", () => {
 			throw new Error(`Unexpected spawnSync call: ${command} ${args.join(" ")}`);
 		});
 
+<<<<<<< HEAD
 		const { readClipboardImage } = await import("../src/utils/clipboard-image.js");
+=======
+		const { readClipboardImage } = await import("../src/utils/clipboard-image.ts");
+>>>>>>> upstream/main
 		const result = await readClipboardImage({ platform: "linux", env: { WSL_DISTRO_NAME: "Ubuntu" } });
 		expect(result).not.toBeNull();
 		expect(result?.mimeType).toBe("image/png");
@@ -153,7 +165,11 @@ describe("readClipboardImage", () => {
 		mocks.clipboard.hasImage.mockReturnValue(true);
 		mocks.clipboard.getImageBinary.mockResolvedValue(new Uint8Array([7]));
 
+<<<<<<< HEAD
 		const { readClipboardImage } = await import("../src/utils/clipboard-image.js");
+=======
+		const { readClipboardImage } = await import("../src/utils/clipboard-image.ts");
+>>>>>>> upstream/main
 		const result = await readClipboardImage({ platform: "linux", env: {} });
 		expect(result).not.toBeNull();
 		expect(result?.mimeType).toBe("image/png");
@@ -167,7 +183,11 @@ describe("readClipboardImage", () => {
 
 		mocks.clipboard.hasImage.mockReturnValue(false);
 
+<<<<<<< HEAD
 		const { readClipboardImage } = await import("../src/utils/clipboard-image.js");
+=======
+		const { readClipboardImage } = await import("../src/utils/clipboard-image.ts");
+>>>>>>> upstream/main
 		const result = await readClipboardImage({ platform: "linux", env: {} });
 		expect(result).toBeNull();
 	});

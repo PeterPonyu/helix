@@ -5,6 +5,7 @@
  * Tool selection persists across session reloads and respects branch navigation.
  *
  * Usage:
+<<<<<<< HEAD
  * 1. Copy this file to ~/.helix/agent/extensions/ or your project's .helix/extensions/
  * 2. Use /tools to open the tool selector
  */
@@ -12,6 +13,15 @@
 import { Container, type SettingItem, SettingsList } from "@earendil-works/pi-tui";
 import type { ExtensionAPI, ExtensionContext, ToolInfo } from "@helix-bio/helix";
 import { getSettingsListTheme } from "@helix-bio/helix";
+=======
+ * 1. Copy this file to ~/.senpi/agent/extensions/ or your project's .senpi/extensions/
+ * 2. Use /tools to open the tool selector
+ */
+
+import type { ExtensionAPI, ExtensionContext, ToolInfo } from "@code-yeongyu/senpi";
+import { getSettingsListTheme } from "@code-yeongyu/senpi";
+import { Container, type SettingItem, SettingsList } from "@earendil-works/pi-tui";
+>>>>>>> upstream/main
 
 // State persisted to session
 interface ToolsState {
@@ -67,6 +77,14 @@ export default function toolsExtension(pi: ExtensionAPI) {
 	pi.registerCommand("tools", {
 		description: "Enable/disable tools",
 		handler: async (_args, ctx) => {
+<<<<<<< HEAD
+=======
+			if (ctx.mode !== "tui") {
+				ctx.ui.notify("/tools requires TUI mode", "error");
+				return;
+			}
+
+>>>>>>> upstream/main
 			// Refresh tool list
 			allTools = pi.getAllTools();
 

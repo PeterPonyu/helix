@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { Api, Model, SimpleStreamOptions, StreamOptions, ThinkingBudgets, ThinkingLevel } from "../types.js";
+=======
+import type { Api, Model, SimpleStreamOptions, StreamOptions, ThinkingBudgets, ThinkingLevel } from "../types.ts";
+>>>>>>> upstream/main
 
 /**
  * Merge user-supplied extraBody fields into a provider request payload, skipping
@@ -126,6 +130,7 @@ export const BEDROCK_RESERVED_BODY_KEYS: ReadonlySet<string> = new Set([
 	"requestMetadata",
 ]);
 
+<<<<<<< HEAD
 const DEFAULT_MAX_OUTPUT_TOKENS = 32000;
 const CONTEXT_WINDOW_OUTPUT_TOLERANCE = 1024;
 
@@ -140,6 +145,12 @@ export function buildBaseOptions(model: Model<Api>, options?: SimpleStreamOption
 	return {
 		temperature: options?.temperature,
 		maxTokens: options?.maxTokens ?? defaultMaxTokens,
+=======
+export function buildBaseOptions(_model: Model<Api>, options?: SimpleStreamOptions, apiKey?: string): StreamOptions {
+	return {
+		temperature: options?.temperature,
+		maxTokens: options?.maxTokens,
+>>>>>>> upstream/main
 		signal: options?.signal,
 		apiKey: apiKey || options?.apiKey,
 		transport: options?.transport,
@@ -150,6 +161,10 @@ export function buildBaseOptions(model: Model<Api>, options?: SimpleStreamOption
 		onPayload: options?.onPayload,
 		onResponse: options?.onResponse,
 		timeoutMs: options?.timeoutMs,
+<<<<<<< HEAD
+=======
+		websocketConnectTimeoutMs: options?.websocketConnectTimeoutMs,
+>>>>>>> upstream/main
 		maxRetries: options?.maxRetries,
 		maxRetryDelayMs: options?.maxRetryDelayMs,
 		metadata: options?.metadata,
@@ -176,7 +191,12 @@ export function clampMaxForOpenAI(
 }
 
 export function adjustMaxTokensForThinking(
+<<<<<<< HEAD
 	baseMaxTokens: number,
+=======
+	// Undefined means no explicit caller cap. Use the model cap and fit thinking inside it.
+	baseMaxTokens: number | undefined,
+>>>>>>> upstream/main
 	modelMaxTokens: number,
 	reasoningLevel: ThinkingLevel,
 	customBudgets?: ThinkingBudgets,
@@ -192,10 +212,18 @@ export function adjustMaxTokensForThinking(
 	const minOutputTokens = 1024;
 	const level = clampReasoning(reasoningLevel);
 	if (!level) {
+<<<<<<< HEAD
 		return { maxTokens: baseMaxTokens, thinkingBudget: 0 };
 	}
 	let thinkingBudget = budgets[level]!;
 	const maxTokens = Math.min(baseMaxTokens + thinkingBudget, modelMaxTokens);
+=======
+		return { maxTokens: baseMaxTokens ?? modelMaxTokens, thinkingBudget: 0 };
+	}
+	let thinkingBudget = budgets[level]!;
+	const maxTokens =
+		baseMaxTokens === undefined ? modelMaxTokens : Math.min(baseMaxTokens + thinkingBudget, modelMaxTokens);
+>>>>>>> upstream/main
 
 	if (maxTokens <= thinkingBudget) {
 		thinkingBudget = Math.max(0, maxTokens - minOutputTokens);

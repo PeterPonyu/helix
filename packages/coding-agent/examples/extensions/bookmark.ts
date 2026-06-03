@@ -7,7 +7,11 @@
  * Usage: /bookmark [label] - bookmark the last assistant message
  */
 
+<<<<<<< HEAD
 import type { ExtensionAPI } from "@helix-bio/helix";
+=======
+import type { ExtensionAPI } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 export default function (pi: ExtensionAPI) {
 	pi.registerCommand("bookmark", {

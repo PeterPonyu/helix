@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { registerApiProvider, unregisterApiProviders } from "../api-registry.js";
+=======
+import { registerApiProvider, unregisterApiProviders } from "../api-registry.ts";
+>>>>>>> upstream/main
 import type {
 	AssistantMessage,
 	AssistantMessageEventStream,
@@ -15,8 +19,13 @@ import type {
 	ToolCall,
 	ToolResultMessage,
 	Usage,
+<<<<<<< HEAD
 } from "../types.js";
 import { createAssistantMessageEventStream } from "../utils/event-stream.js";
+=======
+} from "../types.ts";
+import { createAssistantMessageEventStream } from "../utils/event-stream.ts";
+>>>>>>> upstream/main
 
 const DEFAULT_API = "faux";
 const DEFAULT_PROVIDER = "faux";

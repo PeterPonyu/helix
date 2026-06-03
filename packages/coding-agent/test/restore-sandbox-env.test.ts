@@ -6,7 +6,11 @@ vi.mock("node:fs", () => ({
 	readFileSync,
 }));
 
+<<<<<<< HEAD
 const { restoreSandboxEnv } = await import("../src/bun/restore-sandbox-env.js");
+=======
+const { restoreSandboxEnv } = await import("../src/bun/restore-sandbox-env.ts");
+>>>>>>> upstream/main
 
 describe("restoreSandboxEnv", () => {
 	it("does nothing when not running under bun", () => {

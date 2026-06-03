@@ -4,7 +4,11 @@
  * Override settings using SettingsManager.
  */
 
+<<<<<<< HEAD
 import { createAgentSession, SessionManager, SettingsManager } from "@helix-bio/helix";
+=======
+import { createAgentSession, SessionManager, SettingsManager } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 const cwd = process.cwd();
 

@@ -6,12 +6,21 @@ import { basename } from "node:path";
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
 import type { ImageContent, Model } from "@earendil-works/pi-ai";
 import type { KeyId } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { type Theme, theme } from "../../modes/interactive/theme/theme.js";
 import type { ResourceDiagnostic } from "../diagnostics.js";
 import type { KeybindingsConfig } from "../keybindings.js";
 import type { ModelRegistry } from "../model-registry.js";
 import type { SessionManager } from "../session-manager.js";
 import type { BuildSystemPromptOptions } from "../system-prompt.js";
+=======
+import { type Theme, theme } from "../../modes/interactive/theme/theme.ts";
+import type { ResourceDiagnostic } from "../diagnostics.ts";
+import type { KeybindingsConfig } from "../keybindings.ts";
+import type { ModelRegistry } from "../model-registry.ts";
+import type { SessionManager } from "../session-manager.ts";
+import type { BuildSystemPromptOptions } from "../system-prompt.ts";
+>>>>>>> upstream/main
 import type {
 	BeforeAgentStartEvent,
 	BeforeAgentStartEventResult,
@@ -29,6 +38,10 @@ import type {
 	ExtensionError,
 	ExtensionEvent,
 	ExtensionFlag,
+<<<<<<< HEAD
+=======
+	ExtensionMode,
+>>>>>>> upstream/main
 	ExtensionRuntime,
 	ExtensionShortcut,
 	ExtensionUIContext,
@@ -59,7 +72,11 @@ import type {
 	ToolResultEventResult,
 	UserBashEvent,
 	UserBashEventResult,
+<<<<<<< HEAD
 } from "./types.js";
+=======
+} from "./types.ts";
+>>>>>>> upstream/main
 
 // Extension shortcuts compete with canonical keybinding ids from keybindings.json.
 // Only editor-global shortcuts are reserved here. Picker-specific bindings are not.
@@ -72,6 +89,10 @@ const RESERVED_KEYBINDINGS_FOR_EXTENSION_CONFLICTS = [
 	"app.model.cycleForward",
 	"app.model.cycleBackward",
 	"app.model.select",
+<<<<<<< HEAD
+=======
+	"app.sessions.observe",
+>>>>>>> upstream/main
 	"app.tools.expand",
 	"app.thinking.toggle",
 	"app.editor.external",
@@ -257,6 +278,10 @@ export class ExtensionRunner {
 	private extensions: Extension[];
 	private runtime: ExtensionRuntime;
 	private uiContext: ExtensionUIContext;
+<<<<<<< HEAD
+=======
+	private mode: ExtensionMode = "print";
+>>>>>>> upstream/main
 	private cwd: string;
 	private sessionManager: SessionManager;
 	private modelRegistry: ModelRegistry;
@@ -284,6 +309,10 @@ export class ExtensionRunner {
 		reason: "rejected",
 	});
 	private getSystemPromptFn: () => string = () => "";
+<<<<<<< HEAD
+=======
+	private getSystemPromptOptionsFn: () => BuildSystemPromptOptions = () => ({ cwd: this.cwd });
+>>>>>>> upstream/main
 	private newSessionHandler: NewSessionHandler = async () => ({ cancelled: false });
 	private forkHandler: ForkHandler = async () => ({ cancelled: false });
 	private navigateTreeHandler: NavigateTreeHandler = async () => ({ cancelled: false });
@@ -352,6 +381,10 @@ export class ExtensionRunner {
 		this.getMessageRevisionFn = contextActions.getMessageRevision;
 		this.applyCompactionFn = contextActions.applyCompaction;
 		this.getSystemPromptFn = contextActions.getSystemPrompt;
+<<<<<<< HEAD
+=======
+		this.getSystemPromptOptionsFn = contextActions.getSystemPromptOptions ?? (() => ({ cwd: this.cwd }));
+>>>>>>> upstream/main
 
 		// Flush provider registrations queued during extension loading
 		for (const { name, config, extensionPath } of this.runtime.pendingProviderRegistrations) {
@@ -409,8 +442,14 @@ export class ExtensionRunner {
 		this.reloadHandler = async () => {};
 	}
 
+<<<<<<< HEAD
 	setUIContext(uiContext?: ExtensionUIContext): void {
 		this.uiContext = uiContext ?? noOpUIContext;
+=======
+	setUIContext(uiContext?: ExtensionUIContext, mode: ExtensionMode = "print"): void {
+		this.uiContext = uiContext ?? noOpUIContext;
+		this.mode = mode;
+>>>>>>> upstream/main
 	}
 
 	setToolHookLifecycleObserver(observer?: ExtensionToolHookLifecycleObserver): void {
@@ -666,6 +705,13 @@ export class ExtensionRunner {
 				runner.assertActive();
 				return runner.uiContext;
 			},
+<<<<<<< HEAD
+=======
+			get mode() {
+				runner.assertActive();
+				return runner.mode;
+			},
+>>>>>>> upstream/main
 			get hasUI() {
 				runner.assertActive();
 				return runner.hasUI();
@@ -757,6 +803,13 @@ export class ExtensionRunner {
 			{},
 			Object.getOwnPropertyDescriptors(this.createContext()),
 		) as ExtensionCommandContext;
+<<<<<<< HEAD
+=======
+		context.getSystemPromptOptions = () => {
+			this.assertActive();
+			return this.getSystemPromptOptionsFn();
+		};
+>>>>>>> upstream/main
 		context.waitForIdle = () => {
 			this.assertActive();
 			return this.waitForIdleFn();
@@ -1267,7 +1320,16 @@ export class ExtensionRunner {
 	}
 
 	/** Emit input event. Transforms chain, "handled" short-circuits. */
+<<<<<<< HEAD
 	async emitInput(text: string, images: ImageContent[] | undefined, source: InputSource): Promise<InputEventResult> {
+=======
+	async emitInput(
+		text: string,
+		images: ImageContent[] | undefined,
+		source: InputSource,
+		streamingBehavior?: "steer" | "followUp",
+	): Promise<InputEventResult> {
+>>>>>>> upstream/main
 		const ctx = this.createContext();
 		let currentText = text;
 		let currentImages = images;
@@ -1275,7 +1337,17 @@ export class ExtensionRunner {
 		for (const ext of this.extensions) {
 			for (const handler of ext.handlers.get("input") ?? []) {
 				try {
+<<<<<<< HEAD
 					const event: InputEvent = { type: "input", text: currentText, images: currentImages, source };
+=======
+					const event: InputEvent = {
+						type: "input",
+						text: currentText,
+						images: currentImages,
+						source,
+						streamingBehavior,
+					};
+>>>>>>> upstream/main
 					const result = (await handler(event, ctx)) as InputEventResult | undefined;
 					if (result?.action === "handled") return result;
 					if (result?.action === "transform") {

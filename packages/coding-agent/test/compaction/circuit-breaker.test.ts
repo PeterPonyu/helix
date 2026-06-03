@@ -5,7 +5,11 @@ import {
 	recordFailure,
 	recordSuccess,
 	shouldBypass,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/compaction/circuit-breaker.js";
+=======
+} from "../../src/core/extensions/builtin/compaction/circuit-breaker.ts";
+>>>>>>> upstream/main
 
 interface FutureBreakerState {
 	consecutiveFailures: number;

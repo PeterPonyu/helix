@@ -1,13 +1,13 @@
-# Helix Documentation
+# Senpi Documentation
 
-Helix is a minimal terminal coding harness. It is designed to stay small at the core while being extended through TypeScript extensions, skills, prompt templates, themes, and helix packages. It is an opinionated fork of [badlogic/pi-mono](https://github.com/badlogic/pi-mono).
+Senpi is a minimal terminal coding harness. It is designed to stay small at the core while being extended through TypeScript extensions, skills, prompt templates, themes, and senpi packages. It is an opinionated fork of [badlogic/pi-mono](https://github.com/badlogic/pi-mono).
 
 ## Quick start
 
 Install with npm:
 
 ```bash
-npm install -g @helix-bio/helix
+npm install -g @code-yeongyu/senpi
 ```
 
 To uninstall pi itself, use npm for curl and npm installs:
@@ -21,17 +21,17 @@ For pnpm, Yarn, or Bun installs, use the matching global remove command: `pnpm r
 Then run it in a project directory:
 
 ```bash
-helix
+senpi
 ```
 
-Authenticate with `/login` for subscription providers, or set an API key such as `ANTHROPIC_API_KEY` before starting helix.
+Authenticate with `/login` for subscription providers, or set an API key such as `ANTHROPIC_API_KEY` before starting senpi.
 
 For the full first-run flow, see [Quickstart](quickstart.md).
 
 ## Start here
 
 - [Quickstart](quickstart.md) - install, authenticate, and run a first session.
-- [Using Helix](usage.md) - interactive mode, slash commands, context files, and CLI reference.
+- [Using Senpi](usage.md) - interactive mode, slash commands, context files, and CLI reference.
 - [Providers](providers.md) - subscription and API-key setup for built-in providers.
 - [Settings](settings.md) - global and project settings.
 - [Keybindings](keybindings.md) - default shortcuts and custom keybindings.
@@ -45,13 +45,13 @@ For the full first-run flow, see [Quickstart](quickstart.md).
 - [Skills](skills.md) - Agent Skills for reusable on-demand capabilities.
 - [Prompt templates](prompt-templates.md) - reusable prompts that expand from slash commands.
 - [Themes](themes.md) - built-in and custom terminal themes.
-- [Helix packages](packages.md) - bundle and share extensions, skills, prompts, and themes.
+- [Senpi packages](packages.md) - bundle and share extensions, skills, prompts, and themes.
 - [Custom models](models.md) - add model entries for supported provider APIs.
 - [Custom providers](custom-provider.md) - implement custom APIs and OAuth flows.
 
 ## Programmatic usage
 
-- [SDK](sdk.md) - embed helix in Node.js applications.
+- [SDK](sdk.md) - embed senpi in Node.js applications.
 - [RPC mode](rpc.md) - integrate over stdin/stdout JSONL.
 - [JSON event stream mode](json.md) - print mode with structured events.
 - [TUI components](tui.md) - build custom terminal UI for extensions.

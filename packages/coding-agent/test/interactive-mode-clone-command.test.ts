@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
+<<<<<<< HEAD
 import { InteractiveMode } from "../src/modes/interactive/interactive-mode.js";
+=======
+import { InteractiveMode } from "../src/modes/interactive/interactive-mode.ts";
+>>>>>>> upstream/main
 
 type CloneCommandContext = {
 	sessionManager: { getLeafId: () => string | null };

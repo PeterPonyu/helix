@@ -10,9 +10,15 @@ import {
 	Spacer,
 	Text,
 } from "@earendil-works/pi-tui";
+<<<<<<< HEAD
 import { theme } from "../theme/theme.js";
 import { DynamicBorder } from "./dynamic-border.js";
 import { keyText } from "./keybinding-hints.js";
+=======
+import { theme } from "../theme/theme.ts";
+import { DynamicBorder } from "./dynamic-border.ts";
+import { keyText } from "./keybinding-hints.ts";
+>>>>>>> upstream/main
 import {
 	clearFavoriteModels,
 	type FavoriteModelIds,
@@ -22,7 +28,11 @@ import {
 	isFavoriteModel,
 	moveFavoriteModel,
 	toggleFavoriteModel,
+<<<<<<< HEAD
 } from "./model-favorites.js";
+=======
+} from "./model-favorites.ts";
+>>>>>>> upstream/main
 
 interface ModelItem {
 	fullId: string;

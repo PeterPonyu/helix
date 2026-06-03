@@ -10,7 +10,11 @@
  * extensions system using pi.registerTool().
  */
 
+<<<<<<< HEAD
 import { createAgentSession, SessionManager } from "@helix-bio/helix";
+=======
+import { createAgentSession, SessionManager } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 // Read-only mode (no edit/write)
 const { session: readOnlySession } = await createAgentSession({

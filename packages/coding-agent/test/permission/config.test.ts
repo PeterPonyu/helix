@@ -6,8 +6,13 @@ import {
 	expand,
 	fromConfig,
 	merge,
+<<<<<<< HEAD
 } from "../../src/core/extensions/builtin/permission-system/config.js";
 import type { PermissionConfig, Ruleset } from "../../src/core/extensions/builtin/permission-system/types.js";
+=======
+} from "../../src/core/extensions/builtin/permission-system/config.ts";
+import type { PermissionConfig, Ruleset } from "../../src/core/extensions/builtin/permission-system/types.ts";
+>>>>>>> upstream/main
 
 describe("permission config transforms", () => {
 	describe("EDIT_TOOLS", () => {

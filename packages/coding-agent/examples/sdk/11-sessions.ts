@@ -4,7 +4,11 @@
  * Control session persistence: in-memory, new file, continue, or open specific.
  */
 
+<<<<<<< HEAD
 import { createAgentSession, SessionManager } from "@helix-bio/helix";
+=======
+import { createAgentSession, SessionManager } from "@code-yeongyu/senpi";
+>>>>>>> upstream/main
 
 // In-memory (no persistence)
 const { session: inMemory } = await createAgentSession({
