@@ -499,24 +499,37 @@ function dryRunMerge(options, upstreamHead, shortSha, branchName) {
 }
 
 function buildPrBody(unresolvedFiles, shortSha) {
-	const rows = unresolvedFiles
+	// GitHub rejects pull request bodies longer than 65,536 characters with an
+	// HTTP 422 "Validation Failed" response. A heavily-rebranded fork can have
+	// hundreds of conflicting files, so cap the rendered table and summarize the
+	// remainder instead of emitting one row per file.
+	const MAX_LISTED_FILES = 100
+	const listed = unresolvedFiles.slice(0, MAX_LISTED_FILES)
+	const rows = listed
 		.map((file) => {
 			const suggestion = suggestedResolution(file)
 			return `| \`${file}\` | ${suggestion.resolution} | ${suggestion.reason} |`
 		})
 		.join("\n")
+	const overflowCount = unresolvedFiles.length - listed.length
+	const overflowNote =
+		overflowCount > 0
+			? `\n\n_…and ${overflowCount} more conflicting file${overflowCount === 1 ? "" : "s"} not shown (GitHub limits PR bodies to 65,536 characters). After checking out the branch, list them all with \`git diff --name-only --diff-filter=U\`._`
+			: ""
 
 	return `## Auto-opened by sync-upstream.yml
 
-Upstream \`badlogic/pi-mono\` advanced to \`${shortSha}\` (full: \`${currentUpstreamHead}\`). Auto-merge applied but the following files require human resolution.
+Upstream \`code-yeongyu/senpi\` advanced to \`${shortSha}\` (full: \`${currentUpstreamHead}\`). Auto-merge applied but the following files require human resolution.
 
 If a newer sync runs before this PR is resolved, this PR will be **closed and superseded** by the next one.
 
 ## Conflicting files
 
+**${unresolvedFiles.length} file${unresolvedFiles.length === 1 ? "" : "s"} need human resolution${overflowCount > 0 ? `; the first ${MAX_LISTED_FILES} are listed below` : ""}.**
+
 | File | Suggested resolution | Reason |
 |---|---|---|
-${rows}
+${rows}${overflowNote}
 
 ## Resolution playbook
 
