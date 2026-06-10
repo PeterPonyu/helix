@@ -111,5 +111,5 @@ export async function inspectBedLines(lines: AsyncIterable<string>, opts: BedOpt
 }
 
 export async function inspectBed(path: string, opts: BedOptions = {}): Promise<BedSummary> {
-	return inspectBedLines(linesOf(openSequenceStream(path)), opts);
+	return inspectBedLines(linesOf(await openSequenceStream(path)), opts);
 }

@@ -135,5 +135,5 @@ export async function inspectGffLines(lines: AsyncIterable<string>, opts: GffOpt
 }
 
 export async function inspectGff(path: string, opts: GffOptions = {}): Promise<GffSummary> {
-	return inspectGffLines(linesOf(openSequenceStream(path)), opts);
+	return inspectGffLines(linesOf(await openSequenceStream(path)), opts);
 }

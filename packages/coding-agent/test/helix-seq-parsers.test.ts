@@ -42,6 +42,12 @@ describe("helix-seq / fasta", () => {
 		expect(s).toMatchObject({ recordCount: 0, totalLength: 0, minLength: 0, maxLength: 0, meanLength: 0 });
 		expect(s.firstRecords).toEqual([]);
 	});
+
+	test("internal whitespace in a sequence line is not counted as residues", async () => {
+		const s = await inspectFastaLines(linesOfString([">x", "AC GT\tAC", ""].join("\n")));
+		expect(s.totalLength).toBe(6); // "ACGTAC", spaces/tabs excluded
+		expect(s.firstRecords[0].length).toBe(6);
+	});
 });
 
 describe("helix-seq / fastq", () => {
@@ -79,6 +85,26 @@ describe("helix-seq / fastq", () => {
 		// Mean per read: Q40, Q0, ~Q20.14 -> overall mean ~Q20.05
 		expect(s.meanQuality).toBeGreaterThan(19);
 		expect(s.meanQuality).toBeLessThan(21);
+	});
+
+	test("detects phred64 and scores it with the +64 offset", async () => {
+		// All chars >= '@' (64), and 'h' (104) > 'J' (74) forces a phred64 verdict.
+		const PHRED64 = [
+			"@r1",
+			"ACGTACGTAC",
+			"+",
+			"hhhhhhhhhh", // 'h' = 104 -> Q40 under phred64
+			"@r2",
+			"ACGT",
+			"+",
+			"BBBB", // 'B' = 66 -> Q2 under phred64
+			"",
+		].join("\n");
+		const s = await inspectFastqLines(linesOfString(PHRED64));
+		expect(s.qualityEncoding).toBe("phred64");
+		// Mean per read: Q40, Q2 -> overall mean Q21 (NOT Q40+31 inflated by phred33).
+		expect(s.meanQuality).toBe(21);
+		expect(s.firstRecords[0].meanQuality).toBe(40);
 	});
 
 	test("sampleSize truncates and reports truncated=true", async () => {
@@ -124,7 +150,24 @@ describe("helix-seq / vcf", () => {
 
 	test("classifies REF/ALT length patterns into SNV/INS/DEL/MNV/OTHER", async () => {
 		const s = await inspectVcfLines(linesOfString(FIXTURE));
-		expect(s.byType).toEqual({ SNV: 1, INS: 1, DEL: 1, MNV: 1, OTHER: 1 });
+		expect(s.byType).toEqual({ SNV: 1, INS: 1, DEL: 1, MNV: 1, SV: 0, OTHER: 1 });
+	});
+
+	test("classifies symbolic and breakend ALTs as SV, not INS/DEL", async () => {
+		const SV_FIXTURE = [
+			"##fileformat=VCFv4.2",
+			"#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO",
+			"chr1\t500\t.\tN\t<DEL>\t40\tPASS\tSVTYPE=DEL", // symbolic deletion
+			"chr1\t600\t.\tN\t<DUP>\t40\tPASS\tSVTYPE=DUP", // symbolic duplication
+			"chr1\t700\t.\tG\tG]chr17:198982]\t40\tPASS\tSVTYPE=BND", // breakend
+			"chr1\t800\t.\tA\tAGT\t40\tPASS\t.", // plain insertion stays INS
+			"",
+		].join("\n");
+		const s = await inspectVcfLines(linesOfString(SV_FIXTURE));
+		expect(s.byType.SV).toBe(3);
+		expect(s.byType.INS).toBe(1);
+		expect(s.byType.DEL).toBe(0);
+		expect(s.firstVariants[0]).toMatchObject({ alt: "<DEL>", type: "SV" });
 	});
 
 	test("captures first variants with type", async () => {

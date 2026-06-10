@@ -3,12 +3,13 @@
  *
  * - Counts reads (every 4 lines is one record).
  * - Mean read length over sampled records.
- * - Always reports quality with the phred33 offset (the modern default; Illumina
- *   switched off phred64 in v1.8, 2011). `qualityEncoding` reports "phred33"
- *   once we see any char with ASCII < 64 (definitive proof of phred33), and
- *   "unknown" otherwise (ambiguous but treated as phred33 for the score math).
- *   A `helix-seq-phred64` opt-in is the right place for legacy support if it
- *   ever becomes necessary.
+ * - Detects the quality encoding and scores with the matching offset.
+ *   `qualityEncoding` is "phred33" once we see any char with ASCII < 64
+ *   (impossible under phred64), "phred64" once we see a char > 'J' (74) before
+ *   any sub-64 char (impossible under modern phred33), and "unknown" when every
+ *   sampled char sits in the ambiguous [64, 74] overlap (scored as phred33, the
+ *   modern default). This keeps legacy phred64 (pre-Illumina-1.8 / some SRA
+ *   archives) from being silently reported ~31 Q-units too high.
  * - Mean quality score over sampled records.
  *
  * Defaults to sampling 10_000 records (~2-5 MB of sequence) to bound time
@@ -44,18 +45,32 @@ export interface FastqOptions {
 }
 
 function detectEncoding(qual: string, current: QualityEncoding): QualityEncoding {
-	if (current === "phred33") return current;
+	if (current === "phred33" || current === "phred64") return current;
 	for (let i = 0; i < qual.length; i++) {
-		if (qual.charCodeAt(i) < 64) return "phred33";
+		const code = qual.charCodeAt(i);
+		// A char below '@' (64) cannot occur in phred64 -> definitive phred33.
+		if (code < 64) return "phred33";
+		// A char above 'J' (74) before any sub-64 char would require Q42+ under
+		// phred33, which modern sequencers never emit -> definitive phred64.
+		if (code > 74) return "phred64";
 	}
-	return current; // stays "unknown" -- ambiguous but treated as phred33 below
+	return current; // all chars in [64, 74]: ambiguous -- stays "unknown"
 }
 
-function meanQualityOf(qual: string): number {
+/**
+ * Mean of the raw quality character codes. The phred offset is applied later,
+ * once the whole sample has been scanned and the encoding is known, so phred64
+ * reads are not mis-scored with the phred33 offset.
+ */
+function rawMeanCharCode(qual: string): number {
 	if (qual.length === 0) return 0;
 	let sum = 0;
-	for (let i = 0; i < qual.length; i++) sum += qual.charCodeAt(i) - 33;
+	for (let i = 0; i < qual.length; i++) sum += qual.charCodeAt(i);
 	return sum / qual.length;
+}
+
+function phredOffset(encoding: QualityEncoding): number {
+	return encoding === "phred64" ? 64 : 33; // "unknown" is treated as phred33, the modern default
 }
 
 export async function inspectFastqLines(lines: AsyncIterable<string>, opts: FastqOptions = {}): Promise<FastqSummary> {
@@ -92,15 +107,26 @@ export async function inspectFastqLines(lines: AsyncIterable<string>, opts: Fast
 		if (len > maxLength) maxLength = len;
 		recordCount += 1;
 
-		const mq = meanQualityOf(qual);
-		qualSum += mq;
-		qualCount += 1;
+		// Accumulate raw character-code means; the offset is subtracted once at the
+		// end, when the encoding (phred33/phred64) is settled.
+		const rawMean = qual.length > 0 ? rawMeanCharCode(qual) : undefined;
+		if (rawMean !== undefined) {
+			qualSum += rawMean;
+			qualCount += 1;
+		}
 
 		if (firstRecords.length < sampleRecords) {
 			const idEnd = header.indexOf(" ");
 			const id = header.slice(1, idEnd === -1 ? undefined : idEnd);
-			firstRecords.push({ id, sequenceLength: len, meanQuality: Math.round(mq * 10) / 10 });
+			firstRecords.push({ id, sequenceLength: len, meanQuality: rawMean });
 		}
+	}
+
+	// Resolve the phred offset from the final encoding and apply it to every
+	// accumulated raw mean (global and per-record).
+	const offset = phredOffset(encoding);
+	for (const r of firstRecords) {
+		if (r.meanQuality !== undefined) r.meanQuality = Math.round((r.meanQuality - offset) * 10) / 10;
 	}
 
 	return {
@@ -110,11 +136,11 @@ export async function inspectFastqLines(lines: AsyncIterable<string>, opts: Fast
 		maxReadLength: maxLength,
 		meanReadLength: recordCount === 0 ? 0 : Math.round(totalLength / recordCount),
 		qualityEncoding: encoding,
-		meanQuality: qualCount === 0 ? undefined : Math.round((qualSum / qualCount) * 10) / 10,
+		meanQuality: qualCount === 0 ? undefined : Math.round((qualSum / qualCount - offset) * 10) / 10,
 		firstRecords,
 	};
 }
 
 export async function inspectFastq(path: string, opts: FastqOptions = {}): Promise<FastqSummary> {
-	return inspectFastqLines(linesOf(openSequenceStream(path)), opts);
+	return inspectFastqLines(linesOf(await openSequenceStream(path)), opts);
 }

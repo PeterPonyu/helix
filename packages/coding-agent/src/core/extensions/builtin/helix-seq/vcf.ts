@@ -2,11 +2,16 @@
  * Minimal VCF inspector.
  *
  * - Reads ##fileformat and ##contig headers, sample columns from #CHROM line.
- * - Classifies variants by simple REF/ALT length rules into SNV/INS/DEL/MNV/OTHER.
+ * - Classifies variants by REF/ALT rules into SNV/INS/DEL/MNV/SV/OTHER.
  * - Counts variants per chromosome and captures the first N data rows.
  *
  * Streams line-by-line; handles plain text VCF and .vcf.gz (BGZF gzipped)
  * via the shared stream helper.
+ *
+ * Symbolic alleles (<DEL>, <DUP>, <INV>, <CNV>, <INS>, ...) and breakend
+ * notations ([/] mates, leading/trailing '.') are classified SV rather than
+ * length-compared, so structural-variant callsets (Manta/Delly/GATK-SV/dbVar)
+ * are not mislabeled as insertions/deletions.
  *
  * Multi-allelic ALT (comma-separated alleles) is classified OTHER in v0 --
  * proper per-allele typing is deferred until we add a real ALT splitter.
@@ -14,7 +19,7 @@
 
 import { linesOf, openSequenceStream } from "./stream.js";
 
-export type VariantType = "SNV" | "INS" | "DEL" | "MNV" | "OTHER";
+export type VariantType = "SNV" | "INS" | "DEL" | "MNV" | "SV" | "OTHER";
 
 export interface VcfVariantSummary {
 	chrom: string;
@@ -42,13 +47,25 @@ export interface VcfOptions {
 	sampleVariants?: number;
 }
 
+function isStructural(alt: string): boolean {
+	// Symbolic allele (<DEL>, <DUP>, <INV>, <CNV>, <INS>, <BND>, ...),
+	// breakend with a mate bracket, or a single-breakend '.' adjacency.
+	return (
+		alt.startsWith("<") ||
+		alt.includes("[") ||
+		alt.includes("]") ||
+		(alt.length > 1 && (alt.startsWith(".") || alt.endsWith(".")))
+	);
+}
+
 function classifyVariant(ref: string, alt: string): VariantType {
-	if (alt.includes(",") || alt === "." || alt === "*") return "OTHER";
+	if (alt.includes(",")) return "OTHER"; // multi-allelic; per-allele typing deferred
+	if (alt === "." || alt === "*") return "OTHER"; // missing / spanning-deletion star allele
+	if (isStructural(alt)) return "SV";
 	if (ref.length === 1 && alt.length === 1) return "SNV";
 	if (ref.length < alt.length) return "INS";
 	if (ref.length > alt.length) return "DEL";
-	if (ref.length === alt.length) return "MNV";
-	return "OTHER";
+	return "MNV"; // equal length, >1 base
 }
 
 const CONTIG_RE = /^##contig=<.*?ID=([^,>]+)/;
@@ -61,7 +78,7 @@ export async function inspectVcfLines(lines: AsyncIterable<string>, opts: VcfOpt
 	const contigs: string[] = [];
 	let samples: string[] = [];
 	const byChromosome: Record<string, number> = {};
-	const byType: Record<VariantType, number> = { SNV: 0, INS: 0, DEL: 0, MNV: 0, OTHER: 0 };
+	const byType: Record<VariantType, number> = { SNV: 0, INS: 0, DEL: 0, MNV: 0, SV: 0, OTHER: 0 };
 	const firstVariants: VcfVariantSummary[] = [];
 	let variantCount = 0;
 	let truncated = false;
@@ -120,5 +137,5 @@ export async function inspectVcfLines(lines: AsyncIterable<string>, opts: VcfOpt
 }
 
 export async function inspectVcf(path: string, opts: VcfOptions = {}): Promise<VcfSummary> {
-	return inspectVcfLines(linesOf(openSequenceStream(path)), opts);
+	return inspectVcfLines(linesOf(await openSequenceStream(path)), opts);
 }

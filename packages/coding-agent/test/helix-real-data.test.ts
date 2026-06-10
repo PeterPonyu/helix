@@ -56,7 +56,7 @@ describe("helix-seq / vcf -- real bcftools query.vcf", () => {
 		expect(s.fileformat).toMatch(/^VCFv4/);
 		expect(s.samples.length).toBeGreaterThan(0);
 		expect(s.variantCount).toBeGreaterThan(0);
-		const totalTypes = s.byType.SNV + s.byType.INS + s.byType.DEL + s.byType.MNV + s.byType.OTHER;
+		const totalTypes = s.byType.SNV + s.byType.INS + s.byType.DEL + s.byType.MNV + s.byType.SV + s.byType.OTHER;
 		expect(totalTypes).toBe(s.variantCount);
 	});
 });
