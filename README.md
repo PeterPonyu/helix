@@ -1,6 +1,6 @@
 # helix
 
-An AI agent harness for **bioinformatics** — sequence analysis, NGS pipeline orchestration, genomic database retrieval, and ontology-aware metadata search, driven from a single CLI.
+An AI agent harness for **bioinformatics** — today: read-only sequence/interval inspection (FASTA/FASTQ/VCF/BED/GFF), genome-coordinate and chromosome-name normalization, and ontology-aware metadata search; on the roadmap: NGS pipeline orchestration and genomic database retrieval — all driven from a single CLI.
 
 > **Status:** scaffolding. The functional rebrand from upstream is complete; bioinformatics-specific extensions are being implemented as separate packages.
 
@@ -10,7 +10,7 @@ helix wraps your LLM provider of choice (Anthropic / OpenAI / OpenRouter / Toget
 
 - **Sub-agents** for parallel work (`task` / `background_output` / `background_cancel`)
 - **Permission system** with JSONL persistence (necessary for controlled-access genomics data)
-- **Speculative + restoration compaction with degradation monitoring** — large bioinformatics tool outputs (VCFs, sample manifests, h5ad summaries) won't blow your context
+- **Speculative + restoration compaction with degradation monitoring** — large bioinformatics tool outputs (VCF summaries, BED/GFF feature tables, FASTA/FASTQ inspection reports) won't blow your context
 - **Dynamic system prompt** with intent gate, tool categorization, and policy enforcement
 - **Per-model prompt presets** (gpt-5.x, claude-opus-4-{5,6,7}, kimi-k2-6)
 - **Extension-first architecture** — bioinformatics tools ship as builtin or user packages, not core forks
