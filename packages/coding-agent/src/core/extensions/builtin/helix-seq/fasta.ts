@@ -69,7 +69,9 @@ export async function inspectFastaLines(lines: AsyncIterable<string>, opts: Fast
 				currentDescription = header.slice(spaceIdx + 1);
 			}
 		} else if (currentId !== undefined) {
-			currentLength += line.length;
+			// Count residues only: strip any internal whitespace so a space or tab
+			// inside a sequence line is not mistaken for a base.
+			currentLength += line.replace(/\s+/g, "").length;
 		}
 	}
 	closeRecord();
@@ -85,7 +87,7 @@ export async function inspectFastaLines(lines: AsyncIterable<string>, opts: Fast
 }
 
 export async function inspectFasta(path: string, opts: FastaOptions = {}): Promise<FastaSummary> {
-	return inspectFastaLines(linesOf(openSequenceStream(path)), opts);
+	return inspectFastaLines(linesOf(await openSequenceStream(path)), opts);
 }
 
 // Re-export so callers don't need to also import from ./stream.
